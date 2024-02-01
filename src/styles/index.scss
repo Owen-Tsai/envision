@@ -14,16 +14,18 @@ html {
   }
 }
 
-.ant-app, #app {
+.ant-app,
+#app {
   height: 100%;
 }
 
 // Alibaba PuHuiTi
 @font-face {
-  font-family: "TitleFont";
+  font-family: 'TitleFont';
   font-weight: 1000;
-  src: url("https://at.alicdn.com/wf/webfont/IgTWJflk7Y23/M5S2wQf9WoJt.woff2") format("woff2"),
-  url("https://at.alicdn.com/wf/webfont/IgTWJflk7Y23/aRBVxxNZwv4m.woff") format("woff");
+  src:
+    url('https://at.alicdn.com/wf/webfont/IgTWJflk7Y23/M5S2wQf9WoJt.woff2') format('woff2'),
+    url('https://at.alicdn.com/wf/webfont/IgTWJflk7Y23/aRBVxxNZwv4m.woff') format('woff');
   font-display: swap;
 }
 
