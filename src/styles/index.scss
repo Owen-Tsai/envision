@@ -1,0 +1,44 @@
+@use './var.scss' as *;
+
+body {
+  position: relative;
+}
+
+html {
+  --colorBorderAlt: rgba(5, 5, 5, 0.06);
+  --colorBgAlt: rgba(255, 255, 255, 0.6);
+
+  &.dark {
+    --colorBorderAlt: rgba(255, 255, 255, 0.2);
+    --colorBgAlt: rgba(31, 31, 31, 0.66);
+  }
+}
+
+.ant-app, #app {
+  height: 100%;
+}
+
+// Alibaba PuHuiTi
+@font-face {
+  font-family: "TitleFont";
+  font-weight: 1000;
+  src: url("https://at.alicdn.com/wf/webfont/IgTWJflk7Y23/M5S2wQf9WoJt.woff2") format("woff2"),
+  url("https://at.alicdn.com/wf/webfont/IgTWJflk7Y23/aRBVxxNZwv4m.woff") format("woff");
+  font-display: swap;
+}
+
+.layout-sider {
+  border-right: 1px solid var(--colorBorderAlt);
+  ul.ant-menu {
+    background-color: transparent !important;
+    border-right: 0 !important;
+  }
+}
+
+#nprogress .bar {
+  background: var(--colorPrimary);
+}
+
+.scrollbar__thumb {
+  background-color: var(--colorFill);
+}

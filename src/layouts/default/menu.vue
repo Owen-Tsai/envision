@@ -1,0 +1,68 @@
+<template>
+  <AMenu
+    :items="menuItems"
+    mode="inline"
+    class="bg-transparent"
+    v-model:selected-keys="selectedKeys"
+    v-model:open-keys="expandedKeys"
+    @select="({ key }) => onSelect(key as string)"
+  />
+</template>
+
+<script lang="ts" setup>
+import { h, ref, watchEffect } from 'vue'
+import { AppstoreOutlined } from '@ant-design/icons-vue'
+import { useRouter } from 'vue-router'
+import useRouteStore from '@/stores/route'
+import { useMenuRenderer } from '@/hooks/use-menu'
+
+const routeStore = useRouteStore()
+const { push, currentRoute } = useRouter()
+
+const selectedKeys = ref<string[]>([])
+const expandedKeys = ref<string[]>([])
+
+const { menuItems, generateMenu } = useMenuRenderer()
+
+routeStore.fetchRoutes().then(() => {
+  menuItems.value = generateMenu(routeStore.asyncRoutes!)
+  menuItems.value.unshift({
+    label: '首页',
+    key: '/index',
+    icon: h(AppstoreOutlined)
+  })
+})
+
+const onSelect = (key: string) => {
+  if (key.includes('http')) {
+    window.open(key)
+  } else {
+    push(key)
+  }
+}
+
+const setDefaultExpandedKeys = () => {
+  const { path } = currentRoute.value
+  const portions = path.split('/')
+  const [, ...rest] = portions
+
+  const keys: string[] = []
+
+  if (rest.length <= 1) return
+
+  rest.reduce((acc, curr) => {
+    const key = `${acc}/${curr}`
+    keys.push(key)
+    return key
+  }, '')
+
+  expandedKeys.value = keys
+}
+
+watchEffect(() => {
+  const { path } = currentRoute.value
+  selectedKeys.value = [path]
+})
+
+setDefaultExpandedKeys()
+</script>
