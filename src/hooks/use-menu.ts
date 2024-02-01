@@ -14,16 +14,14 @@ export const useMenuRenderer = () => {
     pathPrefix = '',
     children?: ItemType[]
   ): ItemType => {
-    if (routeRecord.path.includes('log')) {
-      // console.log(pathPrefix)
-    }
-    let key = `${pathPrefix}/${routeRecord.path}`
+    let key = `/${pathPrefix}/${routeRecord.path}`
 
     if (routeRecord.path.includes('http')) {
       key = routeRecord.path
     } else if (pathPrefix === '/') {
       key = `/${routeRecord.path}`
     }
+
     const res: ItemType = {
       label: routeRecord.meta?.title || routeRecord.name,
       key,
@@ -34,23 +32,20 @@ export const useMenuRenderer = () => {
       ;(res as any).children = children
     }
 
-    // console.log(res)
-
     return res
   }
 
-  const getSubMenuItems = (route: RouteRecordRaw, pathPrefix = ''): ItemType[] | undefined => {
+  const getSubMenuItems = (route: RouteRecordRaw, pathPrefix?: string): ItemType[] | undefined => {
     if (!route.children) return undefined
     const subMenu: ItemType[] = []
 
     route.children.forEach((cRoute) => {
-      console.log(cRoute)
       let cSubMenu: ItemType[] | undefined = []
-      const path = `${pathPrefix}${route.path}`
+      const path = pathPrefix && pathPrefix !== '/' ? `${pathPrefix}/${route.path}` : route.path
+
       if (cRoute.children) {
         cSubMenu = getSubMenuItems(cRoute, path)
       }
-      // console.log(path)
       subMenu.push(buildItem(cRoute, path, cSubMenu))
     })
 
@@ -71,7 +66,7 @@ export const useMenuRenderer = () => {
       const origin = window.location.origin
 
       if (route.path === '/' && route.children) {
-        const subMenuItems = getSubMenuItems(route, '')
+        const subMenuItems = getSubMenuItems(route)
         subMenuItems && items.push(...subMenuItems)
       } else {
         if (route.children) {
