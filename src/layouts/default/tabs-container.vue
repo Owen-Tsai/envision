@@ -61,7 +61,7 @@ watch(router.currentRoute, (val) => {
 
 <style lang="scss" scoped>
 .tabs-container {
-  @apply w-full overflow-hidden flex whitespace-nowrap flex-nowrap px-2 py-1 gap-2;
+  @apply w-full overflow-hidden flex whitespace-nowrap flex-nowrap px-4 py-1 gap-2;
   font-size: var(--fontSizeSM);
   background-color: var(--colorBgLayout);
   border-bottom: 1px solid var(--colorBorderAlt);

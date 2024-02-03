@@ -19,6 +19,8 @@ export default defineStore('user', () => {
   const avatar = ref<string>()
   const roles = ref<string[]>([])
   const permissions = ref<string[]>([])
+  const deptName = ref<string>()
+  const phoneNumber = ref<string>()
 
   const login = (loginInfo: LoginDTO) => {
     const { username, password, code, uuid } = loginInfo
@@ -63,6 +65,8 @@ export default defineStore('user', () => {
           name.value = user.userName
           id.value = user.userId
           avatar.value = userAvatar
+          deptName.value = user.dept.deptName
+          phoneNumber.value = user.phonenumber
           resolve(res)
         })
         .catch((err) => {
@@ -92,8 +96,10 @@ export default defineStore('user', () => {
     name,
     avatar,
     roles,
+    deptName,
     permissions,
     token,
+    phoneNumber,
     login,
     logout,
     getUserInfo

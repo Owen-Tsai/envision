@@ -106,9 +106,8 @@ const onClickLogout = () => {
 @use '@/styles/mixins.scss' as *;
 
 header {
-  @apply flex-between;
+  @apply flex-between px-4 lg:px-6;
   background: unset;
-  padding: 0 32px;
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--colorBorderSecondary);
   position: sticky;

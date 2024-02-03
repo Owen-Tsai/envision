@@ -24,6 +24,10 @@ export type UserInfoVO = {
     userId: number
     avatar?: string
     userName: string
+    phonenumber?: string
+    dept: {
+      deptName?: string
+    }
   }
   roles?: string[]
   permissions?: string[]
