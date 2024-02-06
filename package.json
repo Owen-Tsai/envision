@@ -27,6 +27,7 @@
     "ant-design-vue": "^4.1.0",
     "axios": "^1.6.5",
     "custom-vue-scrollbar": "^0.0.8",
+    "dayjs": "^1.11.10",
     "echarts": "^5.4.3",
     "file-saver": "^2.0.5",
     "jsencrypt": "^3.3.2",

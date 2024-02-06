@@ -20,6 +20,9 @@ dependencies:
   custom-vue-scrollbar:
     specifier: ^0.0.8
     version: 0.0.8(lodash-es@4.17.21)(vue@3.4.5)
+  dayjs:
+    specifier: ^1.11.10
+    version: 1.11.10
   echarts:
     specifier: ^5.4.3
     version: 5.4.3
