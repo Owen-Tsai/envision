@@ -21,9 +21,7 @@
         </ATooltip>
         <ATooltip :title="themeBtnText">
           <AButton type="text" class="ant-btn-icon-only" @click="switchTheme">
-            <span role="img" class="anticon anticon-bell h-4 w-4">
-              <ThemeIcon :theme="theme" />
-            </span>
+            <ThemeIcon :theme="theme" />
           </AButton>
         </ATooltip>
         <!-- TODO: user avatar dropdown -->

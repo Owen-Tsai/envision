@@ -3,6 +3,8 @@ import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import Antd from 'ant-design-vue'
 import EScrollbar from 'custom-vue-scrollbar'
+import DictTag from '@/components/dict-tag/index.vue'
+import '@/utils/dayjs'
 // use all the icons
 import * as antIcons from '@ant-design/icons-vue'
 import 'ant-design-vue/dist/reset.css'
@@ -23,6 +25,7 @@ app.use(Antd)
 app.use(router)
 
 app.component('EScrollbar', EScrollbar)
+app.component('EDictTag', DictTag)
 
 Object.keys(antIcons).forEach((k) => {
   app.component(k, (antIcons as Record<string, any>)[k])
