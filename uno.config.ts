@@ -5,7 +5,14 @@ export default defineConfig({
   presets: [presetMini()],
   transformers: [directives()],
   theme: {
-    colors: {}
+    colors: {},
+    breakpoints: {
+      sm: '576px',
+      md: '768px',
+      lg: '992px',
+      xl: '1200px',
+      xxl: '1600px'
+    }
   },
   rules: [
     [/^size-(\d+)px/, ([, d]) => ({ height: `${d}px`, width: `${d}px` })],

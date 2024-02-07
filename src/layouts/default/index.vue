@@ -12,7 +12,7 @@
       >
         <EScrollbar :auto-expand="false" :throttle-wait="50" wrapper-class="h-full" class="h-full">
           <div class="h-full overflow-y-auto pb-2 relative">
-            <Menu class="h-full" />
+            <Menu />
           </div>
         </EScrollbar>
         <AButton class="menu-btn" type="text" size="small" @click="toggle()">
