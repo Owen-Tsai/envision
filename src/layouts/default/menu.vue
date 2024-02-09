@@ -1,5 +1,6 @@
 <template>
   <AMenu
+    v-show="!loading"
     :items="menuItems"
     mode="inline"
     class="bg-transparent"
@@ -7,6 +8,13 @@
     v-model:open-keys="expandedKeys"
     @select="({ key }) => onSelect(key as string)"
   />
+  <AFlex v-show="loading" vertical :gap="8" class="w-full px-6 py-4">
+    <ASkeletonButton active block />
+    <ASkeletonButton active block />
+    <ASkeletonButton active block />
+    <ASkeletonButton active block />
+    <ASkeletonButton active block />
+  </AFlex>
 </template>
 
 <script lang="ts" setup>
@@ -18,6 +26,8 @@ import { useMenuRenderer } from '@/hooks/use-menu'
 
 const routeStore = useRouteStore()
 const { push, currentRoute } = useRouter()
+
+const loading = ref(true)
 
 const selectedKeys = ref<string[]>([])
 const expandedKeys = ref<string[]>([])
@@ -31,6 +41,7 @@ routeStore.fetchRoutes().then(() => {
     key: '/index',
     icon: h(AppstoreOutlined)
   })
+  loading.value = false
 })
 
 const onSelect = (key: string) => {
