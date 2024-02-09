@@ -20,10 +20,30 @@ export type ListVO = {
   total: number
 }
 
+export type TypeDTO = {
+  dictName: string
+  dictType: string
+  status: string
+  remark?: string
+}
+
 export function getList(query: ListQueryParams) {
-  console.log(query)
   return request.getRaw<ListVO>({
     url: '/system/dict/type/list',
     params: query
+  })
+}
+
+export function addType(data: TypeDTO) {
+  return request.post({
+    url: '/system/dict/type',
+    data
+  })
+}
+
+export function updateType(data: TypeDTO) {
+  return request.put({
+    url: '/system/dict/type',
+    data
   })
 }

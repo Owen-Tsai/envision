@@ -67,15 +67,12 @@ service.interceptors.response.use(
     const { data, request } = res
     const code: number = data.code || 200
 
-    console.log(`code for`, request, code)
-
     // 二进制数据直接返回
     if (request.responseType === 'blob' || request.responseType === 'arraybuffer') {
       return data
     }
 
     if (code !== 200) {
-      console.log('not 200!', res)
       const msg = res.data.msg || errorCodes[code] || errorCode['default']
       if (code === 401) {
         if (!reloginHint.show) {

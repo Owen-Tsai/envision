@@ -1,5 +1,5 @@
 <template>
-  <div class="px-8 py-4">
+  <div class="p-4 lg:px-8 lg:py-4">
     <ACard>
       <AForm
         ref="filterForm"
@@ -8,7 +8,7 @@
         :class="{ expanded: filterExpanded }"
         :model="queryParams"
       >
-        <ARow>
+        <ARow :gutter="[0, 16]">
           <ACol :lg="8" :span="24">
             <AFormItem label="字典名称" name="dictName">
               <AInput
@@ -53,7 +53,13 @@
 
     <ACard title="字典类型" class="mt-4">
       <template #extra>
-        <AFlex>
+        <AFlex :gap="8">
+          <AButton type="primary" @click="showDialog('add')">
+            <template #icon>
+              <PlusOutlined />
+            </template>
+            新增
+          </AButton>
           <ATooltip title="导出">
             <AButton type="text" :loading="pending">
               <template #icon>
@@ -71,26 +77,58 @@
         </AFlex>
       </template>
 
-      <ATable
-        :columns="columns"
-        :data-source="data?.rows"
-        :loading="pending"
-        :pagination="pagination"
-        @change="onChange"
-      >
-        <template #bodyCell="scope">
-          <template v-if="scope!.column.dataIndex === 'status'">
-            <EDictTag :dict-object="dictDisable" :value="scope?.text" />
+      <div class="overflow-x-auto">
+        <ATable
+          :columns="columns"
+          :data-source="data?.rows"
+          :loading="pending"
+          :pagination="pagination"
+          @change="onChange"
+        >
+          <template #bodyCell="scope">
+            <template v-if="scope!.column.dataIndex === 'status'">
+              <EDictTag :dict-object="dictDisable" :value="scope?.text" />
+            </template>
+            <template v-if="scope!.column.title === '操作'">
+              <AFlex :gap="16">
+                <ATypographyLink @click="showDialog('edit')">
+                  <EditOutlined /> 编辑
+                </ATypographyLink>
+                <ATypographyLink> <DeleteOutlined /> 删除 </ATypographyLink>
+              </AFlex>
+            </template>
           </template>
-          <template v-if="scope!.column.title === '操作'">
-            <AFlex :gap="16">
-              <ATypographyLink> <EditOutlined /> 编辑 </ATypographyLink>
-              <ATypographyLink> <DeleteOutlined /> 删除 </ATypographyLink>
-            </AFlex>
-          </template>
-        </template>
-      </ATable>
+        </ATable>
+      </div>
     </ACard>
+
+    <AModal
+      v-model:visible="dialog.visible"
+      :title="dialog.isAdd ? '新增字典类型' : '编辑字典类型'"
+      :confirm-loading="modalActionLoading"
+      :cancel-loading="modalActionLoading"
+      @ok="onSubmit"
+      @cancel="dialog.visible = false"
+    >
+      <AForm ref="modalForm" :label-col="{ span: 6 }" :model="formData">
+        <AFormItem label="字典名称" name="dictName">
+          <AInput v-model:value="formData.dictName" />
+        </AFormItem>
+        <AFormItem label="字典类型" name="dictType">
+          <AInput v-model:value="formData.dictType" />
+        </AFormItem>
+        <AFormItem label="状态" name="status">
+          <ARadioGroup v-model:value="formData.status">
+            <ARadio v-for="item in dictDisable" :key="item.dictValue" :value="item.dictValue">{{
+              item.dictLabel
+            }}</ARadio>
+          </ARadioGroup>
+        </AFormItem>
+        <AFormItem label="备注" name="remark">
+          <ATextarea v-model:value="formData.remark" />
+        </AFormItem>
+      </AForm>
+    </AModal>
   </div>
 </template>
 
@@ -103,13 +141,21 @@ import {
   ReloadOutlined,
   ExportOutlined,
   EditOutlined,
-  DeleteOutlined
+  DeleteOutlined,
+  PlusOutlined
 } from '@ant-design/icons-vue'
 import useRequest from '@/hooks/use-request'
 import useDict from '@/hooks/use-dict'
-import { getList, type ListQueryParams, type ListItemVO } from '@/api/system/dict/type'
+import {
+  getList,
+  addType,
+  updateType,
+  type ListQueryParams,
+  type ListItemVO,
+  type TypeDTO
+} from '@/api/system/dict/type'
 import { formatDateRange } from '@/utils/date-time'
-import type { TableProps, FormInstance } from 'ant-design-vue'
+import { type TableProps, type FormInstance, notification } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 const columns: TableProps['columns'] = [
@@ -138,6 +184,18 @@ const queryParams = ref<ListQueryParams>({})
 const dateRange = ref<[Dayjs, Dayjs]>()
 
 const filterForm = ref<FormInstance>()
+const modalForm = ref<FormInstance>()
+
+const dialog = ref({
+  isAdd: true,
+  visible: false
+})
+
+const formData = ref<TypeDTO>({
+  dictName: '',
+  dictType: '',
+  status: '0'
+})
 
 const { data, execute, pending } = useRequest(
   () =>
@@ -149,6 +207,22 @@ const { data, execute, pending } = useRequest(
     immediate: true
   }
 )
+
+const modalActionCbk = () => {
+  dialog.value.visible = false
+  notification.success({ message: '保存成功' })
+  execute()
+}
+
+const { execute: doAdd, pending: addPending } = useRequest(() => addType(formData.value), {
+  onSuccess: modalActionCbk
+})
+
+const { execute: doUpdate, pending: updatePending } = useRequest(() => updateType(formData.value), {
+  onSuccess: modalActionCbk
+})
+
+const modalActionLoading = computed(() => addPending.value || updatePending.value)
 
 const pagination = computed<TablePaginationConfig>(() => ({
   pageSize: queryParams.value.pageSize,
@@ -177,5 +251,21 @@ const onFilterReset = () => {
   filterForm.value?.resetFields()
   dateRange.value = undefined
   execute()
+}
+
+const showDialog = (mode: 'edit' | 'add') => {
+  dialog.value.isAdd = mode === 'add'
+  modalForm.value?.resetFields()
+  dialog.value.visible = true
+}
+
+const onSubmit = () => {
+  modalForm.value?.validate().then(() => {
+    if (dialog.value.isAdd) {
+      doAdd()
+    } else {
+      doUpdate()
+    }
+  })
 }
 </script>
