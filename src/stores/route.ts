@@ -12,7 +12,7 @@ const loadComponentFrom = (path: string, folder: 'views' | 'layouts') => {
   for (const filename in modules) {
     const file = filename.split(`${folder}/`)[1].split('.vue')[0]
     if (file === path) {
-      res = () => modules[path]()
+      res = () => modules[filename]()
     }
   }
   return res
