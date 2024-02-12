@@ -2,11 +2,15 @@
   <ACard>
     <div class="stat-container">
       <div>
-        <img :src="icon1" />
+        <div class="icon-wrapper bg-1">
+          <img :src="icon1" />
+        </div>
         <AStatistic title="人才总量" :value="287359" suffix="人" />
       </div>
       <div>
-        <img :src="icon2" />
+        <div class="icon-wrapper bg-2">
+          <img :src="icon2" />
+        </div>
         <AStatistic title="年度人才增量" :value="1342">
           <template #suffix>
             <div class="positive">
@@ -17,7 +21,9 @@
         </AStatistic>
       </div>
       <div>
-        <img :src="icon3" />
+        <div class="icon-wrapper bg-3">
+          <img :src="icon3" />
+        </div>
         <AStatistic title="年度人才减量" :value="212">
           <template #suffix>
             <div class="nagative">
@@ -64,6 +70,7 @@ use([LineChart, CanvasRenderer, GridComponent, TooltipComponent])
 const { theme } = storeToRefs(useAppStore())
 
 const option = ref<EChartsOption>({
+  backgroundColor: 'transparent',
   grid: {
     right: 0,
     left: 0,
@@ -114,7 +121,10 @@ const option = ref<EChartsOption>({
   },
   tooltip: {
     trigger: 'axis',
-    className: 's-chart-tooltip'
+    className: 'echart-tooltip',
+    textStyle: {
+      color: 'var(--colorTextSecondary)'
+    }
   },
   series: [
     {
@@ -166,11 +176,14 @@ const option = ref<EChartsOption>({
 
 <style lang="scss" scoped>
 .stat-container {
-  @apply grid grid-cols-3;
+  @apply grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-0;
   & > div {
     @apply flex items-center gap-4;
+    .icon-wrapper {
+      @apply inline-flex items-center justify-center p-1 rounded-full;
+    }
     img {
-      @apply size-14;
+      @apply size-12;
     }
   }
 }
@@ -183,6 +196,16 @@ const option = ref<EChartsOption>({
 }
 
 .chart-container {
-  height: 320px;
+  @apply h-58 lg:h-80;
+}
+
+.bg-1 {
+  background-color: var(--colorPrimaryBg);
+}
+.bg-2 {
+  background-color: var(--colorSuccessBg);
+}
+.bg-3 {
+  background-color: var(--colorWarningBg);
 }
 </style>
