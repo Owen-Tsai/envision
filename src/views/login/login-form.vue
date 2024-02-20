@@ -18,7 +18,7 @@
     <ARow v-if="!data || data.captchaEnabled" :gutter="16">
       <ACol :span="16">
         <AFormItem name="code">
-          <AInput v-model:value="formState.code" placeholder="请输入验证码">
+          <AInput v-model:value="formState.code" placeholder="请输入验证码" autocomplete="off">
             <template #prefix>
               <SafetyCertificateOutlined />
             </template>

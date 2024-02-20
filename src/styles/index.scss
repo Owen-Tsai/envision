@@ -44,3 +44,23 @@ html {
 .scrollbar__thumb {
   background-color: var(--colorFill);
 }
+
+.echart-tooltip {
+  background-color: rgba(#{var(--colorBgContainer)}, 0.8) !important;
+  backdrop-filter: blur(8px);
+  border-color: var(--colorBorder) !important;
+}
+
+.view {
+  @apply p-4 lg:px-6;
+}
+
+.ant-picker {
+  width: 100%;
+}
+
+.dense-filter-form {
+  .ant-form-item {
+    margin-bottom: 0px !important;
+  }
+}

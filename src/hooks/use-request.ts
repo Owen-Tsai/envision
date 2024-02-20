@@ -11,7 +11,7 @@ export type UseRequestOptions<T> = {
 
 const useRequest = <T>(service: () => Promise<T>, options?: UseRequestOptions<T>) => {
   const pending = ref(false)
-  const data = ref<T | null>(null) as Ref<T | null>
+  const data = ref<T | undefined>(undefined) as Ref<T | undefined>
   const error = ref<unknown | null>(null) as Ref<unknown | null>
 
   // eslint-disable-next-line no-param-reassign

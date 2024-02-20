@@ -12,14 +12,14 @@
 
     <div class="actions">
       <AFlex align="center" :gap="8">
-        <ATooltip title="通知消息">
+        <ATooltip title="通知消息" placement="bottom">
           <AButton type="text">
             <template #icon>
               <BellOutlined />
             </template>
           </AButton>
         </ATooltip>
-        <ATooltip :title="themeBtnText">
+        <ATooltip :title="themeBtnText" placement="bottom">
           <AButton type="text" class="ant-btn-icon-only" @click="switchTheme">
             <ThemeIcon :theme="theme" />
           </AButton>

@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 lg:px-8 lg:py-4">
+  <div class="view">
     <ACard>
       <AForm
         ref="filterForm"
@@ -91,7 +91,7 @@
             </template>
             <template v-if="scope!.column.title === '操作'">
               <AFlex :gap="16">
-                <ATypographyLink @click="showDialog('edit')">
+                <ATypographyLink @click="showDialog('edit', scope?.record as TypeDTO)">
                   <EditOutlined /> 编辑
                 </ATypographyLink>
                 <ATypographyLink> <DeleteOutlined /> 删除 </ATypographyLink>
@@ -103,18 +103,18 @@
     </ACard>
 
     <AModal
-      v-model:visible="dialog.visible"
+      v-model:open="dialog.visible"
       :title="dialog.isAdd ? '新增字典类型' : '编辑字典类型'"
       :confirm-loading="modalActionLoading"
       :cancel-loading="modalActionLoading"
       @ok="onSubmit"
       @cancel="dialog.visible = false"
     >
-      <AForm ref="modalForm" :label-col="{ span: 6 }" :model="formData">
-        <AFormItem label="字典名称" name="dictName">
+      <AForm ref="modalForm" :label-col="{ span: 4 }" :model="formData" class="mt-4">
+        <AFormItem label="字典名称" name="dictName" :rules="[{ required: true, trigger: 'blur' }]">
           <AInput v-model:value="formData.dictName" />
         </AFormItem>
-        <AFormItem label="字典类型" name="dictType">
+        <AFormItem label="字典类型" name="dictType" :rules="[{ required: true, trigger: 'blur' }]">
           <AInput v-model:value="formData.dictType" />
         </AFormItem>
         <AFormItem label="状态" name="status">
@@ -194,7 +194,8 @@ const dialog = ref({
 const formData = ref<TypeDTO>({
   dictName: '',
   dictType: '',
-  status: '0'
+  status: '0',
+  remark: ''
 })
 
 const { data, execute, pending } = useRequest(
@@ -253,9 +254,15 @@ const onFilterReset = () => {
   execute()
 }
 
-const showDialog = (mode: 'edit' | 'add') => {
+const showDialog = (mode: 'edit' | 'add', data?: TypeDTO) => {
   dialog.value.isAdd = mode === 'add'
-  modalForm.value?.resetFields()
+  if (mode === 'edit') {
+    formData.value = data as TypeDTO
+  } else {
+    modalForm.value?.resetFields()
+    modalForm.value?.resetFields()
+    modalForm.value?.resetFields()
+  }
   dialog.value.visible = true
 }
 
