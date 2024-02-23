@@ -21,29 +21,38 @@ export type ListVO = {
 }
 
 export type TypeDTO = {
+  dictId?: number
   dictName: string
   dictType: string
   status: string
   remark?: string
 }
 
+const urlPrefix = '/system/dict/type'
+
 export function getList(query: ListQueryParams) {
   return request.getRaw<ListVO>({
-    url: '/system/dict/type/list',
+    url: `${urlPrefix}/list`,
     params: query
+  })
+}
+
+export function getDetail(id: number) {
+  return request.get<ListItemVO>({
+    url: `${urlPrefix}/${id}`
   })
 }
 
 export function addType(data: TypeDTO) {
   return request.post({
-    url: '/system/dict/type',
+    url: urlPrefix,
     data
   })
 }
 
 export function updateType(data: TypeDTO) {
   return request.put({
-    url: '/system/dict/type',
+    url: urlPrefix,
     data
   })
 }

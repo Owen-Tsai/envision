@@ -29,7 +29,11 @@
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
             <AFormItem label="字典状态" name="status">
-              <ASelect v-model:value="queryParams.status"></ASelect>
+              <ASelect
+                v-model:value="queryParams.status"
+                :options="dictDataToOptions(dictDisable)"
+                placeholder="请选择字典状态"
+              />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
@@ -54,7 +58,7 @@
     <ACard title="字典类型" class="mt-4">
       <template #extra>
         <AFlex :gap="8">
-          <AButton type="primary" @click="showDialog('add')">
+          <AButton type="primary" :loading="pending" @click="showDialog()">
             <template #icon>
               <PlusOutlined />
             </template>
@@ -91,7 +95,7 @@
             </template>
             <template v-if="scope!.column.title === '操作'">
               <AFlex :gap="16">
-                <ATypographyLink @click="showDialog('edit', scope?.record as TypeDTO)">
+                <ATypographyLink @click="showDialog((scope?.record as ListItemVO).dictId)">
                   <EditOutlined /> 编辑
                 </ATypographyLink>
                 <ATypographyLink> <DeleteOutlined /> 删除 </ATypographyLink>
@@ -102,39 +106,12 @@
       </div>
     </ACard>
 
-    <AModal
-      v-model:open="dialog.visible"
-      :title="dialog.isAdd ? '新增字典类型' : '编辑字典类型'"
-      :confirm-loading="modalActionLoading"
-      :cancel-loading="modalActionLoading"
-      @ok="onSubmit"
-      @cancel="dialog.visible = false"
-    >
-      <AForm ref="modalForm" :label-col="{ span: 4 }" :model="formData" class="mt-4">
-        <AFormItem label="字典名称" name="dictName" :rules="[{ required: true, trigger: 'blur' }]">
-          <AInput v-model:value="formData.dictName" />
-        </AFormItem>
-        <AFormItem label="字典类型" name="dictType" :rules="[{ required: true, trigger: 'blur' }]">
-          <AInput v-model:value="formData.dictType" />
-        </AFormItem>
-        <AFormItem label="状态" name="status">
-          <ARadioGroup v-model:value="formData.status">
-            <ARadio v-for="item in dictDisable" :key="item.dictValue" :value="item.dictValue">{{
-              item.dictLabel
-            }}</ARadio>
-          </ARadioGroup>
-        </AFormItem>
-        <AFormItem label="备注" name="remark">
-          <ATextarea v-model:value="formData.remark" />
-        </AFormItem>
-      </AForm>
-    </AModal>
+    <ModalForm ref="modalForm" :id="entryId" v-model:value="formData" v-model:open="visible" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
-import dayjs, { type Dayjs } from 'dayjs'
+import { ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import {
   DownOutlined,
@@ -144,53 +121,33 @@ import {
   DeleteOutlined,
   PlusOutlined
 } from '@ant-design/icons-vue'
-import useRequest from '@/hooks/use-request'
 import useDict from '@/hooks/use-dict'
-import {
-  getList,
-  addType,
-  updateType,
-  type ListQueryParams,
-  type ListItemVO,
-  type TypeDTO
-} from '@/api/system/dict/type'
-import { formatDateRange } from '@/utils/date-time'
-import { type TableProps, type FormInstance, notification } from 'ant-design-vue'
-import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
+import ModalForm from './form.vue'
+import { dictDataToOptions } from '@/utils/envision'
+import { columns, useTable } from './use-table'
+import type { FormInstance } from 'ant-design-vue'
+import type { ListItemVO, TypeDTO } from '@/api/system/dict/type'
 
-const columns: TableProps['columns'] = [
-  { title: '字典编号', width: 90, dataIndex: 'dictId' },
-  { title: '字典名称', minWidth: 120, dataIndex: 'dictName' },
-  { title: '字典类别', minWidth: 120, dataIndex: 'dictType' },
-  { title: '字典状态', minWidth: 48, dataIndex: 'status' },
-  { title: '备注', minWidth: 120, dataIndex: 'remark' },
-  {
-    title: '创建时间',
-    minWidth: 120,
-    dataIndex: 'createTime',
-    sortDirections: ['ascend', 'descend'],
-    sorter: (a: ListItemVO, b: ListItemVO) => {
-      return dayjs(a.createTime).isSameOrBefore(b.createTime) ? 1 : -1
-    }
-  },
-  { title: '操作', width: 160 }
-]
+const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
 const { sys_normal_disable: dictDisable } = useDict('sys_normal_disable')
 
-const queryParams = ref<ListQueryParams>({})
-const dateRange = ref<[Dayjs, Dayjs]>()
+const {
+  data,
+  pending,
+  execute,
+  queryParams,
+  dateRange,
+  onFilter,
+  onChange,
+  onFilterReset,
+  pagination
+} = useTable(filterForm)
 
-const filterForm = ref<FormInstance>()
-const modalForm = ref<FormInstance>()
-
-const dialog = ref({
-  isAdd: true,
-  visible: false
-})
-
+const entryId = ref<number>()
+const visible = ref(false)
 const formData = ref<TypeDTO>({
   dictName: '',
   dictType: '',
@@ -198,81 +155,8 @@ const formData = ref<TypeDTO>({
   remark: ''
 })
 
-const { data, execute, pending } = useRequest(
-  () =>
-    getList({
-      ...queryParams.value,
-      params: formatDateRange(dateRange.value)
-    }),
-  {
-    immediate: true
-  }
-)
-
-const modalActionCbk = () => {
-  dialog.value.visible = false
-  notification.success({ message: '保存成功' })
-  execute()
-}
-
-const { execute: doAdd, pending: addPending } = useRequest(() => addType(formData.value), {
-  onSuccess: modalActionCbk
-})
-
-const { execute: doUpdate, pending: updatePending } = useRequest(() => updateType(formData.value), {
-  onSuccess: modalActionCbk
-})
-
-const modalActionLoading = computed(() => addPending.value || updatePending.value)
-
-const pagination = computed<TablePaginationConfig>(() => ({
-  pageSize: queryParams.value.pageSize,
-  current: queryParams.value.pageNum,
-  total: data.value?.total,
-  showQuickJumper: true,
-  showSizeChanger: true,
-  showTotal(total, range) {
-    return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-  }
-}))
-
-const onChange = ({ current, pageSize }: TablePaginationConfig) => {
-  queryParams.value.pageNum = current
-  queryParams.value.pageSize = pageSize
-
-  execute()
-}
-
-const onFilter = () => {
-  queryParams.value.pageNum = 1
-  execute()
-}
-
-const onFilterReset = () => {
-  filterForm.value?.resetFields()
-  dateRange.value = undefined
-  execute()
-}
-
-const showDialog = (mode: 'edit' | 'add', data?: TypeDTO) => {
-  dialog.value.isAdd = mode === 'add'
-  if (mode === 'edit') {
-    formData.value = data as TypeDTO
-  } else {
-    modalForm.value?.resetFields()
-    modalForm.value?.resetFields()
-    modalForm.value?.resetFields()
-  }
-  dialog.value.visible = true
-}
-
-const onSubmit = () => {
-  modalForm.value?.validate().then(() => {
-    if (dialog.value.isAdd) {
-      doAdd()
-    } else {
-      doUpdate()
-    }
-  })
+const showDialog = (id?: number) => {
+  entryId.value = id
+  visible.value = true
 }
 </script>
