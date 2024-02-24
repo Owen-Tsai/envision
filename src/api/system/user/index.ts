@@ -27,8 +27,25 @@ export type UserListVO = {
 
 export type ListQueryParams = CommonQueryParams & {
   userName?: string
+  nickName?: string
   phonenumber?: string
   status?: string
+  deptId?: string
+}
+
+export type UserDTO = {
+  nickName?: string
+  deptId?: number
+  phonenumber?: string
+  email?: string
+  userId?: number
+  userName?: string
+  password?: string
+  sex?: string
+  status?: string
+  postIds?: number[]
+  roleIds?: number[]
+  remark?: string
 }
 
 export function getDeptTree() {

@@ -1,4 +1,5 @@
 import JSEncrypt from 'jsencrypt'
+import crypto from 'crypto-js'
 
 const publicKey =
   'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKoR8mX0rGKLqzcWmOzbfj64K8ZIgOdH\n' +
@@ -26,4 +27,14 @@ export function decrypt(txt: string) {
   const encryptor = new JSEncrypt()
   encryptor.setPrivateKey(privateKey) // 设置私钥
   return encryptor.decrypt(txt) // 对数据进行解密
+}
+
+export function aesEncrypt(str: string, keyWord = 'XwKsGlMcdPMEhR1B') {
+  const key = crypto.enc.Utf8.parse(keyWord)
+  const srcs = crypto.enc.Utf8.parse(str)
+  const encrypted = crypto.AES.encrypt(srcs, key, {
+    mode: crypto.mode.ECB,
+    padding: crypto.pad.Pkcs7
+  })
+  return encrypted.toString()
 }

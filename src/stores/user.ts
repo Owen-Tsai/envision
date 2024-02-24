@@ -22,19 +22,19 @@ export default defineStore('user', () => {
   const deptName = ref<string>()
   const phoneNumber = ref<string>()
 
-  const login = (loginInfo: LoginDTO) => {
-    const { username, password, code, uuid } = loginInfo
+  const login = (loginInfo: LoginVO) => {
+    const { username, password, captchaVerification, tenantName } = loginInfo
 
     return new Promise<LoginVO>((resolve, reject) => {
       doLogin({
         username: username.trim(),
         password,
-        code,
-        uuid
+        tenantName,
+        captchaVerification
       })
         .then((data) => {
-          const { token: t } = data
-          setToken(t)
+          const { accessToken, refreshToken } = data
+          setToken({ accessToken, refreshToken })
           token.value = t
           resolve(data)
         })
