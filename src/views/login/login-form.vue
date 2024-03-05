@@ -1,6 +1,6 @@
 <template>
   <AAlert v-if="error" :message="error" type="error" show-icon />
-  <AForm :model="formState" size="large" class="mt-6" :rules="rules" @submit="doLogin">
+  <AForm :model="formState" size="large" class="mt-6" :rules="rules" @submit="handleSubmit">
     <AFormItem name="username">
       <AInput v-model:value="formState.username" allow-clear placeholder="请输入用户名">
         <template #prefix>
@@ -15,27 +15,6 @@
         </template>
       </AInputPassword>
     </AFormItem>
-    <ARow v-if="!data || data.captchaEnabled" :gutter="16">
-      <ACol :span="16">
-        <AFormItem name="code">
-          <AInput v-model:value="formState.code" placeholder="请输入验证码" autocomplete="off">
-            <template #prefix>
-              <SafetyCertificateOutlined />
-            </template>
-          </AInput>
-        </AFormItem>
-      </ACol>
-      <ACol :span="8">
-        <ATooltip title="点击更换验证码">
-          <img
-            v-show="data"
-            class="block w-full cursor-pointer h-[40px]"
-            :src="`data:image/gif;base64,${data?.img}`"
-            @click="fetchCaptcha"
-          />
-        </ATooltip>
-      </ACol>
-    </ARow>
     <AFormItem no-style>
       <div class="flex items-center justify-between mb-4">
         <ACheckbox v-model:checked="formState.remember">记住密码</ACheckbox>
@@ -44,18 +23,27 @@
     </AFormItem>
     <AButton type="primary" html-type="submit" block :loading="pending">登录</AButton>
   </AForm>
+
+  <Captcha
+    v-if="captchaEnabled"
+    ref="captcha"
+    v-model:open="capcthaVisible"
+    @success="(verificationCode: string) => doLogin(verificationCode)"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { UserOutlined, LockOutlined, SafetyCertificateOutlined } from '@ant-design/icons-vue'
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import useRequest from '@/hooks/use-request'
-import { getCaptcha } from '@/api/login'
 import useUserStore from '@/stores/user'
 import useStorage from '@/hooks/use-storage'
 import { decrypt, encrypt } from '@/utils/encryption'
 import { useRouter, useRoute } from 'vue-router'
+import Captcha from '@/components/jigsaw-captcha/index.vue'
 import type { FormProps } from 'ant-design-vue'
+
+const captchaEnabled = import.meta.env.VITE_CAPTCHA_ENABLED === 'true'
 
 type Rules = FormProps['rules']
 
@@ -63,6 +51,9 @@ const storage = useStorage()
 const { login } = useUserStore()
 const router = useRouter()
 const route = useRoute()
+
+const captcha = ref<InstanceType<typeof Captcha>>()
+const capcthaVisible = ref(false)
 
 const rules: Rules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
@@ -73,22 +64,14 @@ const rules: Rules = {
 const formState = ref({
   username: 'admin',
   password: 'admin123',
-  code: '',
-  uuid: '',
+  captchaVerification: '',
   remember: false
-})
-
-const { data, execute: fetchCaptcha } = useRequest(getCaptcha, {
-  immediate: true,
-  onSuccess(data) {
-    formState.value.uuid = data.uuid
-  }
 })
 
 const {
   error,
   pending,
-  execute: doLogin
+  execute
 } = useRequest(() => login(formState.value), {
   onSuccess() {
     setRememberedForm()
@@ -99,7 +82,7 @@ const {
     router.push({ path: redirect || '/', query })
   },
   onError() {
-    fetchCaptcha()
+    captchaEnabled && captcha.value?.refetch()
   }
 })
 
@@ -122,6 +105,20 @@ const setRememberedForm = () => {
   } else {
     storage.delete('username')
     storage.delete('password')
+  }
+}
+
+const doLogin = (verificationCode: string) => {
+  formState.value.captchaVerification = verificationCode
+  execute()
+  capcthaVisible.value = false
+}
+
+const handleSubmit = () => {
+  if (captchaEnabled) {
+    capcthaVisible.value = true
+  } else {
+    execute()
   }
 }
 

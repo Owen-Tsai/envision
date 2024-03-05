@@ -10,7 +10,7 @@ export type Token = {
   expiresTime: number //过期时间
 }
 
-export type CaptchaDTO = {
+export type CaptchaVO = {
   repData: {
     jigsawImageBase64: string
     originalImageBase64: string
@@ -21,47 +21,55 @@ export type CaptchaDTO = {
   repMsg: string | null
 }
 
-export type CaptchaValidationDTO = {
+export type CaptchaValidationVO = {
   success: boolean
   repMsg: string | null
 }
 
-export type CaptchaVO = {
+export type CaptchaValidationDTO = {
   pointJson: string
   token: string
 }
 
-export type LoginVO = {
+export type LoginDTO = {
   tenantName?: string // only needed if tenant feature is enabled
   username: string
   password: string
   captchaVerification?: string // only needed if captcha feature is enabled
 }
 
-export type LoginDTO = {
+export type LoginVO = {
   accessToken: string
   refreshToken: string
   userId: number
 }
 
-export type UserInfoVO = {
-  user: {
-    userId: number
-    avatar?: string
-    userName: string
-    phonenumber?: string
-    dept: {
-      deptName?: string
-    }
-  }
-  roles?: string[]
-  permissions?: string[]
+export type RouteItem = {
+  alwaysShow?: boolean
+  children?: RouteItem[] | null
+  component?: string | null
+  componentName?: string | null
+  icon?: string | null
+  id: number
+  keepAlive?: boolean | null
+  name: string | null
+  parentId: number
+  path: string
+  visible?: boolean
+  isCustomLayout?: boolean
+}
+
+export type PermissionInfoVO = {
+  user: User
+  menus: RouteItem[]
+  roles: string[]
+  permissions: string[]
 }
 
 export function getCaptcha() {
-  return request.postRaw<CaptchaDTO>({
+  return request.postRaw<CaptchaVO>({
     url: '/system/captcha/get',
-    params: {
+    data: {
       captchaType: 'blockPuzzle'
     },
     headers: {
@@ -70,19 +78,19 @@ export function getCaptcha() {
   })
 }
 
-export function checkCaptcha(params: CaptchaVO) {
-  return request.postRaw<CaptchaValidationDTO>({
+export function checkCaptcha(params: CaptchaValidationDTO) {
+  return request.postRaw<CaptchaValidationVO>({
     url: '/system/captcha/check',
-    params: {
+    data: {
       ...params,
       captchaType: 'blockPuzzle'
     }
   })
 }
 
-export function login(data: LoginVO) {
-  return request.postRaw<LoginDTO>({
-    url: '/login',
+export function login(data: LoginDTO) {
+  return request.post<LoginVO>({
+    url: '/system/auth/login',
     headers: {
       requireToken: false
     },
@@ -92,12 +100,12 @@ export function login(data: LoginVO) {
 
 export function logout() {
   return request.postRaw({
-    url: '/logout'
+    url: '/system/auth/logout'
   })
 }
 
-export function getInfo() {
-  return request.getRaw<UserInfoVO>({
-    url: '/getInfo'
+export function getPermissionInfo() {
+  return request.get<PermissionInfoVO>({
+    url: '/system/auth/get-permission-info'
   })
 }

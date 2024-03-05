@@ -30,8 +30,7 @@ const useRequest = <T>(service: () => Promise<T>, options?: UseRequestOptions<T>
         onSuccess(response)
       }
     } catch (err) {
-      console.log(err)
-      error.value = (err as Error).message
+      error.value = (err as Error)
       if (onError) {
         onError(err)
       }

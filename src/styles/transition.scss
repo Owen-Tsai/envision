@@ -1,0 +1,10 @@
+.slide-up-enter-active,
+.slice-up-leave-active {
+  transition: all 150ms ease-in-out;
+}
+
+.slide-up-enter-from,
+.slide-up-to {
+  opacity: 0;
+  bottom: -16px;
+}

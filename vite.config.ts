@@ -21,13 +21,6 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 1127,
       host: true,
-      proxy: {
-        '/dev-api': {
-          target: 'http://localhost:48080',
-          changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/dev-api/, '')
-        }
-      }
     }
   }
 })

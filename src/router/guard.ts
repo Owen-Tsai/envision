@@ -4,7 +4,6 @@ import { reloginHint } from '@/utils/request/service'
 import { getToken } from '@/utils/auth'
 import useUserStore from '@/stores/user'
 import useAppStore from '@/stores/app'
-import useRouteStore from '@/stores/route'
 import router from './index'
 
 const guardWhiteList = ['/login', '/register']
@@ -12,7 +11,6 @@ const guardWhiteList = ['/login', '/register']
 router.beforeEach((to, from, next) => {
   const { setTitle } = useAppStore()
   const userStore = useUserStore()
-  const routeStore = useRouteStore()
   nProgress.start()
   to.meta.title && setTitle(to.meta.title)
   if (getToken()) {
@@ -22,16 +20,16 @@ router.beforeEach((to, from, next) => {
     } else if (guardWhiteList.includes(to.path)) {
       next()
     } else {
-      if (userStore.roles.length <= 0) {
+      if (!userStore.isUserInfoSet) {
         reloginHint.show = true
         userStore
           .getUserInfo()
           .then(() => {
             reloginHint.show = false
-            routeStore.fetchRoutes().then(() => {
-              routeStore.asyncRoutes?.forEach((entry) => {
-                if (!entry.path.includes('http')) {
-                  router.addRoute(entry)
+            userStore.getUserInfo().then(() => {
+              userStore.routes?.forEach((record) => {
+                if (!record.path.includes('http')) {
+                  router.addRoute(record)
                 }
               })
 

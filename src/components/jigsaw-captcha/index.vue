@@ -1,58 +1,54 @@
 <template>
-  <Teleport to="body">
-    <div v-show="visible" class="captcha-mask">
-      <div class="captcha-popup">
-        <div class="flex items-center justify-between px-4 py-2">
-          <div>请拖动滑块完成验证</div>
-          <AButton type="text" @click="close">
-            <template #icon>
-              <CloseOutlined />
-            </template>
-          </AButton>
-        </div>
-
-        <div class="p-4 pt-0">
-          <div class="relative">
-            <img
-              :src="`data:image/png;base64,${data?.repData.originalImageBase64}`"
-              :style="imgStyle"
-            />
+  <AModal v-model:open="visible" title="请拖动滑块完成验证" :width="448">
+    <template #footer></template>
+    <ASpin :spinning="pending">
+      <div class="mt-4">
+        <div class="relative"> 
+          <img
+            :src="`data:image/png;base64,${data?.repData.originalImageBase64}`"
+            :style="imgStyle"
+          />
+          <div
+            class="absolute top-0 right-0 p-2 inline-flex items-center justify-center cursor-pointer"
+            @click="execute"
+          >
+            <ReloadOutlined />
+          </div>
+          <Transition name="slide-up">
             <div
-              class="absolute top-0 right-0 p-2 inline-flex items-center justify-center cursor-pointer"
-              @click="execute"
-            >
-              <ReloadOutlined />
-            </div>
-          </div>
-
-          <div ref="dragTrackEl" class="drag-track">
-            <div class="drag-progress" :style="{ left: dragAreaLeft }">
-              <div ref="dragHandleEl" :class="['drag-handle', pressed ? 'pressed' : null]">
-                <ArrowRightOutlined />
-              </div>
-              <div class="drag-block" :style="dragBlockStyle">
-                <img :src="`data:image/png;base64,${data?.repData.jigsawImageBase64}`" />
-              </div>
-            </div>
-          </div>
-
-          <pre>{{ elementX }}</pre>
-          <button @click="execute">123</button>
+              v-show="validateResult.visible"
+              :class="['validation-result', validateResult.success ? 'success' : 'error']"
+            >{{ validateResult.msg }}</div>
+          </Transition>
         </div>
+  
+        <div ref="dragTrackEl" class="drag-track">
+          <div class="drag-progress" :style="{ left: dragAreaLeftTemp || dragAreaLeft }">
+            <div ref="dragHandleEl" :class="['drag-handle', pressed ? 'pressed' : null]">
+              <MenuOutlined :rotate="90" />
+            </div>
+            <div class="drag-block" :style="dragBlockStyle">
+              <img :src="`data:image/png;base64,${data?.repData.jigsawImageBase64}`" />
+            </div>
+          </div>
+        </div>
+  
       </div>
-    </div>
-  </Teleport>
+    </ASpin>
+  </AModal>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, type CSSProperties } from 'vue'
-import { CloseOutlined, ReloadOutlined, ArrowRightOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
+import { ReloadOutlined, MenuOutlined } from '@ant-design/icons-vue'
 import { useMouseInElement, useMousePressed } from '@vueuse/core'
 import { aesEncrypt } from '@/utils/encryption'
-import { getCaptcha, checkCaptcha, type CaptchaVO } from '@/api/login'
+import { getCaptcha, checkCaptcha, type CaptchaValidationDTO } from '@/api/login'
 import useRequest from '@/hooks/use-request'
 
 const backendFixedImgWidth = 310
+const dragHandleWidthOffset = 32
 
 const props = defineProps({
   open: Boolean,
@@ -89,20 +85,23 @@ const visible = computed({
   }
 })
 
-const close = () => {
-  visible.value = false
-}
-
-const { data, execute } = useRequest(getCaptcha, {
+const { data, execute, pending } = useRequest(getCaptcha, {
   immediate: true
 })
 
 // mouse drag
+const allowDrag = ref(true)
 const dragHandleEl = ref<HTMLDivElement>()
 const dragTrackEl = ref<HTMLDivElement>()
+const dragAreaLeftTemp = ref<string | number | null>(null)
 const dragAreaLeft = computed(() =>
-  pressed.value && dragTrackEl.value ? `${elementX.value}px` : 0
+  allowDrag.value && pressed.value && dragTrackEl.value ? `${elementX.value - 32}px` : 0
 )
+const validateResult = ref({
+  visible: false,
+  msg: '',
+  success: false
+})
 
 const { pressed } = useMousePressed({ target: dragHandleEl })
 const { elementX } = useMouseInElement(dragTrackEl)
@@ -111,31 +110,51 @@ const validate = () => {
   const secretKey = data.value?.repData.secretKey
   const token = data.value?.repData.token || ''
   const pointObj = {
-    x: (elementX.value * backendFixedImgWidth) / props.imgWidth,
+    x: ((elementX.value - 32) * backendFixedImgWidth) / props.imgWidth,
     y: 5.0
   }
   const pointJson = JSON.stringify(pointObj)
-  const vo: CaptchaVO = {
+  const vo: CaptchaValidationDTO = {
     pointJson: secretKey ? aesEncrypt(pointJson, secretKey) : pointJson,
     token
   }
 
+  allowDrag.value = false
+
   checkCaptcha(vo).then((res) => {
-    console.log(res)
     if (res.success) {
       const captchaVerification = secretKey
         ? aesEncrypt(`${token}---${pointJson}`, secretKey)
         : `${token}---${pointJson}`
 
+      validateResult.value = {
+        visible: true,
+        msg: '验证通过',
+        success: true
+      }
+
       emit('success', captchaVerification)
+    } else {
+      message.error(res.repMsg)
+      validateResult.value = {
+        visible: true,
+        msg: '验证失败',
+        success: false
+      }
+      setTimeout(() => {
+        validateResult.value.visible = false
+        allowDrag.value = true
+        dragAreaLeftTemp.value = dragAreaLeft.value
+        execute()
+      }, 1000)
     }
   })
 }
 
 watch(elementX, (val) => {
-  const clampLimit = props.imgWidth - 32
-  if (val <= 0) {
-    elementX.value = 0
+  const clampLimit = props.imgWidth - dragHandleWidthOffset
+  if (val <= dragHandleWidthOffset) {
+    elementX.value = dragHandleWidthOffset
   }
   if (val >= clampLimit) {
     elementX.value = clampLimit
@@ -143,41 +162,31 @@ watch(elementX, (val) => {
 })
 
 watch(pressed, (newVal, oldVal) => {
-  if (oldVal === true && newVal === false) {
+  if (oldVal === true && newVal === false && visible.value && allowDrag.value) {
     // released touch
+    dragAreaLeftTemp.value = elementX.value
     validate()
   }
+})
+
+watch(visible, (val) => {
+  if (val) {
+    execute()
+  }
+})
+
+defineExpose({
+  refetch: execute
 })
 </script>
 
 <style lang="scss" scoped>
-.captcha-mask {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(#000, 0.45);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.captcha-popup {
-  background-color: var(--colorBgContainer);
-  box-shadow:
-    0 6px 16px 0 rgba(0, 0, 0, 0.08),
-    0 3px 6px -4px rgba(0, 0, 0, 0.12),
-    0 9px 28px 8px rgba(0, 0, 0, 0.05);
-  font-size: var(--fontSizeLG);
-  border-radius: 6px;
-}
 .drag-track {
+  @apply w-full h-2 mt-4;
   width: 100%;
   height: 8px;
   border-radius: 18px;
   background-color: var(--colorFill);
-  margin: 16px 0;
 }
 .drag-progress {
   width: 0;
@@ -189,15 +198,15 @@ watch(pressed, (newVal, oldVal) => {
 
 .drag-handle {
   height: 32px;
-  width: 32px;
+  width: 64px;
   position: absolute;
   top: -12px;
-  left: 0px;
+  left: 0;
   border: 1px solid var(--colorBorder);
-  border-radius: 50%;
+  border-radius: 64px;
   background-color: var(--colorBgContainer);
   color: var(--colorText);
-  @apply flex-center shadow-lg transition-colors duration-200;
+  @apply flex-center shadow-lg transition-colors duration-200 cursor-move;
 
   &:hover,
   &.pressed {
@@ -210,6 +219,22 @@ watch(pressed, (newVal, oldVal) => {
   left: 0;
   img {
     height: 100%;
+  }
+}
+.validation-result {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 4px 8px;
+
+  &.success {
+    background-color: var(--colorSuccessBg);
+    color: var(--colorSuccess);
+  }
+  &.error {
+    background-color: var(--colorErrorBg);
+    color: var(--colorError);
   }
 }
 * {
