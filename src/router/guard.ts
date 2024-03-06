@@ -26,15 +26,13 @@ router.beforeEach((to, from, next) => {
           .getUserInfo()
           .then(() => {
             reloginHint.show = false
-            userStore.getUserInfo().then(() => {
-              userStore.routes?.forEach((record) => {
-                if (!record.path.includes('http')) {
-                  router.addRoute(record)
-                }
-              })
-
-              next({ ...to, replace: true })
+            userStore.routes?.forEach((record) => {
+              if (!record.path.includes('http')) {
+                router.addRoute(record)
+              }
             })
+
+            next({ ...to, replace: true })
           })
           .catch((err) => {
             userStore.logout().then(() => {
