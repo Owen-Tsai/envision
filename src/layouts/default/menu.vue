@@ -21,10 +21,10 @@
 import { h, ref, watchEffect } from 'vue'
 import { AppstoreOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
-import useRouteStore from '@/stores/route'
+import useUserStore from '@/stores/user'
 import { useMenuRenderer } from '@/hooks/use-menu'
 
-const routeStore = useRouteStore()
+const userStore = useUserStore()
 const { push, currentRoute } = useRouter()
 
 const loading = ref(true)
@@ -34,15 +34,14 @@ const expandedKeys = ref<string[]>([])
 
 const { menuItems, generateMenu } = useMenuRenderer()
 
-routeStore.fetchRoutes().then(() => {
-  menuItems.value = generateMenu(routeStore.asyncRoutes!)
-  menuItems.value.unshift({
-    label: '首页',
-    key: '/index',
-    icon: h(AppstoreOutlined)
-  })
-  loading.value = false
+menuItems.value = generateMenu(userStore.routes!)
+menuItems.value.unshift({
+  label: '首页',
+  key: '/index',
+  icon: h(AppstoreOutlined)
 })
+
+loading.value = false
 
 const onSelect = (key: string) => {
   if (key.includes('http')) {
