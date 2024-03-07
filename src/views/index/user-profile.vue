@@ -1,13 +1,13 @@
 <template>
   <div class="flex items-center justify-between">
     <div class="flex items-center gap-2 lg:gap-4">
-      <AAvatar :src="avatar" :size="screen.lg ? 64 : 48" />
+      <AAvatar :src="user?.avatar" :size="screen.lg ? 64 : 48" />
       <div>
-        <div class="text-xl lg:text-2xl">欢迎回来，{{ name }}</div>
+        <div class="text-xl lg:text-2xl">欢迎回来，{{ user?.nickname }}</div>
         <div class="info">
-          <span>{{ deptName || '暂无部门' }}</span>
+          <span>人才公共服务部</span>
           <ADivider type="vertical" />
-          <span>{{ phoneNumber ? desensitizePhoneNumber(phoneNumber) : '未绑定手机' }}</span>
+          <span>{{ user?.mobile ? desensitizePhoneNumber(user.mobile) : '未绑定手机' }}</span>
         </div>
       </div>
       <div>
@@ -40,7 +40,7 @@ import { EditOutlined } from '@ant-design/icons-vue'
 import useUserStore from '@/stores/user'
 import { desensitizePhoneNumber } from '@/utils/envision'
 
-const { avatar, name, deptName, phoneNumber } = storeToRefs(useUserStore())
+const { user } = storeToRefs(useUserStore())
 
 const screen = Grid.useBreakpoint()
 </script>

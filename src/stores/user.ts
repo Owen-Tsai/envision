@@ -1,28 +1,30 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, shallowRef } from 'vue'
 import { getToken, removeToken, setToken } from '@/utils/auth'
+import { generateRoutes } from '@/utils/route'
 import {
   login as doLogin,
   logout as doLogout,
-  getInfo,
+  getPermissionInfo,
   type LoginDTO,
   type LoginVO,
-  type UserInfoVO
+  type PermissionInfoVO
 } from '@/api/login'
+import type { RouteRecordRaw } from 'vue-router'
 
 import defaultAvatar from '~img/default-avatar.png'
 
 export default defineStore('user', () => {
   const token = ref(getToken())
   const id = ref<number>()
-  const name = ref<string>()
-  const avatar = ref<string>()
+  const isUserInfoSet = ref(false)
+  const user = ref<User | undefined>()
   const roles = ref<string[]>([])
   const permissions = ref<string[]>([])
-  const deptName = ref<string>()
-  const phoneNumber = ref<string>()
+  const routerMap = ref<PermissionInfoVO['menus']>()
+  const routes = shallowRef<RouteRecordRaw[]>()
 
-  const login = (loginInfo: LoginVO) => {
+  const login = (loginInfo: LoginDTO) => {
     const { username, password, captchaVerification, tenantName } = loginInfo
 
     return new Promise<LoginVO>((resolve, reject) => {
@@ -33,9 +35,10 @@ export default defineStore('user', () => {
         captchaVerification
       })
         .then((data) => {
-          const { accessToken, refreshToken } = data
+          const { accessToken, refreshToken, userId } = data
           setToken({ accessToken, refreshToken })
-          token.value = t
+          token.value = accessToken
+          id.value = userId
           resolve(data)
         })
         .catch((err) => {
@@ -45,28 +48,21 @@ export default defineStore('user', () => {
   }
 
   const getUserInfo = () => {
-    return new Promise<UserInfoVO>((resolve, reject) => {
-      getInfo()
+    return new Promise<PermissionInfoVO>((resolve, reject) => {
+      getPermissionInfo()
         .then((res) => {
-          const { user, roles: rs, permissions: ps } = res
+          const { user: u, roles: rs, permissions: ps, menus } = res
 
-          const userAvatar =
-            user.avatar === '' || !user.avatar
-              ? defaultAvatar
-              : import.meta.env.VITE_APP_BASE_API + user.avatar
-
-          if (rs && rs.length > 0) {
-            roles.value = rs
-            permissions.value = ps as string[]
-          } else {
-            roles.value = ['ROLE_DEFAULT']
+          roles.value = rs
+          permissions.value = ps
+          routerMap.value = menus
+          user.value = {
+            ...u,
+            avatar: u.avatar || defaultAvatar
           }
 
-          name.value = user.userName
-          id.value = user.userId
-          avatar.value = userAvatar
-          deptName.value = user.dept.deptName
-          phoneNumber.value = user.phonenumber
+          isUserInfoSet.value = true
+          routes.value = generateRoutes(menus)
           resolve(res)
         })
         .catch((err) => {
@@ -91,17 +87,18 @@ export default defineStore('user', () => {
     })
   }
 
+
+
   return {
     id,
-    name,
-    avatar,
+    isUserInfoSet,
     roles,
-    deptName,
     permissions,
+    routes,
     token,
-    phoneNumber,
     login,
     logout,
-    getUserInfo
+    getUserInfo,
+    user
   }
 })

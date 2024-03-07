@@ -28,13 +28,13 @@
 
         <ADropdown placement="bottomRight">
           <div class="flex items-center gap-2 cursor-pointer">
-            <AAvatar :src="avatar" />
-            <div v-if="screen.lg">{{ name }}</div>
+            <AAvatar :src="user?.avatar" />
+            <div v-if="screen.lg">{{ user?.nickname }}</div>
           </div>
 
           <template #overlay>
             <AMenu>
-              <AMenuItem v-if="!screen.lg">用户：{{ name }}</AMenuItem>
+              <AMenuItem v-if="!screen.lg">用户：{{ user?.nickname }}</AMenuItem>
               <AMenuDivider v-if="!screen.lg" />
               <AMenuItem>个人设置</AMenuItem>
               <AMenuDivider />
@@ -77,7 +77,7 @@ const screen = useBreakpoint()
 const userStore = useUserStore()
 const { setTheme } = useAppStore()
 
-const { avatar, name } = toRefs(userStore)
+const { user } = toRefs(userStore)
 
 const themeBtnText = computed(() => (theme.value === 'light' ? '暗黑模式' : '明亮模式'))
 
