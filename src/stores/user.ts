@@ -87,8 +87,6 @@ export default defineStore('user', () => {
     })
   }
 
-
-
   return {
     id,
     isUserInfoSet,

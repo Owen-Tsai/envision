@@ -3,7 +3,7 @@
     <template #footer></template>
     <ASpin :spinning="pending">
       <div class="mt-4">
-        <div class="relative"> 
+        <div class="relative">
           <img
             :src="`data:image/png;base64,${data?.repData.originalImageBase64}`"
             :style="imgStyle"
@@ -18,10 +18,12 @@
             <div
               v-show="validateResult.visible"
               :class="['validation-result', validateResult.success ? 'success' : 'error']"
-            >{{ validateResult.msg }}</div>
+            >
+              {{ validateResult.msg }}
+            </div>
           </Transition>
         </div>
-  
+
         <div ref="dragTrackEl" class="drag-track">
           <div class="drag-progress" :style="{ left: dragAreaLeftTemp || dragAreaLeft }">
             <div ref="dragHandleEl" :class="['drag-handle', pressed ? 'pressed' : null]">
@@ -32,7 +34,6 @@
             </div>
           </div>
         </div>
-  
       </div>
     </ASpin>
   </AModal>

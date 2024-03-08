@@ -22,7 +22,7 @@ export const generateRoutes = (routerMap: RouteItem[]): RouteRecordRaw[] => {
     if (!rawEntry.path.includes('http')) {
       const entry: any = {
         path: rawEntry.path,
-        component: () => ({}),
+        component: () => ({})
       }
       const hasChildren = rawEntry.children && rawEntry.children.length > 0
       if (hasChildren) {
@@ -43,7 +43,7 @@ export const generateRoutes = (routerMap: RouteItem[]): RouteRecordRaw[] => {
           entry.component = loadComponentFrom(rawEntry.component as string, 'views')
         }
       }
-  
+
       entry.meta = {
         id: rawEntry.id,
         parentId: rawEntry.parentId,
@@ -53,7 +53,7 @@ export const generateRoutes = (routerMap: RouteItem[]): RouteRecordRaw[] => {
         title: rawEntry.name || rawEntry.componentName || '',
         visible: rawEntry.visible
       }
-  
+
       res.push(entry)
     }
   })

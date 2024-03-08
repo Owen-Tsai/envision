@@ -68,11 +68,7 @@ const formState = ref({
   remember: false
 })
 
-const {
-  error,
-  pending,
-  execute
-} = useRequest(() => login(formState.value), {
+const { error, pending, execute } = useRequest(() => login(formState.value), {
   onSuccess() {
     setRememberedForm()
 
