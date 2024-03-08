@@ -7,7 +7,12 @@ export type DeptTreeNode = {
   children?: DeptTreeNode[]
 }
 
-export type DeptTreeVO = DeptTreeNode[]
+// export type DeptTreeVO = DeptTreeNode[]
+export type DeptTreeVO = Array<{
+  id: number
+  name: string
+  parentId: number
+}>
 
 export type UserListVO = {
   rows: Array<{
@@ -50,7 +55,7 @@ export type UserDTO = {
 
 export function getDeptTree() {
   return request.get<DeptTreeVO>({
-    url: '/system/user/deptTree'
+    url: '/system/dept/simple-list'
   })
 }
 

@@ -162,8 +162,8 @@ const refreshToken = async () => {
 }
 
 const redirectForAuth = () => {
-  if (reloginHint.show) {
-    if (window.location.href.includes('login?redirect=')) {
+  if (!reloginHint.show) {
+    if (window.location.href.includes('login')) {
       return
     }
     reloginHint.show = true
