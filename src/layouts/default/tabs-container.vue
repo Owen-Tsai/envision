@@ -2,6 +2,7 @@
   <EScrollbar
     :thumb-width="8"
     :content-style="{ width: 'fit-content', minWidth: '100%' }"
+    wrapper-class="sticky top-14 z-9"
     :auto-expand="false"
   >
     <div class="tabs-container">
@@ -63,8 +64,10 @@ watch(router.currentRoute, (val) => {
 .tabs-container {
   @apply w-full overflow-hidden flex whitespace-nowrap flex-nowrap px-4 py-1 gap-2;
   font-size: var(--fontSizeSM);
-  background-color: var(--colorBgLayout);
+  background-color: var(--colorBgLayoutAlpha);
   border-bottom: 1px solid var(--colorBorderAlt);
+  backdrop-filter: blur(8px);
+  z-index: 20;
 
   .tag {
     background-color: var(--colorBgContainer);
