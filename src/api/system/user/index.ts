@@ -1,50 +1,40 @@
 import request from '@/utils/request'
-import type { DeptVO } from '@/api/system/dept'
+import type { Dayjs } from 'dayjs'
 
-export type DeptTreeNode = {
-  key: number
-  title: string
-  children?: DeptTreeNode[]
+export type UserVO = {
+  userId: number
+  username: string
+  status: string
+  sex?: string
+  remark?: string
+  id?: number
+  email?: string
+  nickname?: string
+  mobile?: string
+  createTime?: string
 }
 
-// export type DeptTreeVO = DeptTreeNode[]
-export type DeptTreeVO = Array<{
-  id: number
-  name: string
-  parentId: number
-}>
-
 export type UserListVO = {
-  rows: Array<{
-    userId: number
-    userName: string
-    status: string
-    sex?: string
-    remark?: string
-    deptId?: number
-    email?: string
-    nickName?: string
-    phonenumber?: string
-    dept: DeptVO
-    createTime?: string
-  }>
+  list: Array<UserVO>
+  total: number
 }
 
 export type ListQueryParams = CommonQueryParams & {
   userName?: string
   nickName?: string
-  phonenumber?: string
+  mobile?: string
   status?: string
   deptId?: string
+  createTime?: [string, string] | [Dayjs, Dayjs]
 }
 
 export type UserDTO = {
-  nickName?: string
+  nickname?: string
   deptId?: number
-  phonenumber?: string
+  mobile?: string
   email?: string
-  userId?: number
-  userName?: string
+  id?: number
+  username?: string
   password?: string
   sex?: string
   status?: string
@@ -53,15 +43,15 @@ export type UserDTO = {
   remark?: string
 }
 
-export function getDeptTree() {
-  return request.get<DeptTreeVO>({
-    url: '/system/dept/simple-list'
+export function getUsers(params?: ListQueryParams) {
+  return request.get<UserListVO>({
+    url: '/system/user/page',
+    params
   })
 }
 
-export function getUsers(params?: ListQueryParams) {
-  return request.getRaw<UserListVO>({
-    url: '/system/user/list',
-    params
+export function getUserDetail(id: number) {
+  return request.get<UserVO>({
+    url: `/system/user/get?id=${id}`
   })
 }

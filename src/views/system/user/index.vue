@@ -22,12 +22,11 @@
           <ACard>
             <AForm
               ref="filterForm"
-              :label-col="{ span: 6 }"
               class="dense-filter-form"
               :class="{ expanded: filterExpanded }"
               :model="queryParams"
             >
-              <ARow :gutter="[0, 16]">
+              <ARow :gutter="[8, 16]">
                 <ACol :lg="8" :span="24">
                   <AFormItem label="用户账号" name="userName">
                     <AInput
@@ -47,9 +46,9 @@
                   </AFormItem>
                 </ACol>
                 <ACol v-show="filterExpanded" :lg="8" :span="24">
-                  <AFormItem label="手机号码" name="phonenumber">
+                  <AFormItem label="手机号码" name="mobile">
                     <AInput
-                      v-model:value="queryParams.phonenumber"
+                      v-model:value="queryParams.mobile"
                       placeholder="请输入手机号码"
                       allow-clear
                     />
@@ -57,7 +56,10 @@
                 </ACol>
                 <ACol v-show="filterExpanded" :lg="8" :span="24">
                   <AFormItem label="注册时间" name="createTime">
-                    <ARangePicker v-model:value="dateRange" format="YYYY-MM-DD" />
+                    <ARangePicker
+                      v-model:value="queryParams.createTime"
+                      value-format="YYYY-MM-DD"
+                    />
                   </AFormItem>
                 </ACol>
                 <ACol v-show="filterExpanded" :lg="8" :span="24">
@@ -70,8 +72,8 @@
                 </ACol>
                 <ACol :lg="{ span: 8 }" :span="24">
                   <AFlex justify="end" align="center" :gap="16">
-                    <AButton>重置</AButton>
-                    <AButton type="primary">查询</AButton>
+                    <AButton @click="onFilterReset">重置</AButton>
+                    <AButton type="primary" @click="onFilter">查询</AButton>
                     <ATypographyLink @click="toggle()">
                       {{ filterExpanded ? '收起' : '展开' }}
                       <DownOutlined :class="{ 'rotate-180': filterExpanded }" />
@@ -85,7 +87,7 @@
           <ACard :title="`${currentDeptName}-用户列表`" class="mt-4 flex-1">
             <template #extra>
               <AFlex :gap="8">
-                <AButton type="primary" @click="showDialog('add')">
+                <AButton type="primary" :loading="pending" @click="showDialog()">
                   <template #icon>
                     <PlusOutlined />
                   </template>
@@ -107,23 +109,29 @@
                 </ATooltip>
               </AFlex>
             </template>
-            <ATable :columns="columns" :data-source="data?.rows" :loading="pending">
+            <ATable
+              :columns="columns"
+              :data-source="data?.list"
+              :loading="pending"
+              :pagination="pagination"
+              @change="onChange"
+            >
               <template #bodyCell="scope">
-                <template v-if="scope?.column.key === 'deptName'">
-                  {{ scope.record.dept.deptName }}
-                </template>
                 <template v-if="scope?.column.key === 'status'">
                   <ASwitch
                     v-model:checked="scope.record.status"
-                    checked-value="0"
-                    un-checked-value="1"
+                    :checked-value="0"
+                    :un-checked-value="1"
                     checked-children="启用"
                     un-checked-children="停用"
                   />
                 </template>
+                <template v-if="scope?.column.key === 'createTime'">
+                  {{ formatDate(scope.record.createTime) }}
+                </template>
                 <template v-if="scope?.column.key === 'actions'">
                   <AFlex :gap="16">
-                    <ATypographyLink @click="showDialog('edit', scope.record)">
+                    <ATypographyLink @click="showDialog(scope.record.id)">
                       <EditOutlined /> 编辑
                     </ATypographyLink>
                     <ADropdown>
@@ -146,37 +154,52 @@
       </ACol>
     </ARow>
 
-    <FormModal ref="modalRef" v-model:value="formData" v-model:open="visible" />
+    <FormModal v-model:value="formData" v-model:open="visible" :edit-id="editId" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { SearchOutlined, EditOutlined, DownOutlined } from '@ant-design/icons-vue'
+import {
+  SearchOutlined,
+  EditOutlined,
+  DownOutlined,
+  PlusOutlined,
+  ExportOutlined,
+  ReloadOutlined
+} from '@ant-design/icons-vue'
+import dayjs from 'dayjs'
 import FormModal from './form.vue'
 import useDeptTree from './use-dept-tree'
 import { columns, useUserTable } from './use-user-table'
 import type { Tree } from '@/utils/tree'
 import type { UserDTO } from '@/api/system/user'
 
-const modalRef = ref<InstanceType<typeof FormModal>>()
+const filterForm = ref()
 
 const { currentDeptName, deptTreeLoading, filteredTreeData, searchText, selectedKeys } =
   useDeptTree()
 
-const { data, dateRange, execute, filterExpanded, pending, queryParams, toggle } = useUserTable()
+const {
+  data,
+  execute,
+  filterExpanded,
+  pending,
+  queryParams,
+  pagination,
+  onChange,
+  onFilter,
+  onFilterReset,
+  toggle
+} = useUserTable(filterForm)
 
 const formData = ref<UserDTO>({})
-const editMode = ref<'add' | 'edit'>('add')
 const visible = ref(false)
+// current entry for editing
+const editId = ref<number | undefined>()
 
-const showDialog = (mode: 'add' | 'edit', data?: UserDTO) => {
-  editMode.value = mode
-  if (mode === 'edit') {
-    formData.value = data as UserDTO
-  } else {
-    modalRef.value!.resetFields()
-  }
+const showDialog = (id?: number) => {
+  editId.value = id
   visible.value = true
 }
 
@@ -185,10 +208,16 @@ const onTreeNodeSelect = (node: Tree) => {
   queryParams.value.deptId = node.key.toString()
   execute()
 }
+
+const formatDate = (date: string) => {
+  return dayjs(date).format('YYYY-MM-DD')
+}
 </script>
 
 <style lang="scss" scoped>
 .dept-card {
+  @apply sticky;
+  top: 110px;
   min-height: calc(100vh - 130px);
 }
 </style>

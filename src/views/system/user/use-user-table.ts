@@ -1,26 +1,53 @@
-import { ref } from 'vue'
+import { ref, computed, type Ref } from 'vue'
 import { useToggle } from '@vueuse/core'
 import useRequest from '@/hooks/use-request'
 import { getUsers, type ListQueryParams } from '@/api/system/user'
-import type { TableProps } from 'ant-design-vue'
-import type { Dayjs } from 'dayjs'
+import type { TableProps, FormInstance } from 'ant-design-vue'
+import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
-  { key: 'userId', title: '编号', dataIndex: 'userId', width: 60 },
-  { key: 'userName', title: '用户账号', dataIndex: 'userName' },
-  { key: 'nickName', title: '用户名称', dataIndex: 'nickName' },
-  { key: 'deptName', title: '所属部门' },
-  { key: 'phonenumber', title: '已绑定手机', dataIndex: 'phonenumber' },
+  { key: 'id', title: '编号', dataIndex: 'id', width: 60 },
+  { key: 'username', title: '用户账号', dataIndex: 'username' },
+  { key: 'nickname', title: '用户名称', dataIndex: 'nickname' },
+  { key: 'deptName', title: '所属部门', dataIndex: 'deptName' },
+  { key: 'mobile', title: '已绑定手机', dataIndex: 'mobile' },
   { key: 'status', title: '状态' },
   { key: 'createTime', title: '注册时间', dataIndex: 'createTime' },
   { key: 'actions', title: '操作' }
 ]
 
-export const useUserTable = () => {
+export const useUserTable = (formRef: Ref<FormInstance>) => {
   const [filterExpanded, toggle] = useToggle(false)
 
   const queryParams = ref<ListQueryParams>({})
-  const dateRange = ref<[Dayjs, Dayjs]>()
+
+  const pagination = computed<TablePaginationConfig>(() => ({
+    pageSize: queryParams.value.pageSize,
+    current: queryParams.value.pageNo,
+    total: data.value?.total,
+    showQuickJumper: true,
+    showSizeChanger: true,
+    showTotal(total, range) {
+      return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
+    }
+  }))
+
+  const onChange = ({ current, pageSize }: TablePaginationConfig) => {
+    queryParams.value.pageNo = current
+    queryParams.value.pageSize = pageSize
+
+    execute()
+  }
+
+  const onFilter = () => {
+    queryParams.value.pageNo = 1
+    execute()
+  }
+
+  const onFilterReset = () => {
+    formRef.value?.resetFields()
+    execute()
+  }
 
   const { data, pending, execute } = useRequest(() => getUsers(queryParams.value), {
     immediate: true
@@ -31,7 +58,10 @@ export const useUserTable = () => {
     pending,
     execute,
     queryParams,
-    dateRange,
+    pagination,
+    onChange,
+    onFilter,
+    onFilterReset,
     filterExpanded,
     toggle
   }
