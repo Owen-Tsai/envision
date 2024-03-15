@@ -3,12 +3,12 @@
     v-model:open="computedOpen"
     :title="isAdd ? '新增字典类型' : '编辑字典类型'"
     :confirm-loading="loading"
-    destroy-on-close
+    :after-close="resetFields"
     @ok="handleSubmit"
     @cancel="computedOpen = false"
   >
     <ASpin :spinning="loading">
-      <AForm :label-col="{ span: 4 }" :model="formData" class="mt-4">
+      <AForm ref="formRef" :label-col="{ span: 4 }" :model="formData" class="mt-4">
         <AFormItem label="字典名称" name="dictName" :rules="[{ required: true, trigger: 'blur' }]">
           <AInput v-model:value="formData.dictName" />
         </AFormItem>
@@ -32,9 +32,9 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, type PropType } from 'vue'
-import { Form } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
 import { addType, updateType, getDetail, type TypeDTO } from '@/api/system/dict/type'
+import type { FormInstance } from 'ant-design-vue'
 
 const props = defineProps({
   open: {
@@ -54,8 +54,6 @@ const emit = defineEmits(['update:value', 'update:open'])
 
 const loading = ref(false)
 
-const useForm = Form.useForm
-
 const { sys_normal_disable: statusOpts } = useDict('sys_normal_disable')
 
 const isAdd = computed(() => props.id === undefined)
@@ -74,8 +72,6 @@ const computedOpen = computed({
   }
 })
 
-const { resetFields } = useForm(formData)
-
 const modalActionCbk = () => {
   loading.value = false
 }
@@ -87,6 +83,12 @@ const handleSubmit = () => {
   } else {
     updateType(formData.value).then(modalActionCbk)
   }
+}
+
+const formRef = ref<FormInstance>()
+
+const resetFields = () => {
+  formRef.value?.resetFields()
 }
 
 watch(
@@ -101,8 +103,4 @@ watch(
     }
   }
 )
-
-defineExpose({
-  resetFields
-})
 </script>

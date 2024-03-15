@@ -86,13 +86,19 @@
       </ACol>
     </ARow>
 
-    <ModalForm v-model:open="visible" v-model:value="formData" :mode="mode" :edit-id="editId" />
+    <ModalForm
+      v-model:open="visible"
+      v-model:value="formData"
+      :mode="mode"
+      :id="entryId"
+      :tree-data="data"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { SwapOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { SwapOutlined, ReloadOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
 import type { MenuDTO } from '@/api/system/menu'
@@ -108,11 +114,11 @@ const formData = ref<MenuDTO>({
 })
 const visible = ref(false)
 // current entry for editing
-const editId = ref<number | undefined>()
+const entryId = ref<number | undefined>()
 const mode = ref<'add' | 'edit'>('add')
 
 const showDialog = (action: 'add' | 'edit', id?: number) => {
-  editId.value = id
+  entryId.value = id
   visible.value = true
   mode.value = action
 }

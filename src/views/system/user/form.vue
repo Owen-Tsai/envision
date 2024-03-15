@@ -1,7 +1,7 @@
 <template>
   <AModal
     v-model:open="computedOpen"
-    :title="!editId ? '新增用户' : '编辑用户'"
+    :title="!id ? '新增用户' : '编辑用户'"
     :after-close="resetFields"
     @cancel="computedOpen = false"
   >
@@ -14,7 +14,7 @@
     >
       <ASpin :spinning="loading">
         <ARow :gutter="16">
-          <template v-if="!editId">
+          <template v-if="!id">
             <ACol :lg="12" :span="24">
               <AFormItem label="用户账号" name="username">
                 <AInput v-model:value="formData.username" />
@@ -108,7 +108,7 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
-  editId: {
+  id: {
     type: Number,
     default: undefined
   },
@@ -150,7 +150,7 @@ const resetFields = () => {
 }
 
 watch(
-  () => props.editId,
+  () => props.id,
   (val) => {
     if (val) {
       loading.value = true

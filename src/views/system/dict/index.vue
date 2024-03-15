@@ -106,7 +106,7 @@
       </div>
     </ACard>
 
-    <ModalForm ref="modalForm" :id="entryId" v-model:value="formData" v-model:open="visible" />
+    <FormModal :id="entryId" v-model:value="formData" v-model:open="visible" />
   </div>
 </template>
 
@@ -122,7 +122,7 @@ import {
   PlusOutlined
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
-import ModalForm from './form.vue'
+import FormModal from './form.vue'
 import { dictDataToOptions } from '@/utils/envision'
 import { columns, useTable } from './use-table'
 import type { FormInstance } from 'ant-design-vue'
