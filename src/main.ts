@@ -27,10 +27,14 @@ app.use(router)
 app.component('EScrollbar', EScrollbar)
 app.component('EDictTag', DictTag)
 
+const icons: Record<string, any> = {}
 Object.keys(antIcons).forEach((k) => {
-  app.component(k, (antIcons as Record<string, any>)[k])
+  // app.component(k, (antIcons as Record<string, any>)[k])
+  if (k !== 'default' && k !== 'createFromIconfontCN') {
+    icons[k] = (antIcons as Record<string, any>)[k]
+  }
 })
 
-app.config.globalProperties.$icons = antIcons
+app.config.globalProperties.$icons = icons
 
 app.mount('#app')

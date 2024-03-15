@@ -1,7 +1,7 @@
 <template>
   <ALayout>
     <Header class="header" />
-    <ALayout>
+    <ALayout class="relative">
       <ALayoutSider
         v-if="screen.lg"
         theme="light"
@@ -11,7 +11,7 @@
         class="layout-sider px-1"
       >
         <EScrollbar :auto-expand="false" :throttle-wait="50" wrapper-class="h-full" class="h-full">
-          <div class="h-full overflow-y-auto pb-2 relative">
+          <div class="h-full overflow-y-auto pb-2">
             <Menu />
           </div>
         </EScrollbar>

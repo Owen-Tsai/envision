@@ -24,7 +24,7 @@ import { shortList } from '@/api/system/notice'
 
 const { sys_notice_type: noticeType } = useDict('sys_notice_type')
 
-const { data, pending } = useRequest(shortList, { immediate: true })
+// const { data, pending } = useRequest(shortList, { immediate: true })
 </script>
 
 <style lang="scss" scoped>

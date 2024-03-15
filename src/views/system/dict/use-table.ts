@@ -2,7 +2,6 @@ import { ref, computed, type Ref } from 'vue'
 import dayjs, { type Dayjs } from 'dayjs'
 import useRequest from '@/hooks/use-request'
 import { getList, type ListQueryParams, type ListItemVO } from '@/api/system/dict/type'
-import { formatDateRange } from '@/utils/date-time'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
@@ -31,8 +30,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const { data, execute, pending } = useRequest(
     () =>
       getList({
-        ...queryParams.value,
-        params: formatDateRange(dateRange.value)
+        ...queryParams.value
       }),
     {
       immediate: true
@@ -41,7 +39,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
 
   const pagination = computed<TablePaginationConfig>(() => ({
     pageSize: queryParams.value.pageSize,
-    current: queryParams.value.pageNum,
+    current: queryParams.value.pageNo,
     total: data.value?.total,
     showQuickJumper: true,
     showSizeChanger: true,
@@ -51,7 +49,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   }))
 
   const onFilter = () => {
-    queryParams.value.pageNum = 1
+    queryParams.value.pageNo = 1
     execute()
   }
 
@@ -62,7 +60,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   }
 
   const onChange = ({ current, pageSize }: TablePaginationConfig) => {
-    queryParams.value.pageNum = current
+    queryParams.value.pageNo = current
     queryParams.value.pageSize = pageSize
 
     execute()

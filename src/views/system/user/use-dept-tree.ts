@@ -1,6 +1,6 @@
 import { ref, watch } from 'vue'
 import useRequest from '@/hooks/use-request'
-import { getDeptTree } from '@/api/system/user'
+import { getDeptTree } from '@/api/system/dept'
 import { filterTree, type Tree } from '@/utils/tree'
 
 const useDeptTree = () => {
@@ -21,7 +21,7 @@ const useDeptTree = () => {
   watch(searchText, () => {
     const filtered: Tree[] = []
     data.value?.forEach((tree) => {
-      const result = filterTree(tree, searchText.value)
+      const result = filterTree(tree as any, searchText.value)
       if (result) {
         filtered.push(result)
       }

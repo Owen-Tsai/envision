@@ -1,5 +1,4 @@
 import type { TreeProps } from 'ant-design-vue'
-
 export type Tree = Exclude<TreeProps['treeData'], undefined>[number]
 
 export const filterTree = (tree: Tree, searchText: string): Tree | null => {
