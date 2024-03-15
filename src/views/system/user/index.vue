@@ -154,7 +154,7 @@
       </ACol>
     </ARow>
 
-    <FormModal v-model:value="formData" v-model:open="visible" :edit-id="editId" />
+    <FormModal v-model:value="formData" v-model:open="visible" :id="entryId" />
   </div>
 </template>
 
@@ -196,10 +196,10 @@ const {
 const formData = ref<UserDTO>({})
 const visible = ref(false)
 // current entry for editing
-const editId = ref<number | undefined>()
+const entryId = ref<number | undefined>()
 
 const showDialog = (id?: number) => {
-  editId.value = id
+  entryId.value = id
   visible.value = true
 }
 
