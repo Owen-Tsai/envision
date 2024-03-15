@@ -5,7 +5,10 @@ export type DeptTreeNode = {
   title: string
   children?: DeptTreeNode[]
 }
-
+export type DeptTreeListVO = {
+  list: Array<DeptTreeNode>
+  total: number
+}
 export type DeptTreeVO = DeptTreeNode[]
 
 export type DeptVO = {
@@ -13,8 +16,25 @@ export type DeptVO = {
   deptName: string
 }
 
-export function getDeptTree() {
-  return request.get<DeptTreeVO>({
+export type QueryParams = {
+  name?: string
+  status?: string
+}
+
+export type QueryParamsPage = CommonQueryParams & {
+  name?: string
+  status?: string
+}
+
+export function getDeptPageTree(params?: QueryParamsPage) {
+  return request.get<DeptTreeListVO>({
+    url: '/system/dept/tree-list-page',
+    params
+  })
+}
+
+export function getDeptTree(params?: QueryParams) {
+  return request.get<DeptTreeNode>({
     url: '/system/dept/tree-list'
   })
 }
