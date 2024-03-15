@@ -2,27 +2,32 @@
   <AModal
     v-model:open="computedOpen"
     :title="isAdd ? '新增菜单' : '编辑菜单'"
+    :after-close="resetFields"
     @cancel="computedOpen = false"
   >
     <AForm ref="formRef" :model="formData">
-      <AFormItem label="上级菜单" prop="parentId">
-        <ATreeSelect
-          v-model:value="formData.parentId"
-          show-search
-          :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
-          tree-default-expand-all
-          :tree-data="treeData"
-        />
-      </AFormItem>
-      <AFormItem label="菜单名称" prop="name">
-        <AInput v-model:value="formData.name" placeholder="请输入菜单名称" />
-      </AFormItem>
-      <AFormItem label="菜单类型" prop="type">
-        <ARadioGroup v-model:value="formData.type" :options="menuTypes" />
-      </AFormItem>
-      <AFormItem label="菜单图标" prop="icon">
-        <IconSelect v-model:value="formData.icon" placeholer="请选择菜单图标" />
-      </AFormItem>
+      <ASpin :spinning="loading">
+        <AFormItem label="上级菜单" prop="parentId">
+          <ATreeSelect
+            v-model:value="formData.parentId"
+            show-search
+            allow-clear
+            :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
+            tree-default-expand-all
+            :tree-data="treeData"
+            :field-names="{ label: 'name', value: 'id' }"
+          />
+        </AFormItem>
+        <AFormItem label="菜单名称" prop="name">
+          <AInput v-model:value="formData.name" placeholder="请输入菜单名称" />
+        </AFormItem>
+        <AFormItem label="菜单类型" prop="type">
+          <ARadioGroup v-model:value="formData.type" :options="menuTypes" />
+        </AFormItem>
+        <AFormItem label="菜单图标" prop="icon">
+          <IconSelect v-model:value="formData.icon" placeholer="请选择菜单图标" />
+        </AFormItem>
+      </ASpin>
     </AForm>
   </AModal>
 </template>
@@ -57,7 +62,7 @@ const props = defineProps({
   treeData: {
     type: Object as PropType<TreeSelectProps['treeData']>
   },
-  editId: {
+  id: {
     type: Number,
     default: undefined
   }
@@ -83,11 +88,18 @@ const isAdd = computed(() => props.mode === 'add')
 
 const formRef = ref<FormInstance>()
 
-watch([() => props.editId, () => props.mode], ([newId, newMode]) => {
-  loading.value = true
+const resetFields = () => {
+  formRef.value?.resetFields()
+}
+
+watch([() => props.id, () => props.mode, () => computedOpen.value], ([newId, newMode]) => {
   if (newMode === 'edit') {
+    loading.value = true
     if (newId) {
       getMenuDetail(newId).then((data) => {
+        if (data.parentId === 0) {
+          data.parentId = undefined
+        }
         formData.value = data
         loading.value = false
       })
