@@ -87,7 +87,7 @@
           <ACard :title="`${currentDeptName}-用户列表`" class="mt-4 flex-1">
             <template #extra>
               <AFlex :gap="8">
-                <AButton type="primary" :loading="pending" @click="showDialog()">
+                <AButton type="primary" :loading="pending" @click="showUserModal()">
                   <template #icon>
                     <PlusOutlined />
                   </template>
@@ -124,6 +124,7 @@
                     :un-checked-value="1"
                     checked-children="启用"
                     un-checked-children="停用"
+                    @change="(v) => onStatusChange(scope.record.id, v as number)"
                   />
                 </template>
                 <template v-if="scope?.column.key === 'createTime'">
@@ -131,17 +132,23 @@
                 </template>
                 <template v-if="scope?.column.key === 'actions'">
                   <AFlex :gap="16">
-                    <ATypographyLink @click="showDialog(scope.record.id)">
-                      <EditOutlined /> 编辑
+                    <ATypographyLink @click="showUserModal(scope.record.id)">
+                      <EditOutlined />
+                      编辑
                     </ATypographyLink>
                     <ADropdown>
-                      <ATypographyLink> <DownOutlined /> 更多 </ATypographyLink>
+                      <ATypographyLink>
+                        <DownOutlined />
+                        更多
+                      </ATypographyLink>
                       <template #overlay>
                         <AMenu>
-                          <AMenuItem>重置密码</AMenuItem>
+                          <AMenuItem @click="showPwdForm(scope.record.id, scope.record.nickname)">
+                            重置密码
+                          </AMenuItem>
                           <AMenuItem>设置角色</AMenuItem>
                           <AMenuDivider />
-                          <AMenuItem danger>删除用户</AMenuItem>
+                          <AMenuItem danger @click="onDelete(scope.record.id)">删除用户</AMenuItem>
                         </AMenu>
                       </template>
                     </ADropdown>
@@ -154,7 +161,20 @@
       </ACol>
     </ARow>
 
-    <FormModal v-model:value="formData" v-model:open="visible" :id="entryId" />
+    <!-- add/edit user -->
+    <FormModal
+      v-model:value="userFormData"
+      v-model:open="userModalVisible"
+      :id="userId"
+      @success="execute"
+    />
+    <!-- change password -->
+    <PasswordFormModal
+      v-model:value="pwdFormData"
+      v-model:open="pwdModalVisible"
+      :id="entryId!"
+      :nickname="entryName!"
+    />
   </div>
 </template>
 
@@ -168,12 +188,15 @@ import {
   ExportOutlined,
   ReloadOutlined
 } from '@ant-design/icons-vue'
+import { message, Modal } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import { updateUserStatus, deleteUser } from '@/api/system/user'
 import FormModal from './form.vue'
+import PasswordFormModal from './password-form.vue'
 import useDeptTree from './use-dept-tree'
 import { columns, useUserTable } from './use-user-table'
+import { useAddOrUpdate, usePasswordReset } from './use-user-actions'
 import type { Tree } from '@/utils/tree'
-import type { UserDTO } from '@/api/system/user'
 
 const filterForm = ref()
 
@@ -193,14 +216,44 @@ const {
   toggle
 } = useUserTable(filterForm)
 
-const formData = ref<UserDTO>({})
-const visible = ref(false)
-// current entry for editing
-const entryId = ref<number | undefined>()
+// for create/update user
+const {
+  formData: userFormData,
+  modalVisible: userModalVisible,
+  entryId: userId,
+  showModal: showUserModal
+} = useAddOrUpdate()
+// for password reset
+const {
+  entryId,
+  entryName,
+  formData: pwdFormData,
+  modalVisible: pwdModalVisible,
+  showModal: showPwdForm
+} = usePasswordReset()
 
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
+// for config user roles
+// @todo
+
+const onStatusChange = async (id: number, status: number) => {
+  try {
+    await updateUserStatus(id, status)
+    message.success('操作成功')
+  } finally {
+    execute()
+  }
+}
+
+const onDelete = (id: number) => {
+  Modal.confirm({
+    title: '删除用户',
+    content: '此操作不可撤销，确定要删除该用户吗？',
+    onOk() {
+      deleteUser(id).then(() => {
+        execute()
+      })
+    }
+  })
 }
 
 const onTreeNodeSelect = (node: Tree) => {

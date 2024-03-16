@@ -3,7 +3,10 @@
     v-model:open="computedOpen"
     :title="!id ? '新增用户' : '编辑用户'"
     :after-close="resetFields"
+    :confirm-loading="loading"
+    :loading="loading"
     @cancel="computedOpen = false"
+    @ok="submit"
   >
     <AForm
       ref="formRef"
@@ -87,12 +90,12 @@
 
 <script lang="ts" setup>
 import { ref, computed, watch, type PropType } from 'vue'
+import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
 import useRequest from '@/hooks/use-request'
 import { dictDataToOptions } from '@/utils/envision'
-import { getUserDetail, type UserDTO } from '@/api/system/user'
+import { getUserDetail, updateUser, createUser, type UserDTO } from '@/api/system/user'
 import { getDeptTree } from '@/api/system/dept'
-import type { FormInstance, FormProps } from 'ant-design-vue'
 
 const formRef = ref<FormInstance>()
 
@@ -120,7 +123,7 @@ const props = defineProps({
 
 const loading = ref(false)
 
-const emit = defineEmits(['update:value', 'update:open'])
+const emit = defineEmits(['update:value', 'update:open', 'success'])
 
 const { sys_user_sex: genderOpts, sys_normal_disable: statusOpts } = useDict(
   'sys_user_sex',
@@ -147,6 +150,29 @@ const resetFields = () => {
   formRef.value?.resetFields()
   formData.value.username = undefined
   formData.value.password = undefined
+}
+
+const submit = async () => {
+  try {
+    loading.value = true
+    await formRef.value?.validate()
+    if (props.id !== undefined) {
+      // update
+      await updateUser(formData.value)
+      message.success('保存成功')
+    } else {
+      // add
+      await createUser(formData.value)
+      message.success('创建成功')
+    }
+
+    computedOpen.value = false
+    emit('success')
+  } catch (e) {
+    console.log(e)
+  } finally {
+    loading.value = false
+  }
 }
 
 watch(
