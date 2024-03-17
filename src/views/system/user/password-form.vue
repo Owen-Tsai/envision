@@ -6,7 +6,7 @@
     @cancel="computedOpen = false"
     @ok="submit"
   >
-    <AAlert type="info">
+    <AAlert type="info" class="mt-4">
       <template #message>
         <div>
           修改用户
@@ -15,7 +15,7 @@
         </div>
       </template>
     </AAlert>
-    <AForm ref="formRef" :model="formData" :label-col="{ style: { width: '80px' } }" class="mt-4">
+    <AForm ref="formRef" :model="formData" class="mt-4">
       <AFormItem
         label="密码"
         name="password"

@@ -1,11 +1,13 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { UserDTO } from '@/api/system/user'
+import type { UserRoleDTO } from '@/api/system/permission'
 
-export const usePasswordReset = () => {
+export const usePasswordReset = (
+  entryId: Ref<number | undefined>,
+  entryName: Ref<string | undefined>
+) => {
   const formData = ref<Pick<UserDTO, 'password'>>({})
   const modalVisible = ref(false)
-  const entryId = ref<number | undefined>()
-  const entryName = ref<string | undefined>()
 
   const showModal = (id: number, name: string) => {
     entryId.value = id
@@ -16,16 +18,13 @@ export const usePasswordReset = () => {
   return {
     formData,
     modalVisible,
-    entryId,
-    entryName,
     showModal
   }
 }
 
-export const useAddOrUpdate = () => {
+export const useAddOrUpdate = (entryId: Ref<number | undefined>) => {
   const formData = ref<UserDTO>({})
   const modalVisible = ref(false)
-  const entryId = ref<number | undefined>()
 
   const showModal = (id?: number) => {
     entryId.value = id
@@ -35,7 +34,28 @@ export const useAddOrUpdate = () => {
   return {
     formData,
     modalVisible,
-    entryId,
+    showModal
+  }
+}
+
+export const useRoleConfig = (
+  entryId: Ref<number | undefined>,
+  entryName: Ref<string | undefined>
+) => {
+  const formData = ref<UserRoleDTO>({
+    roleIds: []
+  })
+  const modalVisible = ref(false)
+
+  const showModal = (id: number, name: string) => {
+    entryId.value = id
+    entryName.value = name
+    modalVisible.value = true
+  }
+
+  return {
+    formData,
+    modalVisible,
     showModal
   }
 }

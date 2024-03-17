@@ -146,7 +146,9 @@
                           <AMenuItem @click="showPwdForm(scope.record.id, scope.record.nickname)">
                             重置密码
                           </AMenuItem>
-                          <AMenuItem>设置角色</AMenuItem>
+                          <AMenuItem @click="showRoleModal(scope.record.id, scope.record.nickname)">
+                            设置角色
+                          </AMenuItem>
                           <AMenuDivider />
                           <AMenuItem danger @click="onDelete(scope.record.id)">删除用户</AMenuItem>
                         </AMenu>
@@ -165,13 +167,20 @@
     <FormModal
       v-model:value="userFormData"
       v-model:open="userModalVisible"
-      :id="userId"
+      :id="entryId"
       @success="execute"
     />
     <!-- change password -->
     <PasswordFormModal
       v-model:value="pwdFormData"
       v-model:open="pwdModalVisible"
+      :id="entryId!"
+      :nickname="entryName!"
+    />
+    <!-- assign roles -->
+    <RoleFormModal
+      v-model:value="roleFormData"
+      v-model:open="roleModalVisible"
       :id="entryId!"
       :nickname="entryName!"
     />
@@ -193,12 +202,16 @@ import dayjs from 'dayjs'
 import { updateUserStatus, deleteUser } from '@/api/system/user'
 import FormModal from './form.vue'
 import PasswordFormModal from './password-form.vue'
+import RoleFormModal from './roles-form.vue'
 import useDeptTree from './use-dept-tree'
 import { columns, useUserTable } from './use-user-table'
-import { useAddOrUpdate, usePasswordReset } from './use-user-actions'
+import { useAddOrUpdate, usePasswordReset, useRoleConfig } from './use-user-actions'
 import type { Tree } from '@/utils/tree'
 
 const filterForm = ref()
+
+const entryId = ref<number | undefined>()
+const entryName = ref<string | undefined>()
 
 const { currentDeptName, deptTreeLoading, filteredTreeData, searchText, selectedKeys } =
   useDeptTree()
@@ -220,20 +233,21 @@ const {
 const {
   formData: userFormData,
   modalVisible: userModalVisible,
-  entryId: userId,
   showModal: showUserModal
-} = useAddOrUpdate()
+} = useAddOrUpdate(entryId)
 // for password reset
 const {
-  entryId,
-  entryName,
   formData: pwdFormData,
   modalVisible: pwdModalVisible,
   showModal: showPwdForm
-} = usePasswordReset()
+} = usePasswordReset(entryId, entryName)
 
 // for config user roles
-// @todo
+const {
+  formData: roleFormData,
+  modalVisible: roleModalVisible,
+  showModal: showRoleModal
+} = useRoleConfig(entryId, entryName)
 
 const onStatusChange = async (id: number, status: number) => {
   try {

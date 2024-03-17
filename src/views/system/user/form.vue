@@ -4,7 +4,6 @@
     :title="!id ? '新增用户' : '编辑用户'"
     :after-close="resetFields"
     :confirm-loading="loading"
-    :loading="loading"
     @cancel="computedOpen = false"
     @ok="submit"
   >
