@@ -2,8 +2,20 @@ import { ref, type Ref } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 
 export type UseRequestOptions<T> = {
+  /**
+   * Whether or not the request should be executed immediately
+   */
   immediate?: boolean
+  /**
+   * debounce time between two executions (in ms)
+   */
   debounceTime?: number
+  /**
+   * Custom function to transform the response data once succeed
+   * @param raw response data
+   * @returns transformed response data
+   */
+  transformer?: (raw: Ref<T | undefined>) => T | undefined
   onSuccess?: (data: T) => void
   onError?: (err: unknown) => void
   onFinish?: () => void
@@ -17,14 +29,18 @@ const useRequest = <T>(service: () => Promise<T>, options?: UseRequestOptions<T>
   // eslint-disable-next-line no-param-reassign
   options = options || {}
 
-  const { debounceTime, immediate, onError, onFinish, onSuccess } = options
+  const { debounceTime, immediate, transformer, onError, onFinish, onSuccess } = options
 
   const execute = async () => {
     pending.value = true
 
     try {
       const response = await service()
-      data.value = response
+      if (transformer) {
+        data.value = transformer(data)
+      } else {
+        data.value = response
+      }
 
       if (onSuccess) {
         onSuccess(response)

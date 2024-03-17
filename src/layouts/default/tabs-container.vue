@@ -20,9 +20,9 @@
         <template #overlay>
           <AMenu class="context-menu">
             <AMenuItem @click="reload">重新载入</AMenuItem>
-            <AMenuItem v-if="tab[0] !== '/index'" @click="tabsView.removeTab(tab[0])"
-              >关闭当前页面</AMenuItem
-            >
+            <AMenuItem v-if="tab[0] !== '/index'" @click="tabsView.removeTab(tab[0])">
+              关闭当前页面
+            </AMenuItem>
             <AMenuItem @click="tabsView.removeTabsAfter(i)">关闭右侧页面</AMenuItem>
             <AMenuItem @click="tabsView.removeOtherTabs(tab[0])">关闭其他页面</AMenuItem>
           </AMenu>

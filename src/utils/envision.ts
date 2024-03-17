@@ -14,3 +14,7 @@ export const dictDataToOptions = (dictData: DictDataVO): SelectProps['options'] 
     value: entry.dictValue
   }))
 }
+
+export const filterOption = (input: string, option: any) => {
+  return option.value.toLowerCase().includes(input.toLowerCase())
+}
