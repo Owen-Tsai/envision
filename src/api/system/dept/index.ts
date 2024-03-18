@@ -8,7 +8,7 @@ export type DeptTreeNode = {
 
 export type DeptTreeVO = DeptTreeNode[]
 
-type Dept = {
+export type DeptVO = {
   createTime?: number
   email?: string
   id?: number
@@ -26,8 +26,6 @@ export type TreeQueryParams = {
   leaderUserId?: number
 }
 
-export type DeptDTO = Dept
-
 export const getDeptTree = (params?: TreeQueryParams) => {
   return request.get<DeptTreeVO>({
     url: '/system/dept/tree-list',
@@ -36,19 +34,19 @@ export const getDeptTree = (params?: TreeQueryParams) => {
 }
 
 export const getDeptDetail = (id: number) => {
-  return request.get<Dept>({
+  return request.get<DeptVO>({
     url: `/system/dept/get?id=${id}`
   })
 }
 
-export const createDept = (data: DeptDTO) => {
+export const createDept = (data: DeptVO) => {
   return request.post({
     url: '/system/dept/create',
     data
   })
 }
 
-export const updateDept = (data: DeptDTO) => {
+export const updateDept = (data: DeptVO) => {
   return request.put({
     url: '/system/dept/update',
     data

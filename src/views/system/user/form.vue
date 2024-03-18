@@ -93,7 +93,7 @@ import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
 import useRequest from '@/hooks/use-request'
 import { dictDataToOptions } from '@/utils/envision'
-import { getUserDetail, updateUser, createUser, type UserDTO } from '@/api/system/user'
+import { getUserDetail, updateUser, createUser, type UserVO } from '@/api/system/user'
 import { getDeptTree } from '@/api/system/dept'
 
 const formRef = ref<FormInstance>()
@@ -115,7 +115,7 @@ const props = defineProps({
     default: undefined
   },
   value: {
-    type: Object as PropType<UserDTO>,
+    type: Object as PropType<UserVO>,
     required: true
   }
 })

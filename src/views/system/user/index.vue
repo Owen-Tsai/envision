@@ -12,6 +12,7 @@
             v-if="!deptTreeLoading"
             v-model:selected-keys="selectedKeys"
             :tree-data="filteredTreeData"
+            :field-names="{ key: 'id', title: 'name' }"
             default-expand-all
             @select="(key, { node }) => onTreeNodeSelect(node)"
           />

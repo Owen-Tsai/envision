@@ -1,12 +1,12 @@
 import { ref, type Ref } from 'vue'
-import type { UserDTO } from '@/api/system/user'
+import type { UserVO } from '@/api/system/user'
 import type { UserRoleDTO } from '@/api/system/permission'
 
 export const usePasswordReset = (
   entryId: Ref<number | undefined>,
   entryName: Ref<string | undefined>
 ) => {
-  const formData = ref<Pick<UserDTO, 'password'>>({})
+  const formData = ref<Pick<UserVO, 'password'>>({})
   const modalVisible = ref(false)
 
   const showModal = (id: number, name: string) => {
@@ -23,7 +23,7 @@ export const usePasswordReset = (
 }
 
 export const useAddOrUpdate = (entryId: Ref<number | undefined>) => {
-  const formData = ref<UserDTO>({})
+  const formData = ref<UserVO>({})
   const modalVisible = ref(false)
 
   const showModal = (id?: number) => {

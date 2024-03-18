@@ -62,7 +62,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch, type PropType } from 'vue'
 import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
-import { getDeptDetail, createDept, updateDept, type DeptDTO } from '@/api/system/dept'
+import { getDeptDetail, createDept, updateDept, type DeptVO } from '@/api/system/dept'
 import { type SimpleUserVO } from '@/api/system/user'
 
 const loading = ref(false)
@@ -81,7 +81,7 @@ const props = defineProps({
     default: 'add'
   },
   value: {
-    type: Object as PropType<DeptDTO>,
+    type: Object as PropType<DeptVO>,
     required: true
   },
   treeData: {

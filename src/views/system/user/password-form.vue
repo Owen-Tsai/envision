@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, type PropType } from 'vue'
-import { resetUserPwd, type UserDTO } from '@/api/system/user'
+import { resetUserPwd, type UserVO } from '@/api/system/user'
 import type { FormInstance } from 'ant-design-vue'
 
 const props = defineProps({
@@ -42,7 +42,7 @@ const props = defineProps({
     required: true
   },
   value: {
-    type: Object as PropType<Pick<UserDTO, 'password'>>,
+    type: Object as PropType<Pick<UserVO, 'password'>>,
     required: true
   },
   open: {

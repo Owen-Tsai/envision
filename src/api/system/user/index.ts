@@ -2,16 +2,19 @@ import request from '@/utils/request'
 import type { Dayjs } from 'dayjs'
 
 export type UserVO = {
-  userId: number
-  username: string
-  status: number
-  sex?: string
-  remark?: string
-  id?: number
-  email?: string
   nickname?: string
+  deptId?: number
+  deptName?: string
   mobile?: string
-  createTime?: string
+  email?: string
+  id?: number
+  username?: string
+  password?: string
+  sex?: string
+  status?: number
+  postIds?: number[]
+  roleIds?: number[]
+  remark?: string
 }
 
 export type UserListVO = {
@@ -28,20 +31,10 @@ export type ListQueryParams = CommonQueryParams & {
   createTime?: [string, string] | [Dayjs, Dayjs]
 }
 
-export type UserDTO = {
-  nickname?: string
-  deptId?: number
-  mobile?: string
-  email?: string
-  id?: number
-  username?: string
-  password?: string
-  sex?: string
-  status?: number
-  postIds?: number[]
-  roleIds?: number[]
-  remark?: string
-}
+export type SimpleUserVO = Array<{
+  id: number
+  nickname: string
+}>
 
 export function getUsers(params?: ListQueryParams) {
   return request.get<UserListVO>({
@@ -56,14 +49,14 @@ export function getUserDetail(id: number) {
   })
 }
 
-export const createUser = (data: UserDTO) => {
+export const createUser = (data: UserVO) => {
   return request.post({
     url: '/system/user/create',
     data
   })
 }
 
-export const updateUser = (data: UserDTO) => {
+export const updateUser = (data: UserVO) => {
   return request.put({
     url: '/system/user/update',
     data
@@ -103,6 +96,6 @@ export const updateUserStatus = (id: number, status: number) => {
 }
 
 // 获取用户精简信息列表
-export const getSimpleUserList = (): Promise<UserVO[]> => {
-  return request.get({ url: '/system/user/simple-list' })
+export const getSimpleUserList = () => {
+  return request.get<SimpleUserVO>({ url: '/system/user/simple-list' })
 }

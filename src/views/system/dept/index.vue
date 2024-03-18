@@ -118,11 +118,11 @@ import {
 import dayjs from 'dayjs'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
-import { deleteDept, type DeptDTO } from '@/api/system/dept'
+import { deleteDept, type DeptVO } from '@/api/system/dept'
 
 const filterFormRef = ref()
 
-const formData = ref<DeptDTO>({})
+const formData = ref<DeptVO>({})
 const visible = ref(false)
 // current entry for editing
 const entryId = ref<number | undefined>()
