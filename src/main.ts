@@ -30,7 +30,7 @@ app.component('EDictTag', DictTag)
 const icons: Record<string, any> = {}
 Object.keys(antIcons).forEach((k) => {
   // app.component(k, (antIcons as Record<string, any>)[k])
-  if (k !== 'default' && k !== 'createFromIconfontCN') {
+  if (k !== 'default' && k !== 'createFromIconfontCN' && !k.includes('TwoTone')) {
     icons[k] = (antIcons as Record<string, any>)[k]
   }
 })

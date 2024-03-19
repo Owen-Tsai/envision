@@ -145,4 +145,6 @@ const formatDate = (date: number) => {
 
 const { data, execute, pending, queryParams, userList, onFilter, onFilterReset } =
   useTable(filterFormRef)
+
+defineOptions({ name: 'SystemDept' })
 </script>

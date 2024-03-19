@@ -1,8 +1,6 @@
 <template>
   <App>
     <AConfigProvider dropdown-match-select-width :locale="zhCN" :theme="{ algorithm }">
-      <!-- <Login /> -->
-      <!-- <Layout /> -->
       <RouterView />
     </AConfigProvider>
   </App>

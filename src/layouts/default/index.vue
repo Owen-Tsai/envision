@@ -24,25 +24,46 @@
       </ALayoutSider>
       <ALayoutContent>
         <TagsContainer />
-        <RouterView />
+        <RouterView v-if="routerAlive">
+          <template #default="{ Component, route }">
+            <KeepAlive :include="[...viewCache.keepsList]">
+              <component :is="Component" :key="route.fullPath" />
+            </KeepAlive>
+          </template>
+        </RouterView>
       </ALayoutContent>
     </ALayout>
   </ALayout>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, nextTick, provide } from 'vue'
 import { useToggle } from '@vueuse/core'
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import useBreakpoint from '@/hooks/use-breakpoint'
+import useViewCache from '@/stores/view-cache'
 import Header from './header.vue'
 import Menu from './menu.vue'
 import TagsContainer from './tabs-container.vue'
+import { RouterView } from 'vue-router'
 
 const screen = useBreakpoint()
 
 const collapsed = ref(false)
 const toggle = useToggle(collapsed)
+
+const viewCache = useViewCache()
+
+const routerAlive = ref(true)
+
+// will be provided to the tabsContainer
+const reload = () => {
+  routerAlive.value = false
+
+  nextTick(() => (routerAlive.value = true))
+}
+
+provide('layoutContext', reload)
 </script>
 
 <style lang="scss" scoped>

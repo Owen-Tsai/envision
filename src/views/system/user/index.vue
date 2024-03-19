@@ -280,6 +280,8 @@ const onTreeNodeSelect = (node: Tree) => {
 const formatDate = (date: string) => {
   return dayjs(date).format('YYYY-MM-DD')
 }
+
+defineOptions({ name: 'SystemUser' })
 </script>
 
 <style lang="scss" scoped>

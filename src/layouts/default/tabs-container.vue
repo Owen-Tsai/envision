@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { watch, inject } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
 import useTabs from '@/hooks/use-tabs'
@@ -41,6 +41,7 @@ import useTabs from '@/hooks/use-tabs'
 const router = useRouter()
 
 const tabsView = useTabs()
+const refresh = inject('layoutContext')
 
 const isActive = (tabKey: string) => {
   return router.currentRoute.value.fullPath === tabKey
@@ -51,12 +52,15 @@ const onTabClick = (tab: [string, string]) => {
 }
 
 const reload = () => {
-  const route = router.currentRoute.value
-  router.replace(route)
+  ;(refresh as any)()
 }
 
 watch(router.currentRoute, (val) => {
-  tabsView.addTab(val.fullPath, val.meta.title || (val.name as string))
+  tabsView.addTab(
+    val.fullPath,
+    val.meta.title || (val.name as string),
+    val.meta.keepAlive && val.name ? (val.name as string) : undefined
+  )
 })
 </script>
 
