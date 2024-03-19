@@ -14,6 +14,9 @@ const useDict = (...args: string[]) => {
         res.value[dictType] = dict
       } else {
         getDictData(dictType).then((data) => {
+          data.forEach((entry) => {
+            entry.value = parseInt(entry.value + '')
+          })
           res.value[dictType] = data
           dictStore.setDict(dictType, data)
         })
