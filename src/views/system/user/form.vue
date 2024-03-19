@@ -38,11 +38,9 @@
               <ATreeSelect
                 v-model:value="formData.deptId"
                 :tree-data="data"
+                tree-data-simple-mode
                 :loading="pending"
-                :field-names="{
-                  label: 'title',
-                  value: 'key'
-                }"
+                :field-names="{ label: 'name', value: 'key' }"
               />
             </AFormItem>
           </ACol>
@@ -58,7 +56,7 @@
           </ACol>
           <ACol :lg="12" :span="24">
             <AFormItem label="性别" name="status">
-              <ASelect v-model:value="formData.status" :options="dictDataToOptions(genderOpts)" />
+              <ASelect v-model:value="formData.status" :options="genderOpts" />
             </AFormItem>
           </ACol>
           <ACol :lg="12" :span="24">
@@ -73,7 +71,7 @@
           </ACol>
           <ACol :lg="12" :span="24">
             <AFormItem label="状态" name="status">
-              <ASelect v-model:value="formData.status" :options="dictDataToOptions(statusOpts)" />
+              <ASelect v-model:value="formData.status" :options="statusOpts" />
             </AFormItem>
           </ACol>
           <ACol :span="24">
@@ -92,7 +90,6 @@ import { ref, computed, watch, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
 import useRequest from '@/hooks/use-request'
-import { dictDataToOptions } from '@/utils/envision'
 import { getUserDetail, updateUser, createUser, type UserVO } from '@/api/system/user'
 import { getDeptTree } from '@/api/system/dept'
 
@@ -101,8 +98,7 @@ const formRef = ref<FormInstance>()
 const rules: FormProps['rules'] = {
   username: [{ required: true, message: '请填写用户账号' }],
   password: [{ required: true, message: '请填写初始密码' }],
-  nickname: [{ required: true, message: '请填写用户名称' }],
-  deptId: [{ required: true, message: '请选择所属部门' }]
+  nickname: [{ required: true, message: '请填写用户名称' }]
 }
 
 const props = defineProps({
@@ -124,9 +120,9 @@ const loading = ref(false)
 
 const emit = defineEmits(['update:value', 'update:open', 'success'])
 
-const { sys_user_sex: genderOpts, sys_normal_disable: statusOpts } = useDict(
-  'sys_user_sex',
-  'sys_normal_disable'
+const { system_user_sex: genderOpts, common_status: statusOpts } = useDict(
+  'system_user_sex',
+  'common_status'
 )
 
 const { data, pending } = useRequest(getDeptTree, { immediate: true })

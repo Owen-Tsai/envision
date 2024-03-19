@@ -16,6 +16,9 @@
             default-expand-all
             @select="(key, { node }) => onTreeNodeSelect(node)"
           />
+          <AFlex v-else vertical :gap="16" class="w-full">
+            <ASkeletonButton v-for="i in 5" :key="i" block active />
+          </AFlex>
         </ACard>
       </ACol>
       <ACol :span="24" :lg="19">
@@ -85,7 +88,7 @@
             </AForm>
           </ACard>
 
-          <ACard :title="`${currentDeptName}-用户列表`" class="mt-4 flex-1">
+          <ACard :title="`${currentDeptName}用户列表`" class="mt-4 flex-1">
             <template #extra>
               <AFlex :gap="8">
                 <AButton type="primary" :loading="pending" @click="showUserModal()">
@@ -271,9 +274,17 @@ const onDelete = (id: number) => {
   })
 }
 
+let oldSelectedKey: number | string | undefined = undefined
+
 const onTreeNodeSelect = (node: Tree) => {
-  currentDeptName.value = node.title
-  queryParams.value.deptId = node.key.toString()
+  const hasSelected = node.key === oldSelectedKey
+  if (!hasSelected) {
+    oldSelectedKey = node.key
+  } else {
+    oldSelectedKey = undefined
+  }
+  currentDeptName.value = hasSelected ? '全部' : node.name
+  queryParams.value.deptId = hasSelected ? undefined : node.key.toString()
   execute()
 }
 
