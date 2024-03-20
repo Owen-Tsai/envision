@@ -7,6 +7,7 @@ export type DictData = {
   dictType?: string
   id?: number
   value?: string | number
+  strValue?: string
   label?: string
   remark?: string
   sort?: number
