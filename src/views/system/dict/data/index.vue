@@ -15,8 +15,12 @@
             </AFormItem>
           </ACol>
           <ACol :lg="8" :span="24">
-            <AFormItem label="字典类型" name="type">
-              <AInput v-model:value="queryParams.type" placeholder="请输入字典类型" allow-clear />
+            <AFormItem label="字典类型" name="dictType">
+              <AInput
+                v-model:value="queryParams.dictType"
+                placeholder="请输入字典类型"
+                allow-clear
+              />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
@@ -94,15 +98,7 @@
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
-                <ATypographyLink @click="toDataPage(scope?.record.type)">
-                  <UnorderedListOutlined />
-                  数据
-                </ATypographyLink>
-                <APopconfirm
-                  title="删除字典后，使用了该字典的数据可能会存在显示问题。确定删除吗？"
-                  :overlay-style="{ width: '260px' }"
-                  @confirm="onDelete(scope?.record.id)"
-                >
+                <APopconfirm title="确定删除该字典数据吗？" @confirm="onDelete(scope?.record.id)">
                   <ATypographyLink type="danger">
                     <DeleteOutlined />
                     删除
@@ -121,7 +117,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
 import { useToggle } from '@vueuse/core'
 import {
@@ -130,17 +125,15 @@ import {
   ExportOutlined,
   EditOutlined,
   DeleteOutlined,
-  PlusOutlined,
-  UnorderedListOutlined
+  PlusOutlined
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
-import { deleteDictType } from '@/api/system/dict/type'
+import { deleteDictData } from '@/api/system/dict/data'
 import FormModal from './form.vue'
 import { columns, useTable } from './use-table'
 import { message, type FormInstance } from 'ant-design-vue'
 
 const filterForm = ref<FormInstance>()
-const { push } = useRouter()
 
 const [filterExpanded, toggle] = useToggle(false)
 
@@ -166,12 +159,8 @@ const showDialog = (id?: number) => {
   visible.value = true
 }
 
-const toDataPage = (type: string) => {
-  push(`/system/dict/data/${type}`)
-}
-
 const onDelete = (id: number) => {
-  deleteDictType(id).then(() => {
+  deleteDictData(id).then(() => {
     message.success('删除成功')
     execute()
   })

@@ -1,58 +1,54 @@
 import request from '@/utils/request'
 
 export type ListQueryParams = CommonQueryParams & {
-  dictName?: string
-  dictType?: string
+  name?: string
+  type?: string
   status?: string | number
 }
 
-export type ListItemVO = {
-  dictId: number
-  dictName: string
-  dictType: string
-  remark: string
-  status: string
-  createTime: string
+export type DictTypeVO = {
+  id?: number
+  name?: string
+  type?: string
+  remark?: string
+  status?: string | number
+  createTime?: string
 }
 
-export type ListVO = {
-  rows: Array<ListItemVO>
+export type DictTypeListVO = {
+  list: Array<DictTypeVO>
   total: number
 }
 
-export type TypeDTO = {
-  dictId?: number
-  dictName: string
-  dictType: string
-  status: string
-  remark?: string
-}
-
-const urlPrefix = '/system/dict/type'
-
-export function getList(query: ListQueryParams) {
-  return request.getRaw<ListVO>({
-    url: `${urlPrefix}/list`,
-    params: query
+export const getDictTypeList = (params?: ListQueryParams) => {
+  return request.get<DictTypeListVO>({
+    url: '/system/dict-type/page',
+    params
   })
 }
 
-export function getDetail(id: number) {
-  return request.get<ListItemVO>({
-    url: `${urlPrefix}/${id}`
+export const getDictTypeDetail = (id: number) => {
+  return request.get<DictTypeVO>({
+    url: `/system/dict-type/get?id=${id}`
   })
 }
 
-export function addType(data: TypeDTO) {
+export const addDictType = (data: DictTypeVO) => {
   return request.post({
-    url: urlPrefix,
+    url: '/system/dict-type/create',
     data
   })
 }
 
-export function updateType(data: TypeDTO) {
+export const updateDictType = (data: DictTypeVO) => {
   return request.put({
-    url: urlPrefix,
+    url: '/system/dict-type/create',
     data
+  })
+}
+
+export const deleteDictType = (id: number) => {
+  return request.delete({
+    url: `/system/dict-type/get?id=${id}`
   })
 }

@@ -4,7 +4,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, type PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 import type { DictDataVO } from '@/api/system/dict/data'
 
 const props = defineProps({
@@ -12,7 +12,7 @@ const props = defineProps({
     type: Object as PropType<DictDataVO>
   },
   value: {
-    type: String,
+    type: Number,
     required: true
   }
 })
