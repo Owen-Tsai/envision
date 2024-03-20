@@ -104,12 +104,12 @@
     </ARow>
 
     <ModalForm
-      v-model:open="visible"
-      v-model:value="formData"
+      v-if="visible"
       :mode="mode"
       :id="entryId"
       :tree-data="data"
       @success="execute"
+      @close="visible = false"
     />
   </div>
 </template>
@@ -128,19 +128,12 @@ import useDict from '@/hooks/use-dict'
 import { menuTypes } from '@/utils/constants'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
-import { deleteMenuWithChildren, type MenuVO } from '@/api/system/menu'
+import { deleteMenuWithChildren } from '@/api/system/menu'
 
 const filterFormRef = ref()
 
 const { commonStatus } = useDict('common_status')
 
-const formData = ref<MenuVO>({
-  alwaysShow: false,
-  visible: true,
-  status: 0,
-  keepAlive: true,
-  type: 1
-})
 const visible = ref(false)
 // current entry for editing
 const entryId = ref<number | undefined>()

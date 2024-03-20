@@ -1,9 +1,10 @@
 <template>
   <AModal
-    v-model:open="computedOpen"
+    v-model:open="open"
     title="重置密码"
+    destroy-on-close
     :after-close="resetFields"
-    @cancel="computedOpen = false"
+    :confirm-loading="loading"
     @ok="submit"
   >
     <AAlert type="info" class="mt-4">
@@ -28,8 +29,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, type PropType } from 'vue'
-import { resetUserPwd, type UserVO } from '@/api/system/user'
+import { ref } from 'vue'
+import { resetUserPwd } from '@/api/system/user'
 import type { FormInstance } from 'ant-design-vue'
 
 const props = defineProps({
@@ -40,34 +41,16 @@ const props = defineProps({
   nickname: {
     type: String,
     required: true
-  },
-  value: {
-    type: Object as PropType<Pick<UserVO, 'password'>>,
-    required: true
-  },
-  open: {
-    type: Boolean,
-    required: true
   }
 })
 
-const emit = defineEmits(['update:open', 'update:value'])
+const emit = defineEmits(['success', 'close'])
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)
-
-const computedOpen = computed({
-  get: () => props.open,
-  set: (val) => {
-    emit('update:open', val)
-  }
-})
-
-const formData = computed({
-  get: () => props.value,
-  set: (val) => {
-    emit('update:value', val)
-  }
+const open = ref(true)
+const formData = ref({
+  password: ''
 })
 
 const submit = async () => {
@@ -75,7 +58,7 @@ const submit = async () => {
   try {
     await formRef.value?.validate()
     await resetUserPwd(props.id, formData.value.password as string)
-    computedOpen.value = false
+    open.value = false
   } catch (e) {
     // do nothing
   } finally {
@@ -85,5 +68,6 @@ const submit = async () => {
 
 const resetFields = () => {
   formRef.value?.resetFields()
+  emit('close')
 }
 </script>

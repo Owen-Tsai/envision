@@ -23,8 +23,8 @@ export type UserListVO = {
 }
 
 export type ListQueryParams = CommonQueryParams & {
-  userName?: string
-  nickName?: string
+  username?: string
+  nickname?: string
   mobile?: string
   status?: number
   deptId?: string

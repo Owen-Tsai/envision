@@ -26,24 +26,25 @@
           <ACard>
             <AForm
               ref="filterForm"
+              :model="queryParams"
+              :label-col="{ style: { width: '64px' } }"
               class="dense-filter-form"
               :class="{ expanded: filterExpanded }"
-              :model="queryParams"
             >
               <ARow :gutter="[8, 16]">
                 <ACol :lg="8" :span="24">
-                  <AFormItem label="用户账号" name="userName">
+                  <AFormItem label="用户账号" name="username">
                     <AInput
-                      v-model:value="queryParams.userName"
+                      v-model:value="queryParams.username"
                       placeholder="请输入用户账号"
                       allow-clear
                     />
                   </AFormItem>
                 </ACol>
                 <ACol :lg="8" :span="24">
-                  <AFormItem label="用户名称" name="nickName">
+                  <AFormItem label="用户名称" name="nickname">
                     <AInput
-                      v-model:value="queryParams.nickName"
+                      v-model:value="queryParams.nickname"
                       placeholder="请输入用户名称"
                       allow-clear
                     />
@@ -70,8 +71,9 @@
                   <AFormItem label="状态" name="status">
                     <ASelect
                       v-model:value="queryParams.status"
+                      :options="commonStatus"
                       placeholder="请输入用户状态"
-                    ></ASelect>
+                    />
                   </AFormItem>
                 </ACol>
                 <ACol :lg="{ span: 8 }" :span="24">
@@ -169,24 +171,26 @@
 
     <!-- add/edit user -->
     <FormModal
-      v-model:value="userFormData"
-      v-model:open="userModalVisible"
+      v-if="userModalVisible"
       :id="entryId"
       @success="execute"
+      @close="userModalVisible = false"
     />
     <!-- change password -->
     <PasswordFormModal
-      v-model:value="pwdFormData"
-      v-model:open="pwdModalVisible"
+      v-if="pwdModalVisible"
       :id="entryId!"
       :nickname="entryName!"
+      @success="execute"
+      @close="pwdModalVisible = false"
     />
     <!-- assign roles -->
     <RoleFormModal
-      v-model:value="roleFormData"
-      v-model:open="roleModalVisible"
+      v-if="roleModalVisible"
       :id="entryId!"
       :nickname="entryName!"
+      @success="execute"
+      @close="roleModalVisible = false"
     />
   </div>
 </template>
@@ -204,6 +208,7 @@ import {
 import { message, Modal } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { updateUserStatus, deleteUser } from '@/api/system/user'
+import useDict from '@/hooks/use-dict'
 import FormModal from './form.vue'
 import PasswordFormModal from './password-form.vue'
 import RoleFormModal from './roles-form.vue'
@@ -213,6 +218,8 @@ import { useAddOrUpdate, usePasswordReset, useRoleConfig } from './use-user-acti
 import type { Tree } from '@/utils/tree'
 
 const filterForm = ref()
+
+const { commonStatus } = useDict('common_status')
 
 const entryId = ref<number | undefined>()
 const entryName = ref<string | undefined>()
@@ -234,24 +241,18 @@ const {
 } = useUserTable(filterForm)
 
 // for create/update user
-const {
-  formData: userFormData,
-  modalVisible: userModalVisible,
-  showModal: showUserModal
-} = useAddOrUpdate(entryId)
+const { modalVisible: userModalVisible, showModal: showUserModal } = useAddOrUpdate(entryId)
 // for password reset
-const {
-  formData: pwdFormData,
-  modalVisible: pwdModalVisible,
-  showModal: showPwdForm
-} = usePasswordReset(entryId, entryName)
+const { modalVisible: pwdModalVisible, showModal: showPwdForm } = usePasswordReset(
+  entryId,
+  entryName
+)
 
 // for config user roles
-const {
-  formData: roleFormData,
-  modalVisible: roleModalVisible,
-  showModal: showRoleModal
-} = useRoleConfig(entryId, entryName)
+const { modalVisible: roleModalVisible, showModal: showRoleModal } = useRoleConfig(
+  entryId,
+  entryName
+)
 
 const onStatusChange = async (id: number, status: number) => {
   try {

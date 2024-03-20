@@ -1,9 +1,5 @@
 import request from '@/utils/request'
 
-export type UserRoleDTO = {
-  roleIds: number[]
-}
-
 export const setUserRole = (uid: number, rid: number[]) => {
   return request.post({
     url: '/system/permission/assign-user-role',

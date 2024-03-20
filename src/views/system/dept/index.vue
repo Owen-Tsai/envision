@@ -12,7 +12,11 @@
               </ACol>
               <ACol :span="24" :lg="8">
                 <AFormItem label="部门状态" name="status">
-                  <ASelect v-model:value="queryParams.status" placeholer="请选择菜单状态" />
+                  <ASelect
+                    v-model:value="queryParams.status"
+                    :options="commonStatus"
+                    placeholer="请选择菜单状态"
+                  />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
@@ -66,6 +70,9 @@
               <template v-if="scope?.column.key === 'leader'">
                 {{ userList?.find((e) => e.id === scope.record.leaderUserId)?.nickname }}
               </template>
+              <template v-if="scope?.column.key === 'status'">
+                <EDictTag :value="scope.record.status" :dict-object="commonStatus" />
+              </template>
               <template v-if="scope?.column.key === 'createTime'">
                 {{ formatDate(scope.record.createTime) }}
               </template>
@@ -95,12 +102,12 @@
     </ARow>
 
     <ModalForm
-      v-model:open="visible"
-      v-model:value="formData"
+      v-if="visible"
       :tree-data="data"
       :user-data="userList"
       :id="entryId"
       @success="execute"
+      @close="visible = false"
     />
   </div>
 </template>
@@ -116,13 +123,15 @@ import {
   DeleteOutlined
 } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
+import useDict from '@/hooks/use-dict'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
-import { deleteDept, type DeptVO } from '@/api/system/dept'
+import { deleteDept } from '@/api/system/dept'
 
 const filterFormRef = ref()
 
-const formData = ref<DeptVO>({})
+const { commonStatus } = useDict('common_status')
+
 const visible = ref(false)
 // current entry for editing
 const entryId = ref<number | undefined>()

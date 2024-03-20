@@ -1,10 +1,10 @@
 <template>
   <AModal
-    v-model:open="computedOpen"
+    v-model:open="open"
     title="分配角色"
+    destroy-on-close
     :after-close="resetFields"
     :confirm-loading="pending || loading"
-    @cancel="computedOpen = false"
     @ok="submit"
   >
     <AAlert type="info" class="mt-4">
@@ -31,9 +31,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, type PropType } from 'vue'
+import { ref } from 'vue'
 import { message, type FormInstance } from 'ant-design-vue'
-import { setUserRole, getUserRoles, type UserRoleDTO } from '@/api/system/permission'
+import { setUserRole, getUserRoles } from '@/api/system/permission'
 import { getSimpleList } from '@/api/system/role'
 import useRequest from '@/hooks/use-request'
 
@@ -45,34 +45,16 @@ const props = defineProps({
   nickname: {
     type: String,
     required: true
-  },
-  value: {
-    type: Object as PropType<UserRoleDTO>,
-    required: true
-  },
-  open: {
-    type: Boolean,
-    required: true
   }
 })
 
-const emit = defineEmits(['update:open', 'update:value'])
+const emit = defineEmits(['success', 'close'])
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)
-
-const computedOpen = computed({
-  get: () => props.open,
-  set: (val) => {
-    emit('update:open', val)
-  }
-})
-
-const formData = computed({
-  get: () => props.value,
-  set: (val) => {
-    emit('update:value', val)
-  }
+const open = ref(false)
+const formData = ref<{ roleIds: number[] }>({
+  roleIds: []
 })
 
 const submit = async () => {
@@ -81,7 +63,7 @@ const submit = async () => {
     await formRef.value?.validate()
     await setUserRole(props.id, formData.value.roleIds)
     message.success('保存成功')
-    computedOpen.value = false
+    open.value = false
   } catch (e) {
     // do nothing
   } finally {
@@ -91,24 +73,15 @@ const submit = async () => {
 
 const resetFields = () => {
   formRef.value?.resetFields()
+  emit('close')
 }
 
-const { data, pending, execute } = useRequest(getSimpleList)
-
-watch(
-  () => computedOpen.value,
-  (val) => {
-    if (val) {
-      loading.value = true
-      execute()
-      getUserRoles(props.id)
-        .then((data) => {
-          formData.value.roleIds = data
-        })
-        .finally(() => {
-          loading.value = false
-        })
-    }
+const { data, pending } = useRequest(getSimpleList, {
+  immediate: true,
+  async onSuccess() {
+    const data = await getUserRoles(props.id)
+    formData.value.roleIds = data
+    loading.value = false
   }
-)
+})
 </script>

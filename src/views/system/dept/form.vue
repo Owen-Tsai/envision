@@ -1,9 +1,9 @@
 <template>
   <AModal
-    v-model:open="computedOpen"
-    :title="isAdd ? '新增菜单' : '编辑菜单'"
-    :after-close="resetFields"
-    @cancel="computedOpen = false"
+    v-model:open="open"
+    :title="id === undefined ? '新增部门' : '编辑部门'"
+    :after-close="onClose"
+    destroy-on-close
     @ok="submit"
   >
     <AForm
@@ -34,6 +34,7 @@
             :field-names="{ label: 'nickname', value: 'id' }"
             placeholder="请输入用户名称进行过滤"
             show-search
+            :filter-option="(input, option) => filterOption(input, option, 'nickname')"
           />
         </AFormItem>
         <AFormItem label="联系电话" name="phone">
@@ -45,12 +46,12 @@
         <ARow>
           <ACol :span="12">
             <AFormItem label="显示顺序" name="sort">
-              <AInputNumber v-model="formData.sort" class="w-full" />
+              <AInputNumber v-model:value="formData.sort" class="w-full" />
             </AFormItem>
           </ACol>
           <ACol :span="12">
             <AFormItem label="状态" name="status">
-              <ASelect v-model="formData.status" />
+              <ASelect v-model:value="formData.status" :options="commonStatus" />
             </AFormItem>
           </ACol>
         </ARow>
@@ -60,30 +61,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, type PropType } from 'vue'
+import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
 import { getDeptDetail, createDept, updateDept, type DeptVO } from '@/api/system/dept'
-import { type SimpleUserVO } from '@/api/system/user'
+import { filterOption } from '@/utils/envision'
+import useDict from '@/hooks/use-dict'
+import type { SimpleUserVO } from '@/api/system/user'
 
 const loading = ref(false)
 
-const rules: FormProps['rules'] = {
+const { commonStatus } = useDict('common_status')
+
+const rules = ref<FormProps['rules']>({
   name: [{ required: true, message: '请输入部门名称' }]
-}
+})
 
 const props = defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  },
-  mode: {
-    type: String as PropType<'add' | 'edit'>,
-    default: 'add'
-  },
-  value: {
-    type: Object as PropType<DeptVO>,
-    required: true
-  },
   treeData: {
     type: Object as PropType<TreeSelectProps['treeData']>
   },
@@ -96,28 +89,16 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:open', 'update:value', 'success'])
+const emit = defineEmits(['success', 'close'])
 
-const formData = computed({
-  get: () => props.value,
-  set: (val) => {
-    emit('update:value', val)
-  }
-})
-
-const computedOpen = computed({
-  get: () => props.open,
-  set: (val) => {
-    emit('update:open', val)
-  }
-})
-
-const isAdd = computed(() => props.mode === 'add')
-
+const formData = ref<DeptVO>({})
 const formRef = ref<FormInstance>()
 
-const resetFields = () => {
+const open = ref(true)
+
+const onClose = () => {
   formRef.value?.resetFields()
+  emit('close')
 }
 
 const submit = async () => {
@@ -134,7 +115,7 @@ const submit = async () => {
       message.success('创建成功')
     }
 
-    computedOpen.value = false
+    open.value = false
     emit('success')
   } catch (e) {
     // do nothing at the moment
@@ -144,19 +125,15 @@ const submit = async () => {
   }
 }
 
-watch(
-  () => props.id,
-  (val) => {
-    if (val) {
-      loading.value = true
-      getDeptDetail(val).then((data) => {
-        if (data.parentId === 0) {
-          data.parentId = undefined
-        }
-        formData.value = data
-        loading.value = false
-      })
+// load detail
+if (props.id) {
+  loading.value = true
+  getDeptDetail(props.id).then((data) => {
+    if (data.parentId === 0) {
+      data.parentId = undefined
     }
-  }
-)
+    formData.value = data
+    loading.value = false
+  })
+}
 </script>

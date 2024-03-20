@@ -1,9 +1,10 @@
 <template>
   <AModal
-    v-model:open="computedOpen"
+    v-model:open="open"
     :title="isAdd ? '新增菜单' : '编辑菜单'"
     :after-close="resetFields"
-    @cancel="computedOpen = false"
+    destroy-on-close
+    @cancel="open = false"
     @ok="submit"
   >
     <AForm
@@ -96,7 +97,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, type PropType } from 'vue'
+import { ref, computed, type PropType } from 'vue'
 import IconSelect from '@/components/icon-select/index.vue'
 import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
 import { getMenuDetail, createMenu, updateMenu, type MenuVO } from '@/api/system/menu'
@@ -115,17 +116,9 @@ const rules: FormProps['rules'] = {
 const loading = ref(false)
 
 const props = defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  },
   mode: {
     type: String as PropType<'add' | 'edit'>,
     default: 'add'
-  },
-  value: {
-    type: Object as PropType<MenuVO>,
-    required: true
   },
   treeData: {
     type: Object as PropType<TreeSelectProps['treeData']>
@@ -136,28 +129,17 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:open', 'update:value', 'success'])
-
-const formData = computed({
-  get: () => props.value,
-  set: (val) => {
-    emit('update:value', val)
-  }
-})
-
-const computedOpen = computed({
-  get: () => props.open,
-  set: (val) => {
-    emit('update:open', val)
-  }
-})
+const emit = defineEmits(['success', 'close'])
 
 const isAdd = computed(() => props.mode === 'add')
 
 const formRef = ref<FormInstance>()
+const formData = ref<MenuVO>({})
+const open = ref(true)
 
 const resetFields = () => {
   formRef.value?.resetFields()
+  emit('close')
 }
 
 const submit = async () => {
@@ -177,7 +159,7 @@ const submit = async () => {
       message.success('保存成功')
     }
 
-    computedOpen.value = false
+    open.value = false
     emit('success')
   } catch (e) {
     // do nothing
@@ -186,23 +168,20 @@ const submit = async () => {
   }
 }
 
-watch([() => props.id, () => props.mode, computedOpen], ([newId, newMode, open]) => {
-  if (!open) return
-  if (newMode === 'edit') {
-    loading.value = true
-    if (newId) {
-      getMenuDetail(newId).then((data) => {
-        if (data.parentId === 0) {
-          data.parentId = undefined
-        }
-        formData.value = data
-        loading.value = false
-      })
-    }
-  } else {
-    if (newId) {
-      formData.value.parentId = newId
-    }
+if (props.mode === 'edit') {
+  loading.value = true
+  if (props.id) {
+    getMenuDetail(props.id).then((data) => {
+      if (data.parentId === 0) {
+        data.parentId = undefined
+      }
+      formData.value = data
+      loading.value = false
+    })
   }
-})
+} else {
+  if (props.id) {
+    formData.value.parentId = props.id
+  }
+}
 </script>
