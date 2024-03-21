@@ -16,6 +16,8 @@ export const useMenuRenderer = () => {
   const generateMenu = (routes: RouteRecordRaw[], parentPath = ''): ItemType[] => {
     const items: ItemType[] = []
 
+    console.log(routes)
+
     routes.forEach((route) => {
       const item: any = {
         label: route.meta?.title,
@@ -27,7 +29,10 @@ export const useMenuRenderer = () => {
       const origin = window.location.origin
 
       if (route.children) {
-        const children = generateMenu(route.children, route.path)
+        const children = generateMenu(
+          route.children,
+          parentPath === '' ? `${parentPath}${route.path}` : `${parentPath}/${route.path}`
+        )
         item.children = children
       }
 
