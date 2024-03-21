@@ -16,8 +16,6 @@ export const useMenuRenderer = () => {
   const generateMenu = (routes: RouteRecordRaw[], parentPath = ''): ItemType[] => {
     const items: ItemType[] = []
 
-    console.log(routes)
-
     routes.forEach((route) => {
       const item: any = {
         label: route.meta?.title,
