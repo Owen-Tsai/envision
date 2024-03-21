@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import type { Dayjs } from 'dayjs'
 
 export type UserVO = {
   nickname?: string
@@ -28,7 +27,6 @@ export type ListQueryParams = CommonQueryParams & {
   mobile?: string
   status?: number
   deptId?: string
-  createTime?: [string, string] | [Dayjs, Dayjs]
 }
 
 export type SimpleUserVO = Array<{

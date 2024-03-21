@@ -46,6 +46,7 @@ export const useUserTable = (formRef: Ref<FormInstance>) => {
 
   const onFilterReset = () => {
     formRef.value?.resetFields()
+    queryParams.value.pageNo = 1
     execute()
   }
 

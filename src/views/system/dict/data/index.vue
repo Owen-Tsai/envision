@@ -34,7 +34,7 @@
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
             <AFormItem label="创建时间">
-              <ARangePicker v-model:value="dateRange" format="YYYY-MM-DD" />
+              <ARangePicker v-model:value="queryParams.createTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
           <ACol :lg="{ span: 8, offset: filterExpanded ? 8 : 0 }" :span="24">
@@ -139,17 +139,8 @@ const [filterExpanded, toggle] = useToggle(false)
 
 const { commonStatus } = useDict('common_status')
 
-const {
-  data,
-  pending,
-  execute,
-  queryParams,
-  dateRange,
-  onFilter,
-  onChange,
-  onFilterReset,
-  pagination
-} = useTable(filterForm)
+const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
+  useTable(filterForm)
 
 const entryId = ref<number>()
 const visible = ref(false)

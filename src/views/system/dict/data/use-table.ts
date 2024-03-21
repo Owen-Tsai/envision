@@ -1,5 +1,5 @@
 import { ref, computed, type Ref } from 'vue'
-import dayjs, { type Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import { useRoute } from 'vue-router'
 import useRequest from '@/hooks/use-request'
 import { getDictDataList, type ListQueryParams, type DictDataItemVO } from '@/api/system/dict/data'
@@ -29,7 +29,6 @@ export const columns: TableProps['columns'] = [
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const queryParams = ref<ListQueryParams>({})
-  const dateRange = ref<[Dayjs, Dayjs]>()
 
   const { data, execute, pending } = useRequest(() => getDictDataList(queryParams.value))
 
@@ -51,7 +50,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
 
   const onFilterReset = () => {
     formRef.value?.resetFields()
-    dateRange.value = undefined
+    queryParams.value.pageNo = 1
     execute()
   }
 
@@ -76,7 +75,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     pending,
     queryParams,
     onChange,
-    dateRange,
     pagination,
     onFilter,
     onFilterReset

@@ -1,5 +1,5 @@
 import { ref, computed, type Ref } from 'vue'
-import dayjs, { type Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import useRequest from '@/hooks/use-request'
 import { getDictTypeList, type ListQueryParams, type DictTypeVO } from '@/api/system/dict/type'
 import type { FormInstance, TableProps } from 'ant-design-vue'
@@ -25,7 +25,6 @@ export const columns: TableProps['columns'] = [
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const queryParams = ref<ListQueryParams>({})
-  const dateRange = ref<[Dayjs, Dayjs]>()
 
   const { data, execute, pending } = useRequest(
     () =>
@@ -55,7 +54,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
 
   const onFilterReset = () => {
     formRef.value?.resetFields()
-    dateRange.value = undefined
+    queryParams.value.pageNo = 1
     execute()
   }
 
@@ -72,7 +71,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     pending,
     queryParams,
     onChange,
-    dateRange,
     pagination,
     onFilter,
     onFilterReset
