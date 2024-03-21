@@ -23,6 +23,14 @@ export const fixedRoutes: RouteRecordRaw[] = [
         meta: {
           title: '首页'
         }
+      },
+      {
+        path: '/system/dict/data/:type',
+        name: 'DictData',
+        component: () => import('@/views/system/dict/data/index.vue'),
+        meta: {
+          title: '字典数据'
+        }
       }
     ]
   }

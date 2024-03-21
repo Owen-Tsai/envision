@@ -1,14 +1,64 @@
 import request from '@/utils/request'
 
-type Role = {
+export type RoleVO = {
   id?: number
   name?: string
+  code?: string
+  createTime?: number
+  dataScope?: number
+  // ??
+  dataScopeDeptIds?: any
+  sort?: number
+  status?: number
+  remark?: string
 }
 
-export type RoleListVO = Role[]
+export type RoleListVO = {
+  list: Array<RoleVO>
+  total: number
+}
+
+export type ListQueryParams = CommonQueryParams & {
+  code?: string
+  name?: string
+  status?: number
+}
 
 export const getSimpleList = () => {
-  return request.get<RoleListVO>({
+  return request.get<RoleVO[]>({
     url: 'system/role/simple-list'
+  })
+}
+
+export const getRolesList = (params?: CommonQueryParams) => {
+  return request.get<RoleListVO>({
+    url: '/system/role/page',
+    params
+  })
+}
+
+export const getRoleDetail = (id: number) => {
+  return request.get<RoleVO>({
+    url: `/system/role/get?id=${id}`
+  })
+}
+
+export const addRole = (data: RoleVO) => {
+  return request.post({
+    url: '/system/role/create',
+    data
+  })
+}
+
+export const updateRole = (data: RoleVO) => {
+  return request.put({
+    url: '/system/role/update',
+    data
+  })
+}
+
+export const deleteRole = (id: number) => {
+  return request.delete({
+    url: `/system/role/delete?id=${id}`
   })
 }
