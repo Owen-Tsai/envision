@@ -6,17 +6,13 @@
           <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
-                <AFormItem label="部门名称" name="name">
-                  <AInput v-model:value="queryParams.name" placeholder="请输入部门名称" />
+                <AFormItem label="用户名称" name="username">
+                  <AInput v-model:value="queryParams.username" placeholde r="请输入用户名称" />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
-                <AFormItem label="部门状态" name="status">
-                  <ASelect
-                    v-model:value="queryParams.status"
-                    :options="commonStatus"
-                    placeholer="请选择部门状态"
-                  />
+                <AFormItem label="登录地址" name="userIp">
+                  <AInput v-model:value="queryParams.userIp" placeholder="请输入登录地址" />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
@@ -31,22 +27,15 @@
       </ACol>
 
       <ACol :span="24">
-        <ACard title="部门管理" class="mt-4 flex-1">
+        <ACard title="登录日志管理" class="mt-4 flex-1">
           <template #extra>
             <AFlex :gap="8">
-              <AButton type="primary" :loading="pending" @click="showDialog()">
-                <template #icon>
-                  <PlusOutlined />
-                </template>
-                新增
-              </AButton>
-              <ATooltip title="折叠/展开全部">
-                <AButton type="text" :loading="pending">
-                  <template #icon>
-                    <SwapOutlined :rotate="90" />
-                  </template>
-                </AButton>
-              </ATooltip>
+              <!--              <AButton type="primary" :loading="pending" @click="showDialog()">-->
+              <!--                <template #icon>-->
+              <!--                  <PlusOutlined />-->
+              <!--                </template>-->
+              <!--                新增-->
+              <!--              </AButton>-->
               <ATooltip title="重新载入">
                 <AButton type="text" :loading="pending" @click="execute">
                   <template #icon>
@@ -58,13 +47,14 @@
           </template>
 
           <ATable
-            :data-source="data"
-            :pagination="false"
+            :data-source="data?.list"
+            :pagination="pagination"
             :columns="columns"
             row-key="id"
             :loading="pending"
             defaultExpandAllRows
             :key="`data-${pending}`"
+            @change="onChange"
           >
             <template #bodyCell="scope">
               <template v-if="scope?.column.key === 'leader'">
@@ -76,39 +66,32 @@
               <template v-if="scope?.column.key === 'createTime'">
                 {{ formatDate(scope.record.createTime) }}
               </template>
-              <template v-if="scope?.column.key === 'actions'">
-                <AFlex :gap="16">
-                  <ATypographyLink @click="showDialog(scope.record.id)">
-                    <EditOutlined />
-                    修改
-                  </ATypographyLink>
-                  <APopconfirm
-                    title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"
-                    trigger="click"
-                    :overlay-style="{ maxWidth: '280px' }"
-                    @confirm="onDelete(scope.record.id)"
-                  >
-                    <ATypographyLink type="danger">
-                      <DeleteOutlined />
-                      删除
-                    </ATypographyLink>
-                  </APopconfirm>
-                </AFlex>
-              </template>
+              <!--              <template v-if="scope?.column.key === 'actions'">-->
+              <!--                <AFlex :gap="16">-->
+              <!--                  <ATypographyLink @click="showDialog(scope.record.id)">-->
+              <!--                    <EditOutlined />-->
+              <!--                    修改-->
+              <!--                  </ATypographyLink>-->
+              <!--                  <APopconfirm-->
+              <!--                    title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"-->
+              <!--                    trigger="click"-->
+              <!--                    :overlay-style="{ maxWidth: '280px' }"-->
+              <!--                    @confirm="onDelete(scope.record.id)"-->
+              <!--                  >-->
+              <!--                    <ATypographyLink type="danger">-->
+              <!--                      <DeleteOutlined />-->
+              <!--                      删除-->
+              <!--                    </ATypographyLink>-->
+              <!--                  </APopconfirm>-->
+              <!--                </AFlex>-->
+              <!--              </template>-->
             </template>
           </ATable>
         </ACard>
       </ACol>
     </ARow>
 
-    <ModalForm
-      v-if="visible"
-      :tree-data="data"
-      :user-data="userList"
-      :id="entryId"
-      @success="execute"
-      @close="visible = false"
-    />
+    <ModalForm v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
   </div>
 </template>
 
@@ -126,7 +109,7 @@ import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
-import { deleteDept } from '@/api/system/dept'
+import { deletePost } from '@/api/system/post'
 
 const filterFormRef = ref()
 
@@ -142,7 +125,7 @@ const showDialog = (id?: number) => {
 }
 
 const onDelete = (id: number) => {
-  deleteDept(id).then(() => {
+  deletePost(id).then(() => {
     message.success('删除成功')
     execute()
   })
@@ -152,8 +135,17 @@ const formatDate = (date: number) => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
-const { data, execute, pending, queryParams, userList, onFilter, onFilterReset } =
-  useTable(filterFormRef)
+const {
+  data,
+  execute,
+  pending,
+  queryParams,
+  userList,
+  onFilter,
+  onFilterReset,
+  pagination,
+  onChange
+} = useTable(filterFormRef)
 
-defineOptions({ name: 'SystemDept' })
+defineOptions({ name: 'SystemLoginLog' })
 </script>
