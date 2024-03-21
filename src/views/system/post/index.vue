@@ -3,16 +3,16 @@
     <ARow :gutter="24">
       <ACol :span="24">
         <ACard>
-          <AForm ref="filterFormRef" :model="queryParamsPage" class="dense-filter-form">
+          <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
                 <AFormItem label="岗位名称" name="name">
-                  <AInput v-model:value="queryParamsPage.name" placeholde r="请输入岗位名称" />
+                  <AInput v-model:value="queryParams.name" placeholde r="请输入岗位名称" />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
                 <AFormItem label="岗位编码" name="code">
-                  <AInput v-model:value="queryParamsPage.code" placeholder="请输入岗位编码" />
+                  <AInput v-model:value="queryParams.code" placeholder="请输入岗位编码" />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
@@ -54,6 +54,7 @@
             :loading="pending"
             defaultExpandAllRows
             :key="`data-${pending}`"
+            @change="onChange"
           >
             <template #bodyCell="scope">
               <template v-if="scope?.column.key === 'leader'">
@@ -134,8 +135,17 @@ const formatDate = (date: number) => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
-const { data, execute, pending, queryParamsPage, userList, onFilter, onFilterReset, pagination } =
-  useTable(filterFormRef)
+const {
+  data,
+  execute,
+  pending,
+  queryParams,
+  userList,
+  onFilter,
+  onFilterReset,
+  pagination,
+  onChange
+} = useTable(filterFormRef)
 
 defineOptions({ name: 'SystemPost' })
 </script>

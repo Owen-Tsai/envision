@@ -1,7 +1,7 @@
 import { ref, computed, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import type { TableProps, FormInstance, TablePaginationConfig } from 'ant-design-vue'
-import { getPostPage, type QueryParams, type QueryParamsPage } from '@/api/system/post'
+import { getPostPage, type ListQueryParams } from '@/api/system/post'
 
 export const columns: TableProps['columns'] = [
   { key: 'id', title: '岗位编号', dataIndex: 'id' },
@@ -15,9 +15,7 @@ export const columns: TableProps['columns'] = [
 ]
 
 export const useTable = (formRef: Ref<FormInstance>) => {
-  const queryParamsPage = ref<QueryParamsPage>({})
-
-  const queryParams = ref<QueryParams>({})
+  const queryParams = ref<ListQueryParams>({})
 
   const pagination = computed<TablePaginationConfig>(() => ({
     pageSize: queryParams.value.pageSize,
@@ -30,7 +28,14 @@ export const useTable = (formRef: Ref<FormInstance>) => {
     }
   }))
 
-  const { data, pending, execute } = useRequest(() => getPostPage(queryParamsPage.value), {
+  const onChange = ({ current, pageSize }: TablePaginationConfig) => {
+    queryParams.value.pageNo = current
+    queryParams.value.pageSize = pageSize
+
+    execute()
+  }
+
+  const { data, pending, execute } = useRequest(() => getPostPage(queryParams.value), {
     immediate: true
   })
 
@@ -48,9 +53,9 @@ export const useTable = (formRef: Ref<FormInstance>) => {
     pending,
     execute,
     queryParams,
-    queryParamsPage,
     onFilter,
     onFilterReset,
-    pagination
+    pagination,
+    onChange
   }
 }

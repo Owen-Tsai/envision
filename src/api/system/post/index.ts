@@ -14,17 +14,12 @@ export type PostListVO = {
   total: number
 }
 
-export type QueryParams = {
-  name?: string
-  status?: string
-}
-
-export type QueryParamsPage = CommonQueryParams & {
+export type ListQueryParams = CommonQueryParams & {
   name?: string
   code?: string
 }
 
-export function getPostPage(params?: QueryParamsPage) {
+export function getPostPage(params?: ListQueryParams) {
   return request.get<PostListVO>({
     url: '/system/post/page',
     params
