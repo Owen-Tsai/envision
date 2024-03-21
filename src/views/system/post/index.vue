@@ -6,17 +6,13 @@
           <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
-                <AFormItem label="部门名称" name="name">
-                  <AInput v-model:value="queryParams.name" placeholder="请输入部门名称" />
+                <AFormItem label="岗位名称" name="name">
+                  <AInput v-model:value="queryParams.name" placeholde r="请输入岗位名称" />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
-                <AFormItem label="部门状态" name="status">
-                  <ASelect
-                    v-model:value="queryParams.status"
-                    :options="commonStatus"
-                    placeholer="请选择菜单状态"
-                  />
+                <AFormItem label="岗位编码" name="code">
+                  <AInput v-model:value="queryParams.code" placeholder="请输入岗位编码" />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
@@ -31,7 +27,7 @@
       </ACol>
 
       <ACol :span="24">
-        <ACard title="部门管理" class="mt-4 flex-1">
+        <ACard title="岗位管理" class="mt-4 flex-1">
           <template #extra>
             <AFlex :gap="8">
               <AButton type="primary" :loading="pending" @click="showDialog()">
@@ -40,13 +36,6 @@
                 </template>
                 新增
               </AButton>
-              <ATooltip title="折叠/展开全部">
-                <AButton type="text" :loading="pending">
-                  <template #icon>
-                    <SwapOutlined :rotate="90" />
-                  </template>
-                </AButton>
-              </ATooltip>
               <ATooltip title="重新载入">
                 <AButton type="text" :loading="pending" @click="execute">
                   <template #icon>
@@ -58,13 +47,14 @@
           </template>
 
           <ATable
-            :data-source="data"
-            :pagination="false"
+            :data-source="data?.list"
+            :pagination="pagination"
             :columns="columns"
             row-key="id"
             :loading="pending"
             defaultExpandAllRows
             :key="`data-${pending}`"
+            @change="onChange"
           >
             <template #bodyCell="scope">
               <template v-if="scope?.column.key === 'leader'">
@@ -101,14 +91,7 @@
       </ACol>
     </ARow>
 
-    <ModalForm
-      v-if="visible"
-      :tree-data="data"
-      :user-data="userList"
-      :id="entryId"
-      @success="execute"
-      @close="visible = false"
-    />
+    <ModalForm v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
   </div>
 </template>
 
@@ -126,7 +109,7 @@ import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
-import { deleteDept } from '@/api/system/dept'
+import { deletePost } from '@/api/system/post'
 
 const filterFormRef = ref()
 
@@ -142,7 +125,7 @@ const showDialog = (id?: number) => {
 }
 
 const onDelete = (id: number) => {
-  deleteDept(id).then(() => {
+  deletePost(id).then(() => {
     message.success('删除成功')
     execute()
   })
@@ -152,8 +135,17 @@ const formatDate = (date: number) => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
-const { data, execute, pending, queryParams, userList, onFilter, onFilterReset } =
-  useTable(filterFormRef)
+const {
+  data,
+  execute,
+  pending,
+  queryParams,
+  userList,
+  onFilter,
+  onFilterReset,
+  pagination,
+  onChange
+} = useTable(filterFormRef)
 
-defineOptions({ name: 'SystemDept' })
+defineOptions({ name: 'SystemPost' })
 </script>

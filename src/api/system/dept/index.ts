@@ -5,7 +5,10 @@ export type DeptTreeNode = {
   title: string
   children?: DeptTreeNode[]
 }
-
+export type DeptTreeListVO = {
+  list: Array<DeptTreeNode>
+  total: number
+}
 export type DeptTreeVO = DeptTreeNode[]
 
 export type DeptVO = {
