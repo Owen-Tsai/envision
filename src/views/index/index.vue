@@ -22,4 +22,6 @@ import ChartCard from './chart.vue'
 import NoticeCard from './notifications.vue'
 import TodosCard from './todos.vue'
 import HelperSection from './helper.vue'
+
+defineOptions({ name: 'index' })
 </script>

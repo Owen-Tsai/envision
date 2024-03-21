@@ -1,5 +1,12 @@
 import { ref, toRefs, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import useViewCache from '@/stores/view-cache'
+
+/**
+ * set: cachedViews
+ * 打开 tab 时，检查该页面是否需要缓存，如果是，向set中添加缓存
+ * 关闭 tab 时，从缓存中移除该页面
+ */
 
 const useTabs = () => {
   const tabs = ref<Map<string, string>>(new Map())
@@ -8,15 +15,20 @@ const useTabs = () => {
   const { fullPath, meta, name } = toRefs(useRoute())
   const router = useRouter()
 
+  const viewCache = useViewCache()
+
   /**
    * Add tab, will NOT change the current route
    * will be automatically called on route change if tabs view is activited
    * @param path fullpath of the route to bed added
    * @param title text that will be displayed on tab
    */
-  const addTab = (path: string, title: string) => {
+  const addTab = (path: string, title: string, cacheName?: string) => {
     tabs.value.set(path, title)
     tabsHistory.value.push(path)
+    if (cacheName) {
+      viewCache.addCache(path, cacheName)
+    }
   }
 
   /**
@@ -32,6 +44,8 @@ const useTabs = () => {
     if (path === fullPath.value && redirect) {
       router.replace(typeof redirect === 'string' ? redirect : getLatestVisitedTab())
     }
+
+    viewCache.removeCache(path)
   }
 
   const removeTabsAfter = (idx: number) => {
@@ -97,9 +111,13 @@ const useTabs = () => {
   }
 
   onMounted(() => {
-    addTab('/index', '首页')
+    addTab('/index', '首页', 'index')
     if (fullPath.value !== '/index') {
-      addTab(fullPath.value, meta.value.title || (name.value as string))
+      addTab(
+        fullPath.value,
+        meta.value.title || (name.value as string),
+        meta.value.keepAlive && name.value ? (name.value as string) : undefined
+      )
     }
   })
 

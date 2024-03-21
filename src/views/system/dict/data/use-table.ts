@@ -1,22 +1,26 @@
 import { ref, computed, type Ref } from 'vue'
 import dayjs, { type Dayjs } from 'dayjs'
+import { useRoute } from 'vue-router'
 import useRequest from '@/hooks/use-request'
-import { getDictTypeList, type ListQueryParams, type DictTypeVO } from '@/api/system/dict/type'
+import { getDictDataList, type ListQueryParams, type DictDataItemVO } from '@/api/system/dict/data'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
-  { title: '字典编号', width: 90, dataIndex: 'id' },
-  { title: '字典名称', minWidth: 120, dataIndex: 'name' },
-  { title: '字典类别', minWidth: 120, dataIndex: 'type' },
-  { title: '字典状态', minWidth: 48, dataIndex: 'status' },
-  { title: '备注', minWidth: 120, dataIndex: 'remark' },
+  { title: '字典编码', width: 90, dataIndex: 'id' },
+  { title: '字典标签', dataIndex: 'label' },
+  { title: '字典键值', width: 120, dataIndex: 'value' },
+  { title: '字典排序', width: 120, dataIndex: 'sort' },
+  { title: '字典状态', width: 80, dataIndex: 'status' },
+  { title: '颜色类型', dataIndex: 'colorType' },
+  { title: 'CSS Class', dataIndex: 'cssClass' },
+  { title: '备注', dataIndex: 'remark' },
   {
     title: '创建时间',
-    minWidth: 120,
+    width: 120,
     dataIndex: 'createTime',
     sortDirections: ['ascend', 'descend'],
-    sorter: (a: DictTypeVO, b: DictTypeVO) => {
+    sorter: (a: DictDataItemVO, b: DictDataItemVO) => {
       return dayjs(a.createTime).isSameOrBefore(b.createTime) ? 1 : -1
     }
   },
@@ -27,15 +31,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const queryParams = ref<ListQueryParams>({})
   const dateRange = ref<[Dayjs, Dayjs]>()
 
-  const { data, execute, pending } = useRequest(
-    () =>
-      getDictTypeList({
-        ...queryParams.value
-      }),
-    {
-      immediate: true
-    }
-  )
+  const { data, execute, pending } = useRequest(() => getDictDataList(queryParams.value))
 
   const pagination = computed<TablePaginationConfig>(() => ({
     pageSize: queryParams.value.pageSize,
@@ -63,6 +59,14 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     queryParams.value.pageNo = current
     queryParams.value.pageSize = pageSize
 
+    execute()
+  }
+
+  const { params } = useRoute()
+
+  if (params.type) {
+    console.log(params.type)
+    queryParams.value.dictType = params.type as string
     execute()
   }
 

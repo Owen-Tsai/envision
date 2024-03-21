@@ -12,29 +12,52 @@ export type DeptTreeListVO = {
 export type DeptTreeVO = DeptTreeNode[]
 
 export type DeptVO = {
-  deptId: number
-  deptName: string
-}
-
-export type QueryParams = {
+  createTime?: number
+  email?: string
+  id?: number
+  leaderUserId?: number
   name?: string
-  status?: string
+  parentId?: number
+  phone?: string
+  sort?: number
+  status?: number
 }
 
-export type QueryParamsPage = CommonQueryParams & {
+export type TreeQueryParams = {
   name?: string
-  status?: string
+  status?: number
+  leaderUserId?: number
 }
 
-export function getDeptPageTree(params?: QueryParamsPage) {
-  return request.get<DeptTreeListVO>({
-    url: '/system/dept/tree-list-page',
+export const getDeptTree = (params?: TreeQueryParams) => {
+  return request.get<DeptTreeVO>({
+    url: '/system/dept/tree-list',
     params
   })
 }
 
-export function getDeptTree(params?: QueryParams) {
-  return request.get<DeptTreeNode>({
-    url: '/system/dept/tree-list'
+export const getDeptDetail = (id: number) => {
+  return request.get<DeptVO>({
+    url: `/system/dept/get?id=${id}`
+  })
+}
+
+export const createDept = (data: DeptVO) => {
+  return request.post({
+    url: '/system/dept/create',
+    data
+  })
+}
+
+export const updateDept = (data: DeptVO) => {
+  return request.put({
+    url: '/system/dept/update',
+    data
+  })
+}
+
+export const deleteDept = (id: number) => {
+  return request.delete({
+    url: `/system/dept/delete?id=${id}`
   })
 }

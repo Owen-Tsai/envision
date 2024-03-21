@@ -6,13 +6,17 @@
           <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
-                <AFormItem label="菜单名称" prop="name">
+                <AFormItem label="菜单名称" name="name">
                   <AInput v-model:value="queryParams.name" placeholder="请输入菜单名称" />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
-                <AFormItem label="菜单状态" prop="status">
-                  <ASelect v-model:value="queryParams.status" placeholer="请选择菜单状态" />
+                <AFormItem label="菜单状态" name="status">
+                  <ASelect
+                    v-model:value="queryParams.status"
+                    :options="commonStatus"
+                    placeholer="请选择菜单状态"
+                  />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
@@ -30,12 +34,6 @@
         <ACard title="菜单管理" class="mt-4 flex-1">
           <template #extra>
             <AFlex :gap="8">
-              <AButton :loading="pending">
-                <template #icon>
-                  <PlusOutlined />
-                </template>
-                新增
-              </AButton>
               <AButton type="primary" :loading="pending" @click="showDialog('add')">
                 <template #icon>
                   <PlusOutlined />
@@ -69,15 +67,34 @@
             :pagination="false"
           >
             <template #bodyCell="scope">
+              <template v-if="scope?.column.key === 'type'">
+                <ATag color="processing">
+                  {{ menuTypes.find((e) => e.value === scope.record.type)?.label }}
+                </ATag>
+              </template>
+              <template v-if="scope?.column.key === 'status'">
+                <EDictTag :dict-object="commonStatus" :value="scope.record.status" />
+              </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">
-                  <ATypographyLink @click="showDialog('edit', scope.record.id)"
-                    >修改</ATypographyLink
+                  <ATypographyLink @click="showDialog('edit', scope.record.id)">
+                    <EditOutlined />
+                    修改
+                  </ATypographyLink>
+                  <ATypographyLink @click="showDialog('add', scope.record.id)">
+                    <PlusOutlined />
+                    新增
+                  </ATypographyLink>
+                  <APopconfirm
+                    title="删除该菜单项将一并删除该菜单下的所有子菜单，确定要删除吗？"
+                    :overlay-inner-style="{ width: '260px' }"
+                    @confirm="onDelete(scope.record.id)"
                   >
-                  <ATypographyLink @click="showDialog('add', scope.record.id)"
-                    >新增</ATypographyLink
-                  >
-                  <ATypographyLink type="danger">删除</ATypographyLink>
+                    <ATypographyLink type="danger">
+                      <DeleteOutlined />
+                      删除
+                    </ATypographyLink>
+                  </APopconfirm>
                 </AFlex>
               </template>
             </template>
@@ -87,31 +104,36 @@
     </ARow>
 
     <ModalForm
-      v-model:open="visible"
-      v-model:value="formData"
+      v-if="visible"
       :mode="mode"
       :id="entryId"
       :tree-data="data"
+      @success="execute"
+      @close="visible = false"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { SwapOutlined, ReloadOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
+import {
+  SwapOutlined,
+  ReloadOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined
+} from '@ant-design/icons-vue'
+import useDict from '@/hooks/use-dict'
+import { menuTypes } from '@/utils/constants'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
-import type { MenuDTO } from '@/api/system/menu'
+import { deleteMenuWithChildren } from '@/api/system/menu'
 
 const filterFormRef = ref()
 
-const formData = ref<MenuDTO>({
-  name: '',
-  path: '',
-  permission: '',
-  sort: 0,
-  type: 1
-})
+const { commonStatus } = useDict('common_status')
+
 const visible = ref(false)
 // current entry for editing
 const entryId = ref<number | undefined>()
@@ -123,5 +145,13 @@ const showDialog = (action: 'add' | 'edit', id?: number) => {
   mode.value = action
 }
 
+const onDelete = async (id: number) => {
+  await deleteMenuWithChildren(id)
+  message.success('删除成功')
+  execute()
+}
+
 const { data, execute, pending, queryParams, onFilter, onFilterReset } = useTable(filterFormRef)
+
+defineOptions({ name: 'SystemMenu' })
 </script>

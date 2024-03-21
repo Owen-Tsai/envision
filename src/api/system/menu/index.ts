@@ -6,13 +6,13 @@ export type TreeQueryParams = {
   type?: string
 }
 
-type MenuItem = {
+export type MenuVO = {
   id?: number
-  name: string
-  path: string
-  permission: string
-  type: number
-  sort: number
+  name?: string
+  path?: string
+  permission?: string
+  type?: number
+  sort?: number
   parentId?: number
   icon?: string
   component?: string
@@ -21,43 +21,44 @@ type MenuItem = {
   visible?: boolean
   keepAlive?: boolean
   alwaysShow?: boolean
+  children?: MenuVO
 }
 
-export type MenuVO = MenuItem & {
-  children?: MenuItem[]
-}
-
-export type MenuDTO = MenuItem
-
-export function getMenuTree(params?: TreeQueryParams) {
+export const getMenuTree = (params?: TreeQueryParams) => {
   return request.get({
     url: '/system/menu/tree-list',
     params
   })
 }
 
-export function getMenuDetail(id: number) {
+export const getMenuDetail = (id: number) => {
   return request.get<MenuVO>({
     url: `/system/menu/get?id=${id}`
   })
 }
 
-export function createMenu(data: MenuDTO) {
+export const createMenu = (data: MenuVO) => {
   return request.post({
     url: '/system/menu/create',
     data
   })
 }
 
-export function updateMenu(data: MenuDTO) {
+export const updateMenu = (data: MenuVO) => {
   return request.put({
     url: '/system/menu/update',
     data
   })
 }
 
-export function deleteMenu(id: number) {
+export const deleteMenu = (id: number) => {
   return request.delete({
     url: `/system/menu/delete?id=${id}`
+  })
+}
+
+export const deleteMenuWithChildren = (id: number) => {
+  return request.delete({
+    url: `/system/menu/delete-batch?id=${id}`
   })
 }

@@ -22,6 +22,7 @@ export const generateRoutes = (routerMap: RouteItem[]): RouteRecordRaw[] => {
     if (!rawEntry.path.includes('http')) {
       const entry: any = {
         path: rawEntry.path,
+        name: rawEntry.componentName,
         component: () => ({})
       }
       const hasChildren = rawEntry.children && rawEntry.children.length > 0

@@ -6,13 +6,17 @@
           <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
-                <AFormItem label="部门名称" prop="name">
+                <AFormItem label="部门名称" name="name">
                   <AInput v-model:value="queryParams.name" placeholder="请输入部门名称" />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
-                <AFormItem label="部门状态" prop="status">
-                  <ASelect v-model:value="queryParams.status" placeholer="请选择菜单状态" />
+                <AFormItem label="部门状态" name="status">
+                  <ASelect
+                    v-model:value="queryParams.status"
+                    :options="commonStatus"
+                    placeholer="请选择菜单状态"
+                  />
                 </AFormItem>
               </ACol>
               <ACol :span="24" :lg="8">
@@ -30,13 +34,7 @@
         <ACard title="菜单管理" class="mt-4 flex-1">
           <template #extra>
             <AFlex :gap="8">
-              <AButton :loading="pending">
-                <template #icon>
-                  <PlusOutlined />
-                </template>
-                新增
-              </AButton>
-              <AButton type="primary" :loading="pending" @click="showDialog('add')">
+              <AButton type="primary" :loading="pending" @click="showDialog()">
                 <template #icon>
                   <PlusOutlined />
                 </template>
@@ -65,17 +63,36 @@
             :columns="columns"
             row-key="id"
             :loading="pending"
+            defaultExpandAllRows
+            :key="`data-${pending}`"
           >
             <template #bodyCell="scope">
+              <template v-if="scope?.column.key === 'leader'">
+                {{ userList?.find((e) => e.id === scope.record.leaderUserId)?.nickname }}
+              </template>
+              <template v-if="scope?.column.key === 'status'">
+                <EDictTag :value="scope.record.status" :dict-object="commonStatus" />
+              </template>
+              <template v-if="scope?.column.key === 'createTime'">
+                {{ formatDate(scope.record.createTime) }}
+              </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">
-                  <ATypographyLink @click="showDialog('edit', scope.record.id)"
-                    >修改</ATypographyLink
+                  <ATypographyLink @click="showDialog(scope.record.id)">
+                    <EditOutlined />
+                    修改
+                  </ATypographyLink>
+                  <APopconfirm
+                    title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"
+                    trigger="click"
+                    :overlay-style="{ maxWidth: '280px' }"
+                    @confirm="onDelete(scope.record.id)"
                   >
-                  <ATypographyLink @click="showDialog('add', scope.record.id)"
-                    >新增</ATypographyLink
-                  >
-                  <ATypographyLink type="danger">删除</ATypographyLink>
+                    <ATypographyLink type="danger">
+                      <DeleteOutlined />
+                      删除
+                    </ATypographyLink>
+                  </APopconfirm>
                 </AFlex>
               </template>
             </template>
@@ -84,30 +101,59 @@
       </ACol>
     </ARow>
 
-    <ModalForm v-model:open="visible" v-model:value="formData" :mode="mode" :edit-id="editId" />
+    <ModalForm
+      v-if="visible"
+      :tree-data="data"
+      :user-data="userList"
+      :id="entryId"
+      @success="execute"
+      @close="visible = false"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { SwapOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { message } from 'ant-design-vue'
+import {
+  SwapOutlined,
+  ReloadOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined
+} from '@ant-design/icons-vue'
+import dayjs from 'dayjs'
+import useDict from '@/hooks/use-dict'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
-import type { MenuDTO } from '@/api/system/menu'
+import { deleteDept } from '@/api/system/dept'
 
 const filterFormRef = ref()
 
-const formData = ref<MenuDTO>({})
+const { commonStatus } = useDict('common_status')
+
 const visible = ref(false)
 // current entry for editing
-const editId = ref<number | undefined>()
-const mode = ref<'add' | 'edit'>('add')
+const entryId = ref<number | undefined>()
 
-const showDialog = (action: 'add' | 'edit', id?: number) => {
-  editId.value = id
+const showDialog = (id?: number) => {
+  entryId.value = id
   visible.value = true
-  mode.value = action
 }
 
-const { data, execute, pending, queryParams, onFilter, onFilterReset } = useTable(filterFormRef)
+const onDelete = (id: number) => {
+  deleteDept(id).then(() => {
+    message.success('删除成功')
+    execute()
+  })
+}
+
+const formatDate = (date: number) => {
+  return dayjs(date).format('YYYY-MM-DD')
+}
+
+const { data, execute, pending, queryParams, userList, onFilter, onFilterReset } =
+  useTable(filterFormRef)
+
+defineOptions({ name: 'SystemDept' })
 </script>

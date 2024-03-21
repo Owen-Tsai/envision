@@ -6,15 +6,13 @@ import { filterTree, type Tree } from '@/utils/tree'
 const useDeptTree = () => {
   const filteredTreeData = ref<Tree[]>()
   const selectedKeys = ref<number[]>([])
-  const currentDeptName = ref('')
+  const currentDeptName = ref('全部')
   const searchText = ref('')
 
   const { data, pending } = useRequest(getDeptTree, {
     immediate: true,
     onSuccess(data) {
-      selectedKeys.value[0] = data[0].key
       filteredTreeData.value = data
-      currentDeptName.value = data[0].title
     }
   })
 

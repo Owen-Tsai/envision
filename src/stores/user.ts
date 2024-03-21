@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, shallowRef } from 'vue'
+import useStorage from '@/hooks/use-storage'
 import { getToken, removeToken, setToken } from '@/utils/auth'
 import { generateRoutes } from '@/utils/route'
 import {
@@ -13,6 +14,8 @@ import {
 import type { RouteRecordRaw } from 'vue-router'
 
 import defaultAvatar from '~img/default-avatar.png'
+
+const cacheKey = 'permission-info'
 
 export default defineStore('user', () => {
   const token = ref(getToken())
@@ -48,27 +51,42 @@ export default defineStore('user', () => {
   }
 
   const getUserInfo = () => {
-    return new Promise<PermissionInfoVO>((resolve, reject) => {
-      getPermissionInfo()
-        .then((res) => {
-          const { user: u, roles: rs, permissions: ps, menus } = res
+    const storage = useStorage('sessionStorage')
+    const permissionInfo = storage.get(cacheKey)
 
-          roles.value = rs
-          permissions.value = ps
-          routerMap.value = menus
-          user.value = {
-            ...u,
-            avatar: u.avatar || defaultAvatar
-          }
+    const process = (data: PermissionInfoVO) => {
+      const { user: u, roles: rs, permissions: ps, menus } = data
 
-          isUserInfoSet.value = true
-          routes.value = generateRoutes(menus)
-          resolve(res)
-        })
-        .catch((err) => {
-          reject(err)
-        })
-    })
+      roles.value = rs
+      permissions.value = ps
+      routerMap.value = menus
+      user.value = {
+        ...u,
+        avatar: u.avatar || defaultAvatar
+      }
+
+      isUserInfoSet.value = true
+      routes.value = generateRoutes(menus)
+    }
+
+    if (permissionInfo) {
+      return new Promise<PermissionInfoVO>((resolve) => {
+        process(permissionInfo)
+        resolve(permissionInfo)
+      })
+    } else {
+      return new Promise<PermissionInfoVO>((resolve, reject) => {
+        getPermissionInfo()
+          .then((res) => {
+            process(res)
+            storage.set(cacheKey, res)
+            resolve(res)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    }
   }
 
   const logout = () => {

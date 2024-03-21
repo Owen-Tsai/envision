@@ -1,26 +1,28 @@
 <template>
   <AModal
-    v-model:open="computedOpen"
+    v-model:open="open"
     :title="isAdd ? '新增字典类型' : '编辑字典类型'"
+    destroy-on-close
     :confirm-loading="loading"
     :after-close="resetFields"
-    @ok="handleSubmit"
-    @cancel="computedOpen = false"
+    @ok="submit"
   >
     <ASpin :spinning="loading">
-      <AForm ref="formRef" :label-col="{ span: 4 }" :model="formData" class="mt-4">
-        <AFormItem label="字典名称" name="dictName" :rules="[{ required: true, trigger: 'blur' }]">
-          <AInput v-model:value="formData.dictName" />
+      <AForm
+        ref="formRef"
+        :label-col="{ style: { width: '80px' } }"
+        :model="formData"
+        :rules="rules"
+        class="mt-4"
+      >
+        <AFormItem label="字典名称" name="name">
+          <AInput v-model:value="formData.name" placeholer="如：用户性别" />
         </AFormItem>
-        <AFormItem label="字典类型" name="dictType" :rules="[{ required: true, trigger: 'blur' }]">
-          <AInput v-model:value="formData.dictType" />
+        <AFormItem label="字典类型" name="type">
+          <AInput v-model:value="formData.type" placeholer="如：system_user_gender" />
         </AFormItem>
         <AFormItem label="状态" name="status">
-          <ARadioGroup v-model:value="formData.status">
-            <ARadio v-for="item in statusOpts" :key="item.dictValue" :value="item.dictValue">{{
-              item.dictLabel
-            }}</ARadio>
-          </ARadioGroup>
+          <ARadioGroup v-model:value="formData.status" :options="commonStatus as RadioOptions" />
         </AFormItem>
         <AFormItem label="备注" name="remark">
           <ATextarea v-model:value="formData.remark" />
@@ -31,76 +33,73 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, type PropType } from 'vue'
+import { ref, computed } from 'vue'
 import useDict from '@/hooks/use-dict'
-import { addType, updateType, getDetail, type TypeDTO } from '@/api/system/dict/type'
-import type { FormInstance } from 'ant-design-vue'
+import {
+  addDictType,
+  updateDictType,
+  getDictTypeDetail,
+  type DictTypeVO
+} from '@/api/system/dict/type'
+import { message, type FormInstance, type FormProps } from 'ant-design-vue'
+
+const rules: FormProps['rules'] = {
+  name: [{ required: true, message: '请填写字典名称' }],
+  type: [{ required: true, message: '请填写字典类型' }]
+}
 
 const props = defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  },
   id: {
     type: Number
-  },
-  value: {
-    type: Object as PropType<TypeDTO>,
-    required: true
   }
 })
 
-const emit = defineEmits(['update:value', 'update:open'])
+const emit = defineEmits(['success', 'close'])
 
+const formRef = ref<FormInstance>()
 const loading = ref(false)
+const open = ref(true)
+const formData = ref<DictTypeVO>({
+  name: '',
+  type: '',
+  status: 0
+})
 
-const { sys_normal_disable: statusOpts } = useDict('sys_normal_disable')
+const { commonStatus } = useDict('common_status')
 
 const isAdd = computed(() => props.id === undefined)
 
-const formData = computed({
-  get: () => props.value,
-  set: (val) => {
-    emit('update:value', val)
-  }
-})
+const submit = async () => {
+  try {
+    loading.value = true
+    await formRef.value?.validate()
 
-const computedOpen = computed({
-  get: () => props.open,
-  set: (val) => {
-    emit('update:open', val)
-  }
-})
+    if (isAdd.value) {
+      await addDictType(formData.value)
+      message.success('创建成功')
+    } else {
+      await updateDictType(formData.value)
+      message.success('保存成功')
+    }
 
-const modalActionCbk = () => {
-  loading.value = false
-}
-
-const handleSubmit = () => {
-  loading.value = true
-  if (isAdd.value) {
-    addType(formData.value).then(modalActionCbk)
-  } else {
-    updateType(formData.value).then(modalActionCbk)
+    emit('success')
+  } catch (e) {
+    //
+  } finally {
+    loading.value = false
   }
 }
-
-const formRef = ref<FormInstance>()
 
 const resetFields = () => {
   formRef.value?.resetFields()
+  emit('close')
 }
 
-watch(
-  () => props.id,
-  (val) => {
-    if (val !== undefined) {
-      loading.value = true
-      getDetail(val).then((res) => {
-        formData.value = res
-        loading.value = false
-      })
-    }
-  }
-)
+if (props.id) {
+  loading.value = true
+  getDictTypeDetail(props.id).then((res) => {
+    formData.value = res
+    loading.value = false
+  })
+}
 </script>

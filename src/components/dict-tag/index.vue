@@ -1,10 +1,10 @@
 <template>
-  <ATag v-if="dictEntry?.listClass" :color="dictEntry.listClass">{{ dictEntry.dictLabel }}</ATag>
-  <span v-else :class="dictEntry?.cssClass">{{ dictEntry?.dictLabel }}</span>
+  <ATag v-if="dictEntry?.colorType" :color="dictEntry.colorType">{{ dictEntry.label }}</ATag>
+  <span v-else :class="dictEntry?.cssClass">{{ dictEntry?.label }}</span>
 </template>
 
 <script lang="ts" setup>
-import { computed, watch, type PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 import type { DictDataVO } from '@/api/system/dict/data'
 
 const props = defineProps({
@@ -12,21 +12,12 @@ const props = defineProps({
     type: Object as PropType<DictDataVO>
   },
   value: {
-    type: String,
+    type: Number,
     required: true
   }
 })
 
 const dictEntry = computed(() => {
-  console.log(props.dictObject)
-  return props.dictObject?.filter((e) => e.dictValue === props.value)[0]
+  return props.dictObject?.filter((e) => e.value === props.value)[0]
 })
-
-watch(
-  () => props.dictObject,
-  (nv, ov) => {
-    console.log('changed from', ov, 'to', nv)
-  },
-  { deep: true }
-)
 </script>

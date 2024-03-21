@@ -12,9 +12,13 @@
             v-if="!deptTreeLoading"
             v-model:selected-keys="selectedKeys"
             :tree-data="filteredTreeData"
+            :field-names="{ key: 'id', title: 'name' }"
             default-expand-all
             @select="(key, { node }) => onTreeNodeSelect(node)"
           />
+          <AFlex v-else vertical :gap="16" class="w-full">
+            <ASkeletonButton v-for="i in 5" :key="i" block active />
+          </AFlex>
         </ACard>
       </ACol>
       <ACol :span="24" :lg="19">
@@ -22,24 +26,25 @@
           <ACard>
             <AForm
               ref="filterForm"
+              :model="queryParams"
+              :label-col="{ style: { width: '64px' } }"
               class="dense-filter-form"
               :class="{ expanded: filterExpanded }"
-              :model="queryParams"
             >
               <ARow :gutter="[8, 16]">
                 <ACol :lg="8" :span="24">
-                  <AFormItem label="用户账号" name="userName">
+                  <AFormItem label="用户账号" name="username">
                     <AInput
-                      v-model:value="queryParams.userName"
+                      v-model:value="queryParams.username"
                       placeholder="请输入用户账号"
                       allow-clear
                     />
                   </AFormItem>
                 </ACol>
                 <ACol :lg="8" :span="24">
-                  <AFormItem label="用户名称" name="nickName">
+                  <AFormItem label="用户名称" name="nickname">
                     <AInput
-                      v-model:value="queryParams.nickName"
+                      v-model:value="queryParams.nickname"
                       placeholder="请输入用户名称"
                       allow-clear
                     />
@@ -66,8 +71,9 @@
                   <AFormItem label="状态" name="status">
                     <ASelect
                       v-model:value="queryParams.status"
+                      :options="commonStatus"
                       placeholder="请输入用户状态"
-                    ></ASelect>
+                    />
                   </AFormItem>
                 </ACol>
                 <ACol :lg="{ span: 8 }" :span="24">
@@ -84,10 +90,10 @@
             </AForm>
           </ACard>
 
-          <ACard :title="`${currentDeptName}-用户列表`" class="mt-4 flex-1">
+          <ACard :title="`${currentDeptName}用户列表`" class="mt-4 flex-1">
             <template #extra>
               <AFlex :gap="8">
-                <AButton type="primary" :loading="pending" @click="showDialog()">
+                <AButton type="primary" :loading="pending" @click="showUserModal()">
                   <template #icon>
                     <PlusOutlined />
                   </template>
@@ -124,6 +130,7 @@
                     :un-checked-value="1"
                     checked-children="启用"
                     un-checked-children="停用"
+                    @change="(v) => onStatusChange(scope.record.id, v as number)"
                   />
                 </template>
                 <template v-if="scope?.column.key === 'createTime'">
@@ -131,17 +138,25 @@
                 </template>
                 <template v-if="scope?.column.key === 'actions'">
                   <AFlex :gap="16">
-                    <ATypographyLink @click="showDialog(scope.record.id)">
-                      <EditOutlined /> 编辑
+                    <ATypographyLink @click="showUserModal(scope.record.id)">
+                      <EditOutlined />
+                      编辑
                     </ATypographyLink>
                     <ADropdown>
-                      <ATypographyLink> <DownOutlined /> 更多 </ATypographyLink>
+                      <ATypographyLink>
+                        <DownOutlined />
+                        更多
+                      </ATypographyLink>
                       <template #overlay>
                         <AMenu>
-                          <AMenuItem>重置密码</AMenuItem>
-                          <AMenuItem>设置角色</AMenuItem>
+                          <AMenuItem @click="showPwdForm(scope.record.id, scope.record.nickname)">
+                            重置密码
+                          </AMenuItem>
+                          <AMenuItem @click="showRoleModal(scope.record.id, scope.record.nickname)">
+                            设置角色
+                          </AMenuItem>
                           <AMenuDivider />
-                          <AMenuItem danger>删除用户</AMenuItem>
+                          <AMenuItem danger @click="onDelete(scope.record.id)">删除用户</AMenuItem>
                         </AMenu>
                       </template>
                     </ADropdown>
@@ -154,7 +169,29 @@
       </ACol>
     </ARow>
 
-    <FormModal v-model:value="formData" v-model:open="visible" :id="entryId" />
+    <!-- add/edit user -->
+    <FormModal
+      v-if="userModalVisible"
+      :id="entryId"
+      @success="execute"
+      @close="userModalVisible = false"
+    />
+    <!-- change password -->
+    <PasswordFormModal
+      v-if="pwdModalVisible"
+      :id="entryId!"
+      :nickname="entryName!"
+      @success="execute"
+      @close="pwdModalVisible = false"
+    />
+    <!-- assign roles -->
+    <RoleFormModal
+      v-if="roleModalVisible"
+      :id="entryId!"
+      :nickname="entryName!"
+      @success="execute"
+      @close="roleModalVisible = false"
+    />
   </div>
 </template>
 
@@ -168,14 +205,24 @@ import {
   ExportOutlined,
   ReloadOutlined
 } from '@ant-design/icons-vue'
+import { message, Modal } from 'ant-design-vue'
 import dayjs from 'dayjs'
+import { updateUserStatus, deleteUser } from '@/api/system/user'
+import useDict from '@/hooks/use-dict'
 import FormModal from './form.vue'
+import PasswordFormModal from './password-form.vue'
+import RoleFormModal from './roles-form.vue'
 import useDeptTree from './use-dept-tree'
 import { columns, useUserTable } from './use-user-table'
+import { useAddOrUpdate, usePasswordReset, useRoleConfig } from './use-user-actions'
 import type { Tree } from '@/utils/tree'
-import type { UserDTO } from '@/api/system/user'
 
 const filterForm = ref()
+
+const { commonStatus } = useDict('common_status')
+
+const entryId = ref<number | undefined>()
+const entryName = ref<string | undefined>()
 
 const { currentDeptName, deptTreeLoading, filteredTreeData, searchText, selectedKeys } =
   useDeptTree()
@@ -193,25 +240,60 @@ const {
   toggle
 } = useUserTable(filterForm)
 
-const formData = ref<UserDTO>({})
-const visible = ref(false)
-// current entry for editing
-const entryId = ref<number | undefined>()
+// for create/update user
+const { modalVisible: userModalVisible, showModal: showUserModal } = useAddOrUpdate(entryId)
+// for password reset
+const { modalVisible: pwdModalVisible, showModal: showPwdForm } = usePasswordReset(
+  entryId,
+  entryName
+)
 
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
+// for config user roles
+const { modalVisible: roleModalVisible, showModal: showRoleModal } = useRoleConfig(
+  entryId,
+  entryName
+)
+
+const onStatusChange = async (id: number, status: number) => {
+  try {
+    await updateUserStatus(id, status)
+    message.success('操作成功')
+  } finally {
+    execute()
+  }
 }
 
+const onDelete = (id: number) => {
+  Modal.confirm({
+    title: '删除用户',
+    content: '此操作不可撤销，确定要删除该用户吗？',
+    onOk() {
+      deleteUser(id).then(() => {
+        execute()
+      })
+    }
+  })
+}
+
+let oldSelectedKey: number | string | undefined = undefined
+
 const onTreeNodeSelect = (node: Tree) => {
-  currentDeptName.value = node.title
-  queryParams.value.deptId = node.key.toString()
+  const hasSelected = node.key === oldSelectedKey
+  if (!hasSelected) {
+    oldSelectedKey = node.key
+  } else {
+    oldSelectedKey = undefined
+  }
+  currentDeptName.value = hasSelected ? '全部' : node.name
+  queryParams.value.deptId = hasSelected ? undefined : node.key.toString()
   execute()
 }
 
 const formatDate = (date: string) => {
   return dayjs(date).format('YYYY-MM-DD')
 }
+
+defineOptions({ name: 'SystemUser' })
 </script>
 
 <style lang="scss" scoped>

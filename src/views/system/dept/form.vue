@@ -1,101 +1,139 @@
 <template>
   <AModal
-    v-model:open="computedOpen"
-    :title="isAdd ? '新增菜单' : '编辑菜单'"
-    @cancel="computedOpen = false"
+    v-model:open="open"
+    :title="id === undefined ? '新增部门' : '编辑部门'"
+    :after-close="onClose"
+    destroy-on-close
+    @ok="submit"
   >
-    <AForm ref="formRef" :model="formData">
-      <AFormItem label="上级菜单" prop="parentId">
-        <ATreeSelect
-          v-model:value="formData.parentId"
-          show-search
-          :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
-          tree-default-expand-all
-          :tree-data="treeData"
-        />
-      </AFormItem>
-      <AFormItem label="菜单名称" prop="name">
-        <AInput v-model:value="formData.name" placeholder="请输入菜单名称" />
-      </AFormItem>
-      <AFormItem label="菜单类型" prop="type">
-        <ARadioGroup v-model:value="formData.type" :options="menuTypes" />
-      </AFormItem>
-      <AFormItem label="菜单图标" prop="icon">
-        <IconSelect v-model:value="formData.icon" placeholer="请选择菜单图标" />
-      </AFormItem>
+    <AForm
+      ref="formRef"
+      :model="formData"
+      :label-col="{ style: { width: '80px' } }"
+      :rules="rules"
+      class="mt-4"
+    >
+      <ASpin :spinning="loading">
+        <AFormItem label="上级部门" name="parentId">
+          <ATreeSelect
+            v-model:value="formData.parentId"
+            show-search
+            :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
+            :field-names="{ label: 'name', value: 'id' }"
+            tree-default-expand-all
+            :tree-data="treeData"
+          />
+        </AFormItem>
+        <AFormItem label="部门名称" name="name">
+          <AInput v-model:value="formData.name" placeholder="请输入菜单名称" />
+        </AFormItem>
+        <AFormItem label="负责人" name="leaderUserId">
+          <ASelect
+            v-model:value="formData.leaderUserId"
+            :options="userData"
+            :field-names="{ label: 'nickname', value: 'id' }"
+            placeholder="请输入用户名称进行过滤"
+            show-search
+            :filter-option="(input, option) => filterOption(input, option, 'nickname')"
+          />
+        </AFormItem>
+        <AFormItem label="联系电话" name="phone">
+          <AInput v-model:value="formData.phone" placeholder="请输入联系电话" />
+        </AFormItem>
+        <AFormItem label="邮箱" name="email">
+          <AInput v-model:value="formData.email" placeholder="请输入邮箱" />
+        </AFormItem>
+        <ARow>
+          <ACol :span="12">
+            <AFormItem label="显示顺序" name="sort">
+              <AInputNumber v-model:value="formData.sort" class="w-full" />
+            </AFormItem>
+          </ACol>
+          <ACol :span="12">
+            <AFormItem label="状态" name="status">
+              <ASelect v-model:value="formData.status" :options="commonStatus" />
+            </AFormItem>
+          </ACol>
+        </ARow>
+      </ASpin>
     </AForm>
   </AModal>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, type PropType } from 'vue'
-import IconSelect from '@/components/icon-select/index.vue'
-import type { FormInstance, TreeSelectProps } from 'ant-design-vue'
-import { getMenuDetail, type MenuDTO } from '@/api/system/menu'
-
-const menuTypes = [
-  { label: '菜单', value: 1 },
-  { label: '目录', value: 2 },
-  { label: '操作', value: 3 }
-]
+import { ref, type PropType } from 'vue'
+import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
+import { getDeptDetail, createDept, updateDept, type DeptVO } from '@/api/system/dept'
+import { filterOption } from '@/utils/envision'
+import useDict from '@/hooks/use-dict'
+import type { SimpleUserVO } from '@/api/system/user'
 
 const loading = ref(false)
 
+const { commonStatus } = useDict('common_status')
+
+const rules = ref<FormProps['rules']>({
+  name: [{ required: true, message: '请输入部门名称' }]
+})
+
 const props = defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  },
-  mode: {
-    type: String as PropType<'add' | 'edit'>,
-    default: 'add'
-  },
-  value: {
-    type: Object as PropType<MenuDTO>,
-    required: true
-  },
   treeData: {
     type: Object as PropType<TreeSelectProps['treeData']>
   },
-  editId: {
+  userData: {
+    type: Array as PropType<SimpleUserVO>
+  },
+  id: {
     type: Number,
     default: undefined
   }
 })
 
-const emit = defineEmits(['update:open', 'update:value'])
+const emit = defineEmits(['success', 'close'])
 
-const formData = computed({
-  get: () => props.value,
-  set: (val) => {
-    emit('update:value', val)
-  }
-})
-
-const computedOpen = computed({
-  get: () => props.open,
-  set: (val) => {
-    emit('update:open', val)
-  }
-})
-
-const isAdd = computed(() => props.mode === 'add')
-
+const formData = ref<DeptVO>({})
 const formRef = ref<FormInstance>()
 
-watch([() => props.editId, () => props.mode], ([newId, newMode]) => {
-  loading.value = true
-  if (newMode === 'edit') {
-    if (newId) {
-      getMenuDetail(newId).then((data) => {
-        formData.value = data
-        loading.value = false
-      })
+const open = ref(true)
+
+const onClose = () => {
+  formRef.value?.resetFields()
+  emit('close')
+}
+
+const submit = async () => {
+  try {
+    loading.value = true
+    await formRef.value?.validate()
+    if (props.id !== undefined) {
+      // edit
+      await updateDept(formData.value)
+      message.success('保存成功')
+    } else {
+      // add
+      await createDept(formData.value)
+      message.success('创建成功')
     }
-  } else {
-    if (newId) {
-      formData.value.parentId = newId
-    }
+
+    open.value = false
+    emit('success')
+  } catch (e) {
+    // do nothing at the moment
+    // until we have a unified error handling precedure
+  } finally {
+    loading.value = false
   }
-})
+}
+
+// load detail
+if (props.id) {
+  loading.value = true
+  getDeptDetail(props.id).then((data) => {
+    if (data.parentId === 0) {
+      data.parentId = undefined
+    }
+    formData.value = data
+    loading.value = false
+  })
+}
 </script>

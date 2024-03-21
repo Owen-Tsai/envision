@@ -20,7 +20,7 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000
+  timeout: 30000
 })
 
 service.interceptors.request.use(
@@ -171,8 +171,8 @@ const redirectForAuth = () => {
       title: '登录超时',
       content: '登陆状态已过期。您可以留在当前页面，或重新进行登录。',
       okText: '重新登录',
-      onOk() {
-        useUserStore().logout()
+      async onOk() {
+        await useUserStore().logout()
         reloginHint.show = false
         window.location.href = '/login'
       },
