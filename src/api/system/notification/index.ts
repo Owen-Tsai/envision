@@ -20,7 +20,7 @@ export type ListQueryParams = CommonQueryParams & {
   type?: number
 }
 
-export const getNotificationList = (params: ListQueryParams) => {
+export const getNotificationList = (params?: ListQueryParams) => {
   return request.get<NotificationListVO>({
     url: '/system/notice/page',
     params

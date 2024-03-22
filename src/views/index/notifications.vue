@@ -1,30 +1,43 @@
 <template>
   <ACard title="通知公告">
     <template #extra>
-      <ATypographyLink>查看全部</ATypographyLink>
+      <ATypographyLink @click="toNotificationList">查看全部</ATypographyLink>
     </template>
     <div>
-      <RouterLink
-        v-for="item in data?.rows"
-        :key="item.noticeId"
-        :to="`/notice/${item.noticeId}`"
-        class="item"
-      >
-        <EDictTag :dict-object="noticeType" :value="item.noticeType" />
-        <div class="truncate flex-grow-1">{{ item.noticeTitle }}</div>
-      </RouterLink>
+      <ASpin :spinning="pending">
+        <div class="min-h-20">
+          <RouterLink
+            v-for="item in data?.list"
+            :key="item.id"
+            :to="`/system/notice/${item.id}`"
+            class="item"
+          >
+            <EDictTag :dict-object="systemNoticeType" :value="item.type!" />
+            <div class="truncate flex-grow-1">{{ item.title }}</div>
+          </RouterLink>
+        </div>
+      </ASpin>
     </div>
   </ACard>
 </template>
 
 <script lang="ts" setup>
+import { useRouter } from 'vue-router'
 import useDict from '@/hooks/use-dict'
 import useRequest from '@/hooks/use-request'
-import { shortList } from '@/api/system/notice'
+import { getNotificationList } from '@/api/system/notification'
 
-const { sys_notice_type: noticeType } = useDict('sys_notice_type')
+const { push } = useRouter()
 
-// const { data, pending } = useRequest(shortList, { immediate: true })
+const { systemNoticeType } = useDict('system_notice_type')
+
+const { data, pending } = useRequest(() => getNotificationList({ pageNo: 1, pageSize: 5 }), {
+  immediate: true
+})
+
+const toNotificationList = () => {
+  push('/system/notice')
+}
 </script>
 
 <style lang="scss" scoped>
