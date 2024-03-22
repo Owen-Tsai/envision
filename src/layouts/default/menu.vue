@@ -72,6 +72,7 @@ const setDefaultExpandedKeys = () => {
 watchEffect(() => {
   const { path } = currentRoute.value
   selectedKeys.value = [path]
+  setDefaultExpandedKeys()
 })
 
 setDefaultExpandedKeys()
