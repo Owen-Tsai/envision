@@ -13,6 +13,8 @@ import 'custom-vue-scrollbar/dist/style.css'
 import 'virtual:uno.css'
 import '@/styles/index.scss'
 
+import '@wangeditor/editor/dist/css/style.css'
+
 import App from './App.vue'
 import router from './router'
 import './router/guard'
