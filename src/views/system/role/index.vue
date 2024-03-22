@@ -11,12 +11,12 @@
         <ARow :gutter="[0, 16]">
           <ACol :lg="8" :span="24">
             <AFormItem label="角色名称" name="name">
-              <AInput v-model:value="queryParams.name" placeholder="请输入字典名称" allow-clear />
+              <AInput v-model:value="queryParams.name" placeholder="请输入角色名称" allow-clear />
             </AFormItem>
           </ACol>
           <ACol :lg="8" :span="24">
             <AFormItem label="角色标识" name="code">
-              <AInput v-model:value="queryParams.code" placeholder="请输入字典类型" allow-clear />
+              <AInput v-model:value="queryParams.code" placeholder="请输入角色标识" allow-clear />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
