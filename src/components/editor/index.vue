@@ -29,6 +29,8 @@ import { Toolbar, Editor } from '@wangeditor/editor-for-vue'
 import { getTenantId, getFormattedToken } from '@/utils/auth'
 import type { IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 
+type InsertFnType = (url: string, alt: string, href: string) => void
+
 const editorRef = shallowRef()
 const toolbar = ref()
 
@@ -81,6 +83,7 @@ const editorConfig = computed<Partial<IEditorConfig>>(() => {
     },
     MENU_CONF: {
       ['uploadImage']: {
+        server: import.meta.env.VITE_UPLOAD_URL,
         maxFileSize: (10 * 1024) & 1024,
         maxNumberOfFiles: 20,
         // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端
@@ -106,9 +109,14 @@ const editorConfig = computed<Partial<IEditorConfig>>(() => {
         onError(file: File, err: any, res: any) {
           alert(err.message)
           console.error('onError', file, err, res)
+        },
+        // 自定义插入图片
+        customInsert(res: any, insertFn: InsertFnType) {
+          insertFn(res.data, 'image', res.data)
         }
       }
-    }
+    },
+    uploadImgShowBase64: true
   }
 })
 
