@@ -7,6 +7,7 @@
     "noEmit": true,
     "baseUrl": ".",
     "declaration": false,
+    "moduleResolution": "Node",
     "paths": {
       "@/*": ["./src/*"],
       "~img/*": ["./src/assets/img/*"]
