@@ -44,7 +44,3 @@ pnpm run dev
 - Envision 具有多个完全同步的公网 repo 地址。如你在一个无法访问公司 git 服务的网络环境下，可以访问以下仓库获取源代码：
   - Github 地址：[https://github.com/Owen-Tsai/envision.git](https://github.com/Owen-Tsai/envision)。
   - Gitee 地址（需要获取授权）：[https://gitee.com/envision-team/envision.git](https://gitee.com/envision-team/envision)
-
-## 设计和开发文档
-
-*正在撰写，将发布于项目空间的 [Wiki](http://113.128.222.8:82/envision-team/envision/-/wikis/home) 中。*
