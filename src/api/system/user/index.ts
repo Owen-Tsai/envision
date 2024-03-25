@@ -14,6 +14,7 @@ export type UserVO = {
   postIds?: number[]
   roleIds?: number[]
   remark?: string
+  avatar?: string
 }
 
 export type UserListVO = {
@@ -26,7 +27,7 @@ export type ListQueryParams = CommonQueryParams & {
   nickname?: string
   mobile?: string
   status?: number
-  deptId?: string
+  deptId?: string | number
 }
 
 export type SimpleUserVO = Array<{
