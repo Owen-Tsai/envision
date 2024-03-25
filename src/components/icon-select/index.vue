@@ -78,7 +78,6 @@ const icon = computed({
 })
 
 const onSelect = (entry: any) => {
-  console.log(entry)
   icon.value = entry
   ctx.onFieldChange()
   open.value = false

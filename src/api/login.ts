@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import type { MenuVO } from '@/api/system/menu'
 
 export type Token = {
   id: number // 编号
@@ -44,24 +45,9 @@ export type LoginVO = {
   userId: number
 }
 
-export type RouteItem = {
-  alwaysShow?: boolean
-  children?: RouteItem[] | null
-  component?: string | null
-  componentName?: string | null
-  icon?: string | null
-  id: number
-  keepAlive?: boolean | null
-  name: string | null
-  parentId: number
-  path: string
-  visible?: boolean
-  isCustomLayout?: boolean
-}
-
 export type PermissionInfoVO = {
   user: User
-  menus: RouteItem[]
+  menus: MenuVO[]
   roles: string[]
   permissions: string[]
 }

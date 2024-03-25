@@ -1,6 +1,6 @@
 import DefaultLayout from '@/layouts/default/index.vue'
 import type { RouteRecordRaw } from 'vue-router'
-import type { RouteItem } from '@/api/login'
+import type { MenuVO } from '@/api/system/menu'
 
 const modules = import.meta.glob('../views/**/*.vue')
 
@@ -15,11 +15,11 @@ const loadComponentFrom = (path: string, folder: 'views' | 'layouts') => {
   return res
 }
 
-export const generateRoutes = (routerMap: RouteItem[]): RouteRecordRaw[] => {
+export const generateRoutes = (routerMap: MenuVO[]): RouteRecordRaw[] => {
   const res: RouteRecordRaw[] = []
 
   routerMap.forEach((rawEntry) => {
-    if (!rawEntry.path.includes('http')) {
+    if (!rawEntry.path?.includes('http')) {
       const entry: any = {
         path: rawEntry.path,
         name: rawEntry.componentName,
@@ -53,6 +53,10 @@ export const generateRoutes = (routerMap: RouteItem[]): RouteRecordRaw[] => {
         keepAlive: !!rawEntry.keepAlive,
         title: rawEntry.name || rawEntry.componentName || '',
         visible: rawEntry.visible
+      }
+
+      if (rawEntry.params) {
+        entry.query = JSON.parse(rawEntry.params)
       }
 
       res.push(entry)

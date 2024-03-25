@@ -5,6 +5,7 @@ import { getToken } from '@/utils/auth'
 import useUserStore from '@/stores/user'
 import useAppStore from '@/stores/app'
 import router from './index'
+import DefaultLayout from '@/layouts/default/index.vue'
 
 const guardWhiteList = ['/login', '/register']
 
@@ -28,7 +29,21 @@ router.beforeEach((to, from, next) => {
             reloginHint.show = false
             userStore.routes?.forEach((record) => {
               if (!record.path.includes('http')) {
-                router.addRoute(record)
+                if (
+                  (!record.children || record.children?.length === 0) &&
+                  record.meta?.parentId === 0 &&
+                  !record.meta?.isCustomLayout
+                ) {
+                  // for first level menu(w/o children routes) and customLayout set to false
+                  // render them under root to use the default layout
+                  router.addRoute({
+                    path: '/',
+                    component: DefaultLayout,
+                    children: [record]
+                  })
+                } else {
+                  router.addRoute(record)
+                }
               }
             })
 

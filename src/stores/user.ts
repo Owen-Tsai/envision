@@ -64,6 +64,7 @@ export default defineStore('user', () => {
         ...u,
         avatar: u.avatar || defaultAvatar
       }
+      id.value = user.value.id as number
 
       isUserInfoSet.value = true
       routes.value = generateRoutes(menus)
@@ -91,11 +92,13 @@ export default defineStore('user', () => {
 
   const logout = () => {
     return new Promise((resolve, reject) => {
+      const storage = useStorage('sessionStorage')
       doLogout()
         .then(() => {
           token.value = ''
           roles.value = []
           permissions.value = []
+          storage.delete(cacheKey)
           removeToken()
           resolve(true)
         })

@@ -64,7 +64,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const { params } = useRoute()
 
   if (params.type) {
-    console.log(params.type)
     queryParams.value.dictType = params.type as string
     execute()
   }

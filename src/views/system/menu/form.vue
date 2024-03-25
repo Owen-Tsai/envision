@@ -11,7 +11,7 @@
       ref="formRef"
       :model="formData"
       :rules="rules"
-      :label-col="{ style: { width: '80px' } }"
+      :label-col="{ style: { width: '90px' } }"
       class="mt-4"
     >
       <ASpin :spinning="loading">
@@ -39,16 +39,30 @@
           <AFormItem label="路由地址" name="path">
             <AInput v-model:value="formData.path" placeholder="请输入路由地址" />
           </AFormItem>
-        </template>
-        <template v-if="formData.type === 2">
+          <AFormItem label="布局类型">
+            <ARadioGroup v-model:value="formData.isCustomLayout" option-type="button">
+              <ARadio :value="false">默认布局</ARadio>
+              <ARadio :value="true">非默认布局</ARadio>
+            </ARadioGroup>
+            <ATooltip
+              title="当菜单或目录启用非默认布局时，组件内容将不再渲染到默认布局组件中。另外，当目录启用非默认布局时，其下所有子菜单都将渲染到【组件路径】字段对应的组件中作为子路由。"
+            >
+              <QuestionCircleFilled class="field-help ml-4" />
+            </ATooltip>
+          </AFormItem>
           <AFormItem label="组件路径">
             <AInput v-model:value="formData.component" placeholder="请输入组件文件路径" />
           </AFormItem>
+        </template>
+        <template v-if="formData.type === 2">
           <AFormItem label="组件名称">
             <AInput v-model:value="formData.componentName" placeholder="请输入组件名称" />
           </AFormItem>
+          <AFormItem label="路由参数">
+            <AInput v-model:value="formData.params" placeholder="请输入路由参数" />
+          </AFormItem>
         </template>
-        <AFormItem label="权限标识" name="permission">
+        <AFormItem v-if="formData.type !== 3" label="权限标识" name="permission">
           <AInput v-model.value="formData.permission" placeholder="请输入权限标识" />
         </AFormItem>
         <ARow>
@@ -74,22 +88,24 @@
               </ARadioGroup>
             </AFormItem>
           </ACol>
-          <ACol :span="12" v-if="formData.type !== 3">
-            <AFormItem label="显示状态" name="visible">
-              <ARadioGroup v-model:value="formData.visible" option-type="button">
-                <ARadio :value="true">显示</ARadio>
-                <ARadio :value="false">隐藏</ARadio>
-              </ARadioGroup>
-            </AFormItem>
-          </ACol>
-          <ACol :span="12" v-if="formData.type !== 3">
-            <AFormItem label="总是显示" name="alwaysShow">
-              <ARadioGroup v-model:value="formData.alwaysShow" option-type="button">
-                <ARadio :value="true">是</ARadio>
-                <ARadio :value="false">否</ARadio>
-              </ARadioGroup>
-            </AFormItem>
-          </ACol>
+          <template v-if="formData.type !== 3">
+            <ACol :span="12">
+              <AFormItem label="显示状态" name="visible">
+                <ARadioGroup v-model:value="formData.visible" option-type="button">
+                  <ARadio :value="true">显示</ARadio>
+                  <ARadio :value="false">隐藏</ARadio>
+                </ARadioGroup>
+              </AFormItem>
+            </ACol>
+            <ACol :span="12">
+              <AFormItem label="总是显示" name="alwaysShow">
+                <ARadioGroup v-model:value="formData.alwaysShow" option-type="button">
+                  <ARadio :value="true">是</ARadio>
+                  <ARadio :value="false">否</ARadio>
+                </ARadioGroup>
+              </AFormItem>
+            </ACol>
+          </template>
         </ARow>
       </ASpin>
     </AForm>
@@ -103,6 +119,7 @@ import { message, type FormInstance, type TreeSelectProps, type FormProps } from
 import { getMenuDetail, createMenu, updateMenu, type MenuVO } from '@/api/system/menu'
 import useDict from '@/hooks/use-dict'
 import { menuTypes } from '@/utils/constants'
+import { QuestionCircleFilled } from '@ant-design/icons-vue'
 
 const { commonStatus } = useDict('common_status')
 
@@ -134,7 +151,14 @@ const emit = defineEmits(['success', 'close'])
 const isAdd = computed(() => props.mode === 'add')
 
 const formRef = ref<FormInstance>()
-const formData = ref<MenuVO>({})
+const formData = ref<MenuVO>({
+  alwaysShow: true,
+  type: 1,
+  status: 0,
+  keepAlive: true,
+  visible: true,
+  isCustomLayout: false
+})
 const open = ref(true)
 
 const resetFields = () => {

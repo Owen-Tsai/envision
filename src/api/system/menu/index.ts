@@ -21,7 +21,9 @@ export type MenuVO = {
   visible?: boolean
   keepAlive?: boolean
   alwaysShow?: boolean
-  children?: MenuVO
+  isCustomLayout?: boolean
+  params?: string
+  children?: MenuVO[]
 }
 
 export const getMenuTree = (params?: TreeQueryParams) => {
