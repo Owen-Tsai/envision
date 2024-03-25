@@ -1,46 +1,46 @@
 # envision
 
-This template should help get you started developing with Vue 3 in Vite.
+以 Vue3 和 TypeScript 为核心技术，正确、简单、流畅的前端开发框架。
 
-## Recommended IDE Setup
+## 前提
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- Node.js。经测试的版本包括 v16.16.0，v18.18.2 等。更高版本应当可以正确运行；
+- pnpm。通过`npm install -g pnpm`安装。
 
-## Type Support for `.vue` Imports in TS
+> 建议前端开发者安装 [nvm-windows](https://github.com/coreybutler/nvm-windows)，以更方便地在多个安装的 node 版本间进行切换。
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+## 使用
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+```bash
+git clone http://113.128.222.8:82/envision-team/envision.git
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+cd envision
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
+# 安装依赖。任何一次拉取后若`package.json`文件存在变动都需要执行
 pnpm install
+# 在开发环境下运行
+pnpm run dev
 ```
 
-### Compile and Hot-Reload for Development
+## 推荐开发环境
 
-```sh
-pnpm dev
-```
+> 如果仅需要运行前端服务，你并不需要安装开发环境。
 
-### Type-Check, Compile and Minify for Production
+- 安装 [VSCode](https://code.visualstudio.com/)；
+- 安装以下 VSCode 的插件：
+  - [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+  - [UnoCSS](https://marketplace.visualstudio.com/items?itemName=antfu.unocss)
+  - [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+  - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- 推荐安装以下 VSCode 的插件：
+  - [Path Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense)
+  - [GitLens - Git supercharged](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+  - [简体中文语言包](https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans)
 
-```sh
-pnpm build
-```
+## 注意事项
 
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-pnpm lint
-```
+- 发起 commit 前，系统将自动检查**已暂存、将要提交**的代码中存在的错误（通过 ESLint），并对这些文件进行统一格式化（通过 Prettier）。该流程将使提交过程变慢，属于正常现象；如果存在不可自动修复的问题，提交将被放弃，需要手动修复该错误后才能提交；
+- 在 clone 后使用 Envision 框架前，请记得更改 git 源的地址，避免提交到本仓库而非业务项目仓库；
+- Envision 具有多个完全同步的公网 repo 地址。如你在一个无法访问公司 git 服务的网络环境下，可以访问以下仓库获取源代码：
+  - Github 地址：[https://github.com/Owen-Tsai/envision.git](https://github.com/Owen-Tsai/envision)。
+  - Gitee 地址（需要获取授权）：[https://gitee.com/envision-team/envision.git](https://gitee.com/envision-team/envision)
