@@ -3,3 +3,11 @@ export const menuTypes = [
   { label: '菜单', value: 2 },
   { label: '操作', value: 3 }
 ]
+
+export const DICT_SYSTEM_DATA_SCOPE = {
+  all: 1,
+  custom: 2,
+  deptOnly: 3,
+  deptAndChildren: 4,
+  self: 5
+}

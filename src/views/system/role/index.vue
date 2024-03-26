@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard>
+    <ACard v-if="permission.has('system:role:query')">
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
@@ -50,13 +50,18 @@
     <ACard title="角色列表" class="mt-4">
       <template #extra>
         <AFlex :gap="8">
-          <AButton type="primary" :loading="pending" @click="showDialog()">
+          <AButton
+            v-if="permission.has('system:role:create')"
+            type="primary"
+            :loading="pending"
+            @click="showRoleConfigDialog()"
+          >
             <template #icon>
               <PlusOutlined />
             </template>
             新增
           </AButton>
-          <ATooltip title="导出">
+          <ATooltip v-if="permission.has('system:role:export')" title="导出">
             <AButton type="text" :loading="pending">
               <template #icon>
                 <ExportOutlined />
@@ -90,12 +95,45 @@
             </template>
             <template v-if="scope!.column.title === '操作'">
               <AFlex :gap="16">
-                <ATypographyLink @click="showDialog(scope?.record.id)">
+                <ATypographyLink
+                  v-if="permission.has('system:role:update')"
+                  @click="showRoleConfigDialog(scope?.record.id)"
+                >
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
+                <ADropdown
+                  v-if="
+                    permission.hasOne(
+                      'system:permission:assign-role-menu',
+                      'system:permission:assign-role-data-scope'
+                    )
+                  "
+                >
+                  <ATypographyLink>
+                    <DownOutlined />
+                    权限配置
+                  </ATypographyLink>
+                  <template #overlay>
+                    <AMenu>
+                      <AMenuItem
+                        :disabled="!permission.has('system:permission:assign-role-menu')"
+                        @click="showPermissionConfigDialog(scope!.record, 'menu')"
+                      >
+                        菜单权限
+                      </AMenuItem>
+                      <AMenuItem
+                        :disabled="!permission.has('system:permission:assign-role-data-scope')"
+                        @click="showPermissionConfigDialog(scope!.record, 'data')"
+                      >
+                        数据权限
+                      </AMenuItem>
+                    </AMenu>
+                  </template>
+                </ADropdown>
                 <APopconfirm
-                  title="删除角色后，也将一并解除相应用户（如有）的角色权限。确定删除吗？"
+                  v-if="permission.has('system:role:delete')"
+                  title="删除角色后，也将一并解除拥有该角色的用户（如有）的相应权限。确定删除吗？"
                   :overlay-style="{ width: '260px' }"
                   @confirm="onDelete(scope?.record.id)"
                 >
@@ -111,7 +149,15 @@
       </div>
     </ACard>
 
-    <FormModal v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
+    <!-- 编辑角色 -->
+    <FormModal
+      v-if="roleModalVisible"
+      :id="entry.id"
+      @success="execute"
+      @close="roleModalVisible = false"
+    />
+    <!-- 编辑角色的菜单权限 -->
+    <PermissionFormModal v-if="permModalVisible.menuModal" :row="entry" :mode="mode" />
   </div>
 </template>
 
@@ -128,9 +174,12 @@ import {
   PlusOutlined
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
-import { deleteDictType } from '@/api/system/dict/type'
+import { permission } from '@/hooks/use-permission'
+import { deleteRole, type RoleVO } from '@/api/system/role'
 import FormModal from './form.vue'
+import PermissionFormModal from './permission-form.vue'
 import { columns, useTable } from './use-table'
+import { usePermissionConfig, useRoleConfig } from './use-role-actions'
 import { message, type FormInstance } from 'ant-design-vue'
 
 const filterForm = ref<FormInstance>()
@@ -142,16 +191,18 @@ const { commonStatus } = useDict('common_status')
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
-const entryId = ref<number>()
-const visible = ref(false)
+const entry = ref<RoleVO>({})
 
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
-}
+const { modalVisible: roleModalVisible, showDialog: showRoleConfigDialog } = useRoleConfig(entry)
+
+const {
+  visible: permModalVisible,
+  showDialog: showPermissionConfigDialog,
+  mode
+} = usePermissionConfig(entry)
 
 const onDelete = (id: number) => {
-  deleteDictType(id).then(() => {
+  deleteRole(id).then(() => {
     message.success('删除成功')
     execute()
   })

@@ -11,7 +11,7 @@ export const columns: TableProps['columns'] = [
   { key: 'status', title: '状态', dataIndex: 'status' },
   { key: 'remark', title: '备注', dataIndex: 'remark' },
   { key: 'createTime', title: '创建时间', dataIndex: 'createTime' },
-  { key: 'actions', title: '操作', dataIndex: 'actions', width: 140 }
+  { key: 'actions', title: '操作', dataIndex: 'actions', width: 240 }
 ]
 
 export const useTable = (filterFormRef: Ref<FormInstance | undefined>) => {
