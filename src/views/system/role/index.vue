@@ -157,7 +157,13 @@
       @close="roleModalVisible = false"
     />
     <!-- 编辑角色的菜单权限 -->
-    <PermissionFormModal v-if="permModalVisible.menuModal" :row="entry" :mode="mode" />
+    <PermissionFormModal
+      v-if="permModalVisible"
+      :row="entry"
+      :mode="mode"
+      @success="execute"
+      @close="permModalVisible = false"
+    />
   </div>
 </template>
 
