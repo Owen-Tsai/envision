@@ -1,21 +1,21 @@
 import { ref, computed, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import type { TableProps, FormInstance, TablePaginationConfig } from 'ant-design-vue'
-import { getOperateLogPage, type ListQueryParams } from '@/api/system/operatelog'
+import { getOperateLogPage, type ListQueryParams } from '@/api/system/operate-log'
 
 export const columns: TableProps['columns'] = [
-  { key: 'id', title: '日志编号', dataIndex: 'id' },
+  { key: 'id', title: '日志编号', dataIndex: 'id', width: 90 },
   { key: 'module', title: '操作模块', dataIndex: 'module' },
-  { key: 'name', title: '操作名', dataIndex: 'name' },
-  { key: 'javaMethod', title: '操作类型', dataIndex: 'javaMethod' },
-  { key: 'userNickname', title: '操作人', dataIndex: 'userNickname' },
-  { key: 'resultCode', title: '操作结果', dataIndex: 'resultCode' },
-  { key: 'startTime', title: '操作时间', dataIndex: 'startTime' },
-  { key: 'duration', title: '执行时长', dataIndex: 'duration' },
-  { key: 'actions', title: '操作' }
+  { key: 'name', title: '操作名', dataIndex: 'name', minWidth: 140 },
+  { key: 'type', title: '操作类型', dataIndex: 'type', width: 90 },
+  { key: 'userNickname', title: '操作人', dataIndex: 'userNickname', width: 90 },
+  { key: 'resultCode', title: '操作结果', dataIndex: 'resultCode', width: 90 },
+  { key: 'startTime', title: '操作时间', dataIndex: 'startTime', width: 120 },
+  { key: 'duration', title: '执行时长', dataIndex: 'duration', width: 90 },
+  { key: 'actions', title: '操作', width: 90 }
 ]
 
-export const useTable = (formRef: Ref<FormInstance>) => {
+export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const queryParams = ref<ListQueryParams>({})
 
   const pagination = computed<TablePaginationConfig>(() => ({

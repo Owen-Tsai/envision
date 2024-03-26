@@ -62,9 +62,6 @@
             @change="onChange"
           >
             <template #bodyCell="scope">
-              <template v-if="scope?.column.key === 'leader'">
-                {{ userList?.find((e) => e.id === scope.record.leaderUserId)?.nickname }}
-              </template>
               <template v-if="scope?.column.key === 'status'">
                 <EDictTag :value="scope.record.status" :dict-object="commonStatus" />
               </template>
@@ -114,13 +111,11 @@ import { permission } from '@/hooks/use-permission'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
 import { deletePost } from '@/api/system/post'
-import { getUsers, type UserVO } from '@/api/system/user'
 
 const filterFormRef = ref()
 
 const { commonStatus } = useDict('common_status')
 
-const userList = ref<UserVO[]>([])
 const visible = ref(false)
 // current entry for editing
 const entryId = ref<number | undefined>()
@@ -143,10 +138,6 @@ const formatDate = (date: number) => {
 
 const { data, execute, pending, queryParams, onFilter, onFilterReset, pagination, onChange } =
   useTable(filterFormRef)
-
-getUsers({ pageSize: 9999 }).then((data) => {
-  userList.value = data.list
-})
 
 defineOptions({ name: 'SystemPost' })
 </script>

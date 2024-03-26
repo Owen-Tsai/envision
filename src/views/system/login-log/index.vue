@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard>
+    <ACard v-if="permission.has('system:operate-log:query')" class="mb-4">
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
@@ -10,30 +10,21 @@
       >
         <ARow :gutter="[0, 16]">
           <ACol :lg="8" :span="24">
-            <AFormItem label="字典名称" name="name">
-              <AInput v-model:value="queryParams.name" placeholder="请输入字典名称" allow-clear />
-            </AFormItem>
-          </ACol>
-          <ACol :lg="8" :span="24">
-            <AFormItem label="字典类型" name="dictType">
+            <AFormItem label="用户账号" name="username">
               <AInput
-                v-model:value="queryParams.dictType"
-                placeholder="请输入字典类型"
+                v-model:value="queryParams.username"
+                placeholder="请输入用户账号"
                 allow-clear
               />
             </AFormItem>
           </ACol>
-          <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="字典状态" name="status">
-              <ASelect
-                v-model:value="queryParams.status"
-                :options="commonStatus"
-                placeholder="请选择字典状态"
-              />
+          <ACol :lg="8" :span="24">
+            <AFormItem label="登录地址" name="userIp">
+              <AInput v-model:value="queryParams.userIp" placeholder="请输入登录地址" allow-clear />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="创建时间">
+            <AFormItem label="登陆日期">
               <ARangePicker v-model:value="queryParams.createTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
@@ -51,16 +42,10 @@
       </AForm>
     </ACard>
 
-    <ACard title="字典类型" class="mt-4">
+    <ACard title="登录日志">
       <template #extra>
         <AFlex :gap="8">
-          <AButton type="primary" :loading="pending" @click="showDialog()">
-            <template #icon>
-              <PlusOutlined />
-            </template>
-            新增
-          </AButton>
-          <ATooltip title="导出">
+          <ATooltip v-if="permission.has('system:operate-log:export')" title="导出">
             <AButton type="text" :loading="pending">
               <template #icon>
                 <ExportOutlined />
@@ -86,32 +71,31 @@
           @change="onChange"
         >
           <template #bodyCell="scope">
-            <template v-if="scope!.column.dataIndex === 'status'">
-              <EDictTag :dict-object="commonStatus" :value="scope?.text" />
+            <template v-if="scope!.column.dataIndex === 'logType'">
+              {{ systemLoginType.find((e) => e.value === scope!.text)?.label }}
+            </template>
+            <template v-if="scope!.column.dataIndex === 'result'">
+              <ATag v-if="scope?.text === 0" color="success">成功</ATag>
+              <ATag v-else color="error">失败</ATag>
             </template>
             <template v-if="scope?.column.dataIndex === 'createTime'">
-              {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}
+              {{ dayjs(scope.text).format('YYYY-MM-DD') }}
             </template>
+            <template v-if="scope?.column.dataIndex === 'duration'">{{ scope.text }} ms</template>
             <template v-if="scope!.column.title === '操作'">
-              <AFlex :gap="16">
-                <ATypographyLink @click="showDialog(scope?.record.id)">
-                  <EditOutlined />
-                  编辑
-                </ATypographyLink>
-                <APopconfirm title="确定删除该字典数据吗？" @confirm="onDelete(scope?.record.id)">
-                  <ATypographyLink type="danger">
-                    <DeleteOutlined />
-                    删除
-                  </ATypographyLink>
-                </APopconfirm>
-              </AFlex>
+              <ATypographyLink @click="openDetail(scope!.record)">
+                <UnorderedListOutlined />
+                详情
+              </ATypographyLink>
             </template>
           </template>
         </ATable>
       </div>
     </ACard>
 
-    <FormModal v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
+    <ADrawer v-model:open="visible" width="50%" title="日志详情">
+      <DetailPanel :entry="entry!" />
+    </ADrawer>
   </div>
 </template>
 
@@ -121,39 +105,33 @@ import dayjs from 'dayjs'
 import { useToggle } from '@vueuse/core'
 import {
   DownOutlined,
-  ReloadOutlined,
   ExportOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined
+  ReloadOutlined,
+  UnorderedListOutlined
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
-import { deleteDictData } from '@/api/system/dict/data'
-import FormModal from './form.vue'
+import { permission } from '@/hooks/use-permission'
 import { columns, useTable } from './use-table'
-import { message, type FormInstance } from 'ant-design-vue'
+import DetailPanel from './detail.vue'
+import type { FormInstance } from 'ant-design-vue'
+import type { LoginLogVO } from '@/api/system/login-log'
 
 const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { commonStatus } = useDict('common_status')
+const { systemLoginType } = useDict('system_login_type')
 
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const entryId = ref<number>()
+const entry = ref<LoginLogVO>()
 const visible = ref(false)
 
-const showDialog = (id?: number) => {
-  entryId.value = id
+const openDetail = (row: LoginLogVO) => {
+  entry.value = row
   visible.value = true
 }
 
-const onDelete = (id: number) => {
-  deleteDictData(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
+defineOptions({ name: 'SystemLoginLog' })
 </script>

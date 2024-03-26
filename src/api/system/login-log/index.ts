@@ -1,17 +1,17 @@
 import request from '@/utils/request'
 
 export type LoginLogVO = {
-  id: number
-  logType: number
-  traceId: number
-  userId: number
-  userType: number
-  username: string
-  result: number
-  status: number
-  userIp: string
-  userAgent: string
-  createTime: Date
+  id?: number
+  logType?: number
+  traceId?: number
+  userId?: number
+  userType?: number
+  username?: string
+  result?: number
+  status?: number
+  userIp?: string
+  userAgent?: string
+  createTime?: Date
 }
 export type LoginLogListVO = {
   list: Array<LoginLogVO>
