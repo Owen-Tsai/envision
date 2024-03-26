@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
 export type PostVO = {
-  code: string
-  createTime: string
-  id: number
-  name: string
-  remark: string
-  sort: number
-  status: number
+  code?: string
+  createTime?: string
+  id?: number
+  name?: string
+  remark?: string
+  sort?: number
+  status?: number
 }
 export type PostListVO = {
   list: Array<PostVO>

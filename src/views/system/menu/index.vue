@@ -2,7 +2,7 @@
   <div class="view">
     <ARow :gutter="24">
       <ACol :span="24">
-        <ACard>
+        <ACard v-if="permission.has('system:menu:query')" class="mb-4">
           <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
@@ -31,22 +31,20 @@
       </ACol>
 
       <ACol :span="24">
-        <ACard title="菜单管理" class="mt-4 flex-1">
+        <ACard title="菜单管理" class="flex-1">
           <template #extra>
             <AFlex :gap="8">
-              <AButton type="primary" :loading="pending" @click="showDialog('add')">
+              <AButton
+                v-if="permission.has('system:menu:create')"
+                type="primary"
+                :loading="pending"
+                @click="showDialog('add')"
+              >
                 <template #icon>
                   <PlusOutlined />
                 </template>
                 新增
               </AButton>
-              <ATooltip title="折叠/展开全部">
-                <AButton type="text" :loading="pending">
-                  <template #icon>
-                    <SwapOutlined :rotate="90" />
-                  </template>
-                </AButton>
-              </ATooltip>
               <ATooltip title="重新载入">
                 <AButton type="text" :loading="pending" @click="execute">
                   <template #icon>
@@ -77,15 +75,22 @@
               </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">
-                  <ATypographyLink @click="showDialog('edit', scope.record.id)">
+                  <ATypographyLink
+                    v-if="permission.has('system:menu:update')"
+                    @click="showDialog('edit', scope.record.id)"
+                  >
                     <EditOutlined />
                     修改
                   </ATypographyLink>
-                  <ATypographyLink @click="showDialog('add', scope.record.id)">
+                  <ATypographyLink
+                    v-if="permission.has('system:menu:create')"
+                    @click="showDialog('add', scope.record.id)"
+                  >
                     <PlusOutlined />
                     新增
                   </ATypographyLink>
                   <APopconfirm
+                    v-if="permission.has('system:menu:delete')"
                     title="删除该菜单项将一并删除该菜单下的所有子菜单，确定要删除吗？"
                     :overlay-inner-style="{ width: '260px' }"
                     @confirm="onDelete(scope.record.id)"
@@ -117,14 +122,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
-import {
-  SwapOutlined,
-  ReloadOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from '@ant-design/icons-vue'
+import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
+import { permission } from '@/hooks/use-permission'
 import { menuTypes } from '@/utils/constants'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'

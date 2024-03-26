@@ -63,7 +63,7 @@
           </AFormItem>
         </template>
         <AFormItem v-if="formData.type !== 3" label="权限标识" name="permission">
-          <AInput v-model.value="formData.permission" placeholder="请输入权限标识" />
+          <AInput v-model:value="formData.permission" placeholder="请输入权限标识" />
         </AFormItem>
         <ARow>
           <ACol :span="12" v-if="formData.type !== 3">

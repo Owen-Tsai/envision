@@ -23,7 +23,7 @@
       </ACol>
       <ACol :span="24" :lg="19">
         <AFlex vertical class="h-full">
-          <ACard>
+          <ACard v-if="permission.has('system:user:query')" class="mb-4">
             <AForm
               ref="filterForm"
               :model="queryParams"
@@ -90,16 +90,21 @@
             </AForm>
           </ACard>
 
-          <ACard :title="`${currentDeptName}用户列表`" class="mt-4 flex-1">
+          <ACard :title="`${currentDeptName}用户列表`" class="flex-1">
             <template #extra>
               <AFlex :gap="8">
-                <AButton type="primary" :loading="pending" @click="showUserModal()">
+                <AButton
+                  v-if="permission.has('system:user:create')"
+                  type="primary"
+                  :loading="pending"
+                  @click="showUserModal()"
+                >
                   <template #icon>
                     <PlusOutlined />
                   </template>
                   新增
                 </AButton>
-                <ATooltip title="导出">
+                <ATooltip v-if="permission.has('system:user:export')" title="导出">
                   <AButton type="text" :loading="pending">
                     <template #icon>
                       <ExportOutlined />
@@ -138,25 +143,42 @@
                 </template>
                 <template v-if="scope?.column.key === 'actions'">
                   <AFlex :gap="16">
-                    <ATypographyLink @click="showUserModal(scope.record.id)">
+                    <ATypographyLink
+                      v-if="permission.has('system:user:update')"
+                      @click="showUserModal(scope.record.id)"
+                    >
                       <EditOutlined />
                       编辑
                     </ATypographyLink>
-                    <ADropdown>
+                    <ADropdown
+                      v-if="permission.hasOne('system:user:update', 'system:user:update-password')"
+                    >
                       <ATypographyLink>
                         <DownOutlined />
                         更多
                       </ATypographyLink>
                       <template #overlay>
                         <AMenu>
-                          <AMenuItem @click="showPwdForm(scope.record.id, scope.record.nickname)">
+                          <AMenuItem
+                            :disabled="!permission.has('system:user:update')"
+                            @click="showPwdForm(scope.record.id, scope.record.nickname)"
+                          >
                             重置密码
                           </AMenuItem>
-                          <AMenuItem @click="showRoleModal(scope.record.id, scope.record.nickname)">
+                          <AMenuItem
+                            :disabled="!permission.has('system:user:update')"
+                            @click="showRoleModal(scope.record.id, scope.record.nickname)"
+                          >
                             设置角色
                           </AMenuItem>
                           <AMenuDivider />
-                          <AMenuItem danger @click="onDelete(scope.record.id)">删除用户</AMenuItem>
+                          <AMenuItem
+                            :disabled="permission.has('system:user:update-password')"
+                            danger
+                            @click="onDelete(scope.record.id)"
+                          >
+                            删除用户
+                          </AMenuItem>
                         </AMenu>
                       </template>
                     </ADropdown>
@@ -209,6 +231,7 @@ import { message, Modal } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { updateUserStatus, deleteUser } from '@/api/system/user'
 import useDict from '@/hooks/use-dict'
+import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'
 import PasswordFormModal from './password-form.vue'
 import RoleFormModal from './roles-form.vue'

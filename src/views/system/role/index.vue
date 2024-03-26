@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard v-if="permission.has('system:role:query')">
+    <ACard v-if="permission.has('system:role:query')" class="mb-4">
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
@@ -47,7 +47,7 @@
       </AForm>
     </ACard>
 
-    <ACard title="角色列表" class="mt-4">
+    <ACard title="角色列表">
       <template #extra>
         <AFlex :gap="8">
           <AButton

@@ -5,9 +5,7 @@ export const permission = {
   has(...keys: string[]) {
     const { permissions } = storeToRefs(useUserStore())
 
-    return keys.every((k) => {
-      permissions.value.includes(k)
-    })
+    return keys.every((k) => permissions.value.includes(k))
   },
   hasOne(...keys: string[]) {
     const { permissions } = storeToRefs(useUserStore())
@@ -23,9 +21,7 @@ export const role = {
   has(...keys: string[]) {
     const { roles } = storeToRefs(useUserStore())
 
-    return keys.every((k) => {
-      roles.value.includes(k)
-    })
+    return keys.every((k) => roles.value.includes(k))
   },
   hasOne(...keys: string[]) {
     const { roles } = storeToRefs(useUserStore())

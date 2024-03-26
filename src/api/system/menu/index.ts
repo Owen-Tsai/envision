@@ -27,7 +27,7 @@ export type MenuVO = {
 }
 
 export const getMenuTree = (params?: TreeQueryParams) => {
-  return request.get({
+  return request.get<MenuVO[]>({
     url: '/system/menu/tree-list',
     params
   })

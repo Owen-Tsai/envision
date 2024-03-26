@@ -39,12 +39,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
-import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
+import { ref } from 'vue'
+import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import { getPostDetail, createPost, updatePost, type PostVO } from '@/api/system/post'
-import { filterOption } from '@/utils/envision'
 import useDict from '@/hooks/use-dict'
-import type { SimpleUserVO } from '@/api/system/user'
 
 const loading = ref(false)
 

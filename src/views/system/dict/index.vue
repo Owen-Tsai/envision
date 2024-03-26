@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard>
+    <ACard v-if="permission.has('system:dict:query')" class="mb-4">
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
@@ -47,16 +47,21 @@
       </AForm>
     </ACard>
 
-    <ACard title="字典类型" class="mt-4">
+    <ACard title="字典类型">
       <template #extra>
         <AFlex :gap="8">
-          <AButton type="primary" :loading="pending" @click="showDialog()">
+          <AButton
+            v-if="permission.has('system:dict:create')"
+            type="primary"
+            :loading="pending"
+            @click="showDialog()"
+          >
             <template #icon>
               <PlusOutlined />
             </template>
             新增
           </AButton>
-          <ATooltip title="导出">
+          <ATooltip v-if="permission.has('system:dict:export')" title="导出">
             <AButton type="text" :loading="pending">
               <template #icon>
                 <ExportOutlined />
@@ -90,7 +95,10 @@
             </template>
             <template v-if="scope!.column.title === '操作'">
               <AFlex :gap="16">
-                <ATypographyLink @click="showDialog(scope?.record.id)">
+                <ATypographyLink
+                  v-if="permission.has('system:dict:update')"
+                  @click="showDialog(scope?.record.id)"
+                >
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
@@ -99,6 +107,7 @@
                   数据
                 </ATypographyLink>
                 <APopconfirm
+                  v-if="permission.has('system:dict:delete')"
                   title="删除字典后，使用了该字典的数据可能会存在显示问题。确定删除吗？"
                   :overlay-style="{ width: '260px' }"
                   @confirm="onDelete(scope?.record.id)"
@@ -134,6 +143,7 @@ import {
   UnorderedListOutlined
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
+import { permission } from '@/hooks/use-permission'
 import { deleteDictType } from '@/api/system/dict/type'
 import FormModal from './form.vue'
 import { columns, useTable } from './use-table'

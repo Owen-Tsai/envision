@@ -2,7 +2,7 @@
   <div class="view">
     <ARow :gutter="24">
       <ACol :span="24">
-        <ACard>
+        <ACard v-if="permission.has('system:dept:query')" class="mb-4">
           <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
@@ -34,19 +34,17 @@
         <ACard title="部门管理" class="mt-4 flex-1">
           <template #extra>
             <AFlex :gap="8">
-              <AButton type="primary" :loading="pending" @click="showDialog()">
+              <AButton
+                v-if="permission.has('system:dept:create')"
+                type="primary"
+                :loading="pending"
+                @click="showDialog()"
+              >
                 <template #icon>
                   <PlusOutlined />
                 </template>
                 新增
               </AButton>
-              <ATooltip title="折叠/展开全部">
-                <AButton type="text" :loading="pending">
-                  <template #icon>
-                    <SwapOutlined :rotate="90" />
-                  </template>
-                </AButton>
-              </ATooltip>
               <ATooltip title="重新载入">
                 <AButton type="text" :loading="pending" @click="execute">
                   <template #icon>
@@ -78,11 +76,15 @@
               </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">
-                  <ATypographyLink @click="showDialog(scope.record.id)">
+                  <ATypographyLink
+                    v-if="permission.has('system:dept:update')"
+                    @click="showDialog(scope.record.id)"
+                  >
                     <EditOutlined />
                     修改
                   </ATypographyLink>
                   <APopconfirm
+                    v-if="permission.has('system:dept:delete')"
                     title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"
                     trigger="click"
                     :overlay-style="{ maxWidth: '280px' }"
@@ -115,18 +117,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
-import {
-  SwapOutlined,
-  ReloadOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from '@ant-design/icons-vue'
+import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
 import { deleteDept } from '@/api/system/dept'
+import { permission } from '@/hooks/use-permission'
 
 const filterFormRef = ref()
 

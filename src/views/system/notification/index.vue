@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard>
+    <ACard v-if="permission.has('system:notice:query')" class="mb-4">
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
@@ -51,10 +51,15 @@
       </AForm>
     </ACard>
 
-    <ACard title="通知公告" class="mt-4">
+    <ACard title="通知公告">
       <template #extra>
         <AFlex :gap="8">
-          <AButton type="primary" :loading="pending" @click="showDialog()">
+          <AButton
+            v-if="permission.has('system:notice:create')"
+            type="primary"
+            :loading="pending"
+            @click="showDialog()"
+          >
             <template #icon>
               <PlusOutlined />
             </template>
@@ -90,11 +95,15 @@
             </template>
             <template v-if="scope!.column.title === '操作'">
               <AFlex :gap="16">
-                <ATypographyLink @click="showDialog(scope?.record.id)">
+                <ATypographyLink
+                  v-if="permission.has('system:notice:update')"
+                  @click="showDialog(scope?.record.id)"
+                >
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
                 <APopconfirm
+                  v-if="permission.has('system:notice:delete')"
                   title="此操作不可恢复，确定删除吗？"
                   :overlay-style="{ width: '260px' }"
                   @confirm="onDelete(scope?.record.id)"
@@ -127,6 +136,7 @@ import {
   PlusOutlined
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
+import { permission } from '@/hooks/use-permission'
 import { deleteNotification } from '@/api/system/notification'
 import FormModal from './form.vue'
 import { columns, useTable } from './use-table'

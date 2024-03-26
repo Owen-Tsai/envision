@@ -2,7 +2,7 @@
   <div class="view">
     <ARow :gutter="24">
       <ACol :span="24">
-        <ACard>
+        <ACard v-if="permission.has('system:post:query')">
           <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
@@ -30,7 +30,12 @@
         <ACard title="岗位管理" class="mt-4 flex-1">
           <template #extra>
             <AFlex :gap="8">
-              <AButton type="primary" :loading="pending" @click="showDialog()">
+              <AButton
+                v-if="permission.has('system:post:create')"
+                type="primary"
+                :loading="pending"
+                @click="showDialog()"
+              >
                 <template #icon>
                   <PlusOutlined />
                 </template>
@@ -68,12 +73,16 @@
               </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">
-                  <ATypographyLink @click="showDialog(scope.record.id)">
+                  <ATypographyLink
+                    v-if="permission.has('system:post:update')"
+                    @click="showDialog(scope.record.id)"
+                  >
                     <EditOutlined />
                     修改
                   </ATypographyLink>
                   <APopconfirm
-                    title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"
+                    v-if="permission.has('system:post:delete')"
+                    title="删除岗位后，处于该岗位的用户所属岗位将变为空。此操作不可撤销，确定要删除吗？"
                     trigger="click"
                     :overlay-style="{ maxWidth: '280px' }"
                     @confirm="onDelete(scope.record.id)"
@@ -98,23 +107,20 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
-import {
-  SwapOutlined,
-  ReloadOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from '@ant-design/icons-vue'
+import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
+import { permission } from '@/hooks/use-permission'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
 import { deletePost } from '@/api/system/post'
+import { getUsers, type UserVO } from '@/api/system/user'
 
 const filterFormRef = ref()
 
 const { commonStatus } = useDict('common_status')
 
+const userList = ref<UserVO[]>([])
 const visible = ref(false)
 // current entry for editing
 const entryId = ref<number | undefined>()
@@ -135,17 +141,12 @@ const formatDate = (date: number) => {
   return dayjs(date).format('YYYY-MM-DD')
 }
 
-const {
-  data,
-  execute,
-  pending,
-  queryParams,
-  userList,
-  onFilter,
-  onFilterReset,
-  pagination,
-  onChange
-} = useTable(filterFormRef)
+const { data, execute, pending, queryParams, onFilter, onFilterReset, pagination, onChange } =
+  useTable(filterFormRef)
+
+getUsers({ pageSize: 9999 }).then((data) => {
+  userList.value = data.list
+})
 
 defineOptions({ name: 'SystemPost' })
 </script>
