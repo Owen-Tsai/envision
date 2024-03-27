@@ -28,7 +28,7 @@
               <ARangePicker v-model:value="queryParams.createTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
-          <ACol :lg="{ span: 8, offset: filterExpanded ? 8 : 0 }" :span="24">
+          <ACol :lg="{ span: 8, offset: filterExpanded ? 16 : 0 }" :span="24">
             <AFlex justify="end" align="center" :gap="16">
               <AButton @click="onFilterReset">重置</AButton>
               <AButton type="primary" @click="onFilter">查询</AButton>

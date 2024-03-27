@@ -178,5 +178,5 @@ const onDelete = (id: number) => {
   })
 }
 
-defineOptions({ name: 'SystemDict' })
+defineOptions({ name: 'SystemDictType' })
 </script>

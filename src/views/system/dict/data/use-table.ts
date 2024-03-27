@@ -11,7 +11,7 @@ export const columns: TableProps['columns'] = [
   { title: '字典标签', dataIndex: 'label' },
   { title: '字典键值', width: 120, dataIndex: 'value' },
   { title: '字典排序', width: 120, dataIndex: 'sort' },
-  { title: '字典状态', width: 80, dataIndex: 'status' },
+  { title: '字典状态', width: 90, dataIndex: 'status' },
   { title: '颜色类型', dataIndex: 'colorType' },
   { title: 'CSS Class', dataIndex: 'cssClass' },
   { title: '备注', dataIndex: 'remark' },
