@@ -9,7 +9,7 @@ export const columns: TableProps['columns'] = [
   { key: 'username', title: '用户账号', dataIndex: 'username' },
   { key: 'userIp', title: '登录地址', dataIndex: 'userIp' },
   { key: 'result', title: '登录结果', dataIndex: 'result', width: 120 },
-  { key: 'startTime', title: '操作时间', dataIndex: 'createTime', width: 120 },
+  { key: 'startTime', title: '操作时间', dataIndex: 'createTime', width: 180 },
   { key: 'actions', title: '操作', width: 120 }
 ]
 

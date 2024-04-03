@@ -155,6 +155,7 @@ const formData = ref<MenuVO>({
   alwaysShow: true,
   type: 1,
   status: 0,
+  sort: 1,
   keepAlive: true,
   visible: true,
   isCustomLayout: false

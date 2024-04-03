@@ -79,7 +79,7 @@
               <ATag v-else color="error">失败</ATag>
             </template>
             <template v-if="scope?.column.dataIndex === 'createTime'">
-              {{ dayjs(scope.text).format('YYYY-MM-DD') }}
+              {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
             <template v-if="scope?.column.dataIndex === 'duration'">{{ scope.text }} ms</template>
             <template v-if="scope!.column.title === '操作'">
