@@ -13,10 +13,6 @@ export type LoginLogVO = {
   userAgent?: string
   createTime?: Date
 }
-export type LoginLogListVO = {
-  list: Array<LoginLogVO>
-  total: number
-}
 
 export type ListQueryParams = CommonQueryParams & {
   username?: string
@@ -24,7 +20,7 @@ export type ListQueryParams = CommonQueryParams & {
 }
 
 export function getLoginLogPage(params?: ListQueryParams) {
-  return request.get<LoginLogListVO>({
+  return request.get<PaginatedList<LoginLogVO>>({
     url: '/system/login-log/page',
     params
   })

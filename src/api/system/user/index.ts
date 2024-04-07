@@ -17,11 +17,6 @@ export type UserVO = {
   avatar?: string
 }
 
-export type UserListVO = {
-  list: Array<UserVO>
-  total: number
-}
-
 export type ListQueryParams = CommonQueryParams & {
   username?: string
   nickname?: string
@@ -36,7 +31,7 @@ export type SimpleUserVO = Array<{
 }>
 
 export function getUsers(params?: ListQueryParams) {
-  return request.get<UserListVO>({
+  return request.get<PaginatedList<UserVO>>({
     url: '/system/user/page',
     params
   })

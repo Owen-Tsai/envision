@@ -9,10 +9,6 @@ export type PostVO = {
   sort?: number
   status?: number
 }
-export type PostListVO = {
-  list: Array<PostVO>
-  total: number
-}
 
 export type ListQueryParams = CommonQueryParams & {
   name?: string
@@ -20,7 +16,7 @@ export type ListQueryParams = CommonQueryParams & {
 }
 
 export function getPostPage(params?: ListQueryParams) {
-  return request.get<PostListVO>({
+  return request.get<PaginatedList<PostVO>>({
     url: '/system/post/page',
     params
   })

@@ -33,7 +33,7 @@
           <AInput v-model:value="formData.colorType" placeholer="请选择颜色类型" />
         </AFormItem>
         <AFormItem label="CSS Class" name="cssClass">
-          <AInput v-model:value="formData.value" placeholer="请输入 CSS Class" />
+          <AInput v-model:value="formData.cssClass" placeholer="请输入 CSS Class" />
         </AFormItem>
         <ARow>
           <ACol :span="12">
@@ -43,10 +43,7 @@
           </ACol>
           <ACol :span="12">
             <AFormItem label="状态" name="status">
-              <ARadioGroup
-                v-model:value="formData.status"
-                :options="commonStatus as RadioOptions"
-              />
+              <ARadioGroup v-model:value="formData.status" :options="commonStatus" />
             </AFormItem>
           </ACol>
         </ARow>
@@ -88,7 +85,8 @@ const loading = ref(false)
 const open = ref(true)
 const formData = ref<DictDataItemVO>({
   status: 0,
-  sort: 0
+  sort: 0,
+  value: ''
 })
 
 const { commonStatus } = useDict('common_status')

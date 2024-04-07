@@ -13,11 +13,6 @@ export type RoleVO = {
   remark?: string
 }
 
-export type RoleListVO = {
-  list: Array<RoleVO>
-  total: number
-}
-
 export type ListQueryParams = CommonQueryParams & {
   code?: string
   name?: string
@@ -31,7 +26,7 @@ export const getSimpleList = () => {
 }
 
 export const getRolesList = (params?: CommonQueryParams) => {
-  return request.get<RoleListVO>({
+  return request.get<PaginatedList<RoleVO>>({
     url: '/system/role/page',
     params
   })

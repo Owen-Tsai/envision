@@ -22,10 +22,6 @@ export type OperateLogVO = {
   resultMsg?: string
   resultData?: string
 }
-export type OperateLogListVO = {
-  list: Array<OperateLogVO>
-  total: number
-}
 
 export type ListQueryParams = CommonQueryParams & {
   module?: string
@@ -38,7 +34,7 @@ export type ListQueryParams = CommonQueryParams & {
 }
 
 export function getOperateLogPage(params?: ListQueryParams) {
-  return request.get<OperateLogListVO>({
+  return request.get<PaginatedList<OperateLogVO>>({
     url: '/system/operate-log/page',
     params
   })

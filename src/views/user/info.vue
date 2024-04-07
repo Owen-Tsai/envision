@@ -17,7 +17,7 @@
         <AInput v-model:value="formData.email" placeholder="请输入邮箱地址" />
       </AFormItem>
       <AFormItem label="性别" name="sex">
-        <ARadioGroup :options="systemUserSex as RadioOptions" v-model:value="formData.sex" />
+        <ARadioGroup :options="systemUserSex" v-model:value="formData.sex" />
       </AFormItem>
 
       <AFlex class="ml-80px" :gap="16">

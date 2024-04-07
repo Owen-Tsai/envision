@@ -15,13 +15,8 @@ export type DictTypeVO = {
   createTime?: string
 }
 
-export type DictTypeListVO = {
-  list: Array<DictTypeVO>
-  total: number
-}
-
 export const getDictTypeList = (params?: ListQueryParams) => {
-  return request.get<DictTypeListVO>({
+  return request.get<PaginatedList<DictTypeVO>>({
     url: '/system/dict-type/page',
     params
   })

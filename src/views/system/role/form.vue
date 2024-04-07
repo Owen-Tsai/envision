@@ -30,10 +30,7 @@
           </ACol>
           <ACol :span="12">
             <AFormItem label="状态" name="status">
-              <ARadioGroup
-                v-model:value="formData.status"
-                :options="commonStatus as RadioOptions"
-              />
+              <ARadioGroup v-model:value="formData.status" :options="commonStatus" />
             </AFormItem>
           </ACol>
         </ARow>

@@ -22,7 +22,7 @@
           <AInput v-model:value="formData.type" placeholer="如：system_user_gender" />
         </AFormItem>
         <AFormItem label="状态" name="status">
-          <ARadioGroup v-model:value="formData.status" :options="commonStatus as RadioOptions" />
+          <ARadioGroup v-model:value="formData.status" :options="commonStatus" />
         </AFormItem>
         <AFormItem label="备注" name="remark">
           <ATextarea v-model:value="formData.remark" />

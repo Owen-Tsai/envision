@@ -75,7 +75,7 @@
             <AFormItem label="启用状态" name="status">
               <ARadioGroup
                 v-model:value="formData.status"
-                :options="commonStatus as RadioOptions"
+                :options="commonStatus"
                 option-type="button"
               />
             </AFormItem>

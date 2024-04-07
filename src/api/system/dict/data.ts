@@ -6,7 +6,7 @@ export type DictDataItemVO = {
   createTime?: number
   dictType?: string
   id?: number
-  value?: string | number
+  value: string // must not be optional to avoid casting in every usage with radio options
   label?: string
   remark?: string
   sort?: number
@@ -14,11 +14,6 @@ export type DictDataItemVO = {
 }
 
 export type DictDataVO = Array<DictDataItemVO>
-
-export type DictDataListVO = {
-  list: Array<DictDataVO>
-  total: number
-}
 
 export type ListQueryParams = CommonQueryParams & {
   name?: string
@@ -40,7 +35,7 @@ export const getDictData = (dictType: string) => {
 }
 
 export const getDictDataList = (params?: ListQueryParams) => {
-  return request.get<DictDataListVO>({
+  return request.get<PaginatedList<DictDataVO>>({
     url: '/system/dict-data/page',
     params
   })

@@ -9,11 +9,6 @@ export type NotificationVO = {
   createTime?: number
 }
 
-export type NotificationListVO = {
-  list: NotificationVO[]
-  total: number
-}
-
 export type ListQueryParams = CommonQueryParams & {
   title?: string
   status?: number
@@ -21,7 +16,7 @@ export type ListQueryParams = CommonQueryParams & {
 }
 
 export const getNotificationList = (params?: ListQueryParams) => {
-  return request.get<NotificationListVO>({
+  return request.get<PaginatedList<NotificationVO>>({
     url: '/system/notice/page',
     params
   })
