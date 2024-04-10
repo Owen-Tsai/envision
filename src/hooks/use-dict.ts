@@ -1,10 +1,10 @@
 import { ref, toRefs } from 'vue'
 import { camelCase } from 'lodash'
 import useDictStore from '@/stores/dict'
-import { getDictData, type DictDataVO } from '@/api/system/dict/data'
+import { getDictData, type DictDataEntry } from '@/api/system/dict/data'
 
 const useDict = (...args: string[]) => {
-  const res = ref<Record<string, DictDataVO>>({})
+  const res = ref<Record<string, DictDataEntry[]>>({})
   const dictStore = useDictStore()
 
   return (() => {
@@ -16,11 +16,17 @@ const useDict = (...args: string[]) => {
         res.value[key] = dict
       } else {
         getDictData(dictType).then((data) => {
-          data.forEach((entry) => {
-            entry.value = parseInt(entry.value + '')
+          const convertedData: DictDataEntry[] = []
+          data.forEach((item) => {
+            const entry: DictDataEntry = { ...item }
+            const intVal = parseInt(item.value)
+            if (!isNaN(intVal)) {
+              entry.value = intVal
+            }
+            convertedData.push({ ...entry })
           })
-          res.value[key] = data
-          dictStore.setDict(dictType, data)
+          res.value[key] = convertedData
+          dictStore.setDict(dictType, convertedData)
         })
       }
     })

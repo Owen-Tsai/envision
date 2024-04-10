@@ -1,15 +1,15 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { DictDataVO } from '@/api/system/dict/data'
+import type { DictDataEntry } from '@/api/system/dict/data'
 
 export default defineStore('dict', () => {
-  const dict = ref<Map<string, DictDataVO>>(new Map())
+  const dict = ref<Map<string, DictDataEntry[]>>(new Map())
 
   const getDict = (type: string) => {
     return dict.value?.get(type)
   }
 
-  const setDict = (type: string, entries: DictDataVO) => {
+  const setDict = (type: string, entries: DictDataEntry[]) => {
     dict.value?.set(type, entries)
   }
 

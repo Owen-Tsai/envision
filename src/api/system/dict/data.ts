@@ -13,6 +13,10 @@ export type DictDataItemVO = {
   status?: number
 }
 
+export type DictDataEntry = Omit<DictDataItemVO, 'value'> & {
+  value: number | string
+}
+
 export type DictDataVO = Array<DictDataItemVO>
 
 export type ListQueryParams = CommonQueryParams & {

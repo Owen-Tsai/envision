@@ -5,11 +5,12 @@
 
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
-import type { DictDataVO } from '@/api/system/dict/data'
+import type { DictDataEntry } from '@/api/system/dict/data'
 
 const props = defineProps({
   dictObject: {
-    type: Object as PropType<DictDataVO>
+    type: Object as PropType<DictDataEntry[]>,
+    required: true
   },
   value: {
     type: Number,
@@ -18,6 +19,6 @@ const props = defineProps({
 })
 
 const dictEntry = computed(() => {
-  return props.dictObject?.filter((e) => e.value === props.value)[0]
+  return props.dictObject.find((e) => e.value === props.value)
 })
 </script>
