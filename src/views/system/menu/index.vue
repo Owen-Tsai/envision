@@ -52,6 +52,13 @@
                   </template>
                 </AButton>
               </ATooltip>
+              <ATooltip title="刷新菜单缓存">
+                <AButton type="text" :loading="pending" @click="clearMenuCache">
+                  <template #icon>
+                    <RetweetOutlined />
+                  </template>
+                </AButton>
+              </ATooltip>
             </AFlex>
           </template>
 
@@ -122,15 +129,24 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
-import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
+import {
+  ReloadOutlined,
+  RetweetOutlined,
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined
+} from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
+import useStorage from '@/hooks/use-storage'
 import { menuTypes } from '@/utils/constants'
+import { deleteMenuWithChildren } from '@/api/system/menu'
 import { useTable, columns } from './use-table'
 import ModalForm from './form.vue'
-import { deleteMenuWithChildren } from '@/api/system/menu'
 
 const filterFormRef = ref()
+
+const storage = useStorage('sessionStorage')
 
 const { commonStatus } = useDict('common_status')
 
@@ -149,6 +165,11 @@ const onDelete = async (id: number) => {
   await deleteMenuWithChildren(id)
   message.success('删除成功')
   execute()
+}
+
+const clearMenuCache = () => {
+  storage.delete('permission-info')
+  window.location.reload()
 }
 
 const { data, execute, pending, queryParams, onFilter, onFilterReset } = useTable(filterFormRef)

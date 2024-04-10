@@ -46,7 +46,12 @@ export type LoginVO = {
 }
 
 export type PermissionInfoVO = {
-  user: User
+  user: {
+    id: number
+    nickname: string
+    avatar?: string
+    deptId?: number
+  }
   menus: MenuVO[]
   roles: string[]
   permissions: string[]
