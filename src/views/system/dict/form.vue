@@ -16,10 +16,10 @@
         class="mt-4"
       >
         <AFormItem label="字典名称" name="name">
-          <AInput v-model:value="formData.name" placeholer="如：用户性别" />
+          <AInput v-model:value="formData.name" placeholder="如：用户性别" />
         </AFormItem>
         <AFormItem label="字典类型" name="type">
-          <AInput v-model:value="formData.type" placeholer="如：system_user_gender" />
+          <AInput v-model:value="formData.type" placeholder="如：system_user_gender" />
         </AFormItem>
         <AFormItem label="状态" name="status">
           <ARadioGroup v-model:value="formData.status" :options="commonStatus" />

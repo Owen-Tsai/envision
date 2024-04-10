@@ -16,10 +16,10 @@
         class="mt-4"
       >
         <AFormItem label="字典标签" name="label">
-          <AInput v-model:value="formData.label" placeholer="请输入字典标签" />
+          <AInput v-model:value="formData.label" placeholder="请输入字典标签" />
         </AFormItem>
         <AFormItem label="字典键值" name="value">
-          <AInput v-model:value="formData.value" placeholer="请输入该项数据对应的键值" />
+          <AInput v-model:value="formData.value" placeholder="请输入该项数据对应的键值" />
         </AFormItem>
         <AFormItem name="colorType">
           <template #label>
@@ -30,10 +30,10 @@
               </ATooltip>
             </div>
           </template>
-          <AInput v-model:value="formData.colorType" placeholer="请选择颜色类型" />
+          <AInput v-model:value="formData.colorType" placeholder="请选择颜色类型" />
         </AFormItem>
         <AFormItem label="CSS Class" name="cssClass">
-          <AInput v-model:value="formData.cssClass" placeholer="请输入 CSS Class" />
+          <AInput v-model:value="formData.cssClass" placeholder="请输入 CSS Class" />
         </AFormItem>
         <ARow>
           <ACol :span="12">

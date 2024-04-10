@@ -16,10 +16,10 @@
         class="mt-4"
       >
         <AFormItem label="角色名称" name="name">
-          <AInput v-model:value="formData.name" placeholer="如：系统管理员" />
+          <AInput v-model:value="formData.name" placeholder="如：系统管理员" />
         </AFormItem>
         <AFormItem label="角色标识" name="code">
-          <AInput v-model:value="formData.code" placeholer="如：system_admin" />
+          <AInput v-model:value="formData.code" placeholder="如：system_admin" />
         </AFormItem>
 
         <ARow>

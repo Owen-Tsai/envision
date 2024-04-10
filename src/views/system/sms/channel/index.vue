@@ -4,7 +4,7 @@
       <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
         <ARow :gutter="24">
           <ACol :span="24" :lg="8">
-            <AFormItem label="短信签名" name="name">
+            <AFormItem label="短信签名" name="signature">
               <AInput v-model:value="queryParams.signature" placeholder="请输入部门名称" />
             </AFormItem>
           </ACol>
@@ -13,7 +13,7 @@
               <ASelect
                 v-model:value="queryParams.status"
                 :options="commonStatus"
-                placeholer="请选择启用状态"
+                placeholder="请选择启用状态"
               />
             </AFormItem>
           </ACol>
@@ -58,24 +58,24 @@
         :pagination="pagination"
         @change="onChange"
       >
-        <template #bodyCell="scope">
+        <template #bodyCell="scope: TableScope<ChannelVO>">
           <template v-if="scope?.column.key === 'code'">
-            {{ systemSmsChannelCode.find((e) => e.value === scope.record.code)?.label }}
+            {{ systemSmsChannelCode.find((e) => e.value === scope.text)?.label }}
           </template>
-          <template v-if="scope?.column.dataIndex === 'status'">
-            <EDictTag :dict-object="commonStatus" :value="scope.text" />
+          <template v-if="scope?.column.key === 'status'">
+            <EDictTag :dict-object="commonStatus" :value="scope.record.status!" />
           </template>
-          <template v-if="scope?.column.dataIndex === 'apiKey'">
-            <ATypographyText ellipsis :content="scope.text" />
+          <template v-if="scope?.column.key === 'apiKey'">
+            <ATypographyText ellipsis :content="scope?.record.apiKey" />
           </template>
-          <template v-if="scope?.column.dataIndex === 'createTime'">
-            {{ formatDate(scope.text) }}
+          <template v-if="scope?.column.key === 'createTime'">
+            {{ formatDate(scope.record.createTime!) }}
           </template>
           <template v-if="scope?.column.key === 'actions'">
             <AFlex :gap="16">
               <ATypographyLink
                 v-if="permission.has('system:dept:update')"
-                @click="showDialog(scope.record.id)"
+                @click="showDialog(scope?.record.id)"
               >
                 <EditOutlined />
                 修改
@@ -85,7 +85,7 @@
                 title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"
                 trigger="click"
                 :overlay-style="{ maxWidth: '280px' }"
-                @confirm="onDelete(scope.record.id)"
+                @confirm="onDelete(scope?.record.id!)"
               >
                 <ATypographyLink type="danger">
                   <DeleteOutlined />
@@ -109,7 +109,7 @@ import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
 import useDict from '@/hooks/use-dict'
-import { deleteChannel } from '@/api/system/sms/channel'
+import { deleteChannel, type ChannelVO } from '@/api/system/sms/channel'
 import { useTable, columns } from './use-table'
 import FormModal from './form.vue'
 

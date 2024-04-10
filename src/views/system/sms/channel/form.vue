@@ -27,7 +27,7 @@
         <AFormItem label="启用状态" name="status">
           <ARadioGroup v-model:value="formData.status" :options="commonStatus" />
         </AFormItem>
-        <AFormItem label="备注" name="email">
+        <AFormItem label="备注" name="remark">
           <ATextarea v-model:value="formData.remark" placeholder="请输入备注信息" />
         </AFormItem>
         <AFormItem label="API Key" name="apiKey">

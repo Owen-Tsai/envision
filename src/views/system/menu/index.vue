@@ -15,7 +15,7 @@
                   <ASelect
                     v-model:value="queryParams.status"
                     :options="commonStatus"
-                    placeholer="请选择菜单状态"
+                    placeholder="请选择菜单状态"
                   />
                 </AFormItem>
               </ACol>

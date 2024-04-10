@@ -34,7 +34,7 @@
         </AFormItem>
         <template v-if="formData.type !== 3">
           <AFormItem label="菜单图标" name="icon">
-            <IconSelect v-model:value="formData.icon" placeholer="请选择菜单图标" />
+            <IconSelect v-model:value="formData.icon" placeholder="请选择菜单图标" />
           </AFormItem>
           <AFormItem label="路由地址" name="path">
             <AInput v-model:value="formData.path" placeholder="请输入路由地址" />
