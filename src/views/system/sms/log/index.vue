@@ -1,25 +1,16 @@
 <template>
   <div class="view">
-    <ACard v-if="permission.has('system:dept:query')" class="mb-4">
+    <ACard v-if="permission.has('system:sms-log:query')" class="mb-4">
       <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
         <ARow :gutter="[24, 16]">
           <ACol :span="24" :lg="8">
-            <AFormItem label="模板名称" name="name">
-              <AInput v-model:value="queryParams.name" placeholder="请输入短信模板名称" />
+            <AFormItem label="手机号" name="mobile">
+              <AInput v-model:value="queryParams.mobile" placeholder="请输入接收手机号" />
             </AFormItem>
           </ACol>
           <ACol :span="24" :lg="8">
-            <AFormItem label="模板编码" name="code">
-              <AInput v-model:value="queryParams.code" placeholder="请输入短信模板编码" />
-            </AFormItem>
-          </ACol>
-          <ACol v-show="filterExpanded" :span="24" :lg="8">
-            <AFormItem label="短信类型" name="type">
-              <ASelect
-                v-model:value="queryParams.type"
-                :options="systemSmsTemplateType"
-                placeholder="请选择短信类型"
-              />
+            <AFormItem label="模板编码" name="templateCode">
+              <AInput v-model:value="queryParams.templateCode" placeholder="请输入短信模板编码" />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :span="24" :lg="8">
@@ -33,14 +24,20 @@
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :span="24" :lg="8">
-            <AFormItem label="启用状态" name="status">
+            <AFormItem label="发送状态" name="sendStatus">
               <ASelect
-                v-model:value="queryParams.status"
-                :options="commonStatus"
-                placeholder="请选择启用状态"
+                v-model:value="queryParams.sendStatus"
+                :options="systemSmsSendStatus"
+                placeholder="请选择发送状态"
               />
             </AFormItem>
           </ACol>
+          <ACol v-show="filterExpanded" :span="24" :lg="8">
+            <AFormItem label="发送时间" name="sendTime">
+              <ARangePicker v-model:value="queryParams.sendTime" value-format="YYYY-MM-DD" />
+            </AFormItem>
+          </ACol>
+
           <ACol :span="24" :lg="8">
             <AFlex justify="end" align="center" :gap="16">
               <AButton @click="onFilterReset">重置</AButton>
@@ -58,17 +55,13 @@
     <ACard title="短信渠道">
       <template #extra>
         <AFlex :gap="8">
-          <AButton
-            v-if="permission.has('system:dept:create')"
-            type="primary"
-            :loading="pending"
-            @click="showDialog()"
-          >
-            <template #icon>
-              <PlusOutlined />
-            </template>
-            新增
-          </AButton>
+          <ATooltip v-if="permission.has('system:sms-log:export')" title="导出">
+            <AButton type="text" :loading="pending">
+              <template #icon>
+                <ExportOutlined />
+              </template>
+            </AButton>
+          </ATooltip>
           <ATooltip title="重新载入">
             <AButton type="text" :loading="pending" @click="execute">
               <template #icon>
@@ -88,15 +81,18 @@
         :sticky="{ offsetHeader: 90 }"
         @change="onChange"
       >
-        <template #bodyCell="scope: TableScope<TemplateVO>">
-          <template v-if="scope?.column.key === 'content'">
-            <ATypographyText ellipsis :content="scope.text" style="width: 220px" />
+        <template #bodyCell="scope: TableScope<LogVO>">
+          <template v-if="scope?.column.key === 'templateContent'">
+            <ATypographyText ellipsis :content="scope.text" style="width: 240px" />
           </template>
-          <template v-if="scope?.column.key === 'type'">
+          <template v-if="scope?.column.key === 'templateType'">
             <EDictTag :dict-object="systemSmsTemplateType" :value="scope.text" />
           </template>
-          <template v-if="scope?.column.key === 'status'">
-            <EDictTag :dict-object="commonStatus" :value="scope.text" />
+          <template v-if="scope?.column.key === 'sendStatus'">
+            <EDictTag :dict-object="systemSmsSendStatus" :value="scope.text" />
+          </template>
+          <template v-if="scope?.column.key === 'receiveStatus'">
+            <EDictTag :dict-object="systemSmsReceiveStatus" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'channelCode'">
             <div>
@@ -106,95 +102,70 @@
               <EDictTag :dict-object="systemSmsChannelCode" :value="scope.text" />
             </div>
           </template>
-          <template v-if="scope?.column.key === 'createTime'">
+          <template v-if="scope?.column.key === 'sendTime'">
             {{ formatDate(scope.text) }}
           </template>
           <template v-if="scope?.column.key === 'actions'">
             <AFlex :gap="16">
-              <ATypographyLink
-                v-if="permission.has('system:dept:update')"
-                @click="showDialog(scope.record.id!)"
-              >
-                <EditOutlined />
-                修改
+              <ATypographyLink @click="showDialog(scope.record)">
+                <UnorderedListOutlined />
+                详情
               </ATypographyLink>
-              <APopconfirm
-                v-if="permission.has('system:dept:delete')"
-                title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"
-                trigger="click"
-                :overlay-style="{ maxWidth: '280px' }"
-                @confirm="onDelete(scope.record.id!)"
-              >
-                <ATypographyLink type="danger">
-                  <DeleteOutlined />
-                  删除
-                </ATypographyLink>
-              </APopconfirm>
             </AFlex>
           </template>
         </template>
       </ATable>
     </ACard>
 
-    <FormModal
-      v-if="visible"
-      :id="entryId"
-      :channel-data="channelList"
-      @success="execute"
-      @close="visible = false"
-    />
+    <ADrawer v-model:open="visible" width="50%" title="日志详情">
+      <DetailPanel :entry="entry!" />
+    </ADrawer>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { message } from 'ant-design-vue'
+// import { message } from 'ant-design-vue'
 import {
   DownOutlined,
   ReloadOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined
+  ExportOutlined,
+  UnorderedListOutlined
 } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
 import useDict from '@/hooks/use-dict'
-import { deleteTemplate, type TemplateVO } from '@/api/system/sms/template'
+import {} from '@/api/system/sms/template'
 import { getSimpleChannelList, type ChannelListLiteVO } from '@/api/system/sms/channel'
+import { type LogVO } from '@/api/system/sms/log'
 import { useToggle } from '@vueuse/core'
 import { useTable, columns } from './use-table'
-import FormModal from './form.vue'
 
 const filterFormRef = ref()
 
 const [filterExpanded, toggle] = useToggle()
 
-const { commonStatus, systemSmsChannelCode, systemSmsTemplateType } = useDict(
-  'common_status',
-  'system_sms_channel_code',
-  'system_sms_template_type'
-)
+const { systemSmsReceiveStatus, systemSmsSendStatus, systemSmsChannelCode, systemSmsTemplateType } =
+  useDict(
+    'system_sms_receive_status',
+    'system_sms_send_status',
+    'system_sms_channel_code',
+    'system_sms_template_type'
+  )
 
 const visible = ref(false)
 // current entry for editing
-const entryId = ref<number | undefined>()
+const entry = ref()
 
 const channelList = ref<ChannelListLiteVO>([])
 
-const showDialog = (id?: number) => {
-  entryId.value = id
+const showDialog = (record?: LogVO) => {
+  entry.value = record
   visible.value = true
 }
 
-const onDelete = (id: number) => {
-  deleteTemplate(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
-
 const formatDate = (date: number) => {
-  return dayjs(date).format('YYYY-MM-DD')
+  return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
 }
 
 const { data, execute, onChange, onFilter, onFilterReset, pagination, pending, queryParams } =
