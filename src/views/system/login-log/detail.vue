@@ -10,7 +10,7 @@
       <ADescriptionsItem label="登录地址" :span="2">{{ entry.userIp }}</ADescriptionsItem>
       <ADescriptionsItem label="登录设备" :span="2">{{ entry.userAgent }}</ADescriptionsItem>
       <ADescriptionsItem label="登录结果">{{ entry.result }}</ADescriptionsItem>
-      <ADescriptionsItem label="操作内容">
+      <ADescriptionsItem label="登录时间">
         {{ dayjs(entry.createTime).format('YYYY-MM-DD HH:mm:ss') }}
       </ADescriptionsItem>
     </ADescriptions>
