@@ -17,8 +17,11 @@ export type TemplateVO = {
 }
 
 export type ListQueryParams = CommonQueryParams & {
+  name?: string
+  type?: number
+  code?: string
   status?: number
-  signature?: string
+  channelId?: number
 }
 
 export const getTemplateList = (params?: ListQueryParams) => {
