@@ -40,10 +40,12 @@ export const useTable = (formRef: Ref<FormInstance>) => {
   })
 
   const onFilter = () => {
+    queryParams.value.pageNo = 1
     execute()
   }
 
   const onFilterReset = () => {
+    queryParams.value.pageNo = 1
     formRef.value?.resetFields()
     execute()
   }

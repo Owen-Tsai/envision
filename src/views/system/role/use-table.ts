@@ -40,6 +40,7 @@ export const useTable = (filterFormRef: Ref<FormInstance | undefined>) => {
   }
 
   const onFilter = () => {
+    queryParams.value.pageNo = 1
     execute()
   }
 
