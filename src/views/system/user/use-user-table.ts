@@ -1,5 +1,4 @@
 import { ref, computed, type Ref } from 'vue'
-import { useToggle } from '@vueuse/core'
 import useRequest from '@/hooks/use-request'
 import { getUsers, type ListQueryParams } from '@/api/system/user'
 import type { TableProps, FormInstance } from 'ant-design-vue'
@@ -17,8 +16,6 @@ export const columns: TableProps['columns'] = [
 ]
 
 export const useUserTable = (formRef: Ref<FormInstance>) => {
-  const [filterExpanded, toggle] = useToggle(false)
-
   const queryParams = ref<ListQueryParams>({})
 
   const pagination = computed<TablePaginationConfig>(() => ({
@@ -62,8 +59,6 @@ export const useUserTable = (formRef: Ref<FormInstance>) => {
     pagination,
     onChange,
     onFilter,
-    onFilterReset,
-    filterExpanded,
-    toggle
+    onFilterReset
   }
 }

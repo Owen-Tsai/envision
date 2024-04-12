@@ -231,6 +231,7 @@ import { message, Modal } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { updateUserStatus, deleteUser } from '@/api/system/user'
 import useDict from '@/hooks/use-dict'
+import { useToggle } from '@vueuse/core'
 import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'
 import PasswordFormModal from './password-form.vue'
@@ -242,6 +243,8 @@ import type { Tree } from '@/utils/tree'
 
 const filterForm = ref()
 
+const [filterExpanded, toggle] = useToggle(false)
+
 const { commonStatus } = useDict('common_status')
 
 const entryId = ref<number | undefined>()
@@ -250,18 +253,8 @@ const entryName = ref<string | undefined>()
 const { currentDeptName, deptTreeLoading, filteredTreeData, searchText, selectedKeys } =
   useDeptTree()
 
-const {
-  data,
-  execute,
-  filterExpanded,
-  pending,
-  queryParams,
-  pagination,
-  onChange,
-  onFilter,
-  onFilterReset,
-  toggle
-} = useUserTable(filterForm)
+const { data, execute, pending, queryParams, pagination, onChange, onFilter, onFilterReset } =
+  useUserTable(filterForm)
 
 // for create/update user
 const { modalVisible: userModalVisible, showModal: showUserModal } = useAddOrUpdate(entryId)
