@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard v-if="permission.has('system:dept:query')" class="mb-4">
+    <ACard v-if="permission.has('system:sms-channel:query')" class="mb-4">
       <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
         <ARow :gutter="24">
           <ACol :span="24" :lg="8">
@@ -31,7 +31,7 @@
       <template #extra>
         <AFlex :gap="8">
           <AButton
-            v-if="permission.has('system:dept:create')"
+            v-if="permission.has('system:sms-channel:create')"
             type="primary"
             :loading="pending"
             @click="showDialog()"
@@ -74,15 +74,15 @@
           <template v-if="scope?.column.key === 'actions'">
             <AFlex :gap="16">
               <ATypographyLink
-                v-if="permission.has('system:dept:update')"
+                v-if="permission.has('system:sms-channel:update')"
                 @click="showDialog(scope?.record.id)"
               >
                 <EditOutlined />
                 修改
               </ATypographyLink>
               <APopconfirm
-                v-if="permission.has('system:dept:delete')"
-                title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"
+                v-if="permission.has('system:sms-channel:delete')"
+                title="此操作不可撤销，确定要删除吗？"
                 trigger="click"
                 :overlay-style="{ maxWidth: '280px' }"
                 @confirm="onDelete(scope?.record.id!)"

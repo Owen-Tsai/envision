@@ -57,11 +57,10 @@ defineProps({
   }
 })
 
-const { systemSmsReceiveStatus, systemSmsSendStatus, systemSmsChannelCode, systemSmsTemplateType } =
-  useDict(
-    'system_sms_receive_status',
-    'system_sms_send_status',
-    'system_sms_channel_code',
-    'system_sms_template_type'
-  )
+const { systemSmsReceiveStatus, systemSmsSendStatus, systemSmsTemplateType } = useDict(
+  'system_sms_receive_status',
+  'system_sms_send_status',
+  'system_sms_channel_code',
+  'system_sms_template_type'
+)
 </script>
