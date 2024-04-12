@@ -5,7 +5,7 @@ import { getChannelList, type ListQueryParams } from '@/api/system/sms/channel'
 
 export const columns: TableProps['columns'] = [
   { key: 'id', title: '编号', dataIndex: 'id' },
-  { key: 'signature', title: '短信签名', dataIndex: 'signature' },
+  { key: 'signature', title: '渠道名称', dataIndex: 'signature' },
   { key: 'code', title: '渠道编码', dataIndex: 'code' },
   { key: 'status', title: '状态', dataIndex: 'status' },
   { key: 'apiKey', title: 'API Key', dataIndex: 'apiKey' },

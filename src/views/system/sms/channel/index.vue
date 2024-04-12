@@ -4,7 +4,7 @@
       <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
         <ARow :gutter="24">
           <ACol :span="24" :lg="8">
-            <AFormItem label="短信签名" name="signature">
+            <AFormItem label="渠道名称" name="signature">
               <AInput v-model:value="queryParams.signature" placeholder="请输入部门名称" />
             </AFormItem>
           </ACol>

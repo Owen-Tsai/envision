@@ -9,13 +9,15 @@ export type ChannelVO = {
   apiKey?: string
   apiSecret?: string
   callbackUrl?: string
-  createTime?: string
+  createTime?: number
 }
 
 export type ListQueryParams = CommonQueryParams & {
   status?: number
   signature?: string
 }
+
+export type ChannelListLiteVO = Array<Pick<ChannelVO, 'id' | 'code' | 'signature'>>
 
 export const getChannelList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<ChannelVO>>({
@@ -25,7 +27,7 @@ export const getChannelList = (params?: ListQueryParams) => {
 }
 
 export const getSimpleChannelList = () => {
-  return request.get({ url: '/system/sms-channel/simple-list' })
+  return request.get<ChannelListLiteVO>({ url: '/system/sms-channel/list-all-simple' })
 }
 
 export const getChannelDetail = (id: number) => {

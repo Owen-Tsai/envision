@@ -14,7 +14,7 @@
       class="mt-4"
     >
       <ASpin :spinning="loading">
-        <AFormItem label="短信签名" name="signature">
+        <AFormItem label="渠道名称" name="signature">
           <AInput v-model:value="formData.signature" placeholder="请输入菜单名称" />
         </AFormItem>
         <AFormItem label="渠道编码" name="code">
@@ -63,7 +63,7 @@ const loading = ref(false)
 const { commonStatus, systemSmsChannelCode } = useDict('common_status', 'system_sms_channel_code')
 
 const rules = ref<FormProps['rules']>({
-  signature: [{ required: true, message: '请输入短信签名' }],
+  signature: [{ required: true, message: '请输入渠道名称' }],
   code: [{ required: true, message: '请选择渠道编码' }],
   apiKey: [{ required: true, message: '请输入短信渠道的 API Key' }]
 })
