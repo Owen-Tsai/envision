@@ -8,11 +8,11 @@ import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
   { title: '字典编码', width: 90, dataIndex: 'id' },
-  { title: '字典标签', dataIndex: 'label' },
-  { title: '字典键值', width: 120, dataIndex: 'value' },
-  { title: '字典排序', width: 120, dataIndex: 'sort' },
+  { title: '字典标签', width: 120, dataIndex: 'label' },
+  { title: '字典键值', width: 90, dataIndex: 'value' },
+  { title: '字典排序', width: 90, dataIndex: 'sort' },
   { title: '字典状态', width: 90, dataIndex: 'status' },
-  { title: '颜色类型', dataIndex: 'colorType' },
+  { title: '颜色类型', width: 90, dataIndex: 'colorType' },
   { title: 'CSS Class', dataIndex: 'cssClass' },
   { title: '备注', dataIndex: 'remark' },
   {
@@ -24,7 +24,7 @@ export const columns: TableProps['columns'] = [
       return dayjs(a.createTime).isSameOrBefore(b.createTime) ? 1 : -1
     }
   },
-  { title: '操作', width: 220 }
+  { title: '操作', width: 180 }
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
