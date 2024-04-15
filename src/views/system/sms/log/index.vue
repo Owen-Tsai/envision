@@ -19,7 +19,7 @@
                 v-model:value="queryParams.channelId"
                 :options="channelList"
                 :field-names="{ label: 'signature', value: 'id' }"
-                placeholder="请选择启用状态"
+                placeholder="请选择短信渠道"
               />
             </AFormItem>
           </ACol>
@@ -135,7 +135,6 @@ import {
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
 import useDict from '@/hooks/use-dict'
-import {} from '@/api/system/sms/template'
 import { getSimpleChannelList, type ChannelListLiteVO } from '@/api/system/sms/channel'
 import { type LogVO } from '@/api/system/sms/log'
 import { useToggle } from '@vueuse/core'

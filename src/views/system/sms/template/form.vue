@@ -72,9 +72,10 @@ const loading = ref(false)
 const { commonStatus, systemSmsTemplateType } = useDict('common_status', 'system_sms_template_type')
 
 const rules = ref<FormProps['rules']>({
-  signature: [{ required: true, message: '请输入渠道名称' }],
-  code: [{ required: true, message: '请选择渠道编码' }],
-  apiKey: [{ required: true, message: '请输入短信渠道的 API Key' }]
+  channelId: [{ required: true, message: '请选择短信渠道' }],
+  name: [{ required: true, message: '请输入模板名称' }],
+  code: [{ required: true, message: '请输入模板编码' }],
+  content: [{ required: true, message: '请输入模板内容' }]
 })
 
 const props = defineProps({

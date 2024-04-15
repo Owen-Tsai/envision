@@ -55,7 +55,7 @@
       </AForm>
     </ACard>
 
-    <ACard title="短信渠道">
+    <ACard title="短信模板">
       <template #extra>
         <AFlex :gap="8">
           <AButton
