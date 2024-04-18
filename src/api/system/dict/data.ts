@@ -1,16 +1,16 @@
 import request from '@/utils/request'
 
 export type DictDataItemVO = {
-  colorType?: string
-  cssClass?: string
-  createTime?: number
-  dictType?: string
-  id?: number
+  colorType: string
+  cssClass: string
+  createTime: number
+  dictType: string
+  id: number
   value: string // must not be optional to avoid casting in every usage with radio options
-  label?: string
-  remark?: string
-  sort?: number
-  status?: number
+  label: string
+  remark: string
+  sort: number
+  status: number
 }
 
 export type DictDataEntry = Omit<DictDataItemVO, 'value'> & {
@@ -39,7 +39,7 @@ export const getDictData = (dictType: string) => {
 }
 
 export const getDictDataList = (params?: ListQueryParams) => {
-  return request.get<PaginatedList<DictDataVO>>({
+  return request.get<PaginatedList<DictDataItemVO>>({
     url: '/system/dict-data/page',
     params
   })
@@ -51,14 +51,14 @@ export const getDictDataDetail = (id: number) => {
   })
 }
 
-export const addDictData = (data: DictDataItemVO) => {
+export const addDictData = (data: Partial<DictDataItemVO>) => {
   return request.post({
     url: '/system/dict-data/create',
     data
   })
 }
 
-export const updateDictData = (data: DictDataItemVO) => {
+export const updateDictData = (data: Partial<DictDataItemVO>) => {
   return request.put({
     url: '/system/dict-data/create',
     data

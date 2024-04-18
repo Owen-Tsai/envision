@@ -54,7 +54,7 @@
     <ACard title="字典类型" class="mt-4">
       <template #extra>
         <AFlex :gap="8">
-          <AButton type="primary" :loading="pending" @click="showDialog()">
+          <AButton type="primary" :loading="pending" @click="onEdit()">
             <template #icon>
               <PlusOutlined />
             </template>
@@ -94,7 +94,7 @@
             </template>
             <template v-if="scope!.column.title === '操作'">
               <AFlex :gap="16">
-                <ATypographyLink @click="showDialog(scope?.record.id)">
+                <ATypographyLink @click="onEdit(scope?.record.id)">
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
@@ -111,7 +111,7 @@
       </div>
     </ACard>
 
-    <FormModal v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
+    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
   </div>
 </template>
 
@@ -128,10 +128,10 @@ import {
   PlusOutlined
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
-import { deleteDictData } from '@/api/system/dict/data'
 import FormModal from './form.vue'
 import { columns, useTable } from './use-table'
-import { message, type FormInstance } from 'ant-design-vue'
+import useActions from './use-actions'
+import type { FormInstance } from 'ant-design-vue'
 
 const filterForm = ref<FormInstance>()
 
@@ -142,18 +142,5 @@ const { commonStatus } = useDict('common_status')
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const entryId = ref<number>()
-const visible = ref(false)
-
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
-}
-
-const onDelete = (id: number) => {
-  deleteDictData(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
+const { onDelete, onEdit, entry, visible } = useActions(execute)
 </script>

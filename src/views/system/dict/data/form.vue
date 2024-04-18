@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, type PropType } from 'vue'
 import { QuestionCircleFilled } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import {
@@ -73,8 +73,8 @@ const rules: FormProps['rules'] = {
 }
 
 const props = defineProps({
-  id: {
-    type: Number
+  record: {
+    type: Object as PropType<DictDataItemVO>
   }
 })
 
@@ -83,7 +83,7 @@ const emit = defineEmits(['success', 'close'])
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
-const formData = ref<DictDataItemVO>({
+const formData = ref<Partial<DictDataItemVO>>({
   status: 0,
   sort: 0,
   value: ''
@@ -91,7 +91,7 @@ const formData = ref<DictDataItemVO>({
 
 const { commonStatus } = useDict('common_status')
 
-const isAdd = computed(() => props.id === undefined)
+const isAdd = computed(() => props.record?.id === undefined)
 
 const submit = async () => {
   try {
@@ -119,9 +119,9 @@ const resetFields = () => {
   emit('close')
 }
 
-if (props.id) {
+if (props.record) {
   loading.value = true
-  getDictDataDetail(props.id).then((res) => {
+  getDictDataDetail(props.record.id).then((res) => {
     formData.value = res
     loading.value = false
   })
