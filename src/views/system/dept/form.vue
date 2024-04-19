@@ -1,7 +1,7 @@
 <template>
   <AModal
     v-model:open="open"
-    :title="id === undefined ? '新增部门' : '编辑部门'"
+    :title="record === undefined ? '新增部门' : '编辑部门'"
     :after-close="onClose"
     destroy-on-close
     @ok="submit"
@@ -83,9 +83,8 @@ const props = defineProps({
   userData: {
     type: Array as PropType<SimpleUserVO>
   },
-  id: {
-    type: Number,
-    default: undefined
+  record: {
+    type: Object as PropType<DeptVO>
   }
 })
 
@@ -105,7 +104,7 @@ const submit = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
-    if (props.id !== undefined) {
+    if (props.record !== undefined) {
       // edit
       await updateDept(formData.value)
       message.success('保存成功')
@@ -126,9 +125,9 @@ const submit = async () => {
 }
 
 // load detail
-if (props.id) {
+if (props.record?.id) {
   loading.value = true
-  getDeptDetail(props.id).then((data) => {
+  getDeptDetail(props.record.id).then((data) => {
     if (data.parentId === 0) {
       data.parentId = undefined
     }

@@ -6,7 +6,7 @@ import { getSimpleUserList, type SimpleUserVO } from '@/api/system/user'
 
 export const columns: TableProps['columns'] = [
   { key: 'name', title: '部门名称', dataIndex: 'name' },
-  { key: 'leader', title: '负责人', dataIndex: 'leaderUserId' },
+  { key: 'leaderUserId', title: '负责人', dataIndex: 'leaderUserId' },
   { key: 'sort', title: '排序', dataIndex: 'sort' },
   { key: 'status', title: '状态', dataIndex: 'status' },
   { key: 'createTime', title: '创建时间', dataIndex: 'createTime' },

@@ -38,7 +38,7 @@
                 v-if="permission.has('system:dept:create')"
                 type="primary"
                 :loading="pending"
-                @click="showDialog()"
+                @click="onEdit()"
               >
                 <template #icon>
                   <PlusOutlined />
@@ -64,31 +64,31 @@
             defaultExpandAllRows
             :key="`data-${pending}`"
           >
-            <template #bodyCell="scope">
-              <template v-if="scope?.column.key === 'leader'">
+            <template #bodyCell="scope: TableScope<DeptVO>">
+              <template v-if="scope?.column.key === 'leaderUserId'">
                 {{ userList?.find((e) => e.id === scope.record.leaderUserId)?.nickname }}
               </template>
               <template v-if="scope?.column.key === 'status'">
-                <EDictTag :value="scope.record.status" :dict-object="commonStatus" />
+                <EDictTag :value="scope.text" :dict-object="commonStatus" />
               </template>
               <template v-if="scope?.column.key === 'createTime'">
-                {{ formatDate(scope.record.createTime) }}
+                {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}
               </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">
                   <ATypographyLink
                     v-if="permission.has('system:dept:update')"
-                    @click="showDialog(scope.record.id)"
+                    @click="onEdit(scope.record)"
                   >
                     <EditOutlined />
                     修改
                   </ATypographyLink>
                   <APopconfirm
                     v-if="permission.has('system:dept:delete')"
-                    title="删除部门后，该部门的用户所属部门将变为空。此操作不可撤销，确定要删除吗？"
+                    title="此操作不可撤销，确定要删除吗？"
                     trigger="click"
                     :overlay-style="{ maxWidth: '280px' }"
-                    @confirm="onDelete(scope.record.id)"
+                    @confirm="onDelete(scope.record)"
                   >
                     <ATypographyLink type="danger">
                       <DeleteOutlined />
@@ -103,11 +103,11 @@
       </ACol>
     </ARow>
 
-    <ModalForm
+    <FormModal
       v-if="visible"
       :tree-data="data"
       :user-data="userList"
-      :id="entryId"
+      :record="entry"
       @success="execute"
       @close="visible = false"
     />
@@ -116,41 +116,23 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { message } from 'ant-design-vue'
 import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import { useTable, columns } from './use-table'
-import ModalForm from './form.vue'
-import { deleteDept } from '@/api/system/dept'
+import useActions from './use-actions'
+import FormModal from './form.vue'
+import { type DeptVO } from '@/api/system/dept'
 import { permission } from '@/hooks/use-permission'
 
 const filterFormRef = ref()
 
 const { commonStatus } = useDict('common_status')
 
-const visible = ref(false)
-// current entry for editing
-const entryId = ref<number | undefined>()
-
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
-}
-
-const onDelete = (id: number) => {
-  deleteDept(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
-
-const formatDate = (date: number) => {
-  return dayjs(date).format('YYYY-MM-DD')
-}
-
 const { data, execute, pending, queryParams, userList, onFilter, onFilterReset } =
   useTable(filterFormRef)
+
+const { entry, visible, onDelete, onEdit } = useActions(execute)
 
 defineOptions({ name: 'SystemDept' })
 </script>
