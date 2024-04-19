@@ -70,7 +70,7 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope">
+          <template #bodyCell="scope: TableScope<LoginLogVO>">
             <template v-if="scope!.column.dataIndex === 'logType'">
               {{ systemLoginType.find((e) => e.value === scope!.text)?.label }}
             </template>

@@ -38,7 +38,7 @@
                 v-if="permission.has('system:menu:create')"
                 type="primary"
                 :loading="pending"
-                @click="showDialog('add')"
+                @click="onEdit('add')"
               >
                 <template #icon>
                   <PlusOutlined />
@@ -53,7 +53,7 @@
                 </AButton>
               </ATooltip>
               <ATooltip title="刷新菜单缓存">
-                <AButton type="text" :loading="pending" @click="clearMenuCache">
+                <AButton type="text" :loading="pending" @click="onClearCache">
                   <template #icon>
                     <RetweetOutlined />
                   </template>
@@ -71,27 +71,27 @@
             :sticky="{ offsetHeader: 90 }"
             :pagination="false"
           >
-            <template #bodyCell="scope">
+            <template #bodyCell="scope: TableScope<MenuVO>">
               <template v-if="scope?.column.key === 'type'">
                 <ATag color="processing">
                   {{ menuTypes.find((e) => e.value === scope.record.type)?.label }}
                 </ATag>
               </template>
               <template v-if="scope?.column.key === 'status'">
-                <EDictTag :dict-object="commonStatus" :value="scope.record.status" />
+                <EDictTag :dict-object="commonStatus" :value="scope.text" />
               </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">
                   <ATypographyLink
                     v-if="permission.has('system:menu:update')"
-                    @click="showDialog('edit', scope.record.id)"
+                    @click="onEdit('edit', scope.record)"
                   >
                     <EditOutlined />
                     修改
                   </ATypographyLink>
                   <ATypographyLink
                     v-if="permission.has('system:menu:create')"
-                    @click="showDialog('add', scope.record.id)"
+                    @click="onEdit('add', scope.record)"
                   >
                     <PlusOutlined />
                     新增
@@ -100,7 +100,7 @@
                     v-if="permission.has('system:menu:delete')"
                     title="删除该菜单项将一并删除该菜单下的所有子菜单，确定要删除吗？"
                     :overlay-inner-style="{ width: '260px' }"
-                    @confirm="onDelete(scope.record.id)"
+                    @confirm="onDelete(scope.record!)"
                   >
                     <ATypographyLink type="danger">
                       <DeleteOutlined />
@@ -115,10 +115,10 @@
       </ACol>
     </ARow>
 
-    <ModalForm
+    <FormModal
       v-if="visible"
       :mode="mode"
-      :id="entryId"
+      :record="entry"
       :tree-data="data"
       @success="execute"
       @close="visible = false"
@@ -128,7 +128,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { message } from 'ant-design-vue'
 import {
   ReloadOutlined,
   RetweetOutlined,
@@ -138,41 +137,19 @@ import {
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
-import useStorage from '@/hooks/use-storage'
 import { menuTypes } from '@/utils/constants'
-import { deleteMenuWithChildren } from '@/api/system/menu'
+import type { MenuVO } from '@/api/system/menu'
 import { useTable, columns } from './use-table'
-import ModalForm from './form.vue'
+import useActions from './use-actions'
+import FormModal from './form.vue'
 
 const filterFormRef = ref()
 
-const storage = useStorage('sessionStorage')
-
 const { commonStatus } = useDict('common_status')
 
-const visible = ref(false)
-// current entry for editing
-const entryId = ref<number | undefined>()
-const mode = ref<'add' | 'edit'>('add')
-
-const showDialog = (action: 'add' | 'edit', id?: number) => {
-  entryId.value = id
-  visible.value = true
-  mode.value = action
-}
-
-const onDelete = async (id: number) => {
-  await deleteMenuWithChildren(id)
-  message.success('删除成功')
-  execute()
-}
-
-const clearMenuCache = () => {
-  storage.delete('permission-info')
-  window.location.reload()
-}
-
 const { data, execute, pending, queryParams, onFilter, onFilterReset } = useTable(filterFormRef)
+
+const { entry, mode, visible, onClearCache, onDelete, onEdit } = useActions(execute)
 
 defineOptions({ name: 'SystemMenu' })
 </script>

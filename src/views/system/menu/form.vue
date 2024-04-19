@@ -62,7 +62,7 @@
             <AInput v-model:value="formData.params" placeholder="请输入路由参数" />
           </AFormItem>
         </template>
-        <AFormItem v-if="formData.type !== 3" label="权限标识" name="permission">
+        <AFormItem v-if="formData.type !== 1" label="权限标识" name="permission">
           <AInput v-model:value="formData.permission" placeholder="请输入权限标识" />
         </AFormItem>
         <ARow>
@@ -140,9 +140,8 @@ const props = defineProps({
   treeData: {
     type: Object as PropType<TreeSelectProps['treeData']>
   },
-  id: {
-    type: Number,
-    default: undefined
+  record: {
+    type: Object as PropType<MenuVO>
   }
 })
 
@@ -195,8 +194,8 @@ const submit = async () => {
 
 if (props.mode === 'edit') {
   loading.value = true
-  if (props.id) {
-    getMenuDetail(props.id).then((data) => {
+  if (props.record?.id) {
+    getMenuDetail(props.record.id).then((data) => {
       if (data.parentId === 0) {
         data.parentId = undefined
       }
@@ -205,8 +204,8 @@ if (props.mode === 'edit') {
     })
   }
 } else {
-  if (props.id) {
-    formData.value.parentId = props.id
+  if (props.record?.id) {
+    formData.value.parentId = props.record.id
   }
 }
 </script>
