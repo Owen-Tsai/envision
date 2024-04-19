@@ -6,12 +6,12 @@ const useActions = (requestData: () => void) => {
   const entry = ref<DictDataItemVO | undefined>()
   const visible = ref(false)
 
-  const onEdit = (record?: DictDataItemVO) => {
-    entry.value = record
+  const onEdit = (record?: Partial<DictDataItemVO>) => {
+    entry.value = record as DictDataItemVO
     visible.value = true
   }
 
-  const onDelete = (record: DictDataItemVO) => {
+  const onDelete = (record: Partial<DictDataItemVO>) => {
     deleteDictData(record.id!).then(() => {
       message.success('删除成功')
       requestData()

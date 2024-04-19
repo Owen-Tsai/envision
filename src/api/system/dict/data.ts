@@ -6,7 +6,7 @@ export type DictDataItemVO = {
   createTime: number
   dictType: string
   id: number
-  value: string // must not be optional to avoid casting in every usage with radio options
+  value: string
   label: string
   remark: string
   sort: number

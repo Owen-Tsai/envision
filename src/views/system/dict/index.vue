@@ -54,7 +54,7 @@
             v-if="permission.has('system:dict:create')"
             type="primary"
             :loading="pending"
-            @click="showDialog()"
+            @click="onEdit()"
           >
             <template #icon>
               <PlusOutlined />
@@ -86,7 +86,7 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope">
+          <template #bodyCell="scope: TableScope<DictTypeVO>">
             <template v-if="scope!.column.dataIndex === 'status'">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
@@ -97,20 +97,20 @@
               <AFlex :gap="16">
                 <ATypographyLink
                   v-if="permission.has('system:dict:update')"
-                  @click="showDialog(scope?.record.id)"
+                  @click="onEdit(scope!.record)"
                 >
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
-                <ATypographyLink @click="toDataPage(scope?.record.type)">
+                <ATypographyLink @click="onShowData(scope!.record)">
                   <UnorderedListOutlined />
                   数据
                 </ATypographyLink>
                 <APopconfirm
                   v-if="permission.has('system:dict:delete')"
-                  title="删除字典后，使用了该字典的数据可能会存在显示问题。确定删除吗？"
-                  :overlay-style="{ width: '260px' }"
-                  @confirm="onDelete(scope?.record.id)"
+                  title="该操作无法撤销，确定要删除吗？"
+                  :overlay-style="{ width: '240px' }"
+                  @confirm="onDelete(scope!.record)"
                 >
                   <ATypographyLink type="danger">
                     <DeleteOutlined />
@@ -124,13 +124,12 @@
       </div>
     </ACard>
 
-    <FormModal v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
+    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
 import { useToggle } from '@vueuse/core'
 import {
@@ -144,13 +143,13 @@ import {
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
-import { deleteDictType } from '@/api/system/dict/type'
 import FormModal from './form.vue'
 import { columns, useTable } from './use-table'
-import { message, type FormInstance } from 'ant-design-vue'
+import useActions from './use-actions'
+import type { FormInstance } from 'ant-design-vue'
+import type { DictTypeVO } from '@/api/system/dict/type'
 
 const filterForm = ref<FormInstance>()
-const { push } = useRouter()
 
 const [filterExpanded, toggle] = useToggle(false)
 
@@ -159,24 +158,7 @@ const { commonStatus } = useDict('common_status')
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const entryId = ref<number>()
-const visible = ref(false)
-
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
-}
-
-const toDataPage = (type: string) => {
-  push(`/system/dict/data/${type}`)
-}
-
-const onDelete = (id: number) => {
-  deleteDictType(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
+const { entry, visible, onDelete, onEdit, onShowData } = useActions(execute)
 
 defineOptions({ name: 'SystemDictType' })
 </script>

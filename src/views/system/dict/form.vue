@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import {
   addDictType,
@@ -49,8 +49,8 @@ const rules: FormProps['rules'] = {
 }
 
 const props = defineProps({
-  id: {
-    type: Number
+  record: {
+    type: Object as PropType<DictTypeVO>
   }
 })
 
@@ -59,7 +59,7 @@ const emit = defineEmits(['success', 'close'])
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
-const formData = ref<DictTypeVO>({
+const formData = ref<Partial<DictTypeVO>>({
   name: '',
   type: '',
   status: 0
@@ -67,7 +67,7 @@ const formData = ref<DictTypeVO>({
 
 const { commonStatus } = useDict('common_status')
 
-const isAdd = computed(() => props.id === undefined)
+const isAdd = computed(() => props.record === undefined)
 
 const submit = async () => {
   try {
@@ -95,9 +95,9 @@ const resetFields = () => {
   emit('close')
 }
 
-if (props.id) {
+if (props.record?.id) {
   loading.value = true
-  getDictTypeDetail(props.id).then((res) => {
+  getDictTypeDetail(props.record.id).then((res) => {
     formData.value = res
     loading.value = false
   })

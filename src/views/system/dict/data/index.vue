@@ -85,7 +85,7 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope">
+          <template #bodyCell="scope: TableScope<DictDataItemVO>">
             <template v-if="scope!.column.dataIndex === 'status'">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
@@ -94,11 +94,11 @@
             </template>
             <template v-if="scope!.column.title === '操作'">
               <AFlex :gap="16">
-                <ATypographyLink @click="onEdit(scope?.record.id)">
+                <ATypographyLink @click="onEdit(scope!.record)">
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
-                <APopconfirm title="确定删除该字典数据吗？" @confirm="onDelete(scope?.record.id)">
+                <APopconfirm title="确定删除该字典数据吗？" @confirm="onDelete(scope!.record)">
                   <ATypographyLink type="danger">
                     <DeleteOutlined />
                     删除
@@ -132,6 +132,7 @@ import FormModal from './form.vue'
 import { columns, useTable } from './use-table'
 import useActions from './use-actions'
 import type { FormInstance } from 'ant-design-vue'
+import type { DictDataItemVO } from '@/api/system/dict/data'
 
 const filterForm = ref<FormInstance>()
 
