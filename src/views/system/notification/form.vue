@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import {
   addNotification,
@@ -62,13 +62,14 @@ import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import EEditor from '@/components/editor/index.vue'
 
 const rules: FormProps['rules'] = {
-  name: [{ required: true, message: '请填写角色名称' }],
-  code: [{ required: true, message: '请填写角色标识' }]
+  title: [{ required: true, message: '请填写标题' }],
+  type: [{ required: true, message: '请选择通知公告类别' }],
+  content: [{ required: true, message: '请填写通知公告内容' }]
 }
 
 const props = defineProps({
-  id: {
-    type: Number
+  record: {
+    type: Object as PropType<NotificationVO>
   }
 })
 
@@ -84,7 +85,7 @@ const formData = ref<NotificationVO>({
 
 const { commonStatus, systemNoticeType } = useDict('common_status', 'system_notice_type')
 
-const isAdd = computed(() => props.id === undefined)
+const isAdd = computed(() => props.record === undefined)
 
 const submit = async () => {
   try {
@@ -113,9 +114,9 @@ const resetFields = () => {
   emit('close')
 }
 
-if (props.id) {
+if (props.record?.id) {
   loading.value = true
-  getNotificationDetail(props.id).then((res) => {
+  getNotificationDetail(props.record.id).then((res) => {
     formData.value = res
     loading.value = false
   })

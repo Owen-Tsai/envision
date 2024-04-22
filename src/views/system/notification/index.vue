@@ -58,7 +58,7 @@
             v-if="permission.has('system:notice:create')"
             type="primary"
             :loading="pending"
-            @click="showDialog()"
+            @click="onEdit()"
           >
             <template #icon>
               <PlusOutlined />
@@ -83,21 +83,21 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope">
-            <template v-if="scope!.column.dataIndex === 'status'">
+          <template #bodyCell="scope: TableScope<NotificationVO>">
+            <template v-if="scope!.column.key === 'status'">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
-            <template v-if="scope!.column.dataIndex === 'type'">
+            <template v-if="scope!.column.key === 'type'">
               <EDictTag :dict-object="systemNoticeType" :value="scope?.text" />
             </template>
-            <template v-if="scope?.column.dataIndex === 'createTime'">
+            <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
-            <template v-if="scope!.column.title === '操作'">
+            <template v-if="scope?.column.title === '操作'">
               <AFlex :gap="16">
                 <ATypographyLink
                   v-if="permission.has('system:notice:update')"
-                  @click="showDialog(scope?.record.id)"
+                  @click="onEdit(scope.record)"
                 >
                   <EditOutlined />
                   编辑
@@ -106,7 +106,7 @@
                   v-if="permission.has('system:notice:delete')"
                   title="此操作不可恢复，确定删除吗？"
                   :overlay-style="{ width: '260px' }"
-                  @confirm="onDelete(scope?.record.id)"
+                  @confirm="onDelete(scope.record)"
                 >
                   <ATypographyLink type="danger">
                     <DeleteOutlined />
@@ -120,7 +120,7 @@
       </div>
     </ACard>
 
-    <FormModal v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
+    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
   </div>
 </template>
 
@@ -137,10 +137,11 @@ import {
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
-import { deleteNotification } from '@/api/system/notification'
 import FormModal from './form.vue'
 import { columns, useTable } from './use-table'
-import { message, type FormInstance } from 'ant-design-vue'
+import useActions from './use-actions'
+import type { FormInstance } from 'ant-design-vue'
+import type { NotificationVO } from '@/api/system/notification'
 
 const filterForm = ref<FormInstance>()
 
@@ -151,20 +152,7 @@ const { commonStatus, systemNoticeType } = useDict('common_status', 'system_noti
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
-const entryId = ref<number>()
-const visible = ref(false)
-
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
-}
-
-const onDelete = (id: number) => {
-  deleteNotification(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
+const { entry, visible, onDelete, onEdit } = useActions(execute)
 
 defineOptions({ name: 'SystemNotice' })
 </script>
