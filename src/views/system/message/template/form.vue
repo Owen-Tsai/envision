@@ -1,7 +1,7 @@
 <template>
   <AModal
     v-model:open="open"
-    :title="id === undefined ? '新增站内信模板' : '编辑站内信模板'"
+    :title="record === undefined ? '新增站内信模板' : '编辑站内信模板'"
     :after-close="onClose"
     destroy-on-close
     @ok="submit"
@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import {
   getTemplateDetail,
@@ -71,9 +71,8 @@ const rules = ref<FormProps['rules']>({
 })
 
 const props = defineProps({
-  id: {
-    type: Number,
-    default: undefined
+  record: {
+    type: Object as PropType<TemplateVO>
   }
 })
 
@@ -95,7 +94,7 @@ const submit = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
-    if (props.id !== undefined) {
+    if (props.record !== undefined) {
       // edit
       await updateTemplate(formData.value)
       message.success('保存成功')
@@ -116,9 +115,9 @@ const submit = async () => {
 }
 
 // load detail
-if (props.id) {
+if (props.record?.id) {
   loading.value = true
-  getTemplateDetail(props.id).then((data) => {
+  getTemplateDetail(props.record.id).then((data) => {
     formData.value = data
     loading.value = false
   })
