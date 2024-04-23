@@ -34,7 +34,7 @@
                 v-if="permission.has('system:post:create')"
                 type="primary"
                 :loading="pending"
-                @click="showDialog()"
+                @click="onEdit()"
               >
                 <template #icon>
                   <PlusOutlined />
@@ -61,18 +61,18 @@
             :key="`data-${pending}`"
             @change="onChange"
           >
-            <template #bodyCell="scope">
+            <template #bodyCell="scope: TableScope<PostVO>">
               <template v-if="scope?.column.key === 'status'">
-                <EDictTag :value="scope.record.status" :dict-object="commonStatus" />
+                <EDictTag :value="scope.record.status!" :dict-object="commonStatus" />
               </template>
               <template v-if="scope?.column.key === 'createTime'">
-                {{ formatDate(scope.record.createTime) }}
+                {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}
               </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">
                   <ATypographyLink
                     v-if="permission.has('system:post:update')"
-                    @click="showDialog(scope.record.id)"
+                    @click="onEdit(scope.record)"
                   >
                     <EditOutlined />
                     修改
@@ -82,7 +82,7 @@
                     title="删除岗位后，处于该岗位的用户所属岗位将变为空。此操作不可撤销，确定要删除吗？"
                     trigger="click"
                     :overlay-style="{ maxWidth: '280px' }"
-                    @confirm="onDelete(scope.record.id)"
+                    @confirm="onDelete(scope.record)"
                   >
                     <ATypographyLink type="danger">
                       <DeleteOutlined />
@@ -97,47 +97,29 @@
       </ACol>
     </ARow>
 
-    <ModalForm v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
+    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { message } from 'ant-design-vue'
 import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import { useTable, columns } from './use-table'
-import ModalForm from './form.vue'
-import { deletePost } from '@/api/system/post'
+import useActions from './use-actions'
+import FormModal from './form.vue'
+import type { PostVO } from '@/api/system/post'
 
 const filterFormRef = ref()
 
 const { commonStatus } = useDict('common_status')
 
-const visible = ref(false)
-// current entry for editing
-const entryId = ref<number | undefined>()
-
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
-}
-
-const onDelete = (id: number) => {
-  deletePost(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
-
-const formatDate = (date: number) => {
-  return dayjs(date).format('YYYY-MM-DD')
-}
-
 const { data, execute, pending, queryParams, onFilter, onFilterReset, pagination, onChange } =
   useTable(filterFormRef)
+
+const { entry, visible, onDelete, onEdit } = useActions(execute)
 
 defineOptions({ name: 'SystemPost' })
 </script>

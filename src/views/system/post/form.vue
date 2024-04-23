@@ -1,7 +1,7 @@
 <template>
   <AModal
     v-model:open="open"
-    :title="id === undefined ? '新增岗位' : '编辑岗位'"
+    :title="record === undefined ? '新增岗位' : '编辑岗位'"
     :after-close="onClose"
     destroy-on-close
     @ok="submit"
@@ -17,19 +17,15 @@
         <AFormItem label="岗位标题" name="name">
           <AInput v-model:value="formData.name" placeholder="请输入岗位标题" />
         </AFormItem>
-
         <AFormItem label="岗位编码" name="code">
           <AInput v-model:value="formData.code" placeholder="请输入岗位编码" />
         </AFormItem>
-
         <AFormItem label="岗位顺序" name="sort">
           <AInputNumber v-model:value="formData.sort" class="w-full" />
         </AFormItem>
-
         <AFormItem label="状态" name="status">
           <ASelect v-model:value="formData.status" :options="commonStatus" />
         </AFormItem>
-
         <AFormItem label="备注" name="remark">
           <ATextarea v-model:value="formData.remark" />
         </AFormItem>
@@ -40,11 +36,9 @@
 
 <script lang="ts" setup>
 import { ref, type PropType } from 'vue'
-import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
+import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import { getPostDetail, createPost, updatePost, type PostVO } from '@/api/system/post'
-import { filterOption } from '@/utils/envision'
 import useDict from '@/hooks/use-dict'
-import type { SimpleUserVO } from '@/api/system/user'
 
 const loading = ref(false)
 
@@ -55,9 +49,8 @@ const rules = ref<FormProps['rules']>({
 })
 
 const props = defineProps({
-  id: {
-    type: Number,
-    default: undefined
+  record: {
+    type: Object as PropType<PostVO>
   }
 })
 
@@ -77,7 +70,7 @@ const submit = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
-    if (props.id !== undefined) {
+    if (props.record !== undefined) {
       // edit
       await updatePost(formData.value)
       message.success('保存成功')
@@ -98,9 +91,9 @@ const submit = async () => {
 }
 
 // load detail
-if (props.id) {
+if (props.record?.id) {
   loading.value = true
-  getPostDetail(props.id).then((data) => {
+  getPostDetail(props.record.id).then((data) => {
     formData.value = data
     loading.value = false
   })
