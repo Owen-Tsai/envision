@@ -11,7 +11,7 @@
       <template #message>
         <div>
           修改用户
-          <b>{{ nickname }}</b>
+          <b>{{ record.nickname }}</b>
           的密码，该操作不可撤销。
         </div>
       </template>
@@ -29,17 +29,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { resetUserPwd } from '@/api/system/user'
+import { ref, type PropType } from 'vue'
+import { resetUserPwd, type UserVO } from '@/api/system/user'
 import type { FormInstance } from 'ant-design-vue'
 
 const props = defineProps({
-  id: {
-    type: Number,
-    required: true
-  },
-  nickname: {
-    type: String,
+  record: {
+    type: Object as PropType<UserVO>,
     required: true
   }
 })
@@ -57,7 +53,7 @@ const submit = async () => {
   loading.value = true
   try {
     await formRef.value?.validate()
-    await resetUserPwd(props.id, formData.value.password as string)
+    await resetUserPwd(props.record.id!, formData.value.password as string)
     open.value = false
   } catch (e) {
     // do nothing

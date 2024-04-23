@@ -1,13 +1,16 @@
-import { ref, watch } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import { getDeptTree } from '@/api/system/dept'
+import type { ListQueryParams } from '@/api/system/user'
 import { filterTree, type Tree } from '@/utils/tree'
 
-const useDeptTree = () => {
+const useDeptTree = (queryParams: Ref<ListQueryParams>, requestData: () => void) => {
   const filteredTreeData = ref<Tree[]>()
   const selectedKeys = ref<number[]>([])
   const currentDeptName = ref('全部')
   const searchText = ref('')
+
+  let oldSelectedKey: number | string | undefined = undefined
 
   const { data, pending } = useRequest(getDeptTree, {
     immediate: true,
@@ -28,13 +31,26 @@ const useDeptTree = () => {
     filteredTreeData.value = filtered
   })
 
+  const onTreeNodeSelect = (node: Tree) => {
+    const hasSelected = node.key === oldSelectedKey
+    if (!hasSelected) {
+      oldSelectedKey = node.key
+    } else {
+      oldSelectedKey = undefined
+    }
+    currentDeptName.value = hasSelected ? '全部' : node.name
+    queryParams.value.deptId = hasSelected ? undefined : node.key.toString()
+    requestData()
+  }
+
   return {
     deptTree: data,
     deptTreeLoading: pending,
     filteredTreeData,
     selectedKeys,
     currentDeptName,
-    searchText
+    searchText,
+    onTreeNodeSelect
   }
 }
 

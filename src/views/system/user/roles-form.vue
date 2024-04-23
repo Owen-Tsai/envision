@@ -10,7 +10,7 @@
     <AAlert type="info" class="mt-4">
       <template #message>
         设置用户
-        <b>{{ nickname }}</b>
+        <b>{{ record.nickname }}</b>
         的角色：
       </template>
     </AAlert>
@@ -31,19 +31,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, type PropType } from 'vue'
 import { message, type FormInstance } from 'ant-design-vue'
 import { setUserRole, getUserRoles } from '@/api/system/permission'
 import { getSimpleList } from '@/api/system/role'
 import useRequest from '@/hooks/use-request'
+import type { UserVO } from '@/api/system/user'
 
 const props = defineProps({
-  id: {
-    type: Number,
-    required: true
-  },
-  nickname: {
-    type: String,
+  record: {
+    type: Object as PropType<UserVO>,
     required: true
   }
 })
@@ -61,7 +58,7 @@ const submit = async () => {
   loading.value = true
   try {
     await formRef.value?.validate()
-    await setUserRole(props.id, formData.value.roleIds)
+    await setUserRole(props.record.id!, formData.value.roleIds)
     message.success('保存成功')
     open.value = false
   } catch (e) {
@@ -79,7 +76,7 @@ const resetFields = () => {
 const { data, pending } = useRequest(getSimpleList, {
   immediate: true,
   async onSuccess() {
-    const data = await getUserRoles(props.id)
+    const data = await getUserRoles(props.record.id!)
     formData.value.roleIds = data
     loading.value = false
   }

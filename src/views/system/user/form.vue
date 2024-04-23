@@ -1,7 +1,7 @@
 <template>
   <AModal
     v-model:open="open"
-    :title="!id ? '新增用户' : '编辑用户'"
+    :title="!record ? '新增用户' : '编辑用户'"
     destroy-on-close
     :after-close="resetFields"
     :confirm-loading="loading"
@@ -16,7 +16,7 @@
     >
       <ASpin :spinning="loading">
         <ARow :gutter="16">
-          <template v-if="!id">
+          <template v-if="!record">
             <ACol :lg="12" :span="24">
               <AFormItem label="用户账号" name="username">
                 <AInput v-model:value="formData.username" />
@@ -86,7 +86,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
 import useRequest from '@/hooks/use-request'
@@ -102,9 +102,8 @@ const rules: FormProps['rules'] = {
 }
 
 const props = defineProps({
-  id: {
-    type: Number,
-    default: undefined
+  record: {
+    type: Object as PropType<UserVO>
   }
 })
 
@@ -127,7 +126,7 @@ const submit = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
-    if (props.id !== undefined) {
+    if (props.record !== undefined) {
       // update
       await updateUser(formData.value)
       message.success('保存成功')
@@ -146,9 +145,9 @@ const submit = async () => {
   }
 }
 
-if (props.id) {
+if (props.record?.id) {
   loading.value = true
-  getUserDetail(props.id).then((data) => {
+  getUserDetail(props.record.id).then((data) => {
     formData.value = data
     loading.value = false
   })

@@ -97,7 +97,7 @@
                   v-if="permission.has('system:user:create')"
                   type="primary"
                   :loading="pending"
-                  @click="showUserModal()"
+                  @click="onEdit()"
                 >
                   <template #icon>
                     <PlusOutlined />
@@ -127,7 +127,7 @@
               :pagination="pagination"
               @change="onChange"
             >
-              <template #bodyCell="scope">
+              <template #bodyCell="scope: TableScope<UserVO>">
                 <template v-if="scope?.column.key === 'status'">
                   <ASwitch
                     v-model:checked="scope.record.status"
@@ -135,23 +135,30 @@
                     :un-checked-value="1"
                     checked-children="启用"
                     un-checked-children="停用"
-                    @change="(v) => onStatusChange(scope.record.id, v as number)"
+                    @change="(v) => onSetStatus(scope.record, v as number)"
                   />
                 </template>
                 <template v-if="scope?.column.key === 'createTime'">
-                  {{ formatDate(scope.record.createTime) }}
+                  {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}
                 </template>
                 <template v-if="scope?.column.key === 'actions'">
                   <AFlex :gap="16">
                     <ATypographyLink
                       v-if="permission.has('system:user:update')"
-                      @click="showUserModal(scope.record.id)"
+                      @click="onEdit(scope.record)"
                     >
                       <EditOutlined />
                       编辑
                     </ATypographyLink>
                     <ADropdown
-                      v-if="permission.hasOne('system:user:update', 'system:user:update-password')"
+                      v-if="
+                        permission.hasOne(
+                          'system:user:update',
+                          'system:user:update-password',
+                          'system:user:delete',
+                          'system:permission:assign-user-role'
+                        )
+                      "
                     >
                       <ATypographyLink>
                         <DownOutlined />
@@ -160,22 +167,22 @@
                       <template #overlay>
                         <AMenu>
                           <AMenuItem
-                            :disabled="!permission.has('system:user:update')"
-                            @click="showPwdForm(scope.record.id, scope.record.nickname)"
+                            :disabled="!permission.has('system:user:update-password')"
+                            @click="onSetPassword(scope.record)"
                           >
                             重置密码
                           </AMenuItem>
                           <AMenuItem
-                            :disabled="!permission.has('system:user:update')"
-                            @click="showRoleModal(scope.record.id, scope.record.nickname)"
+                            :disabled="!permission.has('system:permission:assign-user-role')"
+                            @click="onSetRole(scope.record)"
                           >
                             设置角色
                           </AMenuItem>
                           <AMenuDivider />
                           <AMenuItem
-                            :disabled="permission.has('system:user:update-password')"
+                            :disabled="permission.has('system:user:delete')"
                             danger
-                            @click="onDelete(scope.record.id)"
+                            @click="onDelete(scope.record)"
                           >
                             删除用户
                           </AMenuItem>
@@ -193,26 +200,24 @@
 
     <!-- add/edit user -->
     <FormModal
-      v-if="userModalVisible"
-      :id="entryId"
+      v-if="visible.edit"
+      :record="entry"
       @success="execute"
-      @close="userModalVisible = false"
+      @close="visible.edit = false"
     />
     <!-- change password -->
     <PasswordFormModal
-      v-if="pwdModalVisible"
-      :id="entryId!"
-      :nickname="entryName!"
+      v-if="visible.passwordReset"
+      :record="entry!"
       @success="execute"
-      @close="pwdModalVisible = false"
+      @close="visible.passwordReset = false"
     />
     <!-- assign roles -->
     <RoleFormModal
-      v-if="roleModalVisible"
-      :id="entryId!"
-      :nickname="entryName!"
+      v-if="visible.roleConfig"
+      :record="entry!"
       @success="execute"
-      @close="roleModalVisible = false"
+      @close="visible.roleConfig = false"
     />
   </div>
 </template>
@@ -227,9 +232,8 @@ import {
   ExportOutlined,
   ReloadOutlined
 } from '@ant-design/icons-vue'
-import { message, Modal } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import { updateUserStatus, deleteUser } from '@/api/system/user'
+import type { UserVO } from '@/api/system/user'
 import useDict from '@/hooks/use-dict'
 import { useToggle } from '@vueuse/core'
 import { permission } from '@/hooks/use-permission'
@@ -238,8 +242,7 @@ import PasswordFormModal from './password-form.vue'
 import RoleFormModal from './roles-form.vue'
 import useDeptTree from './use-dept-tree'
 import { columns, useUserTable } from './use-user-table'
-import { useAddOrUpdate, usePasswordReset, useRoleConfig } from './use-user-actions'
-import type { Tree } from '@/utils/tree'
+import useActions from './use-actions'
 
 const filterForm = ref()
 
@@ -247,67 +250,20 @@ const [filterExpanded, toggle] = useToggle(false)
 
 const { commonStatus } = useDict('common_status')
 
-const entryId = ref<number | undefined>()
-const entryName = ref<string | undefined>()
-
-const { currentDeptName, deptTreeLoading, filteredTreeData, searchText, selectedKeys } =
-  useDeptTree()
-
 const { data, execute, pending, queryParams, pagination, onChange, onFilter, onFilterReset } =
   useUserTable(filterForm)
 
-// for create/update user
-const { modalVisible: userModalVisible, showModal: showUserModal } = useAddOrUpdate(entryId)
-// for password reset
-const { modalVisible: pwdModalVisible, showModal: showPwdForm } = usePasswordReset(
-  entryId,
-  entryName
-)
+const {
+  currentDeptName,
+  deptTreeLoading,
+  filteredTreeData,
+  searchText,
+  selectedKeys,
+  onTreeNodeSelect
+} = useDeptTree(queryParams, execute)
 
-// for config user roles
-const { modalVisible: roleModalVisible, showModal: showRoleModal } = useRoleConfig(
-  entryId,
-  entryName
-)
-
-const onStatusChange = async (id: number, status: number) => {
-  try {
-    await updateUserStatus(id, status)
-    message.success('操作成功')
-  } finally {
-    execute()
-  }
-}
-
-const onDelete = (id: number) => {
-  Modal.confirm({
-    title: '删除用户',
-    content: '此操作不可撤销，确定要删除该用户吗？',
-    onOk() {
-      deleteUser(id).then(() => {
-        execute()
-      })
-    }
-  })
-}
-
-let oldSelectedKey: number | string | undefined = undefined
-
-const onTreeNodeSelect = (node: Tree) => {
-  const hasSelected = node.key === oldSelectedKey
-  if (!hasSelected) {
-    oldSelectedKey = node.key
-  } else {
-    oldSelectedKey = undefined
-  }
-  currentDeptName.value = hasSelected ? '全部' : node.name
-  queryParams.value.deptId = hasSelected ? undefined : node.key.toString()
-  execute()
-}
-
-const formatDate = (date: string) => {
-  return dayjs(date).format('YYYY-MM-DD')
-}
+const { entry, visible, onDelete, onEdit, onSetPassword, onSetRole, onSetStatus } =
+  useActions(execute)
 
 defineOptions({ name: 'SystemUser' })
 </script>

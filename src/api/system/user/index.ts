@@ -15,6 +15,7 @@ export type UserVO = {
   roleIds?: number[]
   remark?: string
   avatar?: string
+  createTime?: Date
 }
 
 export type ListQueryParams = CommonQueryParams & {
