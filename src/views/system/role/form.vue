@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import { addRole, updateRole, getRoleDetail, type RoleVO } from '@/api/system/role'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
@@ -54,8 +54,8 @@ const rules: FormProps['rules'] = {
 }
 
 const props = defineProps({
-  id: {
-    type: Number
+  record: {
+    type: Object as PropType<RoleVO>
   }
 })
 
@@ -71,7 +71,7 @@ const formData = ref<RoleVO>({
 
 const { commonStatus } = useDict('common_status')
 
-const isAdd = computed(() => props.id === undefined)
+const isAdd = computed(() => props.record === undefined)
 
 const submit = async () => {
   try {
@@ -99,9 +99,9 @@ const resetFields = () => {
   emit('close')
 }
 
-if (props.id) {
+if (props.record?.id) {
   loading.value = true
-  getRoleDetail(props.id).then((res) => {
+  getRoleDetail(props.record.id).then((res) => {
     formData.value = res
     loading.value = false
   })

@@ -54,7 +54,7 @@
             v-if="permission.has('system:role:create')"
             type="primary"
             :loading="pending"
-            @click="showRoleConfigDialog()"
+            @click="onEdit()"
           >
             <template #icon>
               <PlusOutlined />
@@ -86,18 +86,18 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope">
-            <template v-if="scope!.column.dataIndex === 'status'">
+          <template #bodyCell="scope: TableScope<RoleVO>">
+            <template v-if="scope!.column.key === 'status'">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
-            <template v-if="scope?.column.dataIndex === 'createTime'">
+            <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}
             </template>
-            <template v-if="scope!.column.title === '操作'">
+            <template v-if="scope?.column.title === '操作'">
               <AFlex :gap="16">
                 <ATypographyLink
                   v-if="permission.has('system:role:update')"
-                  @click="showRoleConfigDialog(scope?.record.id)"
+                  @click="onEdit(scope.record)"
                 >
                   <EditOutlined />
                   编辑
@@ -118,13 +118,13 @@
                     <AMenu>
                       <AMenuItem
                         :disabled="!permission.has('system:permission:assign-role-menu')"
-                        @click="showPermissionConfigDialog(scope!.record, 'menu')"
+                        @click="onSetPermission(scope.record, 'menu')"
                       >
                         菜单权限
                       </AMenuItem>
                       <AMenuItem
                         :disabled="!permission.has('system:permission:assign-role-data-scope')"
-                        @click="showPermissionConfigDialog(scope!.record, 'data')"
+                        @click="onSetPermission(scope.record, 'data')"
                       >
                         数据权限
                       </AMenuItem>
@@ -133,9 +133,9 @@
                 </ADropdown>
                 <APopconfirm
                   v-if="permission.has('system:role:delete')"
-                  title="删除角色后，也将一并解除拥有该角色的用户（如有）的相应权限。确定删除吗？"
+                  title="此操作不可撤销，确定要删除吗？"
                   :overlay-style="{ width: '260px' }"
-                  @confirm="onDelete(scope?.record.id)"
+                  @confirm="onDelete(scope.record)"
                 >
                   <ATypographyLink type="danger">
                     <DeleteOutlined />
@@ -151,18 +151,18 @@
 
     <!-- 编辑角色 -->
     <FormModal
-      v-if="roleModalVisible"
-      :id="entry.id"
+      v-if="visible.edit"
+      :record="entry"
       @success="execute"
-      @close="roleModalVisible = false"
+      @close="visible.edit = false"
     />
     <!-- 编辑角色的菜单权限 -->
     <PermissionFormModal
-      v-if="permModalVisible"
-      :row="entry"
-      :mode="mode"
+      v-if="visible.permissionConfig"
+      :record="entry!"
+      :mode="permissionType"
       @success="execute"
-      @close="permModalVisible = false"
+      @close="visible.permissionConfig = false"
     />
   </div>
 </template>
@@ -181,12 +181,12 @@ import {
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
-import { deleteRole, type RoleVO } from '@/api/system/role'
 import FormModal from './form.vue'
 import PermissionFormModal from './permission-form.vue'
 import { columns, useTable } from './use-table'
-import { usePermissionConfig, useRoleConfig } from './use-role-actions'
-import { message, type FormInstance } from 'ant-design-vue'
+import useActions from './use-actions'
+import type { FormInstance } from 'ant-design-vue'
+import type { RoleVO } from '@/api/system/role'
 
 const filterForm = ref<FormInstance>()
 
@@ -197,22 +197,7 @@ const { commonStatus } = useDict('common_status')
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
-const entry = ref<RoleVO>({})
-
-const { modalVisible: roleModalVisible, showDialog: showRoleConfigDialog } = useRoleConfig(entry)
-
-const {
-  visible: permModalVisible,
-  showDialog: showPermissionConfigDialog,
-  mode
-} = usePermissionConfig(entry)
-
-const onDelete = (id: number) => {
-  deleteRole(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
+const { entry, visible, permissionType, onDelete, onEdit, onSetPermission } = useActions(execute)
 
 defineOptions({ name: 'SystemRole' })
 </script>

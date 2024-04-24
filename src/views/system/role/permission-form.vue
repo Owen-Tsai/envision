@@ -11,11 +11,11 @@
       <AAlert>
         <template #message>
           正在修改
-          <b>{{ row.name }}（{{ row.code }}）</b>
+          <b>{{ record.name }}（{{ record.code }}）</b>
           的角色权限
         </template>
       </AAlert>
-      <AForm ref="formRef" :label-col="{ span: 5 }" :model="formData" :rules="rules" class="mt-4">
+      <AForm ref="formRef" :label-col="{ span: 5 }" :model="formData" class="mt-4">
         <AFormItem v-if="mode === 'menu'" label="菜单权限" name="menuIds">
           <ATreeSelect
             v-model:value="formData.menuIds"
@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 import { ref, type PropType } from 'vue'
-import { message, type FormInstance, type FormProps } from 'ant-design-vue'
+import { message, type FormInstance } from 'ant-design-vue'
 import {
   getRoleMenuList,
   setRoleMenuList,
@@ -65,15 +65,10 @@ import useDict from '@/hooks/use-dict'
 import { DICT_SYSTEM_DATA_SCOPE } from '@/utils/constants'
 import type { RoleVO } from '@/api/system/role'
 
-const rules: FormProps['rules'] = {
-  name: [{ required: true, message: '请填写角色名称' }],
-  code: [{ required: true, message: '请填写角色标识' }]
-}
-
 const { systemDataScope } = useDict('system_data_scope')
 
 const props = defineProps({
-  row: {
+  record: {
     type: Object as PropType<RoleVO>,
     required: true
   },
@@ -91,7 +86,7 @@ const formRef = ref<FormInstance>()
 const loading = ref(true)
 const open = ref(true)
 
-const roleId = props.row.id as number
+const roleId = props.record.id as number
 const formData = ref<RolePermissionVO>({
   roleId
 })
@@ -132,8 +127,8 @@ if (props.mode === 'menu') {
     })
   })
 } else {
-  formData.value.dataScope = props.row.dataScope
-  formData.value.dataScopeDeptIds = props.row.dataScopeDeptIds || []
+  formData.value.dataScope = props.record.dataScope
+  formData.value.dataScopeDeptIds = props.record.dataScopeDeptIds || []
 
   getDeptTree().then((data) => {
     deptTree.value = data
