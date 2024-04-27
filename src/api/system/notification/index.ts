@@ -4,7 +4,7 @@ export type NotificationVO = {
   id?: number
   title?: string
   type?: number
-  content: string
+  content?: string
   status?: number
   createTime?: number
 }
