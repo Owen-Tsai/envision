@@ -1,7 +1,7 @@
 <template>
   <AModal
     v-model:open="open"
-    :title="id === undefined ? '新增短信模板' : '编辑短信模板'"
+    :title="record === undefined ? '新增短信模板' : '编辑短信模板'"
     :after-close="onClose"
     destroy-on-close
     @ok="submit"
@@ -79,9 +79,8 @@ const rules = ref<FormProps['rules']>({
 })
 
 const props = defineProps({
-  id: {
-    type: Number,
-    default: undefined
+  record: {
+    type: Object as PropType<TemplateVO>
   },
   channelData: {
     type: Array as PropType<ChannelListLiteVO>,
@@ -107,7 +106,7 @@ const submit = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
-    if (props.id !== undefined) {
+    if (props.record !== undefined) {
       // edit
       await updateTemplate(formData.value)
       message.success('保存成功')
@@ -128,9 +127,9 @@ const submit = async () => {
 }
 
 // load detail
-if (props.id) {
+if (props.record?.id) {
   loading.value = true
-  getTemplateDetail(props.id).then((data) => {
+  getTemplateDetail(props.record.id).then((data) => {
     formData.value = data
     loading.value = false
   })

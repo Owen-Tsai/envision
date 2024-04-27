@@ -34,7 +34,7 @@
             v-if="permission.has('system:sms-channel:create')"
             type="primary"
             :loading="pending"
-            @click="showDialog()"
+            @click="onEdit()"
           >
             <template #icon>
               <PlusOutlined />
@@ -69,13 +69,13 @@
             <ATypographyText ellipsis :content="scope?.record.apiKey" />
           </template>
           <template v-if="scope?.column.key === 'createTime'">
-            {{ formatDate(scope.record.createTime!) }}
+            {{ dayjs(scope.record.createTime!).format('YYYY-MM-DD') }}
           </template>
           <template v-if="scope?.column.key === 'actions'">
             <AFlex :gap="16">
               <ATypographyLink
                 v-if="permission.has('system:sms-channel:update')"
-                @click="showDialog(scope?.record.id)"
+                @click="onEdit(scope.record)"
               >
                 <EditOutlined />
                 修改
@@ -85,7 +85,7 @@
                 title="此操作不可撤销，确定要删除吗？"
                 trigger="click"
                 :overlay-style="{ maxWidth: '280px' }"
-                @confirm="onDelete(scope?.record.id!)"
+                @confirm="onDelete(scope.record)"
               >
                 <ATypographyLink type="danger">
                   <DeleteOutlined />
@@ -98,45 +98,27 @@
       </ATable>
     </ACard>
 
-    <FormModal v-if="visible" :id="entryId" @success="execute" @close="visible = false" />
+    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { message } from 'ant-design-vue'
 import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
 import useDict from '@/hooks/use-dict'
-import { deleteChannel, type ChannelVO } from '@/api/system/sms/channel'
+import { type ChannelVO } from '@/api/system/sms/channel'
 import { useTable, columns } from './use-table'
+import useActions from './use-actions'
 import FormModal from './form.vue'
 
 const filterFormRef = ref()
 
 const { commonStatus, systemSmsChannelCode } = useDict('common_status', 'system_sms_channel_code')
 
-const visible = ref(false)
-// current entry for editing
-const entryId = ref<number | undefined>()
-
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
-}
-
-const onDelete = (id: number) => {
-  deleteChannel(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
-
-const formatDate = (date: number) => {
-  return dayjs(date).format('YYYY-MM-DD')
-}
-
 const { data, execute, onChange, onFilter, onFilterReset, pagination, pending, queryParams } =
   useTable(filterFormRef)
+
+const { entry, visible, onDelete, onEdit } = useActions(execute)
 </script>

@@ -62,7 +62,7 @@
             v-if="permission.has('system:sms-template:create')"
             type="primary"
             :loading="pending"
-            @click="showDialog()"
+            @click="onEdit()"
           >
             <template #icon>
               <PlusOutlined />
@@ -107,13 +107,13 @@
             </div>
           </template>
           <template v-if="scope?.column.key === 'createTime'">
-            {{ formatDate(scope.text) }}
+            {{ dayjs(scope.text).format('YYYY-MM-DD') }}
           </template>
           <template v-if="scope?.column.key === 'actions'">
             <AFlex :gap="16">
               <ATypographyLink
                 v-if="permission.has('system:sms-template:update')"
-                @click="showDialog(scope.record.id!)"
+                @click="onEdit(scope.record)"
               >
                 <EditOutlined />
                 修改
@@ -123,7 +123,7 @@
                 title="此操作不可撤销，确定要删除吗？"
                 trigger="click"
                 :overlay-style="{ maxWidth: '280px' }"
-                @confirm="onDelete(scope.record.id!)"
+                @confirm="onDelete(scope.record)"
               >
                 <ATypographyLink type="danger">
                   <DeleteOutlined />
@@ -138,7 +138,7 @@
 
     <FormModal
       v-if="visible"
-      :id="entryId"
+      :record="entry"
       :channel-data="channelList"
       @success="execute"
       @close="visible = false"
@@ -148,7 +148,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { message } from 'ant-design-vue'
 import {
   DownOutlined,
   ReloadOutlined,
@@ -159,11 +158,12 @@ import {
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
 import useDict from '@/hooks/use-dict'
-import { deleteTemplate, type TemplateVO } from '@/api/system/sms/template'
 import { getSimpleChannelList, type ChannelListLiteVO } from '@/api/system/sms/channel'
 import { useToggle } from '@vueuse/core'
 import { useTable, columns } from './use-table'
 import FormModal from './form.vue'
+import useActions from './use-actions'
+import type { TemplateVO } from '@/api/system/sms/template'
 
 const filterFormRef = ref()
 
@@ -175,30 +175,12 @@ const { commonStatus, systemSmsChannelCode, systemSmsTemplateType } = useDict(
   'system_sms_template_type'
 )
 
-const visible = ref(false)
-// current entry for editing
-const entryId = ref<number | undefined>()
-
 const channelList = ref<ChannelListLiteVO>([])
-
-const showDialog = (id?: number) => {
-  entryId.value = id
-  visible.value = true
-}
-
-const onDelete = (id: number) => {
-  deleteTemplate(id).then(() => {
-    message.success('删除成功')
-    execute()
-  })
-}
-
-const formatDate = (date: number) => {
-  return dayjs(date).format('YYYY-MM-DD')
-}
 
 const { data, execute, onChange, onFilter, onFilterReset, pagination, pending, queryParams } =
   useTable(filterFormRef)
+
+const { entry, visible, onDelete, onEdit } = useActions(execute)
 
 getSimpleChannelList().then((res) => {
   channelList.value = res
