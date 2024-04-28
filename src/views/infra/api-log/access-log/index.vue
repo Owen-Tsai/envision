@@ -39,8 +39,8 @@
           </ACol>
           <ACol :lg="{ span: 8, offset: filterExpanded ? 8 : 0 }" :span="24">
             <AFlex justify="end" align="center" :gap="16">
-              <AButton @click="onFilterReset">重置</AButton>
-              <AButton type="primary" @click="onFilter">查询</AButton>
+              <AButton html-type="reset" @click="onFilterReset">重置</AButton>
+              <AButton html-type="submit" type="primary" @click="onFilter">查询</AButton>
               <ATypographyLink @click="toggle()">
                 {{ filterExpanded ? '收起' : '展开' }}
                 <DownOutlined :class="{ 'rotate-180': filterExpanded }" />
@@ -87,7 +87,7 @@
             <template v-if="scope?.column.key === ''">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
-            <template v-if="scope!.column.key === 'type'">
+            <template v-if="scope!.column.key === ''">
               <EDictTag :dict-object="systemNoticeType" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'createTime'">
