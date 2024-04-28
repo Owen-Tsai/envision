@@ -19,8 +19,8 @@
           </ACol>
           <ACol :span="24" :lg="8">
             <AFlex justify="end" align="center" :gap="16">
-              <AButton @click="onFilterReset">重置</AButton>
-              <AButton type="primary" @click="onFilter">查询</AButton>
+              <AButton html-type="reset" @click="onFilterReset">重置</AButton>
+              <AButton html-type="submit" type="primary" @click="onFilter">查询</AButton>
             </AFlex>
           </ACol>
         </ARow>

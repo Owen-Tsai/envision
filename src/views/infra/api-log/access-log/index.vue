@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard v-if="permission.has('system:role:query')" class="mb-4">
+    <ACard v-if="permission.has('system:notice:query')" class="mb-4">
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
@@ -10,21 +10,25 @@
       >
         <ARow :gutter="[0, 16]">
           <ACol :lg="8" :span="24">
-            <AFormItem label="角色名称" name="name">
-              <AInput v-model:value="queryParams.name" placeholder="请输入角色名称" allow-clear />
+            <AFormItem label="公告标题" name="title">
+              <AInput v-model:value="queryParams.title" placeholder="请输入公告标题" allow-clear />
             </AFormItem>
           </ACol>
           <ACol :lg="8" :span="24">
-            <AFormItem label="角色标识" name="code">
-              <AInput v-model:value="queryParams.code" placeholder="请输入角色标识" allow-clear />
+            <AFormItem label="公告类型" name="type">
+              <ASelect
+                v-model:value="queryParams.type"
+                :options="systemNoticeType"
+                placeholder="请选择公告类型"
+              />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="角色状态" name="status">
+            <AFormItem label="公告状态" name="status">
               <ASelect
                 v-model:value="queryParams.status"
                 :options="commonStatus"
-                placeholder="请选择角色状态"
+                placeholder="请选择公告状态"
               />
             </AFormItem>
           </ACol>
@@ -47,11 +51,11 @@
       </AForm>
     </ACard>
 
-    <ACard title="角色列表">
+    <ACard title="通知公告">
       <template #extra>
         <AFlex :gap="8">
           <AButton
-            v-if="permission.has('system:role:create')"
+            v-if="permission.has('system:notice:create')"
             type="primary"
             :loading="pending"
             @click="onEdit()"
@@ -61,13 +65,6 @@
             </template>
             新增
           </AButton>
-          <ATooltip v-if="permission.has('system:role:export')" title="导出">
-            <AButton type="text" :loading="pending">
-              <template #icon>
-                <ExportOutlined />
-              </template>
-            </AButton>
-          </ATooltip>
           <ATooltip title="重新载入">
             <AButton type="text" :loading="pending" @click="execute">
               <template #icon>
@@ -86,54 +83,28 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope: TableScope<RoleVO>">
-            <template v-if="scope!.column.key === 'status'">
+          <template #bodyCell="scope: TableScope<AccessLogVO>">
+            <template v-if="scope?.column.key === ''">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
+            <template v-if="scope!.column.key === ''">
+              <EDictTag :dict-object="systemNoticeType" :value="scope?.text" />
+            </template>
             <template v-if="scope?.column.key === 'createTime'">
-              {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}
+              {{ dayjs(scope.record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
             <template v-if="scope?.column.title === '操作'">
               <AFlex :gap="16">
                 <ATypographyLink
-                  v-if="permission.has('system:role:update')"
+                  v-if="permission.has('system:notice:update')"
                   @click="onEdit(scope.record)"
                 >
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
-                <ADropdown
-                  v-if="
-                    permission.hasOne(
-                      'system:permission:assign-role-menu',
-                      'system:permission:assign-role-data-scope'
-                    )
-                  "
-                >
-                  <ATypographyLink>
-                    <DownOutlined />
-                    权限配置
-                  </ATypographyLink>
-                  <template #overlay>
-                    <AMenu>
-                      <AMenuItem
-                        :disabled="!permission.has('system:permission:assign-role-menu')"
-                        @click="onSetPermission(scope.record, 'menu')"
-                      >
-                        菜单权限
-                      </AMenuItem>
-                      <AMenuItem
-                        :disabled="!permission.has('system:permission:assign-role-data-scope')"
-                        @click="onSetPermission(scope.record, 'data')"
-                      >
-                        数据权限
-                      </AMenuItem>
-                    </AMenu>
-                  </template>
-                </ADropdown>
                 <APopconfirm
-                  v-if="permission.has('system:role:delete')"
-                  title="此操作不可撤销，确定要删除吗？"
+                  v-if="permission.has('system:notice:delete')"
+                  title="此操作不可恢复，确定删除吗？"
                   :overlay-style="{ width: '260px' }"
                   @confirm="onDelete(scope.record)"
                 >
@@ -149,21 +120,7 @@
       </div>
     </ACard>
 
-    <!-- 编辑角色 -->
-    <FormModal
-      v-if="visible.edit"
-      :record="entry"
-      @success="execute"
-      @close="visible.edit = false"
-    />
-    <!-- 编辑角色的菜单权限 -->
-    <PermissionFormModal
-      v-if="visible.permissionConfig"
-      :record="entry!"
-      :mode="permissionType"
-      @success="execute"
-      @close="visible.permissionConfig = false"
-    />
+    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
   </div>
 </template>
 
@@ -174,7 +131,6 @@ import { useToggle } from '@vueuse/core'
 import {
   DownOutlined,
   ReloadOutlined,
-  ExportOutlined,
   EditOutlined,
   DeleteOutlined,
   PlusOutlined
@@ -182,22 +138,21 @@ import {
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'
-import PermissionFormModal from './permission-form.vue'
 import { columns, useTable } from './use-table'
 import useActions from './use-actions'
 import type { FormInstance } from 'ant-design-vue'
-import type { RoleVO } from '@/api/system/role'
+import type { AccessLogVO } from '@/api/infra/api-log/access-log'
 
 const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { commonStatus } = useDict('common_status')
+const { commonStatus, systemNoticeType } = useDict('common_status', 'system_notice_type')
 
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
-const { entry, visible, permissionType, onDelete, onEdit, onSetPermission } = useActions(execute)
+const { entry, visible, onDelete, onEdit } = useActions(execute)
 
-defineOptions({ name: 'SystemRole' })
+defineOptions({ name: 'SystemNotice' })
 </script>

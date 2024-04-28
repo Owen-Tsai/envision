@@ -46,9 +46,9 @@ export default {
   },
   download: async (
     url: string,
-    params: AxiosRequestConfig['params'],
-    filename: string,
-    options: AxiosRequestConfig
+    params?: AxiosRequestConfig['params'],
+    filename?: string,
+    options?: AxiosRequestConfig
   ) => {
     createLoader()
     return request({
