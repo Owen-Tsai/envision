@@ -55,7 +55,7 @@ export const updateMenu = (data: MenuVO) => {
 
 export const deleteMenu = (id: number) => {
   return request.delete({
-    url: `/system/menu/delete?id=${id}`
+    url: `/system/menu/deleteBatch?id=${id}`
   })
 }
 

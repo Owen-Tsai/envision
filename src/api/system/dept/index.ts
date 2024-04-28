@@ -55,6 +55,6 @@ export const updateDept = (data: DeptVO) => {
 
 export const deleteDept = (id: number) => {
   return request.delete({
-    url: `/system/dept/delete?id=${id}`
+    url: `/system/dept/deleteBatch?id=${id}`
   })
 }
