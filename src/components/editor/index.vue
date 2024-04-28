@@ -40,8 +40,7 @@ const props = defineProps({
     default: 'normal'
   },
   value: {
-    type: String,
-    required: true
+    type: String
   }
 })
 
