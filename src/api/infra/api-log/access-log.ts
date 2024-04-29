@@ -1,22 +1,22 @@
 import request from '@/utils/request'
 
 export type AccessLogVO = {
-  id: number
-  traceId: string
-  userId: number
-  userType: number
-  applicationName: string
-  requestMethod: string
-  requestParams: string
-  requestUrl: string
-  userIp: string
-  userAgent: string
-  beginTime: Date
-  endTime: Date
-  duration: number
-  resultCode: number
-  resultMsg: string
-  createTime: Date
+  id?: number
+  traceId?: string
+  userId?: number
+  userType?: number
+  applicationName?: string
+  requestMethod?: string
+  requestParams?: string
+  requestUrl?: string
+  userIp?: string
+  userAgent?: string
+  beginTime?: Date
+  endTime?: Date
+  duration?: number
+  resultCode?: number
+  resultMsg?: string
+  createTime?: Date
 }
 
 export type ListQueryParams = CommonQueryParams & {
