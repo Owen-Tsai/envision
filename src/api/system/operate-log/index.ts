@@ -27,9 +27,7 @@ export type ListQueryParams = CommonQueryParams & {
   module?: string
   userNickname?: string
   type?: number
-  success?: boolean
-  // as select component doesn't accept a boolean as value
-  _success?: string
+  success?: string
   startTime?: [string, string]
 }
 

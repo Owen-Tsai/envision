@@ -33,15 +33,15 @@
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="操作状态" name="type">
-              <ASelect v-model:value="queryParams._success">
-                <ASelectOption value="success">成功</ASelectOption>
-                <ASelectOption value="fail">失败</ASelectOption>
+            <AFormItem label="操作状态" name="success">
+              <ASelect v-model:value="queryParams.success" allow-clear>
+                <ASelectOption value="true">成功</ASelectOption>
+                <ASelectOption value="false">失败</ASelectOption>
               </ASelect>
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="开始时间">
+            <AFormItem label="开始时间" name="startTime">
               <ARangePicker v-model:value="queryParams.startTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
