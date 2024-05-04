@@ -4,10 +4,11 @@
     title="导入数据表"
     :after-close="onClose"
     destroy-on-close
+    :width="720"
     @ok="submit"
   >
     <!-- filter form -->
-    <AForm :modle="queryParams">
+    <AForm ref="formRef" :model="queryParams">
       <ARow :gutter="16">
         <ACol :span="12">
           <AFormItem label="数据源">
@@ -20,44 +21,70 @@
         </ACol>
         <ACol :span="12">
           <AFormItem label="表名称">
-            <AInput v-model.value="queryParams.name" placeholder="请输入表名称" />
+            <AInput v-model:value="queryParams.name" placeholder="请输入表名称" />
           </AFormItem>
         </ACol>
         <ACol :span="12">
           <AFormItem label="表描述">
-            <AInput v-model.value="queryParams.comment" placeholder="请输入表描述" />
+            <AInput v-model:value="queryParams.comment" placeholder="请输入表描述" />
           </AFormItem>
         </ACol>
         <ACol :span="12">
-          <ASpace>
-            <AButton>重置</AButton>
-            <AButton type="primary">搜索</AButton>
-          </ASpace>
+          <AFlex justify="end" :gap="16">
+            <AButton @click="onFilterReset()" :loading="loading">重置</AButton>
+            <AButton html-type="submit" type="primary" @click="getTables()" :loading="loading">
+              搜索
+            </AButton>
+          </AFlex>
         </ACol>
       </ARow>
     </AForm>
+
+    <!-- table -->
+    <ATable
+      :columns="columns"
+      :data-source="tableDefList"
+      :loading="loading"
+      :row-selection="selection"
+      row-key="name"
+      size="small"
+    />
   </AModal>
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
-import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
-import { type TableQueryParams } from '@/api/infra/code-generation'
-import { getDataSourceList, type DataSourceVO } from '@/api/infra/data-source'
-import { filterOption } from '@/utils/envision'
-import useDict from '@/hooks/use-dict'
-import type { SimpleUserVO } from '@/api/system/user'
+import { ref, watchEffect, type PropType } from 'vue'
+import type { FormInstance, TableProps } from 'ant-design-vue'
+import {
+  getTableDefList,
+  createCodeGenConfig,
+  type TableDefListVO,
+  type TableQueryParams
+} from '@/api/infra/code-generation'
+import type { DataSourceVO } from '@/api/infra/data-source'
 
-const loading = ref(false)
+const columns: TableProps['columns'] = [
+  { dataIndex: 'name', title: '表名称' },
+  { dataIndex: 'comment', title: '表描述' }
+]
 
 const props = defineProps({
-  value: {
-    type: Array as PropType<number[]>,
-    required: true
+  dataSources: {
+    type: Array as PropType<DataSourceVO[]>
   }
 })
 
-const dataSources = ref<DataSourceVO[]>([])
+const loading = ref(false)
+
+const selectedKeys = ref<string[]>([])
+
+const selection: TableProps['rowSelection'] = {
+  onChange(keys, rows: TableDefListVO) {
+    selectedKeys.value = rows.map((e) => e.name)
+  }
+}
+
+const tableDefList = ref<TableDefListVO>([])
 
 const emit = defineEmits(['success', 'close'])
 
@@ -74,16 +101,10 @@ const onClose = () => {
 const submit = async () => {
   try {
     loading.value = true
-    await formRef.value?.validate()
-    if (props.record !== undefined) {
-      // edit
-      await updateDept(formData.value)
-      message.success('保存成功')
-    } else {
-      // add
-      await createDept(formData.value)
-      message.success('创建成功')
-    }
+    await createCodeGenConfig({
+      dataSourceConfigId: queryParams.value.dataSourceConfigId || 0,
+      tableNames: selectedKeys.value
+    })
 
     open.value = false
     emit('success')
@@ -95,15 +116,26 @@ const submit = async () => {
   }
 }
 
-// load detail
-if (props.record?.id) {
+const getTables = async () => {
   loading.value = true
-  getDeptDetail(props.record.id).then((data) => {
-    if (data.parentId === 0) {
-      data.parentId = undefined
-    }
-    formData.value = data
-    loading.value = false
-  })
+  const list = await getTableDefList(queryParams.value)
+  tableDefList.value = list
+  loading.value = false
 }
+
+const onFilterReset = () => {
+  console.log(formRef.value)
+  formRef.value?.resetFields()
+  getTables()
+}
+
+// created
+loading.value = true
+watchEffect(() => {
+  if (props.dataSources) {
+    queryParams.value.dataSourceConfigId = props.dataSources[0].id
+
+    getTables()
+  }
+})
 </script>

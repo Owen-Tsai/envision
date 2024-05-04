@@ -68,10 +68,22 @@ export type TableDefListVO = Array<{
   comment: string
 }>
 
+export type CodePreviewVO = Array<{
+  filePath: string
+  code: string
+}>
+
 // get tables from database based on `dataSourceId`
-export const getTableDefList = (dataSourceId: number) => {
-  return request.get({
-    url: `/infra/codegen/table/list?dataSourceConfigId=${dataSourceId}`
+// export const getTableDefList = (dataSourceId: number) => {
+//   return request.get<TableDefListVO>({
+//     url: `/infra/codegen/table/list?dataSourceConfigId=${dataSourceId}`
+//   })
+// }
+
+export const getTableDefList = (params: TableQueryParams) => {
+  return request.get<TableDefListVO>({
+    url: '/infra/codegen/db/table/list',
+    params
   })
 }
 
@@ -91,7 +103,7 @@ export const getCodeGenConfigDetail = (id: number) => {
 
 export const createCodeGenConfig = (data: CodeGenCreateReqVO) => {
   return request.post({
-    url: '/infra/codegen/create',
+    url: '/infra/codegen/create-list',
     data
   })
 }
@@ -113,5 +125,12 @@ export const deleteCodeGenConfig = (id: number) => {
 export const syncTable = (id: number) => {
   return request.put({
     url: `/infra/codegen/sync-from-db?tableId=${id}`
+  })
+}
+
+// preview code
+export const previewCode = (id: number) => {
+  return request.get<CodePreviewVO>({
+    url: `/infra/codegen/preview?tableId=${id}`
   })
 }

@@ -87,9 +87,23 @@ html {
   .ant-modal-body {
     flex: 1;
   }
+  .modal-content-wrapper {
+    // fullscreen modal content wrapper element
+    height: calc(100vh - 116px);
+  }
 }
 
 .field-help {
   font-size: 16px;
   color: var(--colorTextSecondary);
+}
+
+html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  /* 可选，用于定义字体样式 */
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
 }

@@ -4,6 +4,7 @@
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "strict": true,
+    "lib": ["ES2021", "DOM"],
     "composite": true,
     "noEmit": true,
     "baseUrl": ".",

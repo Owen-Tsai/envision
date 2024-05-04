@@ -3,31 +3,33 @@ import useRequest from '@/hooks/use-request'
 import {
   getCodeGenConfigList,
   type ListQueryParams,
-  type TableVO
+  type ConfigVO
 } from '@/api/infra/code-generation'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
-  { title: '数据源', width: 90, dataIndex: 'dataSource' },
-  { title: '表名称', dataIndex: 'name' },
-  { title: '表描述', dataIndex: 'type' },
-  { title: '实体', dataIndex: 'status' },
+  { key: 'dataSourceConfigId', title: '数据源', width: 90, dataIndex: 'dataSourceConfigId' },
+  { key: 'tableName', title: '表名称', dataIndex: 'tableName' },
+  { key: 'tableComment', title: '表描述', dataIndex: 'tableComment' },
+  { key: 'className', title: '实体', dataIndex: 'className' },
   {
+    key: 'createTime',
     title: '创建时间',
     minWidth: 140,
     dataIndex: 'createTime',
     sortDirections: ['ascend', 'descend'],
-    sorter: (a: TableVO, b: TableVO) => {
+    sorter: (a: ConfigVO, b: ConfigVO) => {
       return b.createTime! - a.createTime!
     }
   },
   {
+    key: 'updateTime',
     title: '更新时间',
     minWidth: 140,
     dataIndex: 'updateTime',
     sortDirections: ['ascend', 'descend'],
-    sorter: (a: TableVO, b: TableVO) => {
+    sorter: (a: ConfigVO, b: ConfigVO) => {
       return b.updateTime! - a.updateTime!
     }
   },

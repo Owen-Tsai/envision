@@ -29,10 +29,13 @@
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
             <AFormItem label="创建时间">
-              <ARangePicker v-model:value="queryParams.createTime" value-format="YYYY-MM-DD" />
+              <ARangePicker
+                v-model:value="queryParams.createTime"
+                value-format="YYYY-MM-DD HH:mm:ss"
+              />
             </AFormItem>
           </ACol>
-          <ACol :lg="{ span: 8, offset: filterExpanded ? 8 : 0 }" :span="24">
+          <ACol :lg="{ span: 8, offset: filterExpanded ? 16 : 0 }" :span="24">
             <AFlex justify="end" align="center" :gap="16">
               <AButton @click="onFilterReset">重置</AButton>
               <AButton type="primary" @click="onFilter">查询</AButton>
@@ -79,11 +82,14 @@
           @change="onChange"
         >
           <template #bodyCell="scope: TableScope<ConfigVO>">
+            <template v-if="scope?.column.key === 'dataSourceConfigId'">
+              {{ dataSources.find((e) => e.id === scope.text)?.name }}
+            </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
             <template v-if="scope?.column.key === 'updateTime'">
-              {{ dayjs(scope.record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
+              {{ dayjs(scope.record.updateTime).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
             <template v-if="scope?.column.key === 'actions'">
               <AFlex :gap="16">
@@ -138,8 +144,15 @@
     </ACard>
 
     <!-- import form modal -->
+    <FormModal
+      v-if="visible.import"
+      :data-sources="dataSources"
+      @close="visible.import = false"
+      @success="execute"
+    />
 
     <!-- preview modal -->
+    <PreviewModal v-if="visible.preview" :id="entry!.id!" @close="visible.preview = false" />
   </div>
 </template>
 
@@ -160,11 +173,13 @@ import { permission } from '@/hooks/use-permission'
 import { type ConfigVO } from '@/api/infra/code-generation'
 import { getDataSourceList, type DataSourceVO } from '@/api/infra/data-source'
 import FormModal from './form.vue'
+import PreviewModal from './preview.vue'
 import { columns, useTable } from './use-table'
 import useActions from './use-actions'
 import { message, type FormInstance } from 'ant-design-vue'
 
 const filterForm = ref<FormInstance>()
+const dataSources = ref<DataSourceVO[]>([])
 
 const [filterExpanded, toggle] = useToggle(false)
 
@@ -173,6 +188,10 @@ const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, 
 
 const { entry, visible, onDelete, onDownload, onEdit, onImport, onPreview, onSync } =
   useActions(execute)
+
+getDataSourceList().then((res) => {
+  dataSources.value = res
+})
 
 defineOptions({ name: 'InfraCodeGen' })
 </script>
