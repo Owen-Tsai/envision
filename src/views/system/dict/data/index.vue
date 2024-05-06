@@ -86,10 +86,10 @@
           @change="onChange"
         >
           <template #bodyCell="scope: TableScope<DictDataItemVO>">
-            <template v-if="scope!.column.dataIndex === 'status'">
+            <template v-if="scope!.column.key === 'status'">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
-            <template v-if="scope?.column.dataIndex === 'createTime'">
+            <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}
             </template>
             <template v-if="scope!.column.title === '操作'">

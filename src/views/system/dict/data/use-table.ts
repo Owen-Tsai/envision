@@ -7,24 +7,25 @@ import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
-  { title: '字典编码', width: 90, dataIndex: 'id' },
-  { title: '字典标签', width: 120, dataIndex: 'label' },
-  { title: '字典键值', width: 90, dataIndex: 'value' },
-  { title: '字典排序', width: 90, dataIndex: 'sort' },
-  { title: '字典状态', width: 90, dataIndex: 'status' },
-  { title: '颜色类型', width: 90, dataIndex: 'colorType' },
-  { title: 'CSS Class', dataIndex: 'cssClass' },
-  { title: '备注', dataIndex: 'remark' },
+  { title: '字典编码', width: 90, dataIndex: 'id', key: 'id' },
+  { title: '字典标签', dataIndex: 'label', key: 'label' },
+  { title: '字典键值', width: 90, dataIndex: 'value', key: 'value' },
+  { title: '字典排序', width: 90, dataIndex: 'sort', key: 'sort' },
+  { title: '字典状态', width: 90, dataIndex: 'status', key: 'status' },
+  { title: '颜色类型', width: 90, dataIndex: 'colorType', key: 'colorType' },
+  { title: 'CSS Class', dataIndex: 'cssClass', key: 'cssClass' },
+  { title: '备注', width: 140, dataIndex: 'remark', key: 'remark' },
   {
     title: '创建时间',
     width: 120,
     dataIndex: 'createTime',
+    key: 'createTime',
     sortDirections: ['ascend', 'descend'],
     sorter: (a: DictDataItemVO, b: DictDataItemVO) => {
       return dayjs(a.createTime).isSameOrBefore(b.createTime) ? 1 : -1
     }
   },
-  { title: '操作', width: 180 }
+  { title: '操作', width: 140 }
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {

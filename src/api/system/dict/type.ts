@@ -44,6 +44,6 @@ export const updateDictType = (data: DictTypeVO) => {
 
 export const deleteDictType = (id: number) => {
   return request.delete({
-    url: `/system/dict-type/get?id=${id}`
+    url: `/system/dict-type/delete?id=${id}`
   })
 }

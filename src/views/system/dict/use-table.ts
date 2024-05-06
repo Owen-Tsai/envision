@@ -6,15 +6,16 @@ import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
-  { title: '字典编号', width: 90, dataIndex: 'id' },
-  { title: '字典名称', minWidth: 120, dataIndex: 'name' },
-  { title: '字典类别', minWidth: 120, dataIndex: 'type' },
-  { title: '字典状态', minWidth: 48, dataIndex: 'status' },
-  { title: '备注', minWidth: 120, dataIndex: 'remark' },
+  { title: '字典编号', width: 90, dataIndex: 'id', key: 'id' },
+  { title: '字典名称', dataIndex: 'name', key: 'name' },
+  { title: '字典类别', dataIndex: 'type', key: 'type' },
+  { title: '字典状态', width: 90, dataIndex: 'status', key: 'status' },
+  { title: '备注', width: 200, dataIndex: 'remark', key: 'remark' },
   {
     title: '创建时间',
     minWidth: 120,
     dataIndex: 'createTime',
+    key: 'createTime',
     sortDirections: ['ascend', 'descend'],
     sorter: (a: DictTypeVO, b: DictTypeVO) => {
       return dayjs(a.createTime).isSameOrBefore(b.createTime) ? 1 : -1
