@@ -6,7 +6,7 @@
     :auto-expand="false"
   >
     <div class="tabs-container">
-      <ADropdown v-for="(tab, i) in tabsView.tabs.value" :key="i" trigger="contextmenu">
+      <ADropdown v-for="(tab, i) in tabs" :key="i" trigger="contextmenu">
         <div class="tag" :class="{ active: isActive(tab[0]) }" @click="onTabClick(tab)">
           <span v-show="isActive(tab[0])" class="dot" />
           <span>{{ tab[1] }}</span>
@@ -33,14 +33,15 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, inject } from 'vue'
+import { ref, watch, inject, toRefs } from 'vue'
+import { storeToRefs } from 'pinia'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { useRouter } from 'vue-router'
-import useTabs from '@/hooks/use-tabs'
+import useTabsStore from '@/stores/tabs'
 
 const router = useRouter()
-
-const tabsView = useTabs()
+const { tabs } = storeToRefs(useTabsStore())
+const tabsView = useTabsStore()
 const refresh = inject('layoutContext')
 
 const isActive = (tabKey: string) => {

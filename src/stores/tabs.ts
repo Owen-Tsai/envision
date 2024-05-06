@@ -1,14 +1,12 @@
-import { ref, toRefs, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import useViewCache from '@/stores/view-cache'
-
 /**
- * set: cachedViews
- * 打开 tab 时，检查该页面是否需要缓存，如果是，向set中添加缓存
- * 关闭 tab 时，从缓存中移除该页面
+ * Horizontal navigation tabs in default layout
  */
+import { defineStore } from 'pinia'
+import { ref, toRefs, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import useViewCache from './view-cache'
 
-const useTabs = () => {
+export default defineStore('tabs', () => {
   const tabs = ref<Map<string, string>>(new Map())
   // stores full path in visit order
   const tabsHistory = ref<string[]>([])
@@ -23,7 +21,7 @@ const useTabs = () => {
    * @param path fullpath of the route to bed added
    * @param title text that will be displayed on tab
    */
-  const addTab = (path: string, title: string, cacheName?: string) => {
+  const addTab = (path: string, title: string, cacheName?: string): void => {
     tabs.value.set(path, title)
     tabsHistory.value.push(path)
     if (cacheName) {
@@ -130,6 +128,4 @@ const useTabs = () => {
     removeTabsAfter,
     removeOtherTabs
   }
-}
-
-export default useTabs
+})
