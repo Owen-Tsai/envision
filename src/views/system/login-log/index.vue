@@ -24,8 +24,11 @@
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="登陆日期">
-              <ARangePicker v-model:value="queryParams.createTime" value-format="YYYY-MM-DD" />
+            <AFormItem label="登录日期" name="createTime">
+              <ARangePicker
+                v-model:value="queryParams.createTime"
+                value-format="YYYY-MM-DD HH:mm:ss"
+              />
             </AFormItem>
           </ACol>
           <ACol :lg="{ span: 8, offset: filterExpanded ? 16 : 0 }" :span="24">
@@ -71,10 +74,10 @@
           @change="onChange"
         >
           <template #bodyCell="scope: TableScope<LoginLogVO>">
-            <template v-if="scope!.column.dataIndex === 'logType'">
-              {{ systemLoginType.find((e) => e.value === scope!.text)?.label }}
+            <template v-if="scope?.column.dataIndex === 'logType'">
+              {{ systemLoginType.find((e) => e.value === scope.text)?.label }}
             </template>
-            <template v-if="scope!.column.dataIndex === 'result'">
+            <template v-if="scope?.column.dataIndex === 'result'">
               <ATag v-if="scope?.text === 0" color="success">成功</ATag>
               <ATag v-else color="error">失败</ATag>
             </template>

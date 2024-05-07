@@ -19,7 +19,7 @@
         <AFormItem v-if="mode === 'menu'" label="菜单权限" name="menuIds">
           <ATreeSelect
             v-model:value="formData.menuIds"
-            :key="renderKey"
+            :key="`data-${loading}`"
             :tree-data="menuTree"
             :field-names="{ label: 'name', value: 'id' }"
             allow-clear
@@ -37,7 +37,7 @@
         >
           <ATreeSelect
             v-model:value="formData.dataScopeDeptIds"
-            :key="`render-${pending}`"
+            :key="`render-${loading}`"
             :tree-data="deptTree"
             :field-names="{ label: 'name', value: 'id' }"
             allow-clear

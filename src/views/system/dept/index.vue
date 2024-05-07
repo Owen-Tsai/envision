@@ -61,7 +61,7 @@
             :columns="columns"
             row-key="id"
             :loading="pending"
-            defaultExpandAllRows
+            default-expand-all-rows
             :key="`data-${pending}`"
           >
             <template #bodyCell="scope: TableScope<DeptVO>">
