@@ -37,7 +37,7 @@
         >
           <ATreeSelect
             v-model:value="formData.dataScopeDeptIds"
-            :key="renderKey"
+            :key="`render-${pending}`"
             :tree-data="deptTree"
             :field-names="{ label: 'name', value: 'id' }"
             allow-clear
@@ -80,8 +80,6 @@ const props = defineProps({
 
 const emit = defineEmits(['success', 'close'])
 
-const renderKey = ref(0)
-
 const formRef = ref<FormInstance>()
 const loading = ref(true)
 const open = ref(true)
@@ -123,7 +121,6 @@ if (props.mode === 'menu') {
     getMenuTree().then((data) => {
       menuTree.value = data
       loading.value = false
-      renderKey.value++
     })
   })
 } else {
@@ -133,7 +130,6 @@ if (props.mode === 'menu') {
   getDeptTree().then((data) => {
     deptTree.value = data
     loading.value = false
-    renderKey.value++
   })
 }
 </script>

@@ -126,7 +126,6 @@ if (props.record?.id) {
 <style lang="scss" scoped>
 .modal-content-wrapper {
   @apply flex flex-col;
-  height: calc(100vh - 116px);
 }
 .document-wrapper {
   background-color: var(--colorBgLayout);
