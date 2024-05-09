@@ -60,7 +60,7 @@ import {
   createCodeGenConfig,
   type TableDefListVO,
   type TableQueryParams
-} from '@/api/infra/code-generation'
+} from '@/api/infra/code-gen'
 import type { DataSourceVO } from '@/api/infra/data-source'
 
 const columns: TableProps['columns'] = [

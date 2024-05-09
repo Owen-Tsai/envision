@@ -1,7 +1,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
-import { deleteCodeGenConfig, syncTable, type ConfigVO } from '@/api/infra/code-generation'
+import { deleteCodeGenConfig, syncTable, type ConfigVO } from '@/api/infra/code-gen'
 
 const useActions = (requestData: () => void) => {
   const entry = ref<ConfigVO | undefined>()

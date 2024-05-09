@@ -53,7 +53,7 @@ import { computed, ref } from 'vue'
 import { last } from 'lodash'
 import { getHighlighter, type Highlighter } from 'shiki'
 import useAppStore from '@/stores/app'
-import { previewCode, type CodePreviewVO } from '@/api/infra/code-generation'
+import { previewCode, type CodePreviewVO } from '@/api/infra/code-gen'
 
 type FileNode = {
   key: string

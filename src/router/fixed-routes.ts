@@ -35,7 +35,7 @@ export const fixedRoutes: RouteRecordRaw[] = [
       {
         path: '/infra/code-gen/edit',
         name: 'CodeGenEdit',
-        component: () => import('@/views/infra/code-generation/edit/index.vue'),
+        component: () => import('@/views/infra/code-gen/edit/index.vue'),
         meta: {
           title: '代码生成配置'
         }

@@ -170,7 +170,7 @@ import {
   PlusOutlined
 } from '@ant-design/icons-vue'
 import { permission } from '@/hooks/use-permission'
-import { type ConfigVO } from '@/api/infra/code-generation'
+import { type ConfigVO } from '@/api/infra/code-gen'
 import { getDataSourceList, type DataSourceVO } from '@/api/infra/data-source'
 import FormModal from './form.vue'
 import PreviewModal from './preview.vue'

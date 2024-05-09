@@ -1,10 +1,6 @@
 import { ref, computed, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
-import {
-  getCodeGenConfigList,
-  type ListQueryParams,
-  type ConfigVO
-} from '@/api/infra/code-generation'
+import { getCodeGenConfigList, type ListQueryParams, type ConfigVO } from '@/api/infra/code-gen'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 

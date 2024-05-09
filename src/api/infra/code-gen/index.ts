@@ -3,9 +3,14 @@ import request from '@/utils/request'
 export type ConfigVO = {
   id?: number
   tableId?: number
+  masterTableId?: number
+  subJoinColumnId?: number
+  subJoinMany?: boolean
+  treeNameColumnId?: number
+  treeParentColumnId?: number
   isParentMenuIdValid?: boolean
+  parentMenuId?: number
   dataSourceConfigId?: number
-  scene?: number
   tableName?: string
   tableComment?: string
   remark?: string
@@ -17,7 +22,8 @@ export type ConfigVO = {
   createTime?: number
   updateTime?: number
   templateType?: number
-  parentMenuId?: number
+  frontType?: number
+  scene?: number
 }
 
 export type ColumnVO = {
@@ -58,7 +64,7 @@ export type CodeGenCreateReqVO = {
   tableNames: string[]
 }
 
-export type CodeGenUpdateReqVO = {
+export type ConfigDetailVO = {
   table: ConfigVO
   columns: Array<ColumnVO>
 }
@@ -95,9 +101,19 @@ export const getCodeGenConfigList = (params?: ListQueryParams) => {
   })
 }
 
+// get plain list of code generation config entries
+export const getPlainCodeGenConfigList = (dataSourceConfigId: number) => {
+  return request.get<ConfigVO[]>({
+    url: '/infra/codegen/table/list',
+    params: {
+      dataSourceConfigId
+    }
+  })
+}
+
 export const getCodeGenConfigDetail = (id: number) => {
-  return request.get<ConfigVO>({
-    url: `/infra/codegen/table/get?id=${id}`
+  return request.get<ConfigDetailVO>({
+    url: `/infra/codegen/detail?tableId=${id}`
   })
 }
 
@@ -108,7 +124,7 @@ export const createCodeGenConfig = (data: CodeGenCreateReqVO) => {
   })
 }
 
-export const updateCodeGenConfig = (data: CodeGenUpdateReqVO) => {
+export const updateCodeGenConfig = (data: ConfigDetailVO) => {
   return request.put({
     url: '/infra/codegen/update',
     data
