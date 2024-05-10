@@ -22,6 +22,12 @@ export const getDictTypeList = (params?: ListQueryParams) => {
   })
 }
 
+export const getPlainDictTypeList = () => {
+  return request.get<DictTypeVO[]>({
+    url: '/system/dict-type/list-all-simple'
+  })
+}
+
 export const getDictTypeDetail = (id: number) => {
   return request.get<DictTypeVO>({
     url: `/system/dict-type/get?id=${id}`

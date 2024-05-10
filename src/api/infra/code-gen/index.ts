@@ -27,25 +27,25 @@ export type ConfigVO = {
 }
 
 export type ColumnVO = {
-  id: number
-  tableId: number
-  columnName: string
-  dataType: string
-  columnComment: string
-  nullable: number
-  primaryKey: number
-  autoIncrement: boolean
-  ordinalPosition: number
-  javaType: string
-  javaField: string
-  dictType: string
-  example: string
-  createOperation: number
-  updateOperation: number
-  listOperation: number
-  listOperationCondition: string
-  listOperationResult: number
-  htmlType: string
+  id?: number
+  tableId?: number
+  columnName?: string
+  dataType?: string
+  columnComment?: string
+  nullable?: boolean
+  primaryKey?: boolean
+  autoIncrement?: boolean
+  ordinalPosition?: number
+  javaType?: string
+  javaField?: string
+  dictType?: string
+  example?: string
+  createOperation?: boolean
+  updateOperation?: boolean
+  listOperation?: boolean
+  listOperationCondition?: string
+  listOperationResult?: boolean
+  htmlType?: string
 }
 
 export type ListQueryParams = CommonQueryParams & {
