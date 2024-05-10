@@ -69,7 +69,7 @@
       </AForm>
     </ACard>
 
-    <ACard title="通知公告">
+    <ACard title="错误日志">
       <template #extra>
         <AFlex :gap="8">
           <ATooltip title="重新载入">
@@ -169,6 +169,7 @@ import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import { columns, useTable } from './use-table'
 import useActions from './use-actions'
+import DetailPanel from './detail.vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { ErrorLogVO } from '@/api/infra/api-log/error-log'
 

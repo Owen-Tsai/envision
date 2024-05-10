@@ -79,13 +79,6 @@ export type CodePreviewVO = Array<{
   code: string
 }>
 
-// get tables from database based on `dataSourceId`
-// export const getTableDefList = (dataSourceId: number) => {
-//   return request.get<TableDefListVO>({
-//     url: `/infra/codegen/table/list?dataSourceConfigId=${dataSourceId}`
-//   })
-// }
-
 export const getTableDefList = (params: TableQueryParams) => {
   return request.get<TableDefListVO>({
     url: '/infra/codegen/db/table/list',
