@@ -1,28 +1,30 @@
 import { ref } from 'vue'
-import { message } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
-import { deleteDictType, type DictTypeVO } from '@/api/system/dict/type'
+import { message, Modal } from 'ant-design-vue'
+import { deleteConfig, testConfig, type FileConfigVO } from '@/api/infra/file/config'
 
 const useActions = (requestData: () => void) => {
-  const entry = ref<DictTypeVO | undefined>()
+  const entry = ref<FileConfigVO | undefined>()
   const visible = ref(false)
 
-  const { push } = useRouter()
-
-  const onEdit = (record?: DictTypeVO) => {
+  const onEdit = (record?: FileConfigVO) => {
     entry.value = record
     visible.value = true
   }
 
-  const onDelete = (record: DictTypeVO) => {
-    deleteDictType(record.id!).then(() => {
+  const onDelete = (record: FileConfigVO) => {
+    deleteConfig(record.id!).then(() => {
       message.success('删除成功')
       requestData()
     })
   }
 
-  const onShowData = (record: DictTypeVO) => {
-    push(`/system/dict/data/${record.type}`)
+  const onTest = (record: FileConfigVO) => {
+    testConfig(record.id!).then((res) => {
+      Modal.success({
+        title: '测试通过',
+        content: `文件上传测试成功，预览地址 ${res}`
+      })
+    })
   }
 
   return {
@@ -30,7 +32,7 @@ const useActions = (requestData: () => void) => {
     visible,
     onEdit,
     onDelete,
-    onShowData
+    onTest
   }
 }
 

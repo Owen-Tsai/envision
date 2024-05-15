@@ -62,3 +62,9 @@ export const deleteConfig = (id: number) => {
     url: `/infra/file-config/delete?id=${id}`
   })
 }
+
+export const testConfig = (id: number) => {
+  return request.get<string>({
+    url: `/infra/file-config/test?id=${id}`
+  })
+}

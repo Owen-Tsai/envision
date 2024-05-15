@@ -112,7 +112,7 @@
                   <FlagOutlined />
                   设为主配置
                 </ATypographyLink>
-                <ATypographyLink @click="onShowData(scope!.record)">
+                <ATypographyLink @click="onTest(scope!.record)">
                   <PlayCircleOutlined />
                   测试
                 </ATypographyLink>
@@ -169,7 +169,7 @@ const { infraFileStorage } = useDict('infra_file_storage')
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const { entry, visible, onDelete, onEdit, onShowData } = useActions(execute)
+const { entry, visible, onDelete, onEdit, onTest } = useActions(execute)
 
 defineOptions({ name: 'InfraFileConfig' })
 </script>
