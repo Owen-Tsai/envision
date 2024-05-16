@@ -65,9 +65,6 @@
           <template v-if="scope?.column.key === 'status'">
             <EDictTag :dict-object="commonStatus" :value="scope.record.status!" />
           </template>
-          <template v-if="scope?.column.key === 'apiKey'">
-            <ATypographyText ellipsis :content="scope?.record.apiKey" />
-          </template>
           <template v-if="scope?.column.key === 'createTime'">
             {{ dayjs(scope.record.createTime!).format('YYYY-MM-DD') }}
           </template>

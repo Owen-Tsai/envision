@@ -10,7 +10,7 @@ export const columns: TableProps['columns'] = [
   { title: '字典名称', dataIndex: 'name', key: 'name' },
   { title: '字典类别', dataIndex: 'type', key: 'type' },
   { title: '字典状态', width: 90, dataIndex: 'status', key: 'status' },
-  { title: '备注', width: 200, dataIndex: 'remark', key: 'remark' },
+  { title: '备注', width: 200, dataIndex: 'remark', ellipsis: true },
   {
     title: '创建时间',
     minWidth: 120,

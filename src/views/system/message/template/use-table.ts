@@ -8,7 +8,7 @@ export const columns: TableProps['columns'] = [
   { key: 'code', title: '模板编码', dataIndex: 'code', width: 180 },
   { key: 'type', title: '站内信类型', dataIndex: 'type' },
   { key: 'nickname', title: '发送方名称', dataIndex: 'nickname' },
-  { key: 'content', title: '模板内容', dataIndex: 'content', width: 220 },
+  { title: '模板内容', dataIndex: 'content', width: 220, ellipsis: true },
   { key: 'status', title: '状态', dataIndex: 'status' },
   { key: 'createTime', title: '创建时间', dataIndex: 'createTime' },
   { key: 'actions', title: '操作', fixed: 'right', width: 140 }

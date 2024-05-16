@@ -7,7 +7,7 @@ import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 export const columns: TableProps['columns'] = [
   { title: '配置名称', dataIndex: 'name', key: 'name' },
   { title: '存储器', width: 120, dataIndex: 'storage', key: 'storage' },
-  { title: '备注', dataIndex: 'remark', key: 'remark' },
+  { title: '备注', dataIndex: 'remark', ellipsis: true, width: 200 },
   {
     title: '创建时间',
     minWidth: 120,

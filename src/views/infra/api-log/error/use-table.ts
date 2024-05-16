@@ -8,8 +8,8 @@ export const columns: TableProps['columns'] = [
   { key: 'userId', title: '操作类型', dataIndex: 'userId', width: 90 },
   { key: 'userType', title: '用户类型', dataIndex: 'userType', width: 90 },
   { key: 'applicationName', title: '应用名称', dataIndex: 'applicationName' },
-  { key: 'requestUrl', title: '请求地址' },
-  { key: 'exceptionName', title: '异常名', dataIndex: 'exceptionName' },
+  { key: 'requestUrl', title: '请求地址', width: 300, ellipsis: true },
+  { title: '异常名', width: 300, dataIndex: 'exceptionName', ellipsis: true },
   { key: 'exceptionTime', title: '异常时间', dataIndex: 'exceptionTime', width: 180 },
   { key: 'processStatus', title: '状态', dataIndex: 'processStatus', fixed: 'right', width: 100 },
   { key: 'actions', title: '操作', width: 180, fixed: 'right' }

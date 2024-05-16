@@ -8,7 +8,7 @@ export const columns: TableProps['columns'] = [
   { key: 'signature', title: '渠道名称', dataIndex: 'signature' },
   { key: 'code', title: '渠道编码', dataIndex: 'code' },
   { key: 'status', title: '状态', dataIndex: 'status' },
-  { key: 'apiKey', title: 'API Key', dataIndex: 'apiKey' },
+  { title: 'API Key', dataIndex: 'apiKey', ellipsis: true },
   { key: 'createTime', title: '创建时间', dataIndex: 'createTime' },
   { key: 'actions', title: '操作' }
 ]

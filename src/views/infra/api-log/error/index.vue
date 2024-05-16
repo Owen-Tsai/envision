@@ -106,14 +106,7 @@
               <EDictTag :dict-object="infraApiErrorLogProcessStatus" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'requestUrl'">
-              <ATypographyText
-                ellipsis
-                :content="`${scope.record.requestMethod} ${scope.record.requestUrl}`"
-                style="width: 300px"
-              />
-            </template>
-            <template v-if="scope?.column.key === 'exceptionName'">
-              <ATypographyText ellipsis :content="scope.text" style="width: 300px" />
+              {{ `${scope.record.requestMethod} ${scope.record.requestUrl}` }}
             </template>
             <template v-if="scope?.column.key === 'exceptionTime'">
               {{ dayjs(scope.record.exceptionTime).format('YYYY-MM-DD HH:mm:ss') }}

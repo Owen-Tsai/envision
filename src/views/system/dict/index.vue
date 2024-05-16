@@ -90,9 +90,6 @@
             <template v-if="scope?.column.key === 'status'">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
-            <template v-if="scope?.column.key === 'remark'">
-              <ATypographyText :content="scope.text" ellipsis style="width: 200px" />
-            </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.text).format('YYYY-MM-DD') }}
             </template>

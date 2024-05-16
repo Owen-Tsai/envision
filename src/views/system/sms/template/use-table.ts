@@ -6,7 +6,7 @@ import { getTemplateList, type ListQueryParams } from '@/api/system/sms/template
 export const columns: TableProps['columns'] = [
   { key: 'name', title: '模板名称', dataIndex: 'name', fixed: 'left', width: 160 },
   { key: 'code', title: '模板编码', dataIndex: 'code', width: 180 },
-  { key: 'content', title: '模板内容', dataIndex: 'content', width: 220 },
+  { title: '模板内容', dataIndex: 'content', width: 220, ellipsis: true },
   { key: 'type', title: '短信类型', dataIndex: 'type' },
   { key: 'status', title: '状态', dataIndex: 'status' },
   { key: 'channelCode', title: '短信渠道', dataIndex: 'channelCode', width: 160 },

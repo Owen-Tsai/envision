@@ -89,9 +89,6 @@
             <template v-if="scope?.column.key === 'storage'">
               <EDictTag :dict-object="infraFileStorage" :value="scope.text" />
             </template>
-            <template v-if="scope?.column.key === 'remark'">
-              <ATypographyText :content="scope.text" ellipsis style="width: 200px" />
-            </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm:ss') }}
             </template>

@@ -82,9 +82,6 @@
         @change="onChange"
       >
         <template #bodyCell="scope: TableScope<LogVO>">
-          <template v-if="scope?.column.key === 'templateContent'">
-            <ATypographyText ellipsis :content="scope.text" style="width: 240px" />
-          </template>
           <template v-if="scope?.column.key === 'templateType'">
             <EDictTag :dict-object="systemSmsTemplateType" :value="scope.text" />
           </template>

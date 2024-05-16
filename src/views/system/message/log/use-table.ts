@@ -9,7 +9,7 @@ export const columns: TableProps['columns'] = [
   { key: 'userId', title: '用户ID', dataIndex: 'userId', width: 60 },
   { key: 'templateCode', title: '模板编码', dataIndex: 'templateCode' },
   { key: 'templateNickname', title: '发送方', dataIndex: 'templateNickname' },
-  { key: 'templateContent', title: '站内信内容', dataIndex: 'templateContent', width: 240 },
+  { title: '站内信内容', dataIndex: 'templateContent', width: 240, ellipsis: true },
   { key: 'readStatus', title: '是否已读', dataIndex: 'readStatus' },
   { key: 'sendTime', title: '发送时间', dataIndex: 'sendTime' },
   { key: 'readTime', title: '阅读时间', dataIndex: 'readTime' },
