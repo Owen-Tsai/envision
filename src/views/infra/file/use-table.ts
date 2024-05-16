@@ -1,20 +1,22 @@
 import { ref, computed, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
-import { getConfigList, type ListQueryParams } from '@/api/infra/file/config'
+import { getFileList, type ListQueryParams } from '@/api/infra/file/list'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
-  { title: '配置名称', dataIndex: 'name', key: 'name' },
-  { title: '存储器', width: 120, dataIndex: 'storage', key: 'storage' },
-  { title: '备注', dataIndex: 'remark', ellipsis: true, width: 200 },
+  { title: '文件ID', dataIndex: 'id', width: 120 },
+  { title: '文件名', ellipsis: true, dataIndex: 'name' },
+  { title: '文件路径', ellipsis: true, dataIndex: 'path' },
+  { title: '文件类型', dataIndex: 'type', width: 120 },
+  { title: '预览', width: 160, key: 'preview' },
   {
     title: '创建时间',
     width: 160,
     dataIndex: 'createTime',
     key: 'createTime'
   },
-  { title: '操作', width: 320 }
+  { title: '操作', width: 90 }
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
@@ -22,7 +24,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
 
   const { data, execute, pending } = useRequest(
     () =>
-      getConfigList({
+      getFileList({
         ...queryParams.value
       }),
     {
