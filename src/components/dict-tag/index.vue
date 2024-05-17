@@ -13,12 +13,19 @@ const props = defineProps({
     required: true
   },
   value: {
-    type: [String, Number],
+    type: [String, Number, Boolean],
     required: true
   }
 })
 
 const dictEntry = computed(() => {
-  return props.dictObject.find((e) => e.value === props.value)
+  return props.dictObject.find((e) => {
+    e.value === props.value
+    if (typeof props.value === 'boolean') {
+      return e.value === `${props.value}`
+    }
+
+    return e.value === props.value
+  })
 })
 </script>
