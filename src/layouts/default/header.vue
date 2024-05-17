@@ -68,6 +68,7 @@ import useAppStore from '@/stores/app'
 import useUserStore from '@/stores/user'
 import useBreakpoint from '@/hooks/use-breakpoint'
 import ThemeIcon from './theme-icon.vue'
+import Menu from './menu.vue'
 
 const drawerVisible = ref(false)
 

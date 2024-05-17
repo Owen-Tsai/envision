@@ -44,17 +44,6 @@
         </ADropdown>
       </AFlex>
     </div>
-
-    <ADrawer
-      v-model:open="drawerVisible"
-      placement="left"
-      :closeable="false"
-      :body-style="{ padding: 0 }"
-      :width="240"
-      :header-style="{ display: 'none' }"
-    >
-      <Menu />
-    </ADrawer>
   </header>
 </template>
 
