@@ -60,7 +60,7 @@ export const addDictData = (data: Partial<DictDataItemVO>) => {
 
 export const updateDictData = (data: Partial<DictDataItemVO>) => {
   return request.put({
-    url: '/system/dict-data/create',
+    url: '/system/dict-data/update',
     data
   })
 }

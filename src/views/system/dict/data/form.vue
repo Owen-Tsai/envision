@@ -106,6 +106,7 @@ const submit = async () => {
       message.success('保存成功')
     }
 
+    open.value = false
     emit('success')
   } catch (e) {
     //
