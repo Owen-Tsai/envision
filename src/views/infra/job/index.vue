@@ -193,5 +193,5 @@ const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, 
 const { entry, visible, onDelete, onEdit, onShowDetail, onShowLog, onStatusChange, onTriggerJob } =
   useActions(execute)
 
-defineOptions({ name: 'InfraFileConfig' })
+defineOptions({ name: 'InfraJobList' })
 </script>

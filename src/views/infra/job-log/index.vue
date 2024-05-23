@@ -10,49 +10,31 @@
       >
         <ARow :gutter="[0, 16]">
           <ACol :lg="8" :span="24">
-            <AFormItem label="用户ID" name="userId">
-              <AInput v-model:value="queryParams.userId" placeholder="请输入用户ID" allow-clear />
+            <AFormItem label="处理器名称" name="handlerName">
+              <AInput
+                v-model:value="queryParams.handlerName"
+                placeholder="请输入处理器名称"
+                allow-clear
+              />
             </AFormItem>
           </ACol>
           <ACol :lg="8" :span="24">
-            <AFormItem label="请求类型" name="requestMethod">
+            <AFormItem label="开始执行时间" name="beginTime">
+              <ADatePicker v-model:value="queryParams.beginTime" value-format="YYYY-MM-DD" />
+            </AFormItem>
+          </ACol>
+          <ACol v-show="filterExpanded" :lg="8" :span="24">
+            <AFormItem label="结束执行时间" name="endTime">
+              <ADatePicker v-model:value="queryParams.endTime" value-format="YYYY-MM-DD" />
+            </AFormItem>
+          </ACol>
+          <ACol v-show="filterExpanded" :lg="8" :span="24">
+            <AFormItem label="任务状态" name="status">
               <ASelect
-                v-model:value="queryParams.requestMethod"
-                :options="requestMethodsOptions"
-                placeholder="请选择请求类型"
+                v-model:value="queryParams.status"
+                :options="infraJobLogStatus"
+                placeholder="请选择任务状态"
               />
-            </AFormItem>
-          </ACol>
-          <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="应用名称" name="applicationName">
-              <AInput
-                v-model:value="queryParams.applicationName"
-                placeholder="请输入应用名称"
-                allow-clear
-              />
-            </AFormItem>
-          </ACol>
-          <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="请求地址" name="requestUrl">
-              <AInput
-                v-model:value="queryParams.requestUrl"
-                placeholder="请输入请求地址"
-                allow-clear
-              />
-            </AFormItem>
-          </ACol>
-          <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="响应码" name="resultCode">
-              <AInput
-                v-model:value="queryParams.resultCode"
-                placeholder="请输入响应状态码"
-                allow-clear
-              />
-            </AFormItem>
-          </ACol>
-          <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="请求时间" name="beginTime">
-              <ARangePicker v-model:value="queryParams.beginTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
           <ACol :lg="{ span: 8, offset: filterExpanded ? 16 : 0 }" :span="24">
@@ -69,7 +51,7 @@
       </AForm>
     </ACard>
 
-    <ACard title="访问日志">
+    <ACard title="定时任务日志">
       <template #extra>
         <AFlex :gap="8">
           <ATooltip title="重新载入">
@@ -97,16 +79,14 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope: TableScope<AccessLogVO>">
-            <template v-if="scope?.column.key === 'userType'">
-              <EDictTag :dict-object="userType" :value="scope?.text" />
-            </template>
-            <template v-if="scope?.column.key === 'requestUrl'">
-              {{ scope.record.requestMethod }} {{ scope.record.requestUrl }}
+          <template #bodyCell="scope: TableScope<JobLogVO>">
+            <template v-if="scope?.column.key === 'status'">
+              <EDictTag :dict-object="infraJobLogStatus" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'beginTime'">
               {{ dayjs(scope.record.beginTime).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
+            <template v-if="scope?.column.key === 'duration'">{{ scope.text }}ms</template>
             <template v-if="scope?.column.title === '操作'">
               <ATypographyLink @click="openDetail(scope.record)">
                 <UnorderedListOutlined />
@@ -139,28 +119,21 @@ import { permission } from '@/hooks/use-permission'
 import { columns, useTable } from './use-table'
 import DetailPanel from './detail.vue'
 import type { FormInstance } from 'ant-design-vue'
-import type { AccessLogVO } from '@/api/infra/api-log/access-log'
-
-const requestMethodsOptions = [
-  { value: 'GET' },
-  { value: 'POST' },
-  { value: 'PUT' },
-  { value: 'DELETE' }
-]
+import type { JobLogVO } from '@/api/infra/job/log'
 
 const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { userType } = useDict('user_type')
+const { infraJobLogStatus } = useDict('infra_job_log_status')
 
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
 const visible = ref(false)
-const entry = ref<AccessLogVO>()
+const entry = ref<JobLogVO>()
 
-const openDetail = (row: AccessLogVO) => {
+const openDetail = (row: JobLogVO) => {
   entry.value = row
   visible.value = true
 }
