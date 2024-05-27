@@ -152,6 +152,8 @@
       @success="execute"
       @close="visible.form = false"
     />
+
+    <DetailModal v-if="visible.detail" :record="entry" @close="visible.detail = false" />
   </div>
 </template>
 
@@ -170,6 +172,7 @@ import {
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'
+import DetailModal from './detail.vue'
 import { columns, useTable } from './use-table'
 import useActions from './use-actions'
 import type { FormInstance } from 'ant-design-vue'

@@ -93,10 +93,6 @@
         </div>
       </div>
     </div>
-
-    <pre class="mt-2">
-      {{ modelValue }}
-    </pre>
   </AModal>
 </template>
 
