@@ -67,7 +67,7 @@ export default defineStore('user', () => {
       id.value = user.value.id as number
 
       isUserInfoSet.value = true
-      routes.value = generateRoutes(menus)
+      routes.value = generateRoutes(routerMap.value)
     }
 
     if (permissionInfo) {
@@ -114,6 +114,7 @@ export default defineStore('user', () => {
     roles,
     permissions,
     routes,
+    routerMap,
     token,
     login,
     logout,

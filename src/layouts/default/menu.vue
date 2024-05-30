@@ -34,7 +34,7 @@ const expandedKeys = ref<string[]>([])
 
 const { menuItems, generateMenu } = useMenuRenderer()
 
-menuItems.value = generateMenu(userStore.routes!)
+menuItems.value = generateMenu(userStore.routerMap!)
 menuItems.value.unshift({
   label: '首页',
   key: '/index',
@@ -46,6 +46,10 @@ loading.value = false
 const onSelect = (key: string) => {
   if (key.includes('http')) {
     window.open(key)
+    // when opening a new browser tab/window
+    // reset selected key to the current window's route path
+    const { path } = currentRoute.value
+    selectedKeys.value = [path]
   } else {
     push(key)
   }

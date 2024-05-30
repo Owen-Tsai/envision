@@ -1,6 +1,6 @@
 import { ref, h, getCurrentInstance } from 'vue'
 import type { ItemType, MenuProps } from 'ant-design-vue'
-import type { RouteRecordRaw } from 'vue-router'
+import type { MenuVO } from '@/api/system/menu'
 
 type MenuItems = MenuProps['items']
 
@@ -13,12 +13,12 @@ export const useMenuRenderer = () => {
    * Generate menu structure based on routes
    * @param routes routes that current user has acess to
    */
-  const generateMenu = (routes: RouteRecordRaw[], parentPath = ''): ItemType[] => {
+  const generateMenu = (menuVO: MenuVO[], parentPath = ''): ItemType[] => {
     const items: ItemType[] = []
 
-    routes.forEach((route) => {
+    menuVO.forEach((route) => {
       const item: any = {
-        label: route.meta?.title,
+        label: route.name,
         key: ''
       }
       // if the route has custom layout,
@@ -34,18 +34,18 @@ export const useMenuRenderer = () => {
         item.children = children
       }
 
-      if (route.path.includes('http')) {
+      if (route.path?.includes('http')) {
         item.key = route.path
       } else {
         item.key =
-          route.meta?.parentId === 0 ? `${parentPath}${route.path}` : `${parentPath}/${route.path}`
-        if (route.meta?.isCustomLayout) {
+          route.parentId === 0 ? `${parentPath}${route.path}` : `${parentPath}/${route.path}`
+        if (route.customLayout) {
           item.key = origin + item.key
         }
       }
 
-      if (route.meta?.icon) {
-        item.icon = h(icons[route.meta.icon])
+      if (route.icon) {
+        item.icon = h(icons[route.icon])
       }
 
       items.push(item)

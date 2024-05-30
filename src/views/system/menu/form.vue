@@ -11,7 +11,7 @@
       ref="formRef"
       :model="formData"
       :rules="rules"
-      :label-col="{ style: { width: '90px' } }"
+      :label-col="{ style: { width: '100px' } }"
       class="mt-4"
     >
       <ASpin :spinning="loading">
@@ -40,7 +40,7 @@
             <AInput v-model:value="formData.path" placeholder="请输入路由地址" />
           </AFormItem>
           <AFormItem label="布局类型">
-            <ARadioGroup v-model:value="formData.isCustomLayout" option-type="button">
+            <ARadioGroup v-model:value="isCustomLayout" option-type="button">
               <ARadio :value="false">默认布局</ARadio>
               <ARadio :value="true">非默认布局</ARadio>
             </ARadioGroup>
@@ -50,11 +50,17 @@
               <QuestionCircleFilled class="field-help ml-4" />
             </ATooltip>
           </AFormItem>
+        </template>
+        <AFormItem v-if="isCustomLayout" label="布局组件路径">
+          <AInput
+            v-model:value="formData.customLayout"
+            placeholder="请输入非默认布局组件的文件路径"
+          />
+        </AFormItem>
+        <template v-if="formData.type === 2">
           <AFormItem label="组件路径">
             <AInput v-model:value="formData.component" placeholder="请输入组件文件路径" />
           </AFormItem>
-        </template>
-        <template v-if="formData.type === 2">
           <AFormItem label="组件名称">
             <AInput v-model:value="formData.componentName" placeholder="请输入组件名称" />
           </AFormItem>
@@ -149,6 +155,8 @@ const emit = defineEmits(['success', 'close'])
 
 const isAdd = computed(() => props.mode === 'add')
 
+const isCustomLayout = ref(false)
+
 const formRef = ref<FormInstance>()
 const formData = ref<MenuVO>({
   alwaysShow: true,
@@ -156,8 +164,7 @@ const formData = ref<MenuVO>({
   status: 0,
   sort: 1,
   keepAlive: true,
-  visible: true,
-  isCustomLayout: false
+  visible: true
 })
 const open = ref(true)
 

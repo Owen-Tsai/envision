@@ -31,8 +31,8 @@ declare module 'vue-router' {
      */
     alwaysShow?: boolean
     /**
-     * 是否采用非默认布局。此模式下，将读取 component 字段作为子路由的布局组件渲染
+     * 采用非默认布局时的布局组件路径。非默认布局模式下，将打开新窗口、在本字段指定的组件内渲染子组件
      */
-    isCustomLayout?: boolean
+    customLayout?: string | null
   }
 }

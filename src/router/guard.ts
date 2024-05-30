@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
                 if (
                   (!record.children || record.children?.length === 0) &&
                   record.meta?.parentId === 0 &&
-                  !record.meta?.isCustomLayout
+                  !record.meta?.customLayout
                 ) {
                   // for first level menu(w/o children routes) and customLayout set to false
                   // render them under root to use the default layout
@@ -50,6 +50,7 @@ router.beforeEach((to, from, next) => {
             next({ ...to, replace: true })
           })
           .catch((err) => {
+            console.log(err)
             userStore.logout().then(() => {
               message.error(err)
               next({ path: '/' })
