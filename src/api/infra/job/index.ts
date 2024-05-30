@@ -73,7 +73,7 @@ export const runJob = (id: number) => {
 }
 
 export const getJobScheduledTimes = (id: number) => {
-  return request.get({
+  return request.get<number[]>({
     url: `/infra/job/get_next_times?id=${id}`
   })
 }

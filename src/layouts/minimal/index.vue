@@ -1,6 +1,5 @@
 <template>
   <ALayout>
-    <Header />
     <ALayoutContent>
       <RouterView v-if="routerAlive">
         <template #default="{ Component, route }">
@@ -16,7 +15,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import useViewCache from '@/stores/view-cache'
-import Header from './header.vue'
 import { RouterView } from 'vue-router'
 
 const viewCache = useViewCache()
