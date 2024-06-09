@@ -1,7 +1,7 @@
 <template>
   <div class="view">
     <ACard v-if="permission.has('system:sms-log:query')" class="mb-4">
-      <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
+      <AForm ref="filterFormRef" :model="queryParams" class="dense-form">
         <ARow :gutter="[24, 16]">
           <ACol :span="24" :lg="8">
             <AFormItem label="手机号" name="mobile">
@@ -141,7 +141,7 @@ const filterFormRef = ref()
 
 const [filterExpanded, toggle] = useToggle()
 
-const { systemSmsReceiveStatus, systemSmsSendStatus, systemSmsChannelCode, systemSmsTemplateType } =
+const [systemSmsReceiveStatus, systemSmsSendStatus, systemSmsChannelCode, systemSmsTemplateType] =
   useDict(
     'system_sms_receive_status',
     'system_sms_send_status',

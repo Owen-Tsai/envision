@@ -29,7 +29,7 @@ import { getNotificationList } from '@/api/system/notification'
 
 const { push } = useRouter()
 
-const { systemNoticeType } = useDict('system_notice_type')
+const [systemNoticeType] = useDict('system_notice_type')
 
 const { data, pending } = useRequest(() => getNotificationList({ pageNo: 1, pageSize: 5 }), {
   immediate: true

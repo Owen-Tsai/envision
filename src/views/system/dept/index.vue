@@ -3,7 +3,7 @@
     <ARow :gutter="24">
       <ACol :span="24">
         <ACard v-if="permission.has('system:dept:query')" class="mb-4">
-          <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
+          <AForm ref="filterFormRef" :model="queryParams" class="dense-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
                 <AFormItem label="部门名称" name="name">
@@ -127,7 +127,7 @@ import { permission } from '@/hooks/use-permission'
 
 const filterFormRef = ref()
 
-const { commonStatus } = useDict('common_status')
+const [commonStatus] = useDict('common_status')
 
 const { data, execute, pending, queryParams, userList, onFilter, onFilterReset } =
   useTable(filterFormRef)

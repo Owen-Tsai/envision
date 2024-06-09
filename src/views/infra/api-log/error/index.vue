@@ -4,7 +4,7 @@
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
-        class="dense-filter-form"
+        class="dense-form"
         :class="{ expanded: filterExpanded }"
         :model="queryParams"
       >
@@ -177,7 +177,7 @@ const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { userType, infraApiErrorLogProcessStatus } = useDict(
+const [userType, infraApiErrorLogProcessStatus] = useDict(
   'user_type',
   'infra_api_error_log_process_status'
 )

@@ -143,7 +143,7 @@ const templateTypeEnums: Readonly<Record<string, number>> = {
   child: 15
 }
 
-const { infraCodegenFrontType, infraCodegenScene, infraCodegenTemplateType } = useDict(
+const [infraCodegenFrontType, infraCodegenScene, infraCodegenTemplateType] = useDict(
   'infra_codegen_front_type',
   'infra_codegen_scene',
   'infra_codegen_template_type'

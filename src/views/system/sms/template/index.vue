@@ -1,7 +1,7 @@
 <template>
   <div class="view">
     <ACard v-if="permission.has('system:sms-template:query')" class="mb-4">
-      <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
+      <AForm ref="filterFormRef" :model="queryParams" class="dense-form">
         <ARow :gutter="[24, 16]">
           <ACol :span="24" :lg="8">
             <AFormItem label="模板名称" name="name">
@@ -166,7 +166,7 @@ const filterFormRef = ref()
 
 const [filterExpanded, toggle] = useToggle()
 
-const { commonStatus, systemSmsChannelCode, systemSmsTemplateType } = useDict(
+const [commonStatus, systemSmsChannelCode, systemSmsTemplateType] = useDict(
   'common_status',
   'system_sms_channel_code',
   'system_sms_template_type'

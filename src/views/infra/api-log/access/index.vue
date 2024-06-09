@@ -4,7 +4,7 @@
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
-        class="dense-filter-form"
+        class="dense-form"
         :class="{ expanded: filterExpanded }"
         :model="queryParams"
       >
@@ -152,7 +152,7 @@ const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { userType } = useDict('user_type')
+const [userType] = useDict('user_type')
 
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)

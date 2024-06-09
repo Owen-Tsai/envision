@@ -3,7 +3,7 @@
     <ARow :gutter="24">
       <ACol :span="24">
         <ACard v-if="permission.has('system:post:query')">
-          <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
+          <AForm ref="filterFormRef" :model="queryParams" class="dense-form">
             <ARow :gutter="24">
               <ACol :span="24" :lg="8">
                 <AFormItem label="岗位名称" name="name">
@@ -114,7 +114,7 @@ import type { PostVO } from '@/api/system/post'
 
 const filterFormRef = ref()
 
-const { commonStatus } = useDict('common_status')
+const [commonStatus] = useDict('common_status')
 
 const { data, execute, pending, queryParams, onFilter, onFilterReset, pagination, onChange } =
   useTable(filterFormRef)

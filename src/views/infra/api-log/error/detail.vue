@@ -41,5 +41,5 @@ defineProps({
   }
 })
 
-const { userType } = useDict('user_type')
+const [userType] = useDict('user_type')
 </script>

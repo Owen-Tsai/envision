@@ -60,7 +60,7 @@ const props = defineProps({
 
 const emit = defineEmits(['success', 'close'])
 
-const { infraBooleanString } = useDict('infra_boolean_string')
+const [infraBooleanString] = useDict('infra_boolean_string')
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)

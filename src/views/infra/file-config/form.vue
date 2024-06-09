@@ -137,7 +137,7 @@ const formData = ref<FileConfigVO>({
   config: {}
 })
 
-const { infraFileStorage } = useDict('infra_file_storage')
+const [infraFileStorage] = useDict('infra_file_storage')
 
 const isAdd = computed(() => props.record === undefined)
 

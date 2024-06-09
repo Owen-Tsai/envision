@@ -31,7 +31,7 @@ import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import type { JobLogVO } from '@/api/infra/job/log'
 
-const { infraJobLogStatus } = useDict('infra_job_log_status')
+const [infraJobLogStatus] = useDict('infra_job_log_status')
 
 defineProps({
   entry: {

@@ -28,7 +28,7 @@
               ref="filterForm"
               :model="queryParams"
               :label-col="{ style: { width: '64px' } }"
-              class="dense-filter-form"
+              class="dense-form"
               :class="{ expanded: filterExpanded }"
             >
               <ARow :gutter="[8, 16]">
@@ -248,7 +248,7 @@ const filterForm = ref()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { commonStatus } = useDict('common_status')
+const [commonStatus] = useDict('common_status')
 
 const { data, execute, pending, queryParams, pagination, onChange, onFilter, onFilterReset } =
   useUserTable(filterForm)

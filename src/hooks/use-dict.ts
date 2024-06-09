@@ -4,13 +4,13 @@ import useDictStore from '@/stores/dict'
 import { getDictData, type DictDataEntry } from '@/api/system/dict/data'
 
 const useDict = (...args: string[]) => {
-  const res = ref<Record<string, DictDataEntry[]>>({})
+  const res = ref<Array<DictDataEntry[]>>([])
   const dictStore = useDictStore()
 
   return (() => {
     args.forEach((dictType) => {
       const key = camelCase(dictType)
-      res.value[key] = []
+      res.value = []
       const dict = dictStore.getDict(dictType)
       if (dict) {
         res.value[key] = dict
@@ -25,7 +25,7 @@ const useDict = (...args: string[]) => {
             }
             convertedData.push({ ...entry })
           })
-          res.value[key] = convertedData
+          res.value.push(convertedData)
           dictStore.setDict(dictType, convertedData)
         })
       }

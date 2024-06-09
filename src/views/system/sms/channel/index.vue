@@ -1,7 +1,7 @@
 <template>
   <div class="view">
     <ACard v-if="permission.has('system:sms-channel:query')" class="mb-4">
-      <AForm ref="filterFormRef" :model="queryParams" class="dense-filter-form">
+      <AForm ref="filterFormRef" :model="queryParams" class="dense-form">
         <ARow :gutter="24">
           <ACol :span="24" :lg="8">
             <AFormItem label="渠道名称" name="signature">
@@ -112,7 +112,7 @@ import FormModal from './form.vue'
 
 const filterFormRef = ref()
 
-const { commonStatus, systemSmsChannelCode } = useDict('common_status', 'system_sms_channel_code')
+const [commonStatus, systemSmsChannelCode] = useDict('common_status', 'system_sms_channel_code')
 
 const { data, execute, onChange, onFilter, onFilterReset, pagination, pending, queryParams } =
   useTable(filterFormRef)

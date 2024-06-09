@@ -4,7 +4,7 @@
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
-        class="dense-filter-form"
+        class="dense-form"
         :class="{ expanded: filterExpanded }"
         :model="queryParams"
       >
@@ -188,7 +188,7 @@ const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { infraJobStatus } = useDict('infra_job_status')
+const [infraJobStatus] = useDict('infra_job_status')
 
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
