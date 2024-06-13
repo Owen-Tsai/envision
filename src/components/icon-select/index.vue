@@ -3,14 +3,18 @@
     <APopover
       title="选择图标"
       v-model:open="open"
+      :placement="placement"
       trigger="click"
       :overlayStyle="{ width: '400px' }"
       :overlayInnerStyle="{ overflowY: 'scroll', overflowX: 'hidden', maxHeight: '400px' }"
     >
       <AInput v-model:value="icon" allow-clear readonly>
-        <template #addonBefore>
-          <component v-if="icon" :is="iconsMap![icon]" />
-          <span v-else>未选择</span>
+        <template v-if="showPreview || $slots['addonBefore']" #addonBefore>
+          <template v-if="showPreview">
+            <component v-if="icon" :is="iconsMap![icon]" />
+            <span v-else>未选择</span>
+          </template>
+          <slot v-else name="addonBefore" />
         </template>
       </AInput>
 
@@ -34,9 +38,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, getCurrentInstance } from 'vue'
+import { ref, computed, getCurrentInstance, type PropType } from 'vue'
 import Icon from '@ant-design/icons-vue'
-import { Form } from 'ant-design-vue'
+import { Form, type PopoverProps } from 'ant-design-vue'
 import { chunk } from 'lodash'
 
 const ctx = Form.useInjectFormItemContext()
@@ -44,6 +48,13 @@ const ctx = Form.useInjectFormItemContext()
 const props = defineProps({
   value: {
     type: String
+  },
+  showPreview: {
+    type: Boolean,
+    default: true
+  },
+  placement: {
+    type: String as PropType<PopoverProps['placement']>
   }
 })
 
