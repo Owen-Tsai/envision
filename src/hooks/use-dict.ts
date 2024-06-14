@@ -1,37 +1,32 @@
-import { ref, toRefs } from 'vue'
-import { camelCase } from 'lodash'
+import { ref, type Ref } from 'vue'
 import useDictStore from '@/stores/dict'
 import { getDictData, type DictDataEntry } from '@/api/system/dict/data'
 
 const useDict = (...args: string[]) => {
-  const res = ref<Array<DictDataEntry[]>>([])
   const dictStore = useDictStore()
 
-  return (() => {
-    args.forEach((dictType) => {
-      const key = camelCase(dictType)
-      res.value = []
-      const dict = dictStore.getDict(dictType)
-      if (dict) {
-        res.value[key] = dict
-      } else {
-        getDictData(dictType).then((data) => {
-          const convertedData: DictDataEntry[] = []
-          data.forEach((item) => {
-            const entry: DictDataEntry = { ...item }
-            const intVal = parseInt(item.value)
-            if (!isNaN(intVal)) {
-              entry.value = intVal
-            }
-            convertedData.push({ ...entry })
-          })
-          res.value.push(convertedData)
-          dictStore.setDict(dictType, convertedData)
+  const result = args.map((dictType) => {
+    const dict = dictStore.getDict(dictType)
+    const data = ref(dict || []) as Ref<DictDataEntry[]>
+    if (!dict) {
+      getDictData(dictType).then((res) => {
+        const convertedData: DictDataEntry[] = []
+        res.forEach((item) => {
+          const entry: DictDataEntry = { ...item }
+          const intVal = parseInt(item.value)
+          if (!isNaN(intVal)) {
+            entry.value = intVal
+          }
+          convertedData.push({ ...entry })
         })
-      }
-    })
-    return toRefs(res.value)
-  })()
+        data.value = convertedData
+      })
+    }
+
+    return data
+  })
+
+  return result
 }
 
 export default useDict
