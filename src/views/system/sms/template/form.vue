@@ -69,7 +69,7 @@ import type { ChannelListLiteVO } from '@/api/system/sms/channel'
 
 const loading = ref(false)
 
-const { commonStatus, systemSmsTemplateType } = useDict('common_status', 'system_sms_template_type')
+const [commonStatus, systemSmsTemplateType] = useDict('common_status', 'system_sms_template_type')
 
 const rules = ref<FormProps['rules']>({
   channelId: [{ required: true, message: '请选择短信渠道' }],

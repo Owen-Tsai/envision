@@ -67,7 +67,7 @@ provide('layoutContext', reload)
 </script>
 
 <style lang="scss" scoped>
-$header-height: 56px;
+@use '@/styles/mixins.scss' as *;
 
 .header {
   height: $header-height;

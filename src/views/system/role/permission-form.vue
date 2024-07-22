@@ -65,7 +65,7 @@ import useDict from '@/hooks/use-dict'
 import { DICT_SYSTEM_DATA_SCOPE } from '@/utils/constants'
 import type { RoleVO } from '@/api/system/role'
 
-const { systemDataScope } = useDict('system_data_scope')
+const [systemDataScope] = useDict('system_data_scope')
 
 const props = defineProps({
   record: {

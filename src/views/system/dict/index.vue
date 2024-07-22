@@ -155,6 +155,8 @@ const [filterExpanded, toggle] = useToggle(false)
 
 const [commonStatus] = useDict('common_status')
 
+console.log(commonStatus)
+
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 

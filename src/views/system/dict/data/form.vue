@@ -89,7 +89,7 @@ const formData = ref<Partial<DictDataItemVO>>({
   value: ''
 })
 
-const { commonStatus } = useDict('common_status')
+const [commonStatus] = useDict('common_status')
 
 const isAdd = computed(() => props.record?.id === undefined)
 

@@ -42,7 +42,7 @@ import useDict from '@/hooks/use-dict'
 
 const loading = ref(false)
 
-const { commonStatus } = useDict('common_status')
+const [commonStatus] = useDict('common_status')
 
 const rules = ref<FormProps['rules']>({
   name: [{ required: true, message: '请输入部门名称' }]

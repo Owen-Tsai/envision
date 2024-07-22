@@ -60,7 +60,7 @@ import useDict from '@/hooks/use-dict'
 
 const loading = ref(false)
 
-const { commonStatus, systemSmsChannelCode } = useDict('common_status', 'system_sms_channel_code')
+const [commonStatus, systemSmsChannelCode] = useDict('common_status', 'system_sms_channel_code')
 
 const rules = ref<FormProps['rules']>({
   signature: [{ required: true, message: '请输入渠道名称' }],

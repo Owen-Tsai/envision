@@ -24,7 +24,6 @@
             <ThemeIcon :theme="theme" />
           </AButton>
         </ATooltip>
-        <!-- TODO: user avatar dropdown -->
 
         <ADropdown placement="bottomRight">
           <div class="flex items-center gap-2 cursor-pointer">

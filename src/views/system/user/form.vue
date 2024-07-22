@@ -113,7 +113,7 @@ const loading = ref(false)
 const formData = ref<UserVO>({})
 const open = ref(true)
 
-const { systemUserSex, commonStatus } = useDict('system_user_sex', 'common_status')
+const [systemUserSex, commonStatus] = useDict('system_user_sex', 'common_status')
 
 const { data, pending } = useRequest(getDeptTree, { immediate: true })
 

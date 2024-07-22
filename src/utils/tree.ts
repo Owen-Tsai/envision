@@ -15,3 +15,21 @@ export const filterTree = (tree: Tree, searchText: string): Tree | null => {
     }
   }
 }
+
+export const findNode = <T>(
+  tree: T[],
+  predicate: (e: T) => boolean,
+  childrenField = 'children'
+): T | null => {
+  for (const node of tree) {
+    if ((node as any)[childrenField]) {
+      return findNode((node as any)[childrenField], predicate, childrenField)
+    }
+
+    if (predicate(node)) {
+      return node
+    }
+  }
+
+  return null
+}

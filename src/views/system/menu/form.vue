@@ -127,7 +127,7 @@ import useDict from '@/hooks/use-dict'
 import { menuTypes } from '@/utils/constants'
 import { QuestionCircleFilled } from '@ant-design/icons-vue'
 
-const { commonStatus } = useDict('common_status')
+const [commonStatus] = useDict('common_status')
 
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写菜单名称' }],

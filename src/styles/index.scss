@@ -1,5 +1,6 @@
 @use './var.scss' as *;
 @use './transition.scss' as *;
+@use './efk.scss' as *;
 
 body {
   position: relative;
@@ -65,7 +66,7 @@ html {
   width: 100%;
 }
 
-.dense-filter-form {
+.dense-form {
   .ant-form-item {
     margin-bottom: 0px !important;
   }

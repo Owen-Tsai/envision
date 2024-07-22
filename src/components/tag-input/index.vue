@@ -51,7 +51,7 @@ const { token } = theme.useToken()
 const props = defineProps({
   value: {
     type: Array as PropType<string[]>,
-    required: true
+    default: () => []
   },
   maxTagCount: {
     type: Number

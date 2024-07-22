@@ -1,0 +1,30 @@
+<template>
+  <AInput
+    :default-value="config.props.defaultValue"
+    :maxlength="config.props.maxlength"
+    :show-count="config.props.showCount"
+    :readonly="config.props.readonly"
+    :disabled="config.props.disabled"
+    :allow-clear="config.props.allowClear"
+  >
+    <template #prefix>
+      <AddonRenderer :addon-type="config.props.prefixType" :addon-value="config.props.prefix" />
+    </template>
+    <template #suffix>
+      <AddonRenderer :addon-type="config.props.suffixType" :addon-value="config.props.suffix" />
+    </template>
+  </AInput>
+</template>
+
+<script lang="ts" setup>
+import { type PropType } from 'vue'
+import AddonRenderer from '../addon-renderer.vue'
+import type { WidgetConfigMap } from '@/types/workflow'
+
+const props = defineProps({
+  config: {
+    type: Object as PropType<WidgetConfigMap['input']>,
+    required: true
+  }
+})
+</script>

@@ -46,7 +46,7 @@ const formData = ref<ProfileVO>({})
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 
-const { systemUserSex } = useDict('system_user_sex')
+const [systemUserSex] = useDict('system_user_sex')
 
 const submit = async () => {
   try {

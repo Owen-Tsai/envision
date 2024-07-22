@@ -21,16 +21,3 @@ const viewCache = useViewCache()
 
 const routerAlive = ref(true)
 </script>
-
-<style lang="scss" scoped>
-$header-height: 56px;
-
-.header {
-  height: $header-height;
-}
-.menu-btn {
-  @apply absolute right-2 bottom-4;
-  background-color: var(--colorFillSecondary);
-  color: var(--colorTextSecondary);
-}
-</style>
