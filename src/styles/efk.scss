@@ -92,12 +92,13 @@
   height: 32px !important;
   padding: 0 !important;
   position: relative;
-  img, div {
+  img,
+  div {
     display: none !important;
   }
   &::before {
     position: absolute;
-    content: "";
+    content: '';
     left: 0;
     right: 0;
     top: 0;
@@ -107,13 +108,18 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background-color: var(--colorSuccessBg) !important;
+    background-color: var(--colorPrimaryBg) !important;
   }
   &::after {
-
+    position: absolute;
+    content: '松开鼠标以添加...';
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   margin-bottom: 16px !important;
   div {
     margin-top: 0 !important;
   }
+  outline: 2px dotted var(--colorPrimaryBorder);
 }
