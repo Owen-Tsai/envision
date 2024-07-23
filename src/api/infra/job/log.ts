@@ -29,5 +29,9 @@ export const getList = (params?: ListQueryParams) => {
 }
 
 export const exportLog = (params?: ListQueryParams) => {
-  return request.download('/system/job-log/export-excel', params, '定时任务执行日志')
+  return request.download({
+    url: '/system/job-log/export-excel',
+    params,
+    filename: '定时任务执行日志.xlsx'
+  })
 }

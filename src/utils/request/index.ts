@@ -44,39 +44,12 @@ export default {
     const res = await request({ method: 'put', ...options })
     return res.data as T
   },
-  download: async (
-    url: string,
-    params?: AxiosRequestConfig['params'],
-    filename?: string,
-    options?: AxiosRequestConfig
-  ) => {
+  download: async (options: AxiosRequestConfig & { filename?: string }) => {
     createLoader()
-    return request({
-      ...options,
-      url,
-      params,
-      method: 'get',
-      transformRequest: [(params) => qs.stringify(params)],
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      responseType: 'blob'
-    })
-      .then(async (res) => {
-        if (res.headers['Content-Type'] !== 'application/json') {
-          const blob = new Blob([res as unknown as ArrayBuffer])
-          saveAs(blob, filename)
-        } else {
-          const data = await (res as any).text()
-          const rspObj = JSON.parse(data)
-          const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode['default']
-          message.error(errMsg)
-        }
-      })
-      .catch((err) => {
-        console.error(`[${url}]`, err)
-        message.error('下载文件失败')
-      })
-      .finally(() => {
-        destroyLoader()
-      })
+    const res = await request({ method: 'get', responseType: 'blob', ...options })
+    const blob = new Blob([res as unknown as ArrayBuffer])
+    saveAs(blob, options.filename)
+    destroyLoader()
+    return res
   }
 }

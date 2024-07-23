@@ -44,7 +44,11 @@ export const getList = (params?: ListQueryParams) => {
 }
 
 export const exportLog = (params?: ListQueryParams) => {
-  return request.download('/system/api-access-log/export-excel', params, 'API错误日志')
+  return request.download({
+    url: '/infra/api-error-log/export-excel',
+    params,
+    filename: 'API错误日志.xlsx'
+  })
 }
 
 export const setProcessStatus = (id: number, status: number) => {

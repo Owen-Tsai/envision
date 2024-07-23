@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { setProcessStatus, type ErrorLogVO } from '@/api/infra/api-log/error-log'
+import { setProcessStatus, exportLog, type ErrorLogVO } from '@/api/infra/api-log/error-log'
 
 const useActions = (requestData: () => void) => {
   const entry = ref<ErrorLogVO>()
@@ -14,11 +14,16 @@ const useActions = (requestData: () => void) => {
     setProcessStatus(id, status).then(requestData)
   }
 
+  const onExport = () => {
+    exportLog()
+  }
+
   return {
     entry,
     visible,
     onCheckDetail,
-    onSetStatus
+    onSetStatus,
+    onExport
   }
 }
 

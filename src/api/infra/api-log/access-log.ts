@@ -36,5 +36,9 @@ export const getList = (params?: ListQueryParams) => {
 }
 
 export const exportLog = (params?: ListQueryParams) => {
-  return request.download('/system/api-access-log/export-excel', params, 'API访问日志')
+  return request.download({
+    url: '/infra/api-access-log/export-excel',
+    params,
+    filename: 'API访问日志.xlsx'
+  })
 }

@@ -143,3 +143,14 @@ export const previewCode = (id: number) => {
     url: `/infra/codegen/preview?tableId=${id}`
   })
 }
+
+// download generated code
+export const downloadCode = (id: number) => {
+  return request.download({
+    url: '/infra/codegen/download',
+    params: {
+      tableId: id
+    },
+    filename: 'generated-code.zip'
+  })
+}

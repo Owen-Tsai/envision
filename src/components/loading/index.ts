@@ -1,24 +1,25 @@
-import { createVNode, render, ref, type ComponentPublicInstance } from 'vue'
+import { createVNode, render, ref } from 'vue'
 import LoaderConstructor from './index.vue'
 
-export const instance = ref<ComponentPublicInstance | null>(null)
+export const instance = ref<boolean>(false)
 
 export const createLoader = () => {
-  if (instance.value !== null) {
-    return instance.value
+  if (instance.value) {
+    return
   }
 
   const loaderVNode = createVNode(LoaderConstructor)
-  instance.value = loaderVNode.component as unknown as ComponentPublicInstance
+  instance.value = true
 
   render(loaderVNode, document.body)
 
-  return instance.value
+  document.body.classList.add('overflow-hidden')
 }
 
 export const destroyLoader = () => {
   if (instance.value) {
-    instance.value = null
     render(null, document.body)
+    instance.value = false
+    document.body.classList.remove('overflow-hidden')
   }
 }

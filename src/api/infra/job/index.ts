@@ -53,7 +53,11 @@ export const deleteJob = (id: number) => {
 }
 
 export const exportJobList = (params: ListQueryParams) => {
-  return request.download('/infra/job/export-excel', params, '定时任务')
+  return request.download({
+    url: '/infra/job/export-excel',
+    params,
+    filename: '定时任务.xlsx'
+  })
 }
 
 export const updateJobStatus = (id: number, status: number) => {

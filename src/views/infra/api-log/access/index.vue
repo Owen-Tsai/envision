@@ -80,7 +80,7 @@
             </AButton>
           </ATooltip>
           <ATooltip v-if="permission.has('infra:api-access-log:export')" title="导出">
-            <AButton type="text" :loading="pending">
+            <AButton type="text" :loading="pending" @click="onExport">
               <template #icon>
                 <ExportOutlined />
               </template>
@@ -108,7 +108,7 @@
               {{ dayjs(scope.record.beginTime).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
             <template v-if="scope?.column.title === '操作'">
-              <ATypographyLink @click="openDetail(scope.record)">
+              <ATypographyLink @click="onCheckDetail(scope.record)">
                 <UnorderedListOutlined />
                 详情
               </ATypographyLink>
@@ -140,6 +140,7 @@ import { columns, useTable } from './use-table'
 import DetailPanel from './detail.vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { AccessLogVO } from '@/api/infra/api-log/access-log'
+import useActions from './use-actions'
 
 const requestMethodsOptions = [
   { value: 'GET' },
@@ -157,13 +158,7 @@ const [userType] = useDict('user_type')
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
-const visible = ref(false)
-const entry = ref<AccessLogVO>()
-
-const openDetail = (row: AccessLogVO) => {
-  entry.value = row
-  visible.value = true
-}
+const { entry, visible, onCheckDetail, onExport } = useActions()
 
 defineOptions({ name: 'InfraApiAccessLog' })
 </script>

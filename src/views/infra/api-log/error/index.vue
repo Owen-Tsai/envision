@@ -80,7 +80,7 @@
             </AButton>
           </ATooltip>
           <ATooltip v-if="permission.has('infra:api-error-log:export')" title="导出">
-            <AButton type="text" :loading="pending">
+            <AButton type="text" :loading="pending" @click="onExport">
               <template #icon>
                 <ExportOutlined />
               </template>
@@ -185,7 +185,7 @@ const [userType, infraApiErrorLogProcessStatus] = useDict(
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
-const { entry, visible, onCheckDetail, onSetStatus } = useActions(execute)
+const { entry, visible, onCheckDetail, onSetStatus, onExport } = useActions(execute)
 
 defineOptions({ name: 'InfraApiErrorLog' })
 </script>

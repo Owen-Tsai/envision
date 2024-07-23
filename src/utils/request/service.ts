@@ -79,7 +79,7 @@ service.interceptors.response.use(
     // binary responses should be returned directly
     if (request.responseType === 'blob' || request.responseType === 'arraybuffer') {
       if (data.type !== 'application/json') {
-        return data
+        return res.data
       }
       data = await new Response(res.data).json()
     }

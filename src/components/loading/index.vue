@@ -1,10 +1,14 @@
 <template>
   <Teleport to="body">
     <div class="page-modal">
-      <ASpin size="large" />
+      <Spin size="large" />
     </div>
   </Teleport>
 </template>
+
+<script setup lang="ts">
+import { Spin } from 'ant-design-vue'
+</script>
 
 <style lang="scss" scoped>
 .page-modal {
@@ -19,5 +23,6 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  z-index: 999;
 }
 </style>
