@@ -51,7 +51,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { last } from 'lodash'
-import { getHighlighter, type Highlighter } from 'shiki'
+import highlighter from '@/utils/highlighter'
 import useAppStore from '@/stores/app'
 import { previewCode, type CodePreviewVO } from '@/api/infra/code-gen'
 
@@ -76,22 +76,13 @@ const renderKey = ref(0)
 const data = ref<CodePreviewVO>()
 const selectedKeys = ref<string[]>([])
 const loading = ref(true)
-const highlighter = ref<Highlighter>()
-
-getHighlighter({
-  langs: ['js', 'ts', 'vue', 'sql', 'txt', 'java'],
-  themes: ['vitesse-dark', 'vitesse-light']
-}).then((ret) => {
-  highlighter.value = ret
-})
 
 const code = computed<string>(() => {
   const entry = data.value?.find((e) => e.filePath === selectedKeys.value[0])
   if (!entry) return ''
   const snippet = entry.code
   const lang = last(entry.filePath.split('/'))?.split('.')[1]
-  if (!highlighter.value) return ''
-  return highlighter.value?.codeToHtml(snippet, {
+  return highlighter.codeToHtml(snippet, {
     lang: lang || 'txt',
     theme: useAppStore().theme === 'dark' ? 'vitesse-dark' : 'vitesse-light'
   })
