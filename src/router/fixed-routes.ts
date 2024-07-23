@@ -39,6 +39,14 @@ export const fixedRoutes: RouteRecordRaw[] = [
         meta: {
           title: '代码生成配置'
         }
+      },
+      {
+        path: '/me',
+        name: 'Me',
+        component: () => import('@/views/user/index.vue'),
+        meta: {
+          title: '个人设置'
+        }
       }
     ]
   }
