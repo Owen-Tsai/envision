@@ -6,8 +6,8 @@ import {
 } from 'shiki'
 
 const highlighter: HighlighterGeneric<BundledLanguage, BundledTheme> = await createHighlighter({
-  themes: ['min-light'],
-  langs: ['json', 'js']
+  themes: ['vitesse-light', 'vitesse-dark'],
+  langs: ['json', 'js', 'vue', 'ts', 'tsx', 'jsx', 'sql', 'xml', 'java', 'txt']
 })
 
 export default highlighter

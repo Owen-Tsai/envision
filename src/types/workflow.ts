@@ -42,6 +42,13 @@ export type FieldProps = {
   validateTrigger?: string[]
 }
 
+type LayoutFieldProps = {
+  field: {
+    name?: string
+    wrapperCol?: string
+  }
+}
+
 type CommonPropsBase = {
   disabled?: boolean
   readonly?: boolean
@@ -278,19 +285,22 @@ export type WPropsGrid = {
   justify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
   gutter?: number
   wrap?: boolean
-}
+  children: WPropsGridCol[]
+} & LayoutFieldProps
 
 export type WPropsTabs = {
   centered?: boolean
   destroyInactivePanes?: boolean
   size?: 'large' | 'middle' | 'small'
   type?: 'line' | 'card'
-}
+  children: WPropsTabsPane[]
+} & LayoutFieldProps
 
 export type WPropsSteps = {
   size?: 'default' | 'small'
   type?: 'default' | 'navigation' | 'dot'
-}
+  children: WPropsStep[]
+} & LayoutFieldProps
 
 type FormWidgetPropsMap = {
   input: WPropsInput
@@ -331,16 +341,6 @@ export type WidgetType = keyof WidgetPropsMap
 
 export type WidgetConfigMap = {
   [x in WidgetType]: ConfigOf<x>
-} & {
-  grid: ConfigOf<'grid'> & {
-    children: WPropsGridCol[]
-  }
-  tabs: ConfigOf<'tabs'> & {
-    children: WPropsTabsPane[]
-  }
-  steps: ConfigOf<'steps'> & {
-    children: WPropsStep[]
-  }
 }
 
 export type Widget = WidgetConfigMap[keyof WidgetConfigMap]
