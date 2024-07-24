@@ -147,7 +147,7 @@ const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { commonStatus, systemNoticeType } = useDict('common_status', 'system_notice_type')
+const [commonStatus, systemNoticeType] = useDict('common_status', 'system_notice_type')
 
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
