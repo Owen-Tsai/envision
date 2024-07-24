@@ -13,12 +13,12 @@
     outline-style: solid;
     outline-color: var(--colorPrimary);
 
-    .drag-handle,
-    .actions {
+    & > .drag-handle,
+    & > .actions {
       display: flex;
       z-index: 10;
     }
-    .field-name {
+    & > .field-name {
       color: var(--colorPrimary);
     }
   }
@@ -84,8 +84,11 @@
 }
 
 .draggable-area {
-  min-height: 32px;
-  background-color: var(--colorPrimaryBg);
+  height: 100%;
+  &.empty-slot {
+    background-color: var(--colorPrimaryBg);
+    min-height: 40px;
+  }
 }
 
 .item.ghost {

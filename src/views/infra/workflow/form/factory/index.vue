@@ -101,7 +101,7 @@ const componentTree = computed(() => {
 const highlightedSchema = computed(() => {
   return highlighter.codeToHtml(JSON.stringify(schema, null, 2), {
     lang: 'json',
-    theme: 'min-light'
+    theme: 'vitesse-light'
   })
 })
 

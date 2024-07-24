@@ -300,6 +300,7 @@ export type WPropsSteps = {
   size?: 'default' | 'small'
   type?: 'default' | 'navigation' | 'dot'
   children: WPropsStep[]
+  current: number
 } & LayoutFieldProps
 
 type FormWidgetPropsMap = {

@@ -1,27 +1,47 @@
 <template>
   <div>
     <AForm v-if="selectedWidget !== undefined" :model="selectedWidget" layout="vertical">
-      <AFormItem label="字段标识" extra="表单字段的唯一标识">
-        <AInput v-model:value="selectedWidget.props.field.name" />
-      </AFormItem>
-      <AFormItem label="字段标签">
-        <AInput v-model:value="selectedWidget.props.field.label" />
-      </AFormItem>
-      <AFormItem label="标签对齐方式">
-        <ASelect v-model:value="selectedWidget.props.field.labelAlign" :options="labelAlignOpts" />
-      </AFormItem>
-      <AFormItem label="标签列属性">
-        <AInput v-model:value="selectedWidget.props.field.labelCol" />
-      </AFormItem>
-      <AFormItem label="标签列宽度">
-        <AInput
-          v-model:value="selectedWidget.props.field.labelWidth"
-          placeholder="输入含单位的值(px/%)"
-        />
-      </AFormItem>
-      <AFormItem label="组件列属性">
-        <AInput v-model:value="selectedWidget.props.field.wrapperCol" />
-      </AFormItem>
+      <template
+        v-if="
+          selectedWidget.type !== 'grid' &&
+          selectedWidget.type !== 'tabs' &&
+          selectedWidget.type !== 'steps'
+        "
+      >
+        <AFormItem label="字段标识" extra="表单字段的唯一标识">
+          <AInput v-model:value="selectedWidget.props.field.name" />
+        </AFormItem>
+        <AFormItem label="字段标签">
+          <AInput v-model:value="selectedWidget.props.field.label" />
+        </AFormItem>
+        <AFormItem label="标签对齐方式">
+          <ASelect
+            v-model:value="selectedWidget.props.field.labelAlign"
+            :options="labelAlignOpts"
+          />
+        </AFormItem>
+        <AFormItem label="标签列属性">
+          <AInput v-model:value="selectedWidget.props.field.labelCol" />
+        </AFormItem>
+        <AFormItem label="标签列宽度">
+          <AInput
+            v-model:value="selectedWidget.props.field.labelWidth"
+            placeholder="输入含单位的值(px/%)"
+          />
+        </AFormItem>
+        <AFormItem label="组件列属性">
+          <AInput v-model:value="selectedWidget.props.field.wrapperCol" />
+        </AFormItem>
+      </template>
+
+      <template v-else>
+        <AFormItem label="字段标识" extra="表单字段的唯一标识">
+          <AInput v-model:value="selectedWidget.props.field.name" />
+        </AFormItem>
+        <AFormItem label="组件列属性">
+          <AInput v-model:value="selectedWidget.props.field.wrapperCol" />
+        </AFormItem>
+      </template>
 
       <component :is="comp" :opts="selectedWidget.props" />
     </AForm>

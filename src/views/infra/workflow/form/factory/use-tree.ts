@@ -18,8 +18,8 @@ const schemaToTree = (widgets: Widget[]): Tree[] => {
           children: []
         }
         // find deep
-        if (widget.children.length > 0) {
-          widget.children.forEach((childSlot) => {
+        if (widget.props.children.length > 0) {
+          widget.props.children.forEach((childSlot) => {
             visit(childSlot.widgets, newNode.children!)
           })
         }

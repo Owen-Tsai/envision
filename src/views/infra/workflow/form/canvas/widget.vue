@@ -3,7 +3,7 @@
   <div
     class="widget-wrapper"
     :class="{ selected: selectedWidget?.uid === config.uid }"
-    @click="selectedWidget = config"
+    @click="selectWidget(config)"
   >
     <AFormItem
       :label="config.props.field?.label"
@@ -23,12 +23,12 @@
     </div>
     <div class="actions">
       <ATooltip title="复制">
-        <div class="action" @click.stop="duplicateWidget(config)">
+        <div class="action" @click.stop="duplicateWidget(config, siblings)">
           <CopyFilled />
         </div>
       </ATooltip>
       <ATooltip title="删除">
-        <div class="action" @click.stop="deleteWidget(config.uid)">
+        <div class="action" @click.stop="deleteWidget(config.uid, siblings)">
           <DeleteFilled />
         </div>
       </ATooltip>
@@ -38,15 +38,11 @@
 
 <script lang="ts" setup>
 import { computed, inject, type PropType, type Component } from 'vue'
+import { useWidget } from '../use-widgets'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
 import { camelCase } from 'lodash'
 import { tryParse } from '@/utils/envision'
-import {
-  injectionKey,
-  type FormWidget,
-  type LayoutWidget,
-  type FormCreatorCtx
-} from '@/types/workflow'
+import { injectionKey, type FormWidget, type FormCreatorCtx, type Widget } from '@/types/workflow'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })
 
@@ -55,12 +51,12 @@ const props = defineProps({
     type: Object as PropType<FormWidget>,
     required: true
   },
-  parentNode: {
-    type: Object as PropType<LayoutWidget>
+  siblings: {
+    type: Array as PropType<Widget[]>
   }
 })
 
-const { selectedWidget, deleteWidget, duplicateWidget } = inject<FormCreatorCtx>(injectionKey)!
+const { deleteWidget, duplicateWidget, selectWidget, selectedWidget } = useWidget()
 
 const labelCol = computed(() => {
   const width = props.config.props.field?.labelWidth

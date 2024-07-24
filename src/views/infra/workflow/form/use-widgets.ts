@@ -1,9 +1,15 @@
-import { inject } from 'vue'
+import { ref, inject } from 'vue'
 import dayjs from 'dayjs'
-import { camelCase } from 'lodash'
+import { camelCase, remove } from 'lodash'
 import { generateID } from '@/utils/envision'
 import { injectionKey } from '@/types/workflow'
-import type { FormCreatorCtx, WidgetType, WidgetConfigMap, Widget } from '@/types/workflow'
+import type {
+  FormCreatorCtx,
+  WidgetType,
+  WidgetConfigMap,
+  Widget,
+  LayoutWidget
+} from '@/types/workflow'
 import defaultIcon from '~img/form-kit/custom.svg'
 
 const icons = import.meta.glob('~img/form-kit/*.svg', { eager: true })
@@ -14,39 +20,60 @@ const getIcon = (widgetType: WidgetType) => {
   return key ? (icons[key] as any)['default'] : defaultIcon
 }
 
-export const useWidget = (siblings?: Widget[]) => {
+export const isLayoutWidget = (widget: Widget) => {
+  return widget.type === 'grid' || widget.type === 'tabs' || widget.type === 'steps'
+}
+
+export const useWidget = () => {
   const { schema, selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 
-  const deleteWidget = (idx: number) => {
-    if (siblings) {
-      siblings.splice(idx, 1)
-    } else {
-      schema.form.widgets.splice(idx, 1)
-    }
+  const deleteWidget = (uid: string, siblings?: Widget[]) => {
+    const list = siblings || schema.form.widgets
+    remove(list, (e) => e.uid === uid)
   }
 
   const selectWidget = (widget: Widget) => {
     selectedWidget.value = widget
   }
 
-  const duplicateWidget = (widget: Widget) => {
-    if (siblings) {
-      siblings.push({
-        ...widget,
-        uid: generateID()
-      })
-    } else {
-      schema.form.widgets.push({
-        ...widget,
-        uid: generateID()
+  const duplicateWidget = (widget: Widget, siblings?: Widget[]) => {
+    const list = siblings || schema.form.widgets
+
+    const genIdRecursively = (children: LayoutWidget['props']['children']) => {
+      return children.map((child) => {
+        child.widgets = child.widgets.map((w) => {
+          w.uid = generateID()
+          if (isLayoutWidget(w)) {
+            ;(w as any).props.children = genIdRecursively((w as LayoutWidget).props.children)
+          }
+
+          return {
+            ...w
+          }
+        })
+
+        return {
+          ...child
+        }
       })
     }
+
+    if (isLayoutWidget(widget)) {
+      const children = [...(widget as any).props.children]
+      ;(widget as any).props.children = genIdRecursively(children)
+    }
+
+    list.push({
+      ...widget,
+      uid: generateID()
+    })
   }
 
   return {
     deleteWidget,
     selectWidget,
-    duplicateWidget
+    duplicateWidget,
+    selectedWidget
   }
 }
 
@@ -338,33 +365,41 @@ export const widgetInitConfig: WidgetConfigMap = {
     uid: '',
     icon: getIcon('grid'),
     props: {
-      gutter: 16
-    },
-    children: [
-      { span: 12, widgets: [] },
-      { span: 12, widgets: [] }
-    ]
+      field: {},
+      gutter: 16,
+      align: 'middle',
+      children: [
+        { span: 12, widgets: [] },
+        { span: 12, widgets: [] }
+      ]
+    }
   },
   tabs: {
     type: 'tabs',
     name: '标签页',
     uid: '',
     icon: getIcon('tabs'),
-    props: {},
-    children: [
-      { title: '标签页1', widgets: [] },
-      { title: '标签页2', widgets: [] }
-    ]
+    props: {
+      field: {},
+      children: [
+        { title: '标签页1', widgets: [] },
+        { title: '标签页2', widgets: [] }
+      ]
+    }
   },
   steps: {
     type: 'steps',
     name: '步骤条',
     uid: '',
     icon: getIcon('steps'),
-    props: {},
-    children: [
-      { title: '第一步', widgets: [] },
-      { title: '第二步', widgets: [] }
-    ]
+    props: {
+      field: {},
+      current: 0,
+      children: [
+        { title: '第一步', widgets: [] },
+        { title: '第二步', widgets: [] },
+        { title: '第三步', widgets: [] }
+      ]
+    }
   }
 }
