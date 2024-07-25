@@ -83,7 +83,7 @@ const formData = ref<NotificationVO>({
   content: ''
 })
 
-const { commonStatus, systemNoticeType } = useDict('common_status', 'system_notice_type')
+const [commonStatus, systemNoticeType] = useDict('common_status', 'system_notice_type')
 
 const isAdd = computed(() => props.record === undefined)
 
