@@ -1,5 +1,6 @@
 <template>
   <ACascader
+    v-model:value="model"
     :allow-clear="config.props.allowClear"
     :change-on-select="config.props.allowParentNode"
     :default-value="defaultValue"
@@ -16,6 +17,7 @@
 <script lang="ts" setup>
 import { ref, computed, type PropType } from 'vue'
 import request from '@/utils/request'
+import useModel from '../use-model'
 import { type CascaderProps } from 'ant-design-vue'
 import { type WidgetConfigMap } from '@/types/workflow'
 import { tryParse } from '@/utils/envision'
@@ -31,6 +33,7 @@ const fieldNames = computed(() => tryParse(props.config.props.fieldNames))
 const defaultValue = computed(() => tryParse(props.config.props.defaultValue))
 
 const options = ref<CascaderProps['options']>([])
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const settings = props.config.props.options
 if (settings?.type === 'static') {

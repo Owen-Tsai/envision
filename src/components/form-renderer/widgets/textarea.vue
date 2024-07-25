@@ -1,5 +1,6 @@
 <template>
   <ATextarea
+    v-model:value="model"
     :allow-clear="config.props.allowClear"
     :autosize="autosize"
     :default-value="config.props.defaultValue"
@@ -15,6 +16,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import type { WidgetConfigMap } from '@/types/workflow'
+import useModel from '../use-model'
 
 const props = defineProps({
   config: {
@@ -22,6 +24,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const autosize = computed(() => {
   if (props.config.props.minRows || props.config.props.maxRows) {

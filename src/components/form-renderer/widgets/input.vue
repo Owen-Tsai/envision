@@ -1,5 +1,6 @@
 <template>
   <AInput
+    v-model:value="model"
     :default-value="config.props.defaultValue"
     :maxlength="config.props.maxlength"
     :show-count="config.props.showCount"
@@ -19,6 +20,7 @@
 <script lang="ts" setup>
 import { type PropType } from 'vue'
 import AddonRenderer from '../addon-renderer.vue'
+import useModel from '../use-model'
 import type { WidgetConfigMap } from '@/types/workflow'
 
 const props = defineProps({
@@ -27,4 +29,6 @@ const props = defineProps({
     required: true
   }
 })
+
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 </script>

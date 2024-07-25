@@ -1,5 +1,6 @@
 <template>
   <ARate
+    v-model:value="model"
     :allow-clear="config.props.allowClear"
     :allow-half="config.props.allowHalf"
     :count="config.props.count"
@@ -22,6 +23,7 @@ import { computed, type PropType } from 'vue'
 import { StarFilled } from '@ant-design/icons-vue'
 import { tryParse } from '@/utils/envision'
 import AddonRenderer from '../addon-renderer.vue'
+import useModel from '../use-model'
 import type { WidgetConfigMap } from '@/types/workflow'
 
 const props = defineProps({
@@ -30,6 +32,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const tooltips = computed(() => tryParse(props.config.props.tooltips))
 </script>

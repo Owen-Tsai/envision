@@ -1,5 +1,6 @@
 <template>
   <ADatePicker
+    v-model:value="model"
     :allow-clear="config.props.allowClear"
     :default-value="config.props.defaultValue"
     :disabled="config.props.disabled"
@@ -17,6 +18,7 @@
 <script lang="ts" setup>
 import { type PropType } from 'vue'
 import type { WidgetConfigMap } from '@/types/workflow'
+import useModel from '../use-model'
 
 const props = defineProps({
   config: {
@@ -24,4 +26,6 @@ const props = defineProps({
     required: true
   }
 })
+
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 </script>

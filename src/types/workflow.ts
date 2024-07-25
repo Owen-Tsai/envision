@@ -371,6 +371,7 @@ export type Schema = {
 }
 
 export const injectionKey = Symbol('efk')
+export const formDataKey = Symbol('formData')
 
 export type FormCreatorCtx = {
   schema: Schema
@@ -378,4 +379,8 @@ export type FormCreatorCtx = {
   selectedWidget: Ref<Widget | undefined>
   deleteWidget: (uid: string) => void
   duplicateWidget: (config: Widget) => void
+}
+
+export type FormDataCtx = {
+  formData: Ref<Record<string, any>>
 }

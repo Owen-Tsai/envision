@@ -1,5 +1,6 @@
 <template>
   <ATimePicker
+    v-model:value="model"
     :allow-clear="config.props.allowClear"
     :default-value="config.props.defaultValue"
     :disabled="config.props.disabled"
@@ -16,6 +17,7 @@
 
 <script lang="ts" setup>
 import { type PropType } from 'vue'
+import useModel from '../use-model'
 import type { WidgetConfigMap } from '@/types/workflow'
 
 const props = defineProps({
@@ -24,4 +26,6 @@ const props = defineProps({
     required: true
   }
 })
+
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 </script>

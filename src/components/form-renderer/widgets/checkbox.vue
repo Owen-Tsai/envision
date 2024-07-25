@@ -1,5 +1,6 @@
 <template>
   <ACheckboxGroup
+    v-model:value="model"
     v-show="isDebugMode ? config.props.options.type === 'static' : true"
     :disabled="config.props.disabled"
     :options="options"
@@ -21,6 +22,7 @@
 <script lang="ts" setup>
 import { ref, computed, inject, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
+import useModel from '../use-model'
 import type { CheckboxGroupProps } from 'ant-design-vue'
 import { injectionKey, type WidgetConfigMap, type FormCreatorCtx } from '@/types/workflow'
 
@@ -36,6 +38,7 @@ const props = defineProps({
 })
 
 const options = ref<CheckboxGroupProps['options']>([])
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const settings = props.config.props.options
 if (settings?.type === 'static') {

@@ -1,5 +1,6 @@
 <template>
   <ARadioGroup
+    v-model:value="model"
     :disabled="config.props.disabled"
     :options="options"
     :option-type="config.props.optionType?.includes('button') ? 'button' : undefined"
@@ -24,6 +25,7 @@ import { computed, inject, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import type { RadioGroupProps } from 'ant-design-vue'
 import { injectionKey, type WidgetConfigMap, type FormCreatorCtx } from '@/types/workflow'
+import useModel from '../use-model'
 
 const formCreatorCtx = inject<FormCreatorCtx>(injectionKey)
 
@@ -35,6 +37,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const options = computed<RadioGroupProps['options']>(() => {
   const settings = props.config.props.options

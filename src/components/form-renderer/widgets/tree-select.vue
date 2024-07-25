@@ -1,5 +1,6 @@
 <template>
   <ATreeSelect
+    v-model:value="model"
     :allow-clear="config.props.allowClear"
     :default-value="config.props.defaultValue"
     :field-names="fieldNames"
@@ -22,6 +23,7 @@
 <script setup lang="ts">
 import { ref, computed, type PropType } from 'vue'
 import { tryParse } from '@/utils/envision'
+import useModel from '../use-model'
 import type { TreeSelectProps } from 'ant-design-vue'
 import type { WidgetConfigMap } from '@/types/workflow'
 
@@ -32,6 +34,7 @@ const props = defineProps({
   }
 })
 
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 const options = ref<TreeSelectProps['treeData']>([])
 
 const fieldNames = computed(() => tryParse(props.config.props.fieldNames))

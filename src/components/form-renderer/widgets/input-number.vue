@@ -1,5 +1,6 @@
 <template>
   <AInputNumber
+    v-model:value="model"
     :default-value="config.props.defaultValue"
     :controls="config.props.controls"
     :min="config.props.min"
@@ -18,6 +19,7 @@
 import { type PropType } from 'vue'
 import type { WidgetConfigMap } from '@/types/workflow'
 import AddonRenderer from '../addon-renderer.vue'
+import useModel from '../use-model'
 
 const props = defineProps({
   config: {
@@ -25,4 +27,6 @@ const props = defineProps({
     required: true
   }
 })
+
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 </script>

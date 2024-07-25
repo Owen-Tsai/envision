@@ -1,5 +1,6 @@
 <template>
   <ASlider
+    v-model:value="model"
     :default-value="config.props.defaultValue"
     :disabled="config.props.disabled"
     :dots="config.props.dots"
@@ -17,6 +18,7 @@
 import { computed, type PropType } from 'vue'
 import { tryParse } from '@/utils/envision'
 import type { WidgetConfigMap } from '@/types/workflow'
+import useModel from '../use-model'
 
 const props = defineProps({
   config: {
@@ -26,4 +28,6 @@ const props = defineProps({
 })
 
 const marks = computed(() => tryParse(props.config.props.marks))
+
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 </script>
