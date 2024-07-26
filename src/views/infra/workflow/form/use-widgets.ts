@@ -1,6 +1,6 @@
-import { ref, inject } from 'vue'
+import { inject } from 'vue'
 import dayjs from 'dayjs'
-import { camelCase, remove } from 'lodash'
+import { camelCase, remove, cloneDeep } from 'lodash'
 import { generateID } from '@/utils/envision'
 import { injectionKey } from '@/types/workflow'
 import type {
@@ -8,8 +8,10 @@ import type {
   WidgetType,
   WidgetConfigMap,
   Widget,
-  LayoutWidget
+  LayoutWidget,
+  WPropsStep
 } from '@/types/workflow'
+import type { StepsProps } from 'ant-design-vue'
 import defaultIcon from '~img/form-kit/custom.svg'
 
 const icons = import.meta.glob('~img/form-kit/*.svg', { eager: true })
@@ -24,11 +26,21 @@ export const isLayoutWidget = (widget: Widget) => {
   return widget.type === 'grid' || widget.type === 'tabs' || widget.type === 'steps'
 }
 
+export const constructStepItems = (steps: WPropsStep[]): StepsProps['items'] => {
+  return steps.map((e) => ({
+    title: e.title,
+    description: e.desc
+  }))
+}
+
 export const useWidget = () => {
   const { schema, selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 
   const deleteWidget = (uid: string, siblings?: Widget[]) => {
     const list = siblings || schema.form.widgets
+    if (selectedWidget.value?.uid === uid) {
+      selectedWidget.value = undefined
+    }
     remove(list, (e) => e.uid === uid)
   }
 
@@ -39,34 +51,53 @@ export const useWidget = () => {
   const duplicateWidget = (widget: Widget, siblings?: Widget[]) => {
     const list = siblings || schema.form.widgets
 
-    const genIdRecursively = (children: LayoutWidget['props']['children']) => {
-      return children.map((child) => {
-        child.widgets = child.widgets.map((w) => {
-          w.uid = generateID()
-          if (isLayoutWidget(w)) {
-            ;(w as any).props.children = genIdRecursively((w as LayoutWidget).props.children)
+    type Children = LayoutWidget['props']['children']
+
+    const cloneChildren = (children: Children) => {
+      const clone: Children = []
+
+      children.forEach((child) => {
+        const newWidgets: Widget[] = []
+        const newChild: Children[number] = cloneDeep(child)
+
+        child.widgets.forEach((widget) => {
+          const newWidget: Widget = cloneDeep(widget)
+          newWidget.uid = generateID()
+
+          if (isLayoutWidget(widget)) {
+            const cloned = cloneChildren((newWidget as LayoutWidget).props.children)
+            console.log(cloned)
+            ;(newWidget as LayoutWidget).props.children = cloned
           }
 
-          return {
-            ...w
-          }
+          newWidgets.push(newWidget)
         })
 
-        return {
-          ...child
-        }
+        newChild.widgets = newWidgets
+        clone.push(newChild as any)
       })
+
+      return clone
     }
 
     if (isLayoutWidget(widget)) {
-      const children = [...(widget as any).props.children]
-      ;(widget as any).props.children = genIdRecursively(children)
-    }
+      const children = (widget as LayoutWidget).props.children
+      const clone = cloneChildren(children)
 
-    list.push({
-      ...widget,
-      uid: generateID()
-    })
+      list.push({
+        ...widget,
+        uid: generateID(),
+        props: {
+          ...widget.props,
+          children: clone
+        }
+      } as LayoutWidget)
+    } else {
+      list.push({
+        ...widget,
+        uid: generateID()
+      })
+    }
   }
 
   return {
