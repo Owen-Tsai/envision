@@ -7,6 +7,7 @@
     :readonly="config.props.readonly"
     :disabled="config.props.disabled"
     :allow-clear="config.props.allowClear"
+    :placeholder="config.props.placeholder"
   >
     <template #prefix>
       <AddonRenderer :addon-type="config.props.prefixType" :addon-value="config.props.prefix" />

@@ -20,6 +20,7 @@
             item-key="uid"
             ghost-class="ghost"
             handle=".drag-handle"
+            :swap-threshold="0.1"
             id="canvas"
           >
             <template #item="{ element }: { element: Widget; index: number }">
@@ -152,12 +153,11 @@
 import { computed, ref, inject, type PropType } from 'vue'
 import { tryParse } from '@/utils/envision'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
-import { useWidget } from '../use-widgets'
+import { useWidget, constructStepItems } from '../use-widgets'
 import Draggable from 'vuedraggable'
 import SlotWidget from './widget.vue'
 import NestedCanvas from './nested-canvas.vue'
-import type { StepsProps } from 'ant-design-vue'
-import { injectionKey, type Widget, type FormCreatorCtx, type WPropsStep } from '@/types/workflow'
+import { injectionKey, type Widget, type FormCreatorCtx } from '@/types/workflow'
 
 const { schema, selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 const { deleteWidget, duplicateWidget, selectWidget } = useWidget()
@@ -172,13 +172,6 @@ const labelCol = computed(() => {
 const wrapperCol = computed(() => {
   return tryParse(schema.form.wrapperCol)
 })
-
-const constructStepItems = (steps: WPropsStep[]): StepsProps['items'] => {
-  return steps.map((e) => ({
-    title: e.title,
-    description: e.desc
-  }))
-}
 </script>
 
 <style lang="scss" scoped>

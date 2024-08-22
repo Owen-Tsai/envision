@@ -12,13 +12,17 @@ export const filterOption = (input: string, option: any, key = 'value') => {
   return option[key].toLowerCase().includes(input.toLowerCase())
 }
 
-export const tryParse = throttle((str: string | undefined) => {
+export const tryThrottledParse = throttle((str: string | undefined) => {
+  return tryParse(str)
+}, 100)
+
+export const tryParse = (str: string | undefined) => {
   try {
     return str ? JSON.parse(str) : undefined
   } catch {
     return undefined
   }
-}, 100)
+}
 
 export const generateID = customAlphabet(
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',

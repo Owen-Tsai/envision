@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-4 h-full overflow-auto">
+  <div>
     <AForm
       :model="formData"
       :colon="schema.form.colon"
@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { ref, computed, provide, type PropType } from 'vue'
 import WidgetRenderer from './widget-renderer.vue'
-import highlighter from '@/utils/highlighter'
+import useHighlighter from '@/hooks/use-highlighter'
 import { tryParse } from '@/utils/envision'
 import { formDataKey, type Schema } from '@/types/workflow'
 
@@ -50,12 +50,7 @@ const wrapperCol = computed(() => {
   return tryParse(props.schema.form.wrapperCol)
 })
 
-const formDataJson = computed(() =>
-  highlighter.codeToHtml(JSON.stringify(formData.value, null, 2), {
-    lang: 'json',
-    theme: 'vitesse-light'
-  })
-)
+const formDataJson = computed(() => useHighlighter(JSON.stringify(formData.value, null, 2), 'json'))
 
 provide(formDataKey, {
   formData

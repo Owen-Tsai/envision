@@ -12,6 +12,7 @@
       :label-align="config.props.field?.labelAlign"
       :wrapper-col="wrapperCol"
       :extra="config.props.field?.extra"
+      :rules="rules"
     >
       <component :is="widget" :config="config" />
     </AFormItem>
@@ -37,12 +38,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject, type PropType, type Component } from 'vue'
+import { computed, type PropType, type Component } from 'vue'
 import { useWidget } from '../use-widgets'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
 import { camelCase } from 'lodash'
 import { tryParse } from '@/utils/envision'
-import { injectionKey, type FormWidget, type FormCreatorCtx, type Widget } from '@/types/workflow'
+import { type FormWidget, type Widget } from '@/types/workflow'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })
 
@@ -77,6 +78,10 @@ const widget = computed(() => {
 
   return null
 })
+
+const rules = computed(() =>
+  props.config.props.rules ? tryParse(props.config.props.rules) : undefined
+)
 </script>
 
 <style lang="scss" scoped>

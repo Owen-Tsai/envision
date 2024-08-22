@@ -11,9 +11,9 @@ import 'ant-design-vue/dist/reset.css'
 import 'nprogress/nprogress.css'
 import 'custom-vue-scrollbar/dist/style.css'
 import 'virtual:uno.css'
-import '@/styles/index.scss'
-
 import '@wangeditor/editor/dist/css/style.css'
+
+import '@/styles/index.scss'
 
 import App from './App.vue'
 import router from './router'

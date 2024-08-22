@@ -21,6 +21,12 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 1127,
       host: true,
+      proxy: {
+        '/admin-api': {
+          target: 'http://129.226.157.37/admin-api',
+          changeOrigin: true
+        }
+      }
     }
   }
 })

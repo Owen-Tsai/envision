@@ -211,38 +211,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       },
       options: {
         type: 'static',
-        staticData: `[
-          {
-            label: '山东省',
-            value: '37',
-            children: [
-              {
-                label: '济南市',
-                value: '3701',
-                children: [
-                  { label: '市中区', value: '370101' },
-                  { label: '历下区', value: '370102' },
-                ]
-              },
-              {
-                label: '青岛市',
-                value: '3702',
-                children: [
-                  { label: '市北区', value: '370203' },
-                  { label: '市南区', value: '370202' },
-                ]
-              }
-            ]
-          },
-          {
-            label: '北京市',
-            value: '11',
-            children: [
-              { label: '东城区', value: '110101' },
-              { label: '西城区', value: '110102' },
-            ]
-          }
-        ]`
+        staticData: `[{"label":"山东省","value":"37","children":[{"label":"济南市","value":"3701","children":[{"label":"市中区","value":"370101"},{"label":"历下区","value":"370102"}]},{"label":"青岛市","value":"3702","children":[{"label":"市北区","value":"370203"},{"label":"市南区","value":"370202"}]}]},{"label":"北京市","value":"11","children":[{"label":"东城区","value":"110101"},{"label":"西城区","value":"110102"}]}]`
       }
     }
   },
@@ -344,38 +313,8 @@ export const widgetInitConfig: WidgetConfigMap = {
       },
       treeData: {
         type: 'static',
-        staticData: `[
-          {
-            label: '山东省',
-            value: '37',
-            children: [
-              {
-                label: '济南市',
-                value: '3701',
-                children: [
-                  { label: '市中区', value: '370101' },
-                  { label: '历下区', value: '370102' },
-                ]
-              },
-              {
-                label: '青岛市',
-                value: '3702',
-                children: [
-                  { label: '市北区', value: '370203' },
-                  { label: '市南区', value: '370202' },
-                ]
-              }
-            ]
-          },
-          {
-            label: '北京市',
-            value: '11',
-            children: [
-              { label: '东城区', value: '110101' },
-              { label: '西城区', value: '110102' },
-            ]
-          }
-        ]`
+        staticData:
+          '[{"label":"山东省","value":"37","children":[{"label":"济南市","value":"3701","children":[{"label":"市中区","value":"370101"},{"label":"历下区","value":"370102"}]},{"label":"青岛市","value":"3702","children":[{"label":"市北区","value":"370203"},{"label":"市南区","value":"370202"}]}]},{"label":"北京市","value":"11","children":[{"label":"东城区","value":"110101"},{"label":"西城区","value":"110102"}]}]'
       }
     }
   },
@@ -425,7 +364,9 @@ export const widgetInitConfig: WidgetConfigMap = {
     icon: getIcon('steps'),
     props: {
       field: {},
-      current: 0,
+      model: {
+        current: 0
+      },
       children: [
         { title: '第一步', widgets: [] },
         { title: '第二步', widgets: [] },

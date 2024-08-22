@@ -4,6 +4,7 @@
     :allow-clear="config.props.allowClear"
     :change-on-select="config.props.allowParentNode"
     :default-value="defaultValue"
+    :show-checked-strategy="config.props.showCheckedStrategy"
     :disabled="config.props.disabled"
     :field-names="fieldNames"
     :max-tag-count="config.props.maxTagCount"

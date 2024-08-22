@@ -33,6 +33,9 @@
         <div class="drag-handle">
           <FullscreenOutlined :rotate="45" />
         </div>
+        <div class="field-name">
+          {{ element.props.field.name || element.uid }}
+        </div>
         <div class="actions">
           <ATooltip title="复制">
             <div class="action" @click.stop="duplicateWidget(element, siblings)">
@@ -67,6 +70,9 @@
 
         <div class="drag-handle">
           <FullscreenOutlined :rotate="45" />
+        </div>
+        <div class="field-name">
+          {{ element.props.field.name || element.uid }}
         </div>
         <div class="actions">
           <ATooltip title="复制">
@@ -105,6 +111,9 @@
         <div class="drag-handle">
           <FullscreenOutlined :rotate="45" />
         </div>
+        <div class="field-name">
+          {{ element.props.field.name || element.uid }}
+        </div>
         <div class="actions">
           <ATooltip title="复制">
             <div class="action" @click.stop="duplicateWidget(element, siblings)">
@@ -126,11 +135,10 @@
 <script setup lang="ts">
 import { ref, type PropType } from 'vue'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
-import { useWidget } from '../use-widgets'
+import { useWidget, constructStepItems } from '../use-widgets'
 import Draggable from 'vuedraggable'
 import SlotWidget from './widget.vue'
-import type { StepsProps } from 'ant-design-vue'
-import type { Widget, WPropsStep } from '@/types/workflow'
+import type { Widget } from '@/types/workflow'
 
 defineOptions({
   name: 'NestedCanvas'
@@ -147,11 +155,4 @@ const props = defineProps({
     type: Array as PropType<Widget[]>
   }
 })
-
-const constructStepItems = (steps: WPropsStep[]): StepsProps['items'] => {
-  return steps.map((e) => ({
-    title: e.title,
-    description: e.desc
-  }))
-}
 </script>

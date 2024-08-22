@@ -21,8 +21,6 @@ export type FormProps = {
   wrapperCol?: string
   wrapperWidth?: string
   layout?: 'horizontal' | 'vertical'
-  rules?: string
-  validateTrigger?: string[]
   // extra params
   params?: string
 }
@@ -79,6 +77,8 @@ type JsonOptionType = {
 export type WPropsCommon = {
   field: FieldProps
   event?: EventCbkProps
+  rules?: string
+  validateTrigger?: string | string[]
 } & CommonPropsBase
 
 // #region widgets props
@@ -300,7 +300,9 @@ export type WPropsSteps = {
   size?: 'default' | 'small'
   type?: 'default' | 'navigation' | 'dot'
   children: WPropsStep[]
-  current: number
+  model: {
+    current: number
+  }
 } & LayoutFieldProps
 
 type FormWidgetPropsMap = {
@@ -364,10 +366,24 @@ export type WPropsStep = {
   widgets: Widget[]
 }
 
+export type APIConfig = {
+  name: string
+  url: string
+  method: 'get' | 'post' | 'delete' | 'put'
+  params?: string
+}
+
+export type FunctionConfig = {
+  name: string
+  body?: string
+}
+
 export type Schema = {
   form: {
     widgets: Widget[]
   } & FormProps
+  functions: Record<string, FunctionConfig>
+  remoteAPIs: Record<string, APIConfig>
 }
 
 export const injectionKey = Symbol('efk')

@@ -23,14 +23,14 @@
   </ATabs>
   <template v-else-if="widget.type === 'steps'">
     <ASteps
-      :current="widget.props.current"
+      :current="widget.props.model.current"
       :size="widget.props.size"
       :type="widget.props.type === 'dot' ? undefined : widget.props.type"
       :progress-dot="widget.props.type === 'dot'"
       :items="constructStepItems(widget.props.children)"
     />
     <div v-for="(step, i) in widget.props.children" :key="i">
-      <div v-if="i === widget.props.current" class="steps-container pt-4">
+      <div v-if="i === widget.props.model.current" class="steps-container pt-4">
         <WidgetRenderer v-for="child in step.widgets" :key="child.uid" :widget="child" />
       </div>
     </div>
@@ -44,6 +44,7 @@
     :label-align="widget.props.field?.labelAlign"
     :wrapper-col="wrapperCol"
     :extra="widget.props.field?.extra"
+    :rules="rules"
   >
     <component :is="widgetToRender" :config="widget" />
   </AFormItem>
@@ -75,6 +76,8 @@ const labelCol = computed(() => {
 const wrapperCol = computed(() => {
   return tryParse(props.widget.props.field?.wrapperCol)
 })
+
+const rules = computed(() => tryParse((props.widget as FormWidget).props.field.rules))
 
 const widgetToRender = computed(() => {
   const type = props.widget.type

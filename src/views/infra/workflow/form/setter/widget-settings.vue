@@ -44,6 +44,33 @@
       </template>
 
       <component :is="comp" :opts="selectedWidget.props" />
+
+      <template
+        v-if="
+          selectedWidget.type !== 'grid' &&
+          selectedWidget.type !== 'tabs' &&
+          selectedWidget.type !== 'steps'
+        "
+      >
+        <!-- rules -->
+        <AFormItem label="校验时机" extra="组件可能不响应全部校验时机">
+          <ASelect
+            v-model:value="selectedWidget.props.field.validateTrigger"
+            :options="validationTriggerOpts"
+            mode="multiple"
+            :show-search="false"
+            show-arrow
+          />
+        </AFormItem>
+        <AFormItem label="校验规则">
+          <Codemirror
+            v-model="selectedWidget.props.field.rules"
+            :tab-size="2"
+            :extensions="extensions"
+            :style="{ height: '240px', width: '100%' }"
+          />
+        </AFormItem>
+      </template>
     </AForm>
     <div v-else>
       <AEmpty description="选择一个组件以开始配置" />
@@ -54,7 +81,9 @@
 <script lang="ts" setup>
 import { inject, computed } from 'vue'
 import { find, kebabCase } from 'lodash'
-import { labelAlignOpts } from './use-settings-data'
+import { Codemirror } from 'vue-codemirror'
+import { labelAlignOpts, validationTriggerOpts } from './use-settings-data'
+import extensions from '../codemirror'
 import { injectionKey, type FormCreatorCtx } from '@/types/workflow'
 
 const { selectedWidget } = inject<FormCreatorCtx>(injectionKey)!

@@ -48,3 +48,10 @@ export const datePickerModeOpts = [
   { label: '季度选择', value: 'quarter' },
   { label: '年选择', value: 'year' }
 ]
+
+export const validationTriggerOpts = [
+  { value: 'blur' },
+  { value: 'focus' },
+  { value: 'change' },
+  { value: 'input' }
+]

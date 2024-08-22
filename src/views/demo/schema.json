@@ -1,0 +1,188 @@
+{
+  "form": {
+    "widgets": [
+      {
+        "type": "tabs",
+        "name": "标签页",
+        "uid": "3pE0S3TakZLb",
+        "props": {
+          "field": {},
+          "children": [
+            {
+              "title": "个人信息",
+              "widgets": [
+                {
+                  "type": "grid",
+                  "name": "栅格布局",
+                  "uid": "Yq8ZqunaJJhI",
+                  "props": {
+                    "field": {},
+                    "gutter": 16,
+                    "align": "middle",
+                    "children": [
+                      {
+                        "span": 8,
+                        "widgets": [
+                          {
+                            "name": "输入框",
+                            "type": "input",
+                            "props": {
+                              "field": {
+                                "label": "姓名",
+                                "name": "name",
+                                "rules": "[\n  {\n    \"required\": true,\n \"trigger\": \"blur\"  },\n  {\n    \"min\": 2\n  }\n]"
+                              },
+                              "prefixType": "text",
+                              "suffixType": "text"
+                            },
+                            "uid": "21ytccHluUXU"
+                          }
+                        ]
+                      },
+                      {
+                        "span": 8,
+                        "widgets": [
+                          {
+                            "type": "datePicker",
+                            "name": "日期选择器",
+                            "uid": "1ROOYj5JCAt6",
+                            "props": {
+                              "field": {
+                                "label": "出生年月",
+                                "name": "birthday"
+                              },
+                              "picker": "month",
+                              "allowClear": true
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "span": 8,
+                        "widgets": [
+                          {
+                            "name": "单选框",
+                            "type": "radio",
+                            "props": {
+                              "field": {
+                                "label": "单选框"
+                              },
+                              "options": {
+                                "type": "static",
+                                "staticData": [
+                                  {
+                                    "label": "男",
+                                    "value": "1"
+                                  },
+                                  {
+                                    "label": "女",
+                                    "value": "2"
+                                  }
+                                ]
+                              }
+                            },
+                            "uid": "hRldZ0EgeuQD"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "grid",
+                  "name": "栅格布局",
+                  "uid": "Eq43TBMFx4b1",
+                  "props": {
+                    "field": {},
+                    "gutter": 16,
+                    "align": "middle",
+                    "children": [
+                      {
+                        "span": 12,
+                        "widgets": [
+                          {
+                            "name": "级联选择器",
+                            "type": "cascader",
+                            "uid": "vX4gJ8JQv9BI",
+                            "props": {
+                              "field": {
+                                "label": "所在地区",
+                                "name": "city"
+                              },
+                              "options": {
+                                "type": "static",
+                                "staticData": "[{\"label\":\"山东省\",\"value\":\"37\",\"children\":[{\"label\":\"济南市\",\"value\":\"3701\",\"children\":[{\"label\":\"市中区\",\"value\":\"370101\"},{\"label\":\"历下区\",\"value\":\"370102\"}]},{\"label\":\"青岛市\",\"value\":\"3702\",\"children\":[{\"label\":\"市北区\",\"value\":\"370203\"},{\"label\":\"市南区\",\"value\":\"370202\"}]}]},{\"label\":\"北京市\",\"value\":\"11\",\"children\":[{\"label\":\"东城区\",\"value\":\"110101\"},{\"label\":\"西城区\",\"value\":\"110102\"}]}]"
+                              },
+                              "placement": "SHOW_CHILD"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "span": 12,
+                        "widgets": [
+                          {
+                            "name": "输入框",
+                            "type": "input",
+                            "props": {
+                              "field": {
+                                "label": "家庭住址",
+                                "name": "addr"
+                              },
+                              "prefixType": "text",
+                              "suffixType": "text"
+                            },
+                            "uid": "ruHWXY333C60"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "grid",
+                  "name": "栅格布局",
+                  "uid": "SXc5BJPiybVl",
+                  "props": {
+                    "field": {},
+                    "gutter": 16,
+                    "align": "middle",
+                    "children": [
+                      {
+                        "span": 24,
+                        "widgets": [
+                          {
+                            "type": "textarea",
+                            "name": "文本域",
+                            "props": {
+                              "field": {
+                                "label": "个人介绍",
+                                "name": "intro"
+                              },
+                              "autoResize": false
+                            },
+                            "uid": "bfx7aERi0vcJ"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "title": "工作单位",
+              "widgets": []
+            }
+          ]
+        }
+      }
+    ],
+    "colon": true,
+    "layout": "horizontal",
+    "labelCol": "",
+    "labelWidth": "80px"
+  },
+  "remoteAPIs": {},
+  "functions": {}
+}

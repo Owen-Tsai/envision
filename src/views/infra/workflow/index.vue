@@ -55,7 +55,9 @@ const schema = ref<Schema>({
     widgets: [],
     colon: true,
     layout: 'horizontal'
-  }
+  },
+  remoteAPIs: {},
+  functions: {}
 })
 </script>
 

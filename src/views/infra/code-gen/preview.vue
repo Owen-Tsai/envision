@@ -51,9 +51,9 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { last } from 'lodash'
-import highlighter from '@/utils/highlighter'
-import useAppStore from '@/stores/app'
 import { previewCode, type CodePreviewVO } from '@/api/infra/code-gen'
+import useHighlighter from '@/hooks/use-highlighter'
+import type { BundledLanguage } from 'shiki/langs'
 
 type FileNode = {
   key: string
@@ -82,10 +82,7 @@ const code = computed<string>(() => {
   if (!entry) return ''
   const snippet = entry.code
   const lang = last(entry.filePath.split('/'))?.split('.')[1]
-  return highlighter.codeToHtml(snippet, {
-    lang: lang || 'txt',
-    theme: useAppStore().theme === 'dark' ? 'vitesse-dark' : 'vitesse-light'
-  })
+  return useHighlighter(snippet, (lang as BundledLanguage) || 'txt')
 })
 
 const filePathTree = computed<FileNode[]>(() => {
