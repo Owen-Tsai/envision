@@ -131,7 +131,7 @@
 .cm-editor {
   border-radius: var(--borderRadius);
   border: 1px solid var(--colorBorder);
-  transition: all .2s;
+  transition: all 0.2s;
 
   &.cm-focused {
     border-color: var(--colorPrimary);
