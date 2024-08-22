@@ -13,7 +13,8 @@
     "lint-staged": "npx lint-staged",
     "format": "prettier --write src/",
     "prepare": "husky install",
-    "generate-css-variables": "npx ts-node --esm --project tsconfig.node.json ./scripts/generate-css-variables.ts"
+    "generate-css-variables": "npx ts-node --esm --project tsconfig.node.json ./scripts/generate-css-variables.ts",
+    "gen-efk-icons": "npx ts-node --esm --project tsconfig.node.json ./scripts/generate-efk-svg-comp.ts"
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,vue}": [

@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <div class="text-center">
-      <img :src="widget.icon || defaultIcon" />
+      <component :is="widget.icon" class="h-8 w-8" />
     </div>
     <div class="text-center mt-2">
       <div>{{ widget.name }}</div>
@@ -13,7 +13,6 @@
 <script lang="ts" setup>
 import { type PropType } from 'vue'
 import type { Widget } from '@/types/workflow'
-import defaultIcon from '@/assets/img/form-kit/custom.svg'
 
 defineProps({
   widget: {

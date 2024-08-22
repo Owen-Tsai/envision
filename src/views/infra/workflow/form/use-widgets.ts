@@ -12,13 +12,13 @@ import type {
   WPropsStep
 } from '@/types/workflow'
 import type { StepsProps } from 'ant-design-vue'
-import defaultIcon from '~img/form-kit/custom.svg'
+import defaultIcon from '@/components/efk-icons/custom.vue'
 
-const icons = import.meta.glob('~img/form-kit/*.svg', { eager: true })
+const icons = import.meta.glob('@/components/efk-icons/*.vue', { eager: true })
 
 const getIcon = (widgetType: WidgetType) => {
   const keys = Object.keys(icons)
-  const key = keys.find((k) => camelCase(k.split('/')[5].split('.svg')[0]) === widgetType)
+  const key = keys.find((k) => camelCase(k.split('/')[4].split('.vue')[0]) === widgetType)
   return key ? (icons[key] as any)['default'] : defaultIcon
 }
 
