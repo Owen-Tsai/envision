@@ -7,7 +7,7 @@ import type {
   TreeSelectProps,
   SliderProps,
   DatePickerProps,
-  UploadProps
+  ButtonProps
 } from 'ant-design-vue'
 
 export type OptionSource = 'static' | 'dict' | 'api'
@@ -51,6 +51,7 @@ type CommonPropsBase = {
   disabled?: boolean
   readonly?: boolean
   hide?: boolean
+  required?: boolean
 }
 
 export const eventEnums = ['change', 'focus', 'blur', 'click', 'input'] as const
@@ -77,11 +78,9 @@ type JsonOptionType = {
 export type WPropsCommon = {
   field: FieldProps
   event?: EventCbkProps
-  rules?: string
-  validateTrigger?: string | string[]
 } & CommonPropsBase
 
-// #region widgets props
+// #region form widgets
 export type WPropsInput = {
   // currently not supported due to duplicated features as `prefix`
   addonBefore?: string
@@ -272,7 +271,31 @@ export type WPropsUpload = {
   customRequest?: string
   data?: string
   headers?: string
-  listType?: UploadProps['listType']
+  maxCount?: number
+  method?: string
+  multiple?: boolean
+  name?: string
+  withCredentials?: boolean
+} & WPropsCommon
+
+export type WPropsImage = {
+  type?: 'list' | 'grid' | 'inline'
+  action?: string
+  beforeUpload?: string
+  data?: string
+  headers?: string
+  maxCount?: number
+  method?: string
+  name?: string
+  withCredentials?: boolean
+} & WPropsCommon
+
+export type WPropsIdCard = {
+  type?: 'front' | 'back' | 'default'
+  action?: string
+  beforeUpload?: string
+  data?: string
+  headers?: string
   maxCount?: number
   method?: string
   name?: string
@@ -280,6 +303,7 @@ export type WPropsUpload = {
 } & WPropsCommon
 // #endregion
 
+// #region layout widgets
 export type WPropsGrid = {
   align?: 'top' | 'middle' | 'bottom' | 'stretch'
   justify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
@@ -304,6 +328,21 @@ export type WPropsSteps = {
     current: number
   }
 } & LayoutFieldProps
+// #endregion
+
+// #region special widgets
+export type WPropsButton = {
+  type?: ButtonProps['type']
+  label?: string
+  block?: boolean
+  danger?: boolean
+  href?: string
+  target?: string
+  icon?: string
+  loading?: boolean
+  shape?: ButtonProps['shape']
+} & Pick<WPropsCommon, 'event' | 'hide' | 'disabled' | 'field'>
+// #endregion
 
 type FormWidgetPropsMap = {
   input: WPropsInput
@@ -330,12 +369,21 @@ type LayoutWidgetPropsMap = {
   steps: WPropsSteps
 }
 
-type WidgetPropsMap = FormWidgetPropsMap & LayoutWidgetPropsMap
+type SpecialWidgetPropsMap = {
+  button: WPropsButton
+}
+
+type WidgetPropsMap = FormWidgetPropsMap & LayoutWidgetPropsMap & SpecialWidgetPropsMap
 
 type ConfigOf<T extends keyof WidgetPropsMap> = {
   name: string
   icon?: string
   type: T
+  class: T extends keyof FormWidgetPropsMap
+    ? 'form'
+    : T extends keyof LayoutWidgetPropsMap
+      ? 'layout'
+      : 'special'
   uid: string
   props: WidgetPropsMap[T]
 }
@@ -349,6 +397,7 @@ export type WidgetConfigMap = {
 export type Widget = WidgetConfigMap[keyof WidgetConfigMap]
 export type FormWidget = WidgetConfigMap[keyof FormWidgetPropsMap]
 export type LayoutWidget = WidgetConfigMap[keyof LayoutWidgetPropsMap]
+export type SpecialWidget = WidgetConfigMap[keyof SpecialWidgetPropsMap]
 
 export type WPropsGridCol = {
   span: number
