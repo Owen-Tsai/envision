@@ -1,13 +1,7 @@
 <template>
   <div>
     <AForm v-if="selectedWidget !== undefined" :model="selectedWidget" layout="vertical">
-      <template
-        v-if="
-          selectedWidget.type !== 'grid' &&
-          selectedWidget.type !== 'tabs' &&
-          selectedWidget.type !== 'steps'
-        "
-      >
+      <template v-if="selectedWidget.class === 'form'">
         <AFormItem label="字段标识" extra="表单字段的唯一标识">
           <AInput v-model:value="selectedWidget.props.field.name" />
         </AFormItem>
@@ -38,20 +32,14 @@
         <AFormItem label="字段标识" extra="表单字段的唯一标识">
           <AInput v-model:value="selectedWidget.props.field.name" />
         </AFormItem>
-        <AFormItem label="组件列属性">
+        <AFormItem label="组件列属性" v-if="selectedWidget.class !== 'special'">
           <AInput v-model:value="selectedWidget.props.field.wrapperCol" />
         </AFormItem>
       </template>
 
       <component :is="comp" :opts="selectedWidget.props" />
 
-      <template
-        v-if="
-          selectedWidget.type !== 'grid' &&
-          selectedWidget.type !== 'tabs' &&
-          selectedWidget.type !== 'steps'
-        "
-      >
+      <template v-if="selectedWidget.class === 'form'">
         <!-- rules -->
         <AFormItem label="校验时机" extra="组件可能不响应全部校验时机">
           <ASelect

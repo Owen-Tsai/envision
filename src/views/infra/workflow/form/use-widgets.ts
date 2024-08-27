@@ -111,6 +111,7 @@ export const useWidget = () => {
 export const widgetInitConfig: WidgetConfigMap = {
   input: {
     name: '输入框',
+    class: 'form',
     type: 'input',
     props: {
       field: {
@@ -124,6 +125,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   textarea: {
     type: 'textarea',
+    class: 'form',
     name: '文本域',
     props: {
       field: {
@@ -135,6 +137,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   inputNumber: {
     name: '数字输入框',
+    class: 'form',
     type: 'inputNumber',
     props: {
       field: {
@@ -147,6 +150,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   select: {
     name: '下拉选择器',
+    class: 'form',
     type: 'select',
     props: {
       field: {
@@ -166,6 +170,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   checkbox: {
     name: '复选框',
+    class: 'form',
     type: 'checkbox',
     props: {
       field: {
@@ -184,6 +189,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   radio: {
     name: '单选框',
+    class: 'form',
     type: 'radio',
     props: {
       field: {
@@ -202,6 +208,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   cascader: {
     name: '级联选择器',
+    class: 'form',
     type: 'cascader',
     icon: getIcon('cascader'),
     uid: '',
@@ -217,6 +224,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   slider: {
     type: 'slider',
+    class: 'form',
     name: '滑动输入条',
     uid: '',
     icon: getIcon('slider'),
@@ -228,6 +236,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   rate: {
     type: 'rate',
+    class: 'form',
     name: '评分',
     uid: '',
     icon: getIcon('rate'),
@@ -241,6 +250,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   switch: {
     type: 'switch',
+    class: 'form',
     name: '开关',
     uid: '',
     icon: getIcon('switch'),
@@ -252,6 +262,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   datePicker: {
     type: 'datePicker',
+    class: 'form',
     name: '日期选择器',
     uid: '',
     icon: getIcon('datePicker'),
@@ -265,6 +276,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   dateRangePicker: {
     type: 'dateRangePicker',
+    class: 'form',
     name: '日期范围选择器',
     uid: '',
     icon: getIcon('datePicker'),
@@ -280,6 +292,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   timePicker: {
     type: 'timePicker',
+    class: 'form',
     name: '时间选择器',
     uid: '',
     icon: getIcon('timePicker'),
@@ -291,6 +304,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   timeRangePicker: {
     type: 'timeRangePicker',
+    class: 'form',
     name: '时间范围选择器',
     uid: '',
     icon: getIcon('timePicker'),
@@ -304,6 +318,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   treeSelect: {
     type: 'treeSelect',
+    class: 'form',
     name: '树形选择器',
     uid: '',
     icon: getIcon('treeSelect'),
@@ -320,6 +335,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   upload: {
     type: 'upload',
+    class: 'form',
     name: '文件上传',
     icon: getIcon('upload'),
     uid: '',
@@ -331,6 +347,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   grid: {
     type: 'grid',
+    class: 'layout',
     name: '栅格布局',
     uid: '',
     icon: getIcon('grid'),
@@ -346,6 +363,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   tabs: {
     type: 'tabs',
+    class: 'layout',
     name: '标签页',
     uid: '',
     icon: getIcon('tabs'),
@@ -359,6 +377,7 @@ export const widgetInitConfig: WidgetConfigMap = {
   },
   steps: {
     type: 'steps',
+    class: 'layout',
     name: '步骤条',
     uid: '',
     icon: getIcon('steps'),
@@ -372,6 +391,20 @@ export const widgetInitConfig: WidgetConfigMap = {
         { title: '第二步', widgets: [] },
         { title: '第三步', widgets: [] }
       ]
+    }
+  },
+  button: {
+    type: 'button',
+    class: 'special',
+    name: '按钮',
+    uid: '',
+    icon: getIcon('button'),
+    props: {
+      field: {
+        name: '',
+        label: '按钮'
+      },
+      label: '按钮'
     }
   }
 }

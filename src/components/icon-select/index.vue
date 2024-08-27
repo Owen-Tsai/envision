@@ -8,7 +8,7 @@
       :overlayStyle="{ width: '400px' }"
       :overlayInnerStyle="{ overflowY: 'scroll', overflowX: 'hidden', maxHeight: '400px' }"
     >
-      <AInput v-model:value="icon" allow-clear readonly>
+      <AInput v-model:value="icon" allow-clear>
         <template v-if="showPreview || $slots['addonBefore']" #addonBefore>
           <template v-if="showPreview">
             <component v-if="icon" :is="iconsMap![icon]" />

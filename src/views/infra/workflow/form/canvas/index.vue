@@ -107,14 +107,14 @@
                 @click.self="selectWidget(element)"
               >
                 <ASteps
-                  :current="element.props.current"
+                  :current="element.props.model.current"
                   :size="element.props.size"
                   :type="element.props.type === 'dot' ? undefined : element.props.type"
                   :progress-dot="element.props.type === 'dot'"
                   :items="constructStepItems(element.props.children)"
                 />
                 <div v-for="(step, i) in element.props.children" :key="i">
-                  <div v-if="i === element.props.current" class="steps-container pt-4">
+                  <div v-if="i === element.props.model.current" class="steps-container pt-4">
                     <div class="draggable-area" :class="{ 'empty-slot': step.widgets.length <= 0 }">
                       <NestedCanvas :list="step.widgets" :siblings="step.widgets" />
                     </div>
@@ -140,6 +140,7 @@
                   </ATooltip>
                 </div>
               </div>
+              <SpecialWidget v-else-if="element.class === 'special'" :config="element" />
               <SlotWidget v-else :config="element" />
             </template>
           </Draggable>
@@ -156,6 +157,7 @@ import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-
 import { useWidget, constructStepItems } from '../use-widgets'
 import Draggable from 'vuedraggable'
 import SlotWidget from './widget.vue'
+import SpecialWidget from './special-widget.vue'
 import NestedCanvas from './nested-canvas.vue'
 import { injectionKey, type Widget, type FormCreatorCtx } from '@/types/workflow'
 
