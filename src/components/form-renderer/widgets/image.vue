@@ -1,14 +1,15 @@
 <template>
   <AUpload
     :file-list="model"
-    :multiple="config.props.multiple"
     :max-count="config.props.maxCount"
-    :accept="config.props.accept"
+    accept="image/*"
     :disabled="config.props.disabled"
     :headers="headers"
     :data="data"
     :name="config.props.name"
     with-credentials
+    :list-type="listType"
+    :class="{ 'upload-list-inline': config.props.type === 'inline' }"
     :before-upload="beforeUpload"
   >
     <AButton>选择文件</AButton>
@@ -25,7 +26,7 @@ import type { WidgetConfigMap } from '@/types/workflow'
 
 const props = defineProps({
   config: {
-    type: Object as PropType<WidgetConfigMap['upload']>,
+    type: Object as PropType<WidgetConfigMap['image']>,
     required: true
   }
 })
@@ -34,6 +35,10 @@ const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const headers = computed(() => tryParse(props.config.props.headers) || undefined)
 const data = computed(() => tryParse(props.config.props.data) || undefined)
+
+const listType = computed(() => {
+  return props.config.props.type === 'grid' ? 'picture-card' : 'picture'
+})
 
 const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   const size = file.size / 1024
@@ -70,3 +75,12 @@ defineExpose({
   upload
 })
 </script>
+
+<style lang="scss" scoped>
+.upload-list-inline {
+  :deep(.ant-upload-list) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>

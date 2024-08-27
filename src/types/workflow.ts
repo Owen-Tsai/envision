@@ -268,12 +268,12 @@ export type WPropsUpload = {
   accept?: string
   action?: string
   beforeUpload?: string
-  customRequest?: string
   data?: string
   headers?: string
   maxCount?: number
-  method?: string
+  maxSize?: number
   multiple?: boolean
+  folder?: boolean
   name?: string
   withCredentials?: boolean
 } & WPropsCommon
@@ -285,6 +285,7 @@ export type WPropsImage = {
   data?: string
   headers?: string
   maxCount?: number
+  maxSize?: number
   method?: string
   name?: string
   withCredentials?: boolean
@@ -361,6 +362,7 @@ type FormWidgetPropsMap = {
   timeRangePicker: WPropsTimeRangePicker
   treeSelect: WPropsTreeSelect
   upload: WPropsUpload
+  image: WPropsImage
 }
 
 type LayoutWidgetPropsMap = {
