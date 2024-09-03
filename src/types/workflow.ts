@@ -42,6 +42,7 @@ export type FieldProps = {
 
 type LayoutFieldProps = {
   field: {
+    label?: string
     name?: string
     wrapperCol?: string
   }
@@ -329,6 +330,11 @@ export type WPropsSteps = {
     current: number
   }
 } & LayoutFieldProps
+
+export type WPropsSubForm = {
+  max?: number
+  children: WPropsSubFormEntry[]
+} & LayoutFieldProps
 // #endregion
 
 // #region special widgets
@@ -369,6 +375,7 @@ type LayoutWidgetPropsMap = {
   grid: WPropsGrid
   tabs: WPropsTabs
   steps: WPropsSteps
+  subForm: WPropsSubForm
 }
 
 type SpecialWidgetPropsMap = {
@@ -414,6 +421,10 @@ export type WPropsTabsPane = {
 export type WPropsStep = {
   title: string
   desc?: string
+  widgets: Widget[]
+}
+
+export type WPropsSubFormEntry = {
   widgets: Widget[]
 }
 

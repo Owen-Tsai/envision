@@ -95,6 +95,8 @@ const { user } = storeToRefs(useUserStore())
 const { data, pending } = useRequest(getProfile, {
   immediate: true
 })
+
+defineOptions({ name: 'UserConfig' })
 </script>
 
 <style lang="scss" scoped>
