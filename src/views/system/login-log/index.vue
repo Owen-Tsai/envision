@@ -123,7 +123,7 @@ const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { systemLoginType } = useDict('system_login_type')
+const [systemLoginType] = useDict('system_login_type')
 
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)

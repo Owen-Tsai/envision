@@ -180,7 +180,7 @@
                           </AMenuItem>
                           <AMenuDivider />
                           <AMenuItem
-                            :disabled="permission.has('system:user:delete')"
+                            :disabled="!permission.has('system:user:delete')"
                             danger
                             @click="onDelete(scope.record)"
                           >

@@ -137,7 +137,7 @@ const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
 
-const { systemOperateType } = useDict('system_operate_type')
+const [systemOperateType] = useDict('system_operate_type')
 
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
