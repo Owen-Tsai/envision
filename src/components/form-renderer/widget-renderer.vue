@@ -35,9 +35,12 @@
       </div>
     </div>
   </template>
+  <template v-else-if="widget.type === 'subForm'">
+    <SubFormRenderer :config="widget" />
+  </template>
 
   <AFormItem
-    v-else
+    v-else-if="widget.class === 'form'"
     :label="widget.props.field.label"
     :name="widget.props.field.name"
     :label-col="labelCol"
@@ -48,6 +51,8 @@
   >
     <component :is="widgetToRender" :config="widget" />
   </AFormItem>
+
+  <component v-if="widget.class === 'special'" :is="widgetToRender" :config="widget" />
 </template>
 
 <script setup lang="ts">
@@ -55,6 +60,7 @@ import { computed, type PropType, type Component } from 'vue'
 import { camelCase } from 'lodash'
 import { constructStepItems } from '@/views/infra/workflow/form/use-widgets'
 import { tryParse } from '@/utils/envision'
+import SubFormRenderer from './sub-form.vue'
 import type { FormWidget, Widget } from '@/types/workflow'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })

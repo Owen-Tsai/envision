@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { computed, type PropType, type Component } from 'vue'
-import { useWidget } from '../use-widgets'
+import { useWidget } from '../../use-widgets'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
 import { camelCase } from 'lodash'
 import { tryParse } from '@/utils/envision'

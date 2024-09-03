@@ -32,6 +32,9 @@
         <AFormItem label="字段标识" extra="表单字段的唯一标识">
           <AInput v-model:value="selectedWidget.props.field.name" />
         </AFormItem>
+        <AFormItem v-if="selectedWidget.type === 'subForm'" label="字段标签">
+          <AInput v-model:value="selectedWidget.props.field.label" />
+        </AFormItem>
         <AFormItem label="组件列属性" v-if="selectedWidget.class !== 'special'">
           <AInput v-model:value="selectedWidget.props.field.wrapperCol" />
         </AFormItem>

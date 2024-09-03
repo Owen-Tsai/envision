@@ -11,135 +11,54 @@
     class="h-full"
   >
     <template #item="{ element }: { element: Widget; index: number }">
-      <div
-        v-if="element.type === 'grid'"
-        class="widget-wrapper"
-        :class="{ selected: selectedWidget?.uid === element.uid }"
-        @click.self="selectWidget(element)"
-      >
-        <ARow
-          :align="element.props.align"
-          :gutter="element.props.gutter"
-          :justify="element.props.justify"
-          :wrap="element.props.wrap"
+      <template v-if="element.class === 'layout'">
+        <div
+          class="widget-wrapper"
+          :class="{ selected: selectedWidget?.uid === element.uid }"
+          @click.self="selectWidget(element)"
         >
-          <ACol v-for="(col, i) in element.props.children" :key="i" :span="col.span">
-            <div class="draggable-area" :class="{ 'empty-slot': col.widgets.length <= 0 }">
-              <NestedCanvas :list="col.widgets" :siblings="col.widgets" />
-            </div>
-          </ACol>
-        </ARow>
-
-        <div class="drag-handle">
-          <FullscreenOutlined :rotate="45" />
+          <Grid v-if="element.type === 'grid'" :element="element" />
+          <Tabs v-else-if="element.type === 'tabs'" :element="element" />
+          <Steps v-else-if="element.type === 'steps'" :element="element" />
+          <SubForm v-else-if="element.type === 'subForm'" :element="element" />
         </div>
+
         <div class="field-name">
           {{ element.props.field.name || element.uid }}
         </div>
+        <div class="drag-handle">
+          <FullscreenOutlined :rotate="45" />
+        </div>
         <div class="actions">
           <ATooltip title="复制">
-            <div class="action" @click.stop="duplicateWidget(element, siblings)">
+            <div class="action" @click.stop="duplicateWidget(element)">
               <CopyFilled />
             </div>
           </ATooltip>
           <ATooltip title="删除">
-            <div class="action" @click.stop="deleteWidget(element.uid, siblings)">
+            <div class="action" @click.stop="deleteWidget(element.uid)">
               <DeleteFilled />
             </div>
           </ATooltip>
         </div>
-      </div>
-      <div
-        v-else-if="element.type === 'tabs'"
-        class="widget-wrapper"
-        :class="{ selected: selectedWidget?.uid === element.uid }"
-        @click.self="selectWidget(element)"
-      >
-        <ATabs
-          :centered="element.props.centered"
-          :type="element.props.type"
-          :size="element.props.size"
-          :destroy-inactive-tab-pane="element.props.destroyInactivePanes"
-        >
-          <ATabPane v-for="(pane, i) in element.props.children" :key="i" :tab="pane.title">
-            <div class="draggable-area" :class="{ 'empty-slot': pane.widgets.length <= 0 }">
-              <NestedCanvas :list="pane.widgets" :siblings="pane.widgets" />
-            </div>
-          </ATabPane>
-        </ATabs>
-
-        <div class="drag-handle">
-          <FullscreenOutlined :rotate="45" />
-        </div>
-        <div class="field-name">
-          {{ element.props.field.name || element.uid }}
-        </div>
-        <div class="actions">
-          <ATooltip title="复制">
-            <div class="action" @click.stop="duplicateWidget(element, siblings)">
-              <CopyFilled />
-            </div>
-          </ATooltip>
-          <ATooltip title="删除">
-            <div class="action" @click.stop="deleteWidget(element.uid, siblings)">
-              <DeleteFilled />
-            </div>
-          </ATooltip>
-        </div>
-      </div>
-      <div
-        v-else-if="element.type === 'steps'"
-        class="widget-wrapper"
-        :class="{ selected: selectedWidget?.uid === element.uid }"
-        @click.self="selectWidget(element)"
-      >
-        <ASteps
-          :current="element.props.model.current"
-          :size="element.props.size"
-          :type="element.props.type === 'dot' ? undefined : element.props.type"
-          :progress-dot="element.props.type === 'dot'"
-          :items="constructStepItems(element.props.children)"
-        />
-        <div v-for="(step, i) in element.props.children" :key="i">
-          <div v-if="i === element.props.model.current" class="steps-container pt-4">
-            <div class="draggable-area" :class="{ 'empty-slot': step.widgets.length <= 0 }">
-              <NestedCanvas :list="step.widgets" :siblings="step.widgets" />
-            </div>
-          </div>
-        </div>
-
-        <div class="drag-handle">
-          <FullscreenOutlined :rotate="45" />
-        </div>
-        <div class="field-name">
-          {{ element.props.field.name || element.uid }}
-        </div>
-        <div class="actions">
-          <ATooltip title="复制">
-            <div class="action" @click.stop="duplicateWidget(element, siblings)">
-              <CopyFilled />
-            </div>
-          </ATooltip>
-          <ATooltip title="删除">
-            <div class="action" @click.stop="deleteWidget(element.uid, siblings)">
-              <DeleteFilled />
-            </div>
-          </ATooltip>
-        </div>
-      </div>
+      </template>
       <SpecialWidget v-else-if="element.class === 'special'" :config="element" />
-      <SlotWidget v-else :config="element" :siblings="siblings" />
+      <FormWidget v-else :config="element" :siblings="siblings" />
     </template>
   </Draggable>
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType } from 'vue'
+import { type PropType } from 'vue'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
-import { useWidget, constructStepItems } from '../use-widgets'
+import { useWidget } from '../use-widgets'
 import Draggable from 'vuedraggable'
-import SlotWidget from './widget.vue'
-import SpecialWidget from './special-widget.vue'
+import FormWidget from './form-widgets/index.vue'
+import SpecialWidget from './special-widgets/index.vue'
+import Tabs from './layout-widgets/tabs.vue'
+import Steps from './layout-widgets/steps.vue'
+import Grid from './layout-widgets/grid.vue'
+import SubForm from './layout-widgets/sub-form.vue'
 import type { Widget } from '@/types/workflow'
 
 defineOptions({
@@ -148,7 +67,7 @@ defineOptions({
 
 const { deleteWidget, duplicateWidget, selectWidget, selectedWidget } = useWidget()
 
-const props = defineProps({
+defineProps({
   list: {
     type: Array as PropType<Widget[]>,
     required: true

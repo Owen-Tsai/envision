@@ -23,7 +23,7 @@ const getIcon = (widgetType: WidgetType) => {
 }
 
 export const isLayoutWidget = (widget: Widget) => {
-  return widget.type === 'grid' || widget.type === 'tabs' || widget.type === 'steps'
+  return widget.class === 'layout'
 }
 
 export const constructStepItems = (steps: WPropsStep[]): StepsProps['items'] => {
@@ -391,6 +391,19 @@ export const widgetInitConfig: WidgetConfigMap = {
         { title: '第二步', widgets: [] },
         { title: '第三步', widgets: [] }
       ]
+    }
+  },
+  subForm: {
+    class: 'layout',
+    name: '子表单',
+    type: 'subForm',
+    uid: '',
+    icon: getIcon('subForm'),
+    props: {
+      children: [{ widgets: [] }],
+      field: {
+        label: '子表单'
+      }
     }
   },
   button: {
