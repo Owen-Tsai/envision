@@ -77,7 +77,7 @@ export const generateRoutes = (menuVO: MenuVO[]): RouteRecordRaw[] => {
           }
         } else {
           // normal layout
-          if (rawEntry.parentId === 0) {
+          if (rawEntry.parentId === 0 && rawEntry.type !== 2) {
             entry.component = DefaultLayout
           } else {
             entry.component = loadComponentFrom(rawEntry.component!, 'views')
