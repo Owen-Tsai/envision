@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { ref, computed, type PropType } from 'vue'
 import { type SelectProps } from 'ant-design-vue'
-import { tryParse, filterOption } from '@/utils/envision'
+import { tryParse, filterOption } from '@/utils/fusion'
 import { type WidgetConfigMap } from '@/types/workflow'
 import useDict from '@/hooks/use-dict'
 import useModel from '../use-model'

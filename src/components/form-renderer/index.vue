@@ -25,7 +25,7 @@
 import { ref, computed, provide, type PropType } from 'vue'
 import WidgetRenderer from './widget-renderer.vue'
 import useHighlighter from '@/hooks/use-highlighter'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 import { formDataKey, type Schema } from '@/types/workflow'
 
 const props = defineProps({

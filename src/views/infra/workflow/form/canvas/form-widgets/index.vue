@@ -42,7 +42,7 @@ import { computed, type PropType, type Component } from 'vue'
 import { useWidget } from '../../use-widgets'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
 import { camelCase } from 'lodash'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 import { type FormWidget, type Widget } from '@/types/workflow'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })

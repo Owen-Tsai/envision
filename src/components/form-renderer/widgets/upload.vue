@@ -19,7 +19,7 @@
 import { computed, type PropType } from 'vue'
 import { message, Upload, type UploadProps } from 'ant-design-vue'
 import useModel from '../use-model'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 import request from '@/utils/request'
 import type { WidgetConfigMap } from '@/types/workflow'
 

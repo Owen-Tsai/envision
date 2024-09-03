@@ -1,7 +1,7 @@
 import { inject } from 'vue'
 import dayjs from 'dayjs'
 import { camelCase, remove, cloneDeep } from 'lodash'
-import { generateID } from '@/utils/envision'
+import { generateID } from '@/utils/fusion'
 import { injectionKey } from '@/types/workflow'
 import type {
   FormCreatorCtx,

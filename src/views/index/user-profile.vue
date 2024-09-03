@@ -38,7 +38,7 @@ import { Grid } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 import { EditOutlined } from '@ant-design/icons-vue'
 import useUserStore from '@/stores/user'
-import { desensitizePhoneNumber } from '@/utils/envision'
+import { desensitizePhoneNumber } from '@/utils/fusion'
 
 const { user } = storeToRefs(useUserStore())
 

@@ -18,7 +18,7 @@ export default defineStore('app', () => {
   }
 
   const setTitle = (val: string) => {
-    title.value = val + ' - Envision'
+    title.value = val + import.meta.env.VITE_APP_TITLE
   }
 
   return {

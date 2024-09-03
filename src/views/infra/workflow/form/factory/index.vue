@@ -108,7 +108,7 @@ import {
   FunctionOutlined
 } from '@ant-design/icons-vue'
 import useHighlighter from '@/hooks/use-highlighter'
-import { generateID } from '@/utils/envision'
+import { generateID } from '@/utils/fusion'
 import { widgetInitConfig } from '../use-widgets'
 import Item from './item.vue'
 import Action from './toolbar-action.vue'

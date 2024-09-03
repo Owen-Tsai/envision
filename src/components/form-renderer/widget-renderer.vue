@@ -59,7 +59,7 @@
 import { computed, type PropType, type Component } from 'vue'
 import { camelCase } from 'lodash'
 import { constructStepItems } from '@/views/infra/workflow/form/use-widgets'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 import SubFormRenderer from './sub-form.vue'
 import type { FormWidget, Widget } from '@/types/workflow'
 

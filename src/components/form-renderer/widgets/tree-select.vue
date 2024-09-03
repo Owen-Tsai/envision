@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref, computed, type PropType } from 'vue'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 import useModel from '../use-model'
 import type { TreeSelectProps } from 'ant-design-vue'
 import type { WidgetConfigMap } from '@/types/workflow'

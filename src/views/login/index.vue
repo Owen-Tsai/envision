@@ -2,8 +2,8 @@
   <div class="page flex flex-col items-center">
     <div class="flex-1 py-10">
       <div class="flex items-center justify-center">
-        <img class="h-12 w-12 mr-4 rounded" :src="logo" alt="Envision Logo" />
-        <h1 class="mb-0">Envision</h1>
+        <img class="h-12 w-12 mr-4 rounded" :src="logo" alt="FuxionX Logo" />
+        <h1 class="mb-0">FusionX</h1>
       </div>
 
       <div class="subtext mt-4">正确、简洁并易于扩展的低代码开发平台</div>
@@ -22,7 +22,7 @@
     </div>
 
     <footer>
-      <div>Envision &copy; 2024. All Rights Reserved</div>
+      <div>FuxionX 开发团队 &copy; 2024. All Rights Reserved</div>
     </footer>
   </div>
 </template>
@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import LoginForm from './login-form.vue'
-import logo from '~img/logo.svg'
+import logo from '~img/company-logo.svg'
 
 const activeTab = ref(0)
 </script>

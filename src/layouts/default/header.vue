@@ -7,7 +7,11 @@
         </template>
       </AButton>
       <img class="logo" :src="logo" />
-      <h1 class="title mb-0">Envision</h1>
+      <h1 class="title mb-0">
+        Fusion
+        <span class="font-bold font-italic">X</span>
+        开发平台
+      </h1>
     </div>
 
     <div class="actions">
@@ -62,7 +66,7 @@ import { ref, computed, toRefs } from 'vue'
 import { Modal } from 'ant-design-vue'
 import { BellOutlined, MenuOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
-import logo from '~img/logo.svg'
+import logo from '~img/company-logo.svg'
 import useAppStore from '@/stores/app'
 import useUserStore from '@/stores/user'
 import useBreakpoint from '@/hooks/use-breakpoint'

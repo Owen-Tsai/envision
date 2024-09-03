@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import { StarFilled } from '@ant-design/icons-vue'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 import AddonRenderer from '../addon-renderer.vue'
 import useModel from '../use-model'
 import type { WidgetConfigMap } from '@/types/workflow'

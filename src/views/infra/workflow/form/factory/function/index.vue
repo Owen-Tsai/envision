@@ -60,7 +60,7 @@ import { ref, reactive, computed, inject } from 'vue'
 import { message } from 'ant-design-vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { Codemirror } from 'vue-codemirror'
-import { generateID } from '@/utils/envision'
+import { generateID } from '@/utils/fusion'
 import { injectionKey, type FormCreatorCtx } from '@/types/workflow'
 import extensions from '../../codemirror'
 

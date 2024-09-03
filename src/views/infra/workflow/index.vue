@@ -3,9 +3,12 @@
     <header class="flex-shrink-0">
       <div class="title-wrapper">
         <img class="logo" :src="logo" />
-        <h1 class="title mb-0">Envision</h1>
+        <h1 class="title mb-0">
+          Fusion
+          <span class="font-bold font-italic">X</span>
+        </h1>
         <ADivider type="vertical" class="h-8" />
-        <span>业务流程编辑器</span>
+        <h1 class="title mb-0">业务流程编辑器</h1>
       </div>
 
       <div class="step-bar">
@@ -38,7 +41,7 @@ import { RollbackOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import useUserStore from '@/stores/user'
 import type { Schema } from '@/types/workflow'
-import logo from '~img/logo.svg'
+import logo from '~img/company-logo.svg'
 
 import FormCreator from './form/index.vue'
 

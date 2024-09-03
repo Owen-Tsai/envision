@@ -64,7 +64,7 @@
 import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
 import { getDeptDetail, createDept, updateDept, type DeptVO } from '@/api/system/dept'
-import { filterOption } from '@/utils/envision'
+import { filterOption } from '@/utils/fusion'
 import useDict from '@/hooks/use-dict'
 import type { SimpleUserVO } from '@/api/system/user'
 

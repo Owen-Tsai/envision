@@ -26,10 +26,9 @@ html {
 // Alibaba PuHuiTi
 @font-face {
   font-family: 'TitleFont';
-  font-weight: 1000;
+  font-weight: bold;
   src:
-    url('https://at.alicdn.com/wf/webfont/IgTWJflk7Y23/M5S2wQf9WoJt.woff2') format('woff2'),
-    url('https://at.alicdn.com/wf/webfont/IgTWJflk7Y23/aRBVxxNZwv4m.woff') format('woff');
+    url('./HARMONYOS_SANS_BOLD.woff2') format('woff2');
   font-display: swap;
 }
 

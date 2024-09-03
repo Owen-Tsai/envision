@@ -13,7 +13,7 @@ import { ref, provide, computed, nextTick, type PropType } from 'vue'
 import FactoryPanel from './factory/index.vue'
 import CanvasArea from './canvas/index.vue'
 import SettingPanel from './setter/index.vue'
-import { generateID } from '@/utils/envision'
+import { generateID } from '@/utils/fusion'
 import { injectionKey, type Schema, type Widget, type FormCreatorCtx } from '@/types/workflow'
 
 const props = defineProps({

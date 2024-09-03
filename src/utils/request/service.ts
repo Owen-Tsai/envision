@@ -73,7 +73,7 @@ service.interceptors.response.use(
     const code: number = data.code || 200
 
     if (!data) {
-      throw new Error('[envision] HTTP 请求正常，但后端没有返回任何值')
+      throw new Error('[FusionX] HTTP 请求正常，但后端没有返回任何值')
     }
 
     // binary responses should be returned directly

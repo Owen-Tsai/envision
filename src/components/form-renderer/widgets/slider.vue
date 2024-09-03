@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 import type { WidgetConfigMap } from '@/types/workflow'
 import useModel from '../use-model'
 

@@ -67,7 +67,7 @@
 
 <script lang="ts" setup>
 import { computed, ref, inject } from 'vue'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
 import { useWidget } from '../use-widgets'
 import Draggable from 'vuedraggable'

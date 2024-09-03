@@ -21,7 +21,7 @@ import request from '@/utils/request'
 import useModel from '../use-model'
 import { type CascaderProps } from 'ant-design-vue'
 import { type WidgetConfigMap } from '@/types/workflow'
-import { tryParse } from '@/utils/envision'
+import { tryParse } from '@/utils/fusion'
 
 const props = defineProps({
   config: {
