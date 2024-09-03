@@ -1,43 +1,37 @@
 <template>
   <AFormItem :label="config.props.field.label">
-    <AFormItemRest>
-      <div class="entry-container">
-        <div class="entry" v-for="(child, i) in children" :key="i">
-          <WidgetRenderer v-for="(widget, j) in child.widgets" :key="j" :widget="widget" />
-
-          <ATooltip title="删除此组">
-            <AButton
-              class="btn-remove z-1"
-              :icon="h(DeleteOutlined)"
-              shape="circle"
-              danger
-              @click="removeEntry(i)"
-            />
-          </ATooltip>
+    <div class="entry-container">
+      <div class="entry" v-for="(entry, index) in ctx?.formData.value[field]" :key="index">
+        <div v-for="(widget, j) in config.props.children[0].widgets" :key="j">
+          <WidgetRenderer :widget="widget" :parent-form-config="{ field, index }" />
         </div>
 
-        <ATooltip title="新增一组">
+        <ATooltip title="删除此组">
           <AButton
-            class="btn-add"
-            type="primary"
-            :icon="h(PlusOutlined)"
+            class="btn-remove z-1"
+            :icon="h(DeleteOutlined)"
             shape="circle"
-            @click="addEntry"
+            danger
+            @click="removeEntry(index)"
           />
         </ATooltip>
       </div>
-    </AFormItemRest>
+
+      <AButton class="btn-add" block type="dashed" :icon="h(PlusOutlined)" @click="addEntry">
+        新增一项
+      </AButton>
+    </div>
   </AFormItem>
 </template>
 
 <script setup lang="ts">
-import { ref, h, type PropType } from 'vue'
+import { ref, h, inject, type PropType } from 'vue'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue'
-import { getDuplicatedWidgets } from './use-renderer'
-import useModel from './use-model'
 import WidgetRenderer from './widget-renderer.vue'
 
-import type { WidgetConfigMap } from '@/types/workflow'
+import { formDataKey, type WidgetConfigMap, type FormDataCtx } from '@/types/workflow'
+
+const ctx = inject<FormDataCtx>(formDataKey)
 
 const props = defineProps({
   config: {
@@ -46,23 +40,19 @@ const props = defineProps({
   }
 })
 
-// form value map
-const entries = ref<Record<string, any>[]>([{}])
-// widgets map
-const children = ref(...[props.config.props.children])
+const field = props.config.props.field.name || props.config.uid
+const children = ref(props.config.props.children)
 
-const { model } = useModel(props.config.props.field.name || props.config.uid)
+if (ctx) {
+  ctx.formData.value[field] = [] as any
+}
 
 const addEntry = () => {
-  entries.value.push({})
-  const cloned = getDuplicatedWidgets(children.value)
-  children.value.push({
-    widgets: cloned
-  })
+  ctx?.formData.value[field].push({})
 }
 
 const removeEntry = (i: number) => {
-  entries.value.splice(i, 1)
+  ctx?.formData.value[field].splice(i, 1)
 }
 </script>
 

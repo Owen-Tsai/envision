@@ -1,14 +1,28 @@
 import { computed, inject } from 'vue'
-import { formDataKey, type FormDataCtx } from '@/types/workflow'
+import { formDataKey, type FormDataCtx, type ParentFormPropType } from '@/types/workflow'
 
-const useModel = (field: string) => {
+const useModel = (field: string, parentFormConfig?: ParentFormPropType) => {
   const ctx = inject<FormDataCtx>(formDataKey)
 
   const model = computed({
-    get: () => (ctx ? ctx.formData.value[field] : undefined),
+    get: () => {
+      if (ctx) {
+        if (parentFormConfig) {
+          return ctx.formData.value[parentFormConfig.field][parentFormConfig.index][field]
+        } else {
+          return ctx.formData.value[field]
+        }
+      }
+
+      return undefined
+    },
     set: (val) => {
       if (ctx) {
-        ctx.formData.value[field] = val
+        if (parentFormConfig) {
+          ctx.formData.value[parentFormConfig.field][parentFormConfig.index][field] = val
+        } else {
+          ctx.formData.value[field] = val
+        }
       }
     }
   })

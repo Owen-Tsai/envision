@@ -42,14 +42,18 @@
   <AFormItem
     v-else-if="widget.class === 'form'"
     :label="widget.props.field.label"
-    :name="widget.props.field.name"
+    :name="
+      parentFormConfig
+        ? [parentFormConfig.field, parentFormConfig.index, widget.props.field.name || widget.uid]
+        : widget.props.field.name
+    "
     :label-col="labelCol"
     :label-align="widget.props.field?.labelAlign"
     :wrapper-col="wrapperCol"
     :extra="widget.props.field?.extra"
     :rules="rules"
   >
-    <component :is="widgetToRender" :config="widget" />
+    <component :is="widgetToRender" :config="widget" :parent-form-config="parentFormConfig" />
   </AFormItem>
 
   <component v-if="widget.class === 'special'" :is="widgetToRender" :config="widget" />
@@ -61,7 +65,7 @@ import { camelCase } from 'lodash'
 import { constructStepItems } from '@/views/infra/workflow/form/use-widgets'
 import { tryParse } from '@/utils/fusion'
 import SubFormRenderer from './sub-form.vue'
-import type { FormWidget, Widget } from '@/types/workflow'
+import type { FormWidget, Widget, ParentFormPropType } from '@/types/workflow'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })
 
@@ -71,6 +75,9 @@ const props = defineProps({
   widget: {
     type: Object as PropType<Widget>,
     required: true
+  },
+  parentFormConfig: {
+    type: Object as PropType<ParentFormPropType>
   }
 })
 

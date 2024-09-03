@@ -462,3 +462,8 @@ export type FormCreatorCtx = {
 export type FormDataCtx = {
   formData: Ref<Record<string, any>>
 }
+
+export type ParentFormPropType = {
+  field: string
+  index: number
+}

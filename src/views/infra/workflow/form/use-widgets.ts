@@ -66,7 +66,6 @@ export const useWidget = () => {
 
           if (isLayoutWidget(widget)) {
             const cloned = cloneChildren((newWidget as LayoutWidget).props.children)
-            console.log(cloned)
             ;(newWidget as LayoutWidget).props.children = cloned
           }
 
