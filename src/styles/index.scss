@@ -31,17 +31,6 @@ html {
   font-display: swap;
 }
 
-.layout-sider {
-  border-right: 1px solid var(--colorBorderAlt);
-  ul.ant-menu {
-    background-color: transparent !important;
-    border-right: 0 !important;
-  }
-  .ant-menu-submenu {
-    padding-bottom: 0 !important;
-  }
-}
-
 #nprogress .bar {
   background: var(--colorPrimary);
 }

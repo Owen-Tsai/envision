@@ -79,6 +79,14 @@ provide('layoutContext', reload)
   left: 0;
   top: $header-height;
   background-color: var(--colorBgAlt);
+  border-right: 1px solid var(--colorBorderAlt);
+  &:deep(ul.ant-menu) {
+    background-color: transparent !important;
+    border-right: 0 !important;
+  }
+  &:deep(.ant-menu-submenu) {
+    padding-bottom: 0 !important;
+  }
 }
 .menu-btn {
   @apply absolute right-2 bottom-4;

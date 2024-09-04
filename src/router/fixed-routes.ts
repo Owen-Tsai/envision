@@ -1,4 +1,4 @@
-import DefaultLayout from '@/layouts/default/index.vue'
+import DefaultLayout from '@/layouts'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const fixedRoutes: RouteRecordRaw[] = [
