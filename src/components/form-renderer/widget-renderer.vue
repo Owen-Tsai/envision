@@ -7,7 +7,12 @@
     :wrap="widget.props.wrap"
   >
     <ACol v-for="(col, i) in widget.props.children" :key="i" :span="col.span">
-      <WidgetRenderer v-for="child in col.widgets" :key="child.uid" :widget="child" />
+      <WidgetRenderer
+        v-for="child in col.widgets"
+        :key="child.uid"
+        :widget="child"
+        :parent-form-config="parentFormConfig"
+      />
     </ACol>
   </ARow>
   <ATabs
@@ -18,7 +23,12 @@
     :destroy-inactive-tab-pane="widget.props.destroyInactivePanes"
   >
     <ATabPane v-for="(pane, i) in widget.props.children" :key="i" :tab="pane.title">
-      <WidgetRenderer v-for="child in pane.widgets" :key="child.uid" :widget="child" />
+      <WidgetRenderer
+        v-for="child in pane.widgets"
+        :key="child.uid"
+        :widget="child"
+        :parent-form-config="parentFormConfig"
+      />
     </ATabPane>
   </ATabs>
   <template v-else-if="widget.type === 'steps'">
@@ -31,7 +41,12 @@
     />
     <div v-for="(step, i) in widget.props.children" :key="i">
       <div v-if="i === widget.props.model.current" class="steps-container pt-4">
-        <WidgetRenderer v-for="child in step.widgets" :key="child.uid" :widget="child" />
+        <WidgetRenderer
+          v-for="child in step.widgets"
+          :key="child.uid"
+          :widget="child"
+          :parent-form-config="parentFormConfig"
+        />
       </div>
     </div>
   </template>
@@ -53,19 +68,24 @@
     :extra="widget.props.field?.extra"
     :rules="rules"
   >
-    <component :is="widgetToRender" :config="widget" :parent-form-config="parentFormConfig" />
+    <component :is="widgetToRender" :config="widget" />
   </AFormItem>
 
   <component v-if="widget.class === 'special'" :is="widgetToRender" :config="widget" />
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType, type Component } from 'vue'
+import { computed, provide, type PropType, type Component } from 'vue'
 import { camelCase } from 'lodash'
 import { constructStepItems } from '@/views/infra/workflow/form/use-widgets'
 import { tryParse } from '@/utils/fusion'
 import SubFormRenderer from './sub-form.vue'
-import type { FormWidget, Widget, ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type FormWidget,
+  type Widget,
+  type ParentFormPropType
+} from '@/types/workflow'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })
 
@@ -102,4 +122,6 @@ const widgetToRender = computed(() => {
 
   return null
 })
+
+provide(parentFieldKey, props.parentFormConfig)
 </script>

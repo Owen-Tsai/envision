@@ -22,20 +22,16 @@
 import { inject, type PropType } from 'vue'
 import AddonRenderer from '../addon-renderer.vue'
 import useModel from '../use-model'
-import type { WidgetConfigMap, ParentFormPropType } from '@/types/workflow'
+import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+
+const parentFormConfig = inject<ParentFormPropType>(parentFieldKey)
 
 const props = defineProps({
   config: {
     type: Object as PropType<WidgetConfigMap['input']>,
     required: true
-  },
-  parentFormConfig: {
-    type: Object as PropType<ParentFormPropType>
   }
 })
 
-const { model } = useModel(
-  props.config.props.field.name || props.config.uid,
-  props.parentFormConfig
-)
+const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
 </script>
