@@ -34,6 +34,7 @@
                   <Tabs v-else-if="element.type === 'tabs'" :element="element" />
                   <Steps v-else-if="element.type === 'steps'" :element="element" />
                   <SubForm v-else-if="element.type === 'subForm'" :element="element" />
+                  <DataTable v-else-if="element.type === 'dataTable'" :element="element" />
 
                   <div class="field-name">
                     {{ element.props.field.name || element.uid }}
@@ -77,6 +78,7 @@ import Tabs from './layout-widgets/tabs.vue'
 import Steps from './layout-widgets/steps.vue'
 import Grid from './layout-widgets/grid.vue'
 import SubForm from './layout-widgets/sub-form.vue'
+import DataTable from './layout-widgets/data-table.vue'
 import { injectionKey, type Widget, type FormCreatorCtx } from '@/types/workflow'
 
 const { schema, selectedWidget } = inject<FormCreatorCtx>(injectionKey)!

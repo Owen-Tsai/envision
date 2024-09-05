@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref, h, inject, type PropType } from 'vue'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue'
-import WidgetRenderer from './widget-renderer.vue'
+import WidgetRenderer from '../widget-renderer.vue'
 
 import { formDataKey, type WidgetConfigMap, type FormDataCtx } from '@/types/workflow'
 

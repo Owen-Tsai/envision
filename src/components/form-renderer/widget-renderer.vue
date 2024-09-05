@@ -1,58 +1,8 @@
 <template>
-  <ARow
-    v-if="widget.type === 'grid'"
-    :align="widget.props.align"
-    :gutter="widget.props.gutter"
-    :justify="widget.props.justify"
-    :wrap="widget.props.wrap"
-  >
-    <ACol v-for="(col, i) in widget.props.children" :key="i" :span="col.span">
-      <WidgetRenderer
-        v-for="child in col.widgets"
-        :key="child.uid"
-        :widget="child"
-        :parent-form-config="parentFormConfig"
-      />
-    </ACol>
-  </ARow>
-  <ATabs
-    v-else-if="widget.type === 'tabs'"
-    :centered="widget.props.centered"
-    :type="widget.props.type"
-    :size="widget.props.size"
-    :destroy-inactive-tab-pane="widget.props.destroyInactivePanes"
-  >
-    <ATabPane v-for="(pane, i) in widget.props.children" :key="i" :tab="pane.title">
-      <WidgetRenderer
-        v-for="child in pane.widgets"
-        :key="child.uid"
-        :widget="child"
-        :parent-form-config="parentFormConfig"
-      />
-    </ATabPane>
-  </ATabs>
-  <template v-else-if="widget.type === 'steps'">
-    <ASteps
-      :current="widget.props.model.current"
-      :size="widget.props.size"
-      :type="widget.props.type === 'dot' ? undefined : widget.props.type"
-      :progress-dot="widget.props.type === 'dot'"
-      :items="constructStepItems(widget.props.children)"
-    />
-    <div v-for="(step, i) in widget.props.children" :key="i">
-      <div v-if="i === widget.props.model.current" class="steps-container pt-4">
-        <WidgetRenderer
-          v-for="child in step.widgets"
-          :key="child.uid"
-          :widget="child"
-          :parent-form-config="parentFormConfig"
-        />
-      </div>
-    </div>
-  </template>
-  <template v-else-if="widget.type === 'subForm'">
-    <SubFormRenderer :config="widget" />
-  </template>
+  <GridRenderer v-if="widget.type === 'grid'" :widget="widget" />
+  <TabsRenderer v-else-if="widget.type === 'tabs'" :widget="widget" />
+  <StepsRenderer v-else-if="widget.type === 'steps'" :widget="widget" />
+  <SubFormRenderer v-else-if="widget.type === 'subForm'" :config="widget" />
 
   <AFormItem
     v-else-if="widget.class === 'form'"
@@ -77,9 +27,11 @@
 <script setup lang="ts">
 import { computed, provide, type PropType, type Component } from 'vue'
 import { camelCase } from 'lodash'
-import { constructStepItems } from '@/views/infra/workflow/form/use-widgets'
 import { tryParse } from '@/utils/fusion'
-import SubFormRenderer from './sub-form.vue'
+import SubFormRenderer from './layout-widgets/sub-form.vue'
+import GridRenderer from './layout-widgets/grid.vue'
+import TabsRenderer from './layout-widgets/tabs.vue'
+import StepsRenderer from './layout-widgets/steps.vue'
 import {
   parentFieldKey,
   type FormWidget,

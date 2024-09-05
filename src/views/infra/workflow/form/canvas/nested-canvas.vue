@@ -21,25 +21,25 @@
           <Tabs v-else-if="element.type === 'tabs'" :element="element" />
           <Steps v-else-if="element.type === 'steps'" :element="element" />
           <SubForm v-else-if="element.type === 'subForm'" :element="element" />
-        </div>
-
-        <div class="field-name">
-          {{ element.props.field.name || element.uid }}
-        </div>
-        <div class="drag-handle">
-          <FullscreenOutlined :rotate="45" />
-        </div>
-        <div class="actions">
-          <ATooltip title="复制">
-            <div class="action" @click.stop="duplicateWidget(element)">
-              <CopyFilled />
-            </div>
-          </ATooltip>
-          <ATooltip title="删除">
-            <div class="action" @click.stop="deleteWidget(element.uid)">
-              <DeleteFilled />
-            </div>
-          </ATooltip>
+          <DataTable v-else-if="element.type === 'dataTable'" :element="element" />
+          <div class="field-name">
+            {{ element.props.field.name || element.uid }}
+          </div>
+          <div class="drag-handle">
+            <FullscreenOutlined :rotate="45" />
+          </div>
+          <div class="actions">
+            <ATooltip title="复制">
+              <div class="action" @click.stop="duplicateWidget(element)">
+                <CopyFilled />
+              </div>
+            </ATooltip>
+            <ATooltip title="删除">
+              <div class="action" @click.stop="deleteWidget(element.uid)">
+                <DeleteFilled />
+              </div>
+            </ATooltip>
+          </div>
         </div>
       </template>
       <SpecialWidget v-else-if="element.class === 'special'" :config="element" />
@@ -59,6 +59,7 @@ import Tabs from './layout-widgets/tabs.vue'
 import Steps from './layout-widgets/steps.vue'
 import Grid from './layout-widgets/grid.vue'
 import SubForm from './layout-widgets/sub-form.vue'
+import DataTable from './layout-widgets/data-table.vue'
 import type { Widget } from '@/types/workflow'
 
 defineOptions({

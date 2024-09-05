@@ -26,13 +26,6 @@ export const isLayoutWidget = (widget: Widget) => {
   return widget.class === 'layout'
 }
 
-export const constructStepItems = (steps: WPropsStep[]): StepsProps['items'] => {
-  return steps.map((e) => ({
-    title: e.title,
-    description: e.desc
-  }))
-}
-
 export const useWidget = () => {
   const { schema, selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 
@@ -417,6 +410,27 @@ export const widgetInitConfig: WidgetConfigMap = {
         label: '按钮'
       },
       label: '按钮'
+    }
+  },
+  dataTable: {
+    type: 'dataTable',
+    class: 'layout',
+    name: '数据表格',
+    uid: '',
+    icon: getIcon('dataTable'),
+    props: {
+      field: {
+        label: '数据表格'
+      },
+      pagination: {},
+      children: [
+        {
+          widgets: []
+        }
+      ],
+      model: {
+        mode: 'table'
+      }
     }
   }
 }

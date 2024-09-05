@@ -336,7 +336,28 @@ export type WPropsSubForm = {
   children: WPropsSubFormEntry[]
 } & LayoutFieldProps
 
-export type WPropsDataTable = {}
+export type WPropsTableColumn = {
+  align?: 'left' | 'right' | 'center'
+  title?: string
+  width?: string
+  key?: string
+  formatter?: string
+}
+
+export type WPropsTablePagination = {
+  pageSize?: number
+  lite?: boolean // showLessItems
+  small?: boolean // size="small"
+}
+
+export type WPropsDataTable = {
+  columns?: WPropsTableColumn[]
+  pagination: WPropsTablePagination
+  children: WPropsTableForm[]
+  model: {
+    mode: 'table' | 'form'
+  }
+} & LayoutFieldProps
 // #endregion
 
 // #region special widgets
@@ -378,6 +399,7 @@ type LayoutWidgetPropsMap = {
   tabs: WPropsTabs
   steps: WPropsSteps
   subForm: WPropsSubForm
+  dataTable: WPropsDataTable
 }
 
 type SpecialWidgetPropsMap = {
@@ -427,6 +449,11 @@ export type WPropsStep = {
 }
 
 export type WPropsSubFormEntry = {
+  widgets: Widget[]
+}
+
+export type WPropsTableForm = {
+  title?: string
   widgets: Widget[]
 }
 
