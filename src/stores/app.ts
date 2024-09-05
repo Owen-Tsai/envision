@@ -18,7 +18,7 @@ export default defineStore('app', () => {
   }
 
   const setTitle = (val: string) => {
-    title.value = val + import.meta.env.VITE_APP_TITLE
+    title.value = `${val} | ${import.meta.env.VITE_APP_SHORT_TITLE}`
   }
 
   return {

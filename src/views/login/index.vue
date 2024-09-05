@@ -3,7 +3,7 @@
     <div class="flex-1 py-10">
       <div class="flex items-center justify-center">
         <img class="h-12 w-12 mr-4 rounded" :src="logo" alt="FuxionX Logo" />
-        <h1 class="mb-0">FusionX</h1>
+        <h1 class="mb-0">{{ title }}</h1>
       </div>
 
       <div class="subtext mt-4">正确、简洁并易于扩展的低代码开发平台</div>
@@ -33,6 +33,8 @@ import LoginForm from './login-form.vue'
 import logo from '~img/company-logo.svg'
 
 const activeTab = ref(0)
+
+const title = import.meta.env.VITE_APP_SHORT_TITLE
 </script>
 
 <style lang="scss" scoped>

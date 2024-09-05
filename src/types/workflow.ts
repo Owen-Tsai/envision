@@ -335,6 +335,8 @@ export type WPropsSubForm = {
   max?: number
   children: WPropsSubFormEntry[]
 } & LayoutFieldProps
+
+export type WPropsDataTable = {}
 // #endregion
 
 // #region special widgets

@@ -3,10 +3,7 @@
     <header class="flex-shrink-0">
       <div class="title-wrapper">
         <img class="logo" :src="logo" />
-        <h1 class="title mb-0">
-          Fusion
-          <span class="font-bold font-italic">X</span>
-        </h1>
+        <h1 class="title mb-0">{{ title }}</h1>
         <ADivider type="vertical" class="h-8" />
         <h1 class="title mb-0">业务流程编辑器</h1>
       </div>
@@ -44,6 +41,8 @@ import type { Schema } from '@/types/workflow'
 import logo from '~img/company-logo.svg'
 
 import FormCreator from './form/index.vue'
+
+const title = import.meta.env.VITE_APP_SHORT_TITLE
 
 const steps: StepsProps['items'] = [
   { title: '表单设计' },

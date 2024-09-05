@@ -7,11 +7,7 @@
         </template>
       </AButton>
       <img class="logo" :src="logo" />
-      <h1 class="title mb-0">
-        Fusion
-        <span class="font-bold font-italic">X</span>
-        开发平台
-      </h1>
+      <h1 class="title mb-0">{{ title }}</h1>
     </div>
 
     <div class="actions">
@@ -72,6 +68,8 @@ import useUserStore from '@/stores/user'
 import useBreakpoint from '@/hooks/use-breakpoint'
 import ThemeIcon from './theme-icon.vue'
 import Menu from './menu.vue'
+
+const title = import.meta.env.VITE_APP_TITLE
 
 const drawerVisible = ref(false)
 
