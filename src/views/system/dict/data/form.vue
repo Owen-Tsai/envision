@@ -15,6 +15,9 @@
         :rules="rules"
         class="mt-4"
       >
+        <AFormItem label="字典类型" name="dictType">
+          <AInput v-model:value="formData.dictType" readonly />
+        </AFormItem>
         <AFormItem label="字典标签" name="label">
           <AInput v-model:value="formData.label" placeholder="请输入字典标签" />
         </AFormItem>
@@ -25,7 +28,7 @@
           <template #label>
             <div class="inline-flex items-center">
               <span>颜色类型</span>
-              <ATooltip content="留空时将不使用标签组件的形式展示，而是直接显示字典标签">
+              <ATooltip title="留空时将不使用标签组件的形式展示，而是直接显示字典标签">
                 <QuestionCircleFilled />
               </ATooltip>
             </div>
@@ -57,6 +60,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, type PropType } from 'vue'
+import { useRoute } from 'vue-router'
 import { QuestionCircleFilled } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import {
@@ -89,6 +93,7 @@ const formData = ref<Partial<DictDataItemVO>>({
   value: ''
 })
 
+const { params } = useRoute()
 const [commonStatus] = useDict('common_status')
 
 const isAdd = computed(() => props.record?.id === undefined)
@@ -120,6 +125,7 @@ const resetFields = () => {
   emit('close')
 }
 
+formData.value.dictType = params.type as string
 if (props.record) {
   loading.value = true
   getDictDataDetail(props.record.id).then((res) => {
