@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watchEffect, type PropType } from 'vue'
+import { ref, watch, type PropType } from 'vue'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import {
   getTableDefList,
@@ -131,11 +131,20 @@ const onFilterReset = () => {
 
 // created
 loading.value = true
-watchEffect(() => {
+watch(
+  () => props.dataSources,
+  () => {
+    onLoad()
+  }
+)
+
+const onLoad = () => {
   if (props.dataSources) {
     queryParams.value.dataSourceConfigId = props.dataSources[0].id
 
     getTables()
   }
-})
+}
+
+onLoad()
 </script>
