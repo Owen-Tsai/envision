@@ -1,8 +1,8 @@
 <template>
-  <AFormItem :label="config.props.field.label">
+  <AFormItem :label="widget.props.field.label">
     <div class="entry-container">
       <div class="entry" v-for="(entry, index) in ctx?.formData.value[field]" :key="index">
-        <div v-for="(widget, j) in config.props.children[0].widgets" :key="j">
+        <div v-for="(widget, j) in widget.props.children[0].widgets" :key="j">
           <WidgetRenderer :widget="widget" :parent-form-config="{ field, index }" />
         </div>
 
@@ -34,14 +34,14 @@ import { formDataKey, type WidgetConfigMap, type FormDataCtx } from '@/types/wor
 const ctx = inject<FormDataCtx>(formDataKey)
 
 const props = defineProps({
-  config: {
+  widget: {
     type: Object as PropType<WidgetConfigMap['subForm']>,
     required: true
   }
 })
 
-const field = props.config.props.field.name || props.config.uid
-const children = ref(props.config.props.children)
+const field = props.widget.props.field.name || props.widget.uid
+const children = ref(props.widget.props.children)
 
 if (ctx) {
   ctx.formData.value[field] = [] as any

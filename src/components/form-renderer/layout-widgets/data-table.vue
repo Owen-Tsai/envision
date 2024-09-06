@@ -1,16 +1,18 @@
 <template>
-  <AFlex justify="end">
-    <AButton :icon="h(PlusOutlined)" @click="visible = true">新增</AButton>
-  </AFlex>
-  <ATable :columns="widget.props.columns" :data-source="data" :pagination="pagination" />
-  <AModal v-model:open="visible" :title="title">
-    <WidgetRenderer
-      v-for="child in formWidgets"
-      :key="child.uid"
-      :widget="child"
-      :parent-form-config="parentFormConfig"
-    />
-  </AModal>
+  <div>
+    <AFlex justify="end">
+      <AButton :icon="h(PlusOutlined)" @click="visible = true">新增</AButton>
+    </AFlex>
+    <ATable :columns="widget.props.columns" :data-source="data" :pagination="pagination" />
+    <AModal v-model:open="visible" :title="title" :width="widget.props.children[0].width">
+      <WidgetRenderer
+        v-for="child in formWidgets"
+        :key="child.uid"
+        :widget="child"
+        :parent-form-config="parentFormConfig"
+      />
+    </AModal>
+  </div>
 </template>
 
 <script setup lang="ts">

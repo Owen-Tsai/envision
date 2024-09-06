@@ -5,6 +5,7 @@
       <div
         class="draggable-area"
         :class="{ 'empty-slot': element.props.children[0].widgets.length <= 0 }"
+        :style="{ width: element.props.children[0].width }"
       >
         <NestedCanvas
           :list="element.props.children[0].widgets"

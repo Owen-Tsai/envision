@@ -2,7 +2,8 @@
   <GridRenderer v-if="widget.type === 'grid'" :widget="widget" />
   <TabsRenderer v-else-if="widget.type === 'tabs'" :widget="widget" />
   <StepsRenderer v-else-if="widget.type === 'steps'" :widget="widget" />
-  <SubFormRenderer v-else-if="widget.type === 'subForm'" :config="widget" />
+  <SubFormRenderer v-else-if="widget.type === 'subForm'" :widget="widget" />
+  <TableRenderer v-else-if="widget.type === 'dataTable'" :widget="widget" />
 
   <AFormItem
     v-else-if="widget.class === 'form'"
@@ -32,6 +33,7 @@ import SubFormRenderer from './layout-widgets/sub-form.vue'
 import GridRenderer from './layout-widgets/grid.vue'
 import TabsRenderer from './layout-widgets/tabs.vue'
 import StepsRenderer from './layout-widgets/steps.vue'
+import TableRenderer from './layout-widgets/data-table.vue'
 import {
   parentFieldKey,
   type FormWidget,

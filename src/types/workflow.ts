@@ -454,6 +454,7 @@ export type WPropsSubFormEntry = {
 
 export type WPropsTableForm = {
   title?: string
+  width?: string
   widgets: Widget[]
 }
 
