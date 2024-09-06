@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard v-if="permission.has('system:service:query')" class="mb-4">
+    <ACard v-if="permission.has('system:application:query')" class="mb-4">
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
@@ -15,16 +15,16 @@
             </AFormItem>
           </ACol>
           <ACol :lg="8" :span="24">
-            <AFormItem label="字典类型" name="type">
-              <AInput v-model:value="queryParams.type" placeholder="请输入字典类型" allow-clear />
+            <AFormItem label="应用类型" name="type">
+              <AInput v-model:value="queryParams.type" placeholder="请输入应用类型" allow-clear />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="字典状态" name="status">
+            <AFormItem label="上架状态" name="status">
               <ASelect
-                v-model:value="queryParams.status"
-                :options="commonStatus"
-                placeholder="请选择字典状态"
+                v-model:value="queryParams.published"
+                :options="statusOpts"
+                placeholder="请选择应用上架状态"
               />
             </AFormItem>
           </ACol>
@@ -46,9 +46,110 @@
         </ARow>
       </AForm>
     </ACard>
+
+    <ACard title="应用管理">
+      <template #extra>
+        <AFlex :gap="8">
+          <AButton
+            v-if="permission.has('system:application:create')"
+            type="primary"
+            :loading="pending"
+            @click="onEdit()"
+          >
+            <template #icon>
+              <PlusOutlined />
+            </template>
+            新增
+          </AButton>
+          <ATooltip title="重新载入">
+            <AButton type="text" :loading="pending" @click="execute">
+              <template #icon>
+                <ReloadOutlined />
+              </template>
+            </AButton>
+          </ATooltip>
+        </AFlex>
+      </template>
+
+      <div class="overflow-x-auto">
+        <ATable
+          :columns="columns"
+          :data-source="data?.list"
+          :loading="pending"
+          :pagination="pagination"
+          @change="onChange"
+        >
+          <template #bodyCell="scope: TableScope<ApplicationVO>">
+            <template v-if="scope?.column.key === 'published'">
+              <EDictTag :dict-object="statusOpts" :value="scope?.text" />
+            </template>
+            <template v-if="scope?.column.key === 'createTime'">
+              {{ dayjs(scope.text).format('YYYY-MM-DD') }}
+            </template>
+            <template v-if="scope?.column.title === '操作'">
+              <AFlex :gap="16">
+                <ATypographyLink
+                  v-if="permission.has('system:application:update')"
+                  @click="onEdit(scope!.record)"
+                >
+                  <EditOutlined />
+                  编辑
+                </ATypographyLink>
+                <ATypographyLink>
+                  <CodeOutlined />
+                  设计
+                </ATypographyLink>
+                <APopconfirm
+                  v-if="permission.has('system:application:delete')"
+                  title="该操作无法撤销，确定要删除吗？"
+                  :overlay-style="{ width: '240px' }"
+                  @confirm="onDelete(scope!.record)"
+                >
+                  <ATypographyLink type="danger">
+                    <DeleteOutlined />
+                    删除
+                  </ATypographyLink>
+                </APopconfirm>
+              </AFlex>
+            </template>
+          </template>
+        </ATable>
+      </div>
+    </ACard>
+
+    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+import dayjs from 'dayjs'
+import { useToggle } from '@vueuse/core'
+import {
+  DownOutlined,
+  ReloadOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  CodeOutlined
+} from '@ant-design/icons-vue'
+import useDict from '@/hooks/use-dict'
+import { permission } from '@/hooks/use-permission'
+import { useTable, columns } from './use-table'
+import useActions from './use-action'
+import FormModal from './form.vue'
+import type { FormInstance } from 'ant-design-vue'
+import type { ApplicationVO } from '@/api/system/application'
+
+const filterForm = ref<FormInstance>()
+
+const [filterExpanded, toggle] = useToggle(false)
+const [statusOpts] = useDict('system_appication_status')
+
+const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
+  useTable(filterForm)
+
+const { entry, visible, onDelete, onEdit } = useActions(execute)
+
 defineOptions({ name: 'SystemService' })
 </script>
