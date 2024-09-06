@@ -8,10 +8,8 @@ import type {
   WidgetType,
   WidgetConfigMap,
   Widget,
-  LayoutWidget,
-  WPropsStep
+  LayoutWidget
 } from '@/types/workflow'
-import type { StepsProps } from 'ant-design-vue'
 import defaultIcon from '@/components/efk-icons/custom.vue'
 
 const icons = import.meta.glob('@/components/efk-icons/*.vue', { eager: true })
@@ -80,7 +78,7 @@ export const useWidget = () => {
         ...widget,
         uid: generateID(),
         props: {
-          ...widget.props,
+          ...cloneDeep(widget.props),
           children: clone
         }
       } as LayoutWidget)

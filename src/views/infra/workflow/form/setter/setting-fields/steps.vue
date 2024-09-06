@@ -27,13 +27,17 @@
   </AFormItem>
   <AFormItem label="操作">
     <div class="flex items-center gap-2">
-      <AButton block :disabled="computedProps.current <= 0" @click="computedProps.current -= 1">
+      <AButton
+        block
+        :disabled="computedProps.model.current <= 0"
+        @click="computedProps.model.current -= 1"
+      >
         上一步
       </AButton>
       <AButton
         block
-        :disabled="computedProps.current >= computedProps.children.length - 1"
-        @click="computedProps.current += 1"
+        :disabled="computedProps.model.current >= computedProps.children.length - 1"
+        @click="computedProps.model.current += 1"
       >
         下一步
       </AButton>
