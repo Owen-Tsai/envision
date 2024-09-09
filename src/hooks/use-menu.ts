@@ -17,6 +17,9 @@ export const useMenuRenderer = () => {
     const items: ItemType[] = []
 
     menuVO.forEach((route) => {
+      if (!route.visible) {
+        return
+      }
       const item: any = {
         label: route.name,
         key: ''
