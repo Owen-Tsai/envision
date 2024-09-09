@@ -4,10 +4,13 @@ export type ApplicationVO = {
   id?: number
   name?: string
   type?: string
+  code?: string // 业务标志？
+  dept?: string
+  sort?: number
   createTime?: string
   updateTime?: string
   published?: number
-  remark?: string
+  description?: string
 }
 
 export type ListQueryParams = {

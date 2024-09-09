@@ -24,6 +24,7 @@
             tree-default-expand-all
             :tree-data="treeData"
             :field-names="{ label: 'name', value: 'id' }"
+            @clear="() => (formData.parentId = 0)"
           />
         </AFormItem>
         <AFormItem label="菜单名称" name="name">
@@ -207,6 +208,7 @@ if (props.mode === 'edit') {
         data.parentId = undefined
       }
       formData.value = data
+      isCustomLayout.value = !!data.customLayout
       loading.value = false
     })
   }

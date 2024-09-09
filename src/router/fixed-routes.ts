@@ -1,4 +1,5 @@
 import DefaultLayout from '@/layouts'
+import MinimalLayout from '@/layouts/minimal/index.vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 export const fixedRoutes: RouteRecordRaw[] = [
@@ -10,6 +11,22 @@ export const fixedRoutes: RouteRecordRaw[] = [
       hidden: true,
       title: '登录'
     }
+  },
+  {
+    path: '/workflow/:appId',
+    name: 'WorkflowDesignRoot',
+    component: MinimalLayout,
+    redirect: 'WorkflowDesign',
+    children: [
+      {
+        path: '',
+        name: 'WorkflowDesign',
+        component: () => import('@/views/workflow/index.vue'),
+        meta: {
+          title: '应用设计'
+        }
+      }
+    ]
   },
   {
     path: '/',
@@ -41,14 +58,6 @@ export const fixedRoutes: RouteRecordRaw[] = [
           title: '代码生成配置'
         }
       }
-      // {
-      //   path: '/me',
-      //   name: 'Me',
-      //   component: () => import('@/views/user/index.vue'),
-      //   meta: {
-      //     title: '个人设置'
-      //   }
-      // }
     ]
   }
 ]
