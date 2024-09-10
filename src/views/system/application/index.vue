@@ -83,6 +83,16 @@
             <template v-if="scope?.column.key === 'published'">
               <EDictTag :dict-object="statusOpts" :value="scope?.text" />
             </template>
+            <template v-if="scope?.column.key === 'published'">
+              <ASwitch
+                v-model:checked="scope.record.published"
+                :checked-value="1"
+                :un-checked-value="0"
+                checked-children="已上架"
+                un-checked-children="未上架"
+                @change="(v) => onSetPublished(scope.record, v as number)"
+              />
+            </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.text).format('YYYY-MM-DD') }}
             </template>
@@ -149,7 +159,7 @@ const [statusOpts] = useDict('system_appication_status')
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const { entry, visible, onDelete, onEdit } = useActions(execute)
+const { entry, visible, onDelete, onEdit, onSetPublished } = useActions(execute)
 
 defineOptions({ name: 'SystemService' })
 </script>

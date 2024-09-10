@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export type ApplicationVO = {
-  id?: number
+  id?: string
   name?: string
   type?: string
   code?: string // 业务标志？
@@ -28,7 +28,7 @@ export const getApplicationList = (params?: ListQueryParams) => {
   })
 }
 
-export const getApplicationDetail = (id: number) => {
+export const getApplicationDetail = (id: string) => {
   return request.get<ApplicationVO>({
     url: `/system/application/get?id=${id}`
   })
@@ -48,8 +48,14 @@ export const updateApplication = (data: ApplicationVO) => {
   })
 }
 
-export const deleteApplication = (id: number) => {
+export const deleteApplication = (id: string) => {
   return request.delete({
     url: `/system/application/delete?id=${id}`
+  })
+}
+
+export const setPublished = (id: string, published: number) => {
+  return request.put({
+    url: `/system/application/published?id=${id}&published=${published}`
   })
 }

@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
-import { deleteApplication, type ApplicationVO } from '@/api/system/application'
+import { deleteApplication, setPublished, type ApplicationVO } from '@/api/system/application'
 
 const useActions = (requestData: () => void) => {
   const entry = ref<ApplicationVO | undefined>()
@@ -25,11 +25,19 @@ const useActions = (requestData: () => void) => {
     push(`/workflow/${record.id}`)
   }
 
+  const onSetPublished = (record: ApplicationVO, published: number) => {
+    setPublished(record.id!, published).then(() => {
+      message.success('操作成功')
+      requestData()
+    })
+  }
+
   return {
     entry,
     visible,
     onEdit,
     onDelete,
+    onSetPublished,
     toDesignPage
   }
 }

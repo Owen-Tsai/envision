@@ -10,12 +10,11 @@ import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
-  { title: '应用图标', width: 90 },
-  { title: '应用名称', dataIndex: 'name', key: 'name' },
+  { title: '应用名称', dataIndex: 'name', key: 'name', ellipsis: true },
   { title: '应用类别', dataIndex: 'type', key: 'type' },
-  { title: '上架状态', width: 90, dataIndex: 'published', key: 'published' },
-  { title: '备注', width: 200, dataIndex: 'remark', ellipsis: true },
   { title: '创建人', width: 120, dataIndex: 'creator' },
+  { title: '备注', width: 200, dataIndex: 'remark', ellipsis: true },
+  { title: '上架状态', width: 90, dataIndex: 'published', key: 'published' },
   {
     title: '创建时间',
     minWidth: 120,
@@ -26,7 +25,7 @@ export const columns: TableProps['columns'] = [
       return dayjs(a.createTime).isSameOrBefore(b.createTime) ? 1 : -1
     }
   },
-  { title: '操作', width: 220 }
+  { title: '操作', key: 'actions', width: 220 }
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {

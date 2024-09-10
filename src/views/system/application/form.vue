@@ -16,13 +16,26 @@
         class="mt-4"
       >
         <AFormItem label="应用名称" name="name">
-          <AInput v-model:value="formData.name" placeholder="如：用户性别" />
+          <AInput v-model:value="formData.name" placeholder="如：人才分类认定" />
         </AFormItem>
-        <AFormItem label="是否上架" name="published">
-          <ARadioGroup v-model:value="formData.published" :options="statusOpts" />
+        <AFormItem label="应用编码" name="code">
+          <AInput v-model:value="formData.code" placeholder="如：talent_classification" />
         </AFormItem>
-        <AFormItem label="备注" name="remark">
-          <ATextarea v-model:value="formData.remark" />
+        <AFormItem label="业务类别" name="type">
+          <ASelect v-model:value="formData.type" :options="appTypeOpts" />
+        </AFormItem>
+        <AFormItem label="主管部门" name="dept">
+          <ATreeSelect
+            v-model:value="formData.dept"
+            show-search
+            :dropdown-style="{ maxHeight: '300px', overflow: 'auto' }"
+            :field-names="{ label: 'name', value: 'id' }"
+            tree-default-expand-all
+            :tree-data="deptOpts"
+          />
+        </AFormItem>
+        <AFormItem label="备注" name="description">
+          <ATextarea v-model:value="formData.description" />
         </AFormItem>
       </AForm>
     </ASpin>
@@ -32,6 +45,7 @@
 <script lang="ts" setup>
 import { ref, computed, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
+import { getDeptTree, type DeptTreeVO } from '@/api/system/dept'
 import {
   addApplication,
   updateApplication,
@@ -41,8 +55,8 @@ import {
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
-  name: [{ required: true, message: '请填写字典名称' }],
-  type: [{ required: true, message: '请填写字典类型' }]
+  name: [{ required: true, message: '请填写应用名称' }],
+  type: [{ required: true, message: '请选择应用类型' }]
 }
 
 const props = defineProps({
@@ -53,16 +67,16 @@ const props = defineProps({
 
 const emit = defineEmits(['success', 'close'])
 
+const [appTypeOpts] = useDict('system_application_type')
+
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
 const formData = ref<Partial<ApplicationVO>>({
-  name: '',
-  type: '',
+  id: 'asjd9i3j10ma',
   published: 0
 })
-
-const [statusOpts] = useDict('system_application_status')
+const deptOpts = ref<DeptTreeVO>()
 
 const isAdd = computed(() => props.record === undefined)
 
@@ -91,6 +105,10 @@ const resetFields = () => {
   formRef.value?.resetFields()
   emit('close')
 }
+
+getDeptTree().then((res) => {
+  deptOpts.value = res
+})
 
 if (props.record?.id) {
   loading.value = true
