@@ -16,7 +16,8 @@ export default defineConfig({
   },
   rules: [
     [/^size-(\d+)px/, ([, d]) => ({ height: `${d}px`, width: `${d}px` })],
-    [/^size-(\d+)%/, ([, d]) => ({ height: `${d}%`, width: `${d}%` })]
+    [/^size-(\d+)%/, ([, d]) => ({ height: `${d}%`, width: `${d}%` })],
+    [/^text-muted/, () => ({ color: 'var(--colorTextTertiary)' })]
   ],
   shortcuts: [
     {
