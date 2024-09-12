@@ -20,7 +20,11 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 const service = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 30000
+  timeout: 30000,
+  paramsSerializer: {
+    indexes: null,
+    serialize: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
+  }
 })
 
 service.interceptors.request.use(
@@ -46,10 +50,10 @@ service.interceptors.request.use(
     }
 
     // encode GET request parameters
-    if (config.method === 'get' && config.params) {
-      config.url = config.url + '?' + qs.stringify(config.params)
-      config.params = {}
-    }
+    // if (config.method === 'get' && config.params) {
+    //   config.url = config.url + '?' + qs.stringify(config.params, { arrayFormat: 'repeat' })
+    //   config.params = {}
+    // }
     // encode POST request parameters
     if (
       config.method === 'post' &&

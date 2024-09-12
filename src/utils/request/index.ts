@@ -21,7 +21,14 @@ const request = (options: AxiosRequestConfig) => {
 
 export default {
   get: async <T = any>(options: AxiosRequestConfig) => {
-    const res = await request({ method: 'get', ...options })
+    const res = await request({
+      method: 'get',
+      ...options,
+      paramsSerializer: {
+        indexes: null,
+        serialize: (params) => qs.stringify(params, { arrayFormat: 'repeat' })
+      }
+    })
     return res.data as T
   },
   getRaw: async <T = any>(options: AxiosRequestConfig) => {
