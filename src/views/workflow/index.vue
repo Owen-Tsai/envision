@@ -9,7 +9,7 @@
       </div>
 
       <div class="step-bar">
-        <ASteps :current="step" :items="steps" size="small" />
+        <ASteps v-model:current="step" :items="steps" size="small" />
       </div>
 
       <div class="actions">
@@ -26,41 +26,43 @@
     </header>
 
     <div class="flex-grow-0 h-full overflow-hidden">
-      <FormCreator :schema="schema" class="h-full" />
+      <DataSourceConfig v-if="step === 0" @finished="onSetupFinish" />
+      <Loader v-if="step === 1 && loading" />
+      <FormCreator v-if="step === 1 && !loading" :schema="schema" class="h-full" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, toRefs } from 'vue'
+import { useRoute } from 'vue-router'
 import { Modal, type StepsProps } from 'ant-design-vue'
 import { RollbackOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import useUserStore from '@/stores/user'
+import useFormCreator from './use-form-creator'
 import type { Schema } from '@/types/workflow'
 import logo from '~img/company-logo.svg'
-
+import Loader from '@/components/loading/index.vue'
 import FormCreator from './form/index.vue'
+import DataSourceConfig from './data-source/index.vue'
 
 const title = import.meta.env.VITE_APP_SHORT_TITLE
 
 const steps: StepsProps['items'] = [
+  { title: '数据源配置' },
   { title: '表单设计' },
-  { title: '流程编排' },
-  { title: '事务配置' }
+  { title: '流程编排' }
 ]
 
 const step = ref(0)
+const { params } = useRoute()
+const { initFormCreator, loading, schema } = useFormCreator(params.appId as string)
 
-const schema = ref<Schema>({
-  form: {
-    widgets: [],
-    colon: true,
-    layout: 'horizontal'
-  },
-  remoteAPIs: {},
-  functions: {}
-})
+const onSetupFinish = () => {
+  initFormCreator()
+  step.value = 1
+}
 </script>
 
 <style lang="scss" scoped>
