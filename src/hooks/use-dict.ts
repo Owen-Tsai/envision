@@ -6,6 +6,9 @@ const useDict = (...args: string[]) => {
   const dictStore = useDictStore()
 
   const result = args.map((dictType) => {
+    if (!dictType) {
+      return
+    }
     const dict = dictStore.getDict(dictType)
     const data = ref(dict || []) as Ref<DictDataEntry[]>
     if (!dict) {

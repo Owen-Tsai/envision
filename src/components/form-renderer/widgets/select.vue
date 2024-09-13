@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, type PropType } from 'vue'
+import { ref, computed, watch, type PropType } from 'vue'
 import { type SelectProps } from 'ant-design-vue'
 import { tryParse, filterOption } from '@/utils/fusion'
 import { type WidgetConfigMap } from '@/types/workflow'
@@ -41,16 +41,27 @@ const fieldNames = computed<SelectProps['fieldNames']>(() =>
 )
 
 const settings = props.config.props.options
+const [dictData] = useDict(settings.dictType || '')
+
 if (settings?.type === 'static') {
   options.value = settings.staticData || []
 } else if (settings?.type === 'dict') {
-  if (!settings.dictType) options.value = []
-  const [dictData] = useDict(settings.dictType!)
-  options.value = dictData.value
+  if (!settings.dictType) {
+    options.value = []
+  }
 } else {
   // todo: options via API
   options.value = []
 }
+
+watch(
+  () => dictData?.value,
+  (val) => {
+    if (settings.type === 'dict' && settings.dictType) {
+      options.value = val
+    }
+  }
+)
 
 const filterFn = (input: string, option: any) => {
   const label = fieldNames.value?.label

@@ -20,15 +20,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, inject, type PropType } from 'vue'
+import { ref, inject, watch, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import useModel from '../use-model'
 import type { CheckboxGroupProps } from 'ant-design-vue'
-import { injectionKey, type WidgetConfigMap, type FormCreatorCtx } from '@/types/workflow'
+import { debugKey, type WidgetConfigMap } from '@/types/workflow'
 
-const formCreatorCtx = inject<FormCreatorCtx>(injectionKey)
-
-const isDebugMode = computed(() => !!formCreatorCtx && !!formCreatorCtx.debug)
+const isDebugMode = inject<boolean>(debugKey, false)
 
 const props = defineProps({
   config: {
@@ -39,16 +37,26 @@ const props = defineProps({
 
 const options = ref<CheckboxGroupProps['options']>([])
 const { model } = useModel(props.config.props.field.name || props.config.uid)
-
 const settings = props.config.props.options
+const [dictData] = useDict(settings.dictType || '')
+
 if (settings?.type === 'static') {
   options.value = settings.staticData || []
 } else if (settings?.type === 'dict') {
-  if (!settings.dictType) options.value = []
-  const [dictData] = useDict(settings.dictType!)
-  options.value = dictData.value
+  if (!settings.dictType) {
+    options.value = []
+  }
 } else {
   // todo: options via API
   options.value = []
 }
+
+watch(
+  () => dictData?.value,
+  (val) => {
+    if (settings.type === 'dict' && settings.dictType) {
+      options.value = val
+    }
+  }
+)
 </script>

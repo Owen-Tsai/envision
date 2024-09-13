@@ -25,8 +25,11 @@ const generateDataTableSchema = (
   info: TableColumnsVO,
   widgets: Widget[]
 ): WidgetConfigMap['dataTable'] => {
+  const columns = info.columns.filter((column) => column.listOperation)
+
   return {
     ...cloneDeep(widgetInitConfig.dataTable),
+    uid: generateID(),
     props: {
       ...cloneDeep(widgetInitConfig.dataTable.props),
       children: [
@@ -35,7 +38,7 @@ const generateDataTableSchema = (
           widgets
         }
       ],
-      columns: info.columns.map((column) => ({
+      columns: columns.map((column) => ({
         key: column.javaField,
         title: column.columnComment || column.columnName
       }))
