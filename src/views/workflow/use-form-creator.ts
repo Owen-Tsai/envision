@@ -135,8 +135,22 @@ const useFormCreator = (
             widgets: [generateDataTableSchema(info, tableSchema)]
           })
         } else {
-          // todo: add `subForm`
-          ;(wrapperSchema as Widget[]).push(...tableSchema)
+          ;(wrapperSchema as Widget[]).push({
+            ...cloneDeep(widgetInitConfig.subForm),
+            uid: generateID(),
+            props: {
+              ...cloneDeep(widgetInitConfig.subForm.props),
+              field: {
+                label: info.tableComment || info.table,
+                name: info.table
+              },
+              children: [
+                {
+                  widgets: [...tableSchema]
+                }
+              ]
+            }
+          } as WidgetConfigMap['subForm'])
         }
       } else {
         if (paginated) {

@@ -34,7 +34,7 @@
         />
         <AFormItem label="已选数据表" class="mt-4">
           <div ref="dragWrapperEl">
-            <div v-for="(item, i) in state.tables" :key="i" class="item">
+            <div v-for="item in state.tables" :key="item.name" class="item">
               <ARow>
                 <ACol :span="10">
                   <span>{{ item.name }}</span>
@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, useTemplateRef } from 'vue'
+import { ref, reactive, useTemplateRef, toRef } from 'vue'
 import { useRoute } from 'vue-router'
 import useWorkflowStore, { type DataSourceInfo } from '@/stores/workflow'
 import { useSortable } from '@vueuse/integrations/useSortable'
@@ -92,7 +92,9 @@ const state = reactive<{
   paginated: false
 })
 
-useSortable(dragWrapperEl, state.tables)
+useSortable(dragWrapperEl, toRef(state, 'tables'), {
+  animation: 200
+})
 
 const updateSelectedTables = (selectedTables: SelectValue[]) => {
   // Clear out any tables that are no longer selected
@@ -113,6 +115,7 @@ const updateSelectedTables = (selectedTables: SelectValue[]) => {
 }
 
 const toNextStep = () => {
+  console.log(state)
   saveDataSource(params.appId as string, state)
   emit('finished')
 }
