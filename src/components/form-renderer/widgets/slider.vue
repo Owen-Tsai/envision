@@ -15,10 +15,12 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, type PropType } from 'vue'
+import { computed, inject, type PropType } from 'vue'
 import { tryParse } from '@/utils/fusion'
-import type { WidgetConfigMap } from '@/types/workflow'
 import useModel from '../use-model'
+import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+
+const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 
 const props = defineProps({
   config: {
@@ -29,5 +31,5 @@ const props = defineProps({
 
 const marks = computed(() => tryParse(props.config.props.marks))
 
-const { model } = useModel(props.config.props.field.name || props.config.uid)
+const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
 </script>

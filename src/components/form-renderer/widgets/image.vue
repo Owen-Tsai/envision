@@ -31,7 +31,7 @@ const props = defineProps({
   }
 })
 
-const { model } = useModel(props.config.props.field.name || props.config.uid)
+const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
 
 const headers = computed(() => tryParse(props.config.props.headers) || undefined)
 const data = computed(() => tryParse(props.config.props.data) || undefined)

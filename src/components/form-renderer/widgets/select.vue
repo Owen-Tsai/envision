@@ -19,12 +19,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, type PropType } from 'vue'
+import { ref, computed, watch, inject, type PropType } from 'vue'
 import { type SelectProps } from 'ant-design-vue'
 import { tryParse, filterOption } from '@/utils/fusion'
-import { type WidgetConfigMap } from '@/types/workflow'
+import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
 import useDict from '@/hooks/use-dict'
 import useModel from '../use-model'
+
+const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 
 const props = defineProps({
   config: {
@@ -33,7 +35,7 @@ const props = defineProps({
   }
 })
 
-const { model } = useModel(props.config.props.field.name || props.config.uid)
+const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
 const options = ref<SelectProps['options']>([])
 
 const fieldNames = computed<SelectProps['fieldNames']>(() =>

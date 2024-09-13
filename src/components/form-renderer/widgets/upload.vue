@@ -16,12 +16,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { computed, inject, type PropType } from 'vue'
 import { message, Upload, type UploadProps } from 'ant-design-vue'
 import useModel from '../use-model'
 import { tryParse } from '@/utils/fusion'
 import request from '@/utils/request'
-import type { WidgetConfigMap } from '@/types/workflow'
+import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+
+const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 
 const props = defineProps({
   config: {
@@ -30,7 +32,7 @@ const props = defineProps({
   }
 })
 
-const { model } = useModel(props.config.props.field.name || props.config.uid)
+const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
 
 const headers = computed(() => tryParse(props.config.props.headers) || undefined)
 const data = computed(() => tryParse(props.config.props.data) || undefined)
