@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 export type DataSourceInfo = {
   tables: {
@@ -7,7 +7,7 @@ export type DataSourceInfo = {
     comment?: string
     subTable?: boolean
   }[]
-  paginated: boolean
+  paginated: false | 'tabs' | 'steps'
 }
 
 export default defineStore('workflow', () => {

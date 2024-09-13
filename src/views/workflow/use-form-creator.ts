@@ -114,14 +114,14 @@ const useFormCreator = (
     const tableColumnsInfo = await getTableColumns(tables.map((table) => table.name))
 
     const wrapperSchema: Widget | Widget[] = paginated
-      ? {
-          ...cloneDeep(widgetInitConfig['tabs']),
+      ? ({
+          ...cloneDeep(widgetInitConfig[paginated]),
           uid: generateID(),
           props: {
-            ...cloneDeep(widgetInitConfig['tabs'].props),
+            ...cloneDeep(widgetInitConfig[paginated].props),
             children: []
           }
-        }
+        } as Widget)
       : []
 
     tableColumnsInfo.forEach((info) => {
@@ -130,7 +130,7 @@ const useFormCreator = (
       if (dataSource.tables.find((table) => table.name === info.table)?.subTable) {
         if (paginated) {
           // todo: add `dataTable`
-          ;(wrapperSchema as WidgetConfigMap['tabs']).props.children.push({
+          ;(wrapperSchema as WidgetConfigMap['tabs' | 'steps']).props.children.push({
             title: info.tableComment || info.table,
             widgets: [generateDataTableSchema(info, tableSchema)]
           })
@@ -140,7 +140,7 @@ const useFormCreator = (
         }
       } else {
         if (paginated) {
-          ;(wrapperSchema as WidgetConfigMap['tabs']).props.children.push({
+          ;(wrapperSchema as WidgetConfigMap['tabs' | 'steps']).props.children.push({
             title: info.tableComment || info.table,
             widgets: tableSchema
           })

@@ -21,7 +21,11 @@
           </ASelect>
         </AFormItem>
         <AFormItem :wrapper-col="{ style: { paddingLeft: '100px' } }">
-          <ACheckbox v-model:checked="state.paginated">分步模式</ACheckbox>
+          <ARadioGroup v-model:value="state.paginated">
+            <ARadioButton :value="false">不分页</ARadioButton>
+            <ARadioButton value="tabs">使用 tabs 分页</ARadioButton>
+            <ARadioButton value="steps">使用 steps 分页</ARadioButton>
+          </ARadioGroup>
         </AFormItem>
         <a-alert
           message="当对某个数据表启用子表模式时，该数据表将被视为子表，可以添加多条数据。当同时启用分页模式时，子表将采用数据表格形式渲染。"
@@ -80,8 +84,11 @@ const { params } = useRoute()
 
 const value = ref<SelectValue[]>([])
 
-const state = reactive({
-  tables: [] as DataSourceInfo['tables'],
+const state = reactive<{
+  tables: DataSourceInfo['tables']
+  paginated: false | 'tabs' | 'steps'
+}>({
+  tables: [],
   paginated: false
 })
 
