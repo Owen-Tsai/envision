@@ -31,5 +31,5 @@ defineProps({
 // todo: add configs for stepMode, which disables manual switching
 const current = ref(0)
 
-const parentFormConfig = inject<ParentFormPropType>(parentFieldKey)
+const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 </script>

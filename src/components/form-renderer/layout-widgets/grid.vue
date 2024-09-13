@@ -29,5 +29,5 @@ defineProps({
   }
 })
 
-const parentFormConfig = inject<ParentFormPropType>(parentFieldKey)
+const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 </script>

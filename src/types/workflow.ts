@@ -481,6 +481,7 @@ export type Schema = {
 export const injectionKey = Symbol('efk')
 export const formDataKey = Symbol('formData')
 export const parentFieldKey = Symbol('parentField')
+export const debugKey = Symbol('debug')
 
 export type FormCreatorCtx = {
   schema: Schema

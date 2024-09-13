@@ -67,7 +67,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, inject } from 'vue'
+import { computed, ref, inject, provide } from 'vue'
 import { tryParse } from '@/utils/fusion'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
 import { useWidget } from '../use-widgets'
@@ -79,7 +79,9 @@ import Steps from './layout-widgets/steps.vue'
 import Grid from './layout-widgets/grid.vue'
 import SubForm from './layout-widgets/sub-form.vue'
 import DataTable from './layout-widgets/data-table.vue'
-import { injectionKey, type Widget, type FormCreatorCtx } from '@/types/workflow'
+import { injectionKey, debugKey, type Widget, type FormCreatorCtx } from '@/types/workflow'
+
+provide<boolean>(debugKey, true)
 
 const { schema, selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 const { deleteWidget, duplicateWidget, selectWidget } = useWidget()
