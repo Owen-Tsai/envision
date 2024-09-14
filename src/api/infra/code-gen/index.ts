@@ -46,6 +46,7 @@ export type ColumnVO = {
   listOperationCondition?: string
   listOperationResult?: boolean
   htmlType?: string
+  dictTypeStr?: string
 }
 
 export type ListQueryParams = CommonQueryParams & {

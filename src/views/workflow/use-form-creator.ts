@@ -69,11 +69,11 @@ const generateWidgetSchema = (
     if (
       column.htmlType &&
       ['select', 'checkbox', 'radio'].includes(column.htmlType) &&
-      column.dictType
+      column.dictTypeStr
     ) {
       ;(ret as WidgetConfigMap['select' | 'radio' | 'checkbox']).props.options.type = 'dict'
       ;(ret as WidgetConfigMap['select' | 'radio' | 'checkbox']).props.options.dictType =
-        column.dictType
+        column.dictTypeStr
     }
 
     delete ret.icon
