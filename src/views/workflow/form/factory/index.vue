@@ -83,20 +83,29 @@
         v-show="activeTab === 2"
         direction="horizontal"
         class="h-full"
-        wrapper-class="h-full"
+        wrapper-class="h-full relative"
         style="background-color: var(--colorBgContainer)"
       >
-        <div class="schema-panel flex-shrink-1" v-html="highlightedSchema" />
+        <AButton
+          class="absolute top-4 right-4"
+          :icon="h(FullscreenOutlined)"
+          type="text"
+          @click="visible.schemaView = true"
+        />
+        <div class="schema-panel flex-shrink-1">
+          <div v-html="highlightedSchema" />
+        </div>
       </EScrollbar>
     </div>
     <PreviewModal v-model:open="visible.preview" :schema="schema" />
     <FuncModal v-model:open="visible.func" />
     <APIModal v-model:open="visible.api" />
+    <SchemaViewModal v-model:open="visible.schemaView" :content="highlightedSchema" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, computed, inject } from 'vue'
+import { h, ref, reactive, computed, inject } from 'vue'
 import { cloneDeep } from 'lodash'
 import Draggable from 'vuedraggable'
 import {
@@ -105,7 +114,8 @@ import {
   FileTextOutlined,
   CaretRightFilled,
   ApiOutlined,
-  FunctionOutlined
+  FunctionOutlined,
+  FullscreenOutlined
 } from '@ant-design/icons-vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import { generateID } from '@/utils/fusion'
@@ -116,6 +126,7 @@ import schemaToTree from './use-tree'
 import PreviewModal from './preview/index.vue'
 import FuncModal from './function/index.vue'
 import APIModal from './remote-api/index.vue'
+import SchemaViewModal from './schema-view/index.vue'
 import { injectionKey, type WidgetType, type Widget, type FormCreatorCtx } from '@/types/workflow'
 
 const toolbarTabs = [
@@ -128,7 +139,8 @@ const activeTab = ref(1)
 const visible = reactive({
   preview: false,
   func: false,
-  api: false
+  api: false,
+  schemaView: false
 })
 
 const buildingBlocks = computed(() => {

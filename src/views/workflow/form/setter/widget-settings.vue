@@ -57,7 +57,14 @@
           />
         </AFormItem>
         <AFormItem label="校验规则">
+          <ASelect
+            :options="validateTypeOpts"
+            v-model:value="state.validateType"
+            class="mb-4"
+            @change="(v) => onTypeChange(v as string | undefined)"
+          />
           <Codemirror
+            v-show="state.editorVisible"
             v-model="selectedWidget.props.field.rules"
             :tab-size="2"
             :extensions="extensions"
@@ -73,12 +80,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, computed } from 'vue'
+import { inject, computed, type Ref } from 'vue'
 import { find, kebabCase } from 'lodash'
 import { Codemirror } from 'vue-codemirror'
 import { labelAlignOpts, validationTriggerOpts } from './use-settings-data'
+import useValidator from './use-validator'
 import extensions from '../codemirror'
-import { injectionKey, type FormCreatorCtx } from '@/types/workflow'
+import { injectionKey, type FormCreatorCtx, type FormWidget } from '@/types/workflow'
 
 const { selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 const setterComps = import.meta.glob('./setting-fields/*.vue', { eager: true })
@@ -95,4 +103,6 @@ const comp = computed(() => {
     ) as any
   ).default
 })
+
+const { state, validateTypeOpts, onTypeChange } = useValidator(selectedWidget as Ref<FormWidget>)
 </script>
