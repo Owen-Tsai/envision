@@ -12,17 +12,29 @@
     :class="{ 'upload-list-inline': config.props.type === 'inline' }"
     :before-upload="beforeUpload"
   >
-    <AButton>选择文件</AButton>
+    <div
+      v-if="
+        (!config.props.maxCount || model.length < config.props.maxCount) &&
+        listType === 'picture-card'
+      "
+    >
+      <PlusOutlined style="font-size: 18px" />
+      <div class="mt-2">上传</div>
+    </div>
+    <AButton v-if="listType === 'picture'">选择文件</AButton>
   </AUpload>
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { inject, computed, type PropType } from 'vue'
 import { message, Upload, type UploadProps } from 'ant-design-vue'
+import { PlusOutlined } from '@ant-design/icons-vue'
 import useModel from '../use-model'
 import { tryParse } from '@/utils/fusion'
 import request from '@/utils/request'
-import type { WidgetConfigMap } from '@/types/workflow'
+import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+
+const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 
 const props = defineProps({
   config: {

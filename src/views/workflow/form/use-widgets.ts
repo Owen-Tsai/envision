@@ -335,6 +335,20 @@ export const widgetInitConfig: WidgetConfigMap = {
       }
     }
   },
+  image: {
+    type: 'image',
+    class: 'form',
+    name: '图片上传',
+    uid: '',
+    icon: getIcon('image'),
+    props: {
+      field: {
+        label: '图片上传'
+      },
+      accept: 'image/*',
+      type: 'grid'
+    }
+  },
   grid: {
     type: 'grid',
     class: 'layout',
@@ -344,7 +358,7 @@ export const widgetInitConfig: WidgetConfigMap = {
     props: {
       field: {},
       gutter: 16,
-      align: 'middle',
+      align: 'top',
       children: [
         { span: 12, widgets: [] },
         { span: 12, widgets: [] }

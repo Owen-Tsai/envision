@@ -280,6 +280,7 @@ export type WPropsUpload = {
 } & WPropsCommon
 
 export type WPropsImage = {
+  accept?: string
   type?: 'list' | 'grid' | 'inline'
   action?: string
   beforeUpload?: string
@@ -287,18 +288,6 @@ export type WPropsImage = {
   headers?: string
   maxCount?: number
   maxSize?: number
-  method?: string
-  name?: string
-  withCredentials?: boolean
-} & WPropsCommon
-
-export type WPropsIdCard = {
-  type?: 'front' | 'back' | 'default'
-  action?: string
-  beforeUpload?: string
-  data?: string
-  headers?: string
-  maxCount?: number
   method?: string
   name?: string
   withCredentials?: boolean
