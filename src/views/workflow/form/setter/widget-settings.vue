@@ -43,6 +43,9 @@
       <component :is="comp" :opts="selectedWidget.props" />
 
       <template v-if="selectedWidget.class === 'form'">
+        <AFormItem label="是否必填" name="required" class="setter-boolean-field">
+          <ASwitch v-model:checked="selectedWidget.props.field.required" />
+        </AFormItem>
         <!-- rules -->
         <AFormItem label="校验时机" extra="组件可能不响应全部校验时机">
           <ASelect

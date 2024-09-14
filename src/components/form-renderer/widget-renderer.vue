@@ -18,6 +18,8 @@
     :wrapper-col="wrapperCol"
     :extra="widget.props.field?.extra"
     :rules="rules"
+    :required="widget.props.field?.required"
+    :validate-trigger="widget.props.field?.validateTrigger"
   >
     <component :is="widgetToRender" :config="widget" />
   </AFormItem>
