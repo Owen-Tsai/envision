@@ -8,6 +8,7 @@ export type DataSourceInfo = {
     subTable?: boolean
   }[]
   paginated: false | 'tabs' | 'steps'
+  column: false | 2 | 3
 }
 
 export default defineStore('workflow', () => {

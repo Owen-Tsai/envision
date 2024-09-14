@@ -26,8 +26,7 @@ const generateDataTableSchema = (
   widgets: Widget[]
 ): WidgetConfigMap['dataTable'] => {
   const columns = info.columns.filter((column) => column.listOperation)
-
-  return {
+  const ret = {
     ...cloneDeep(widgetInitConfig.dataTable),
     uid: generateID(),
     props: {
@@ -44,6 +43,10 @@ const generateDataTableSchema = (
       }))
     }
   }
+
+  delete ret.icon
+
+  return ret
 }
 
 const generateWidgetSchema = (
@@ -96,6 +99,21 @@ const generateTableSchema = (columnsInfo: TableColumnsVO) => {
   return tableSchema
 }
 
+// generate grid children based on passed in widgets
+const generateGridSchema = (widgets: Widget[], count: 2 | 3) => {
+  const cols: Array<Widget[]> = []
+  widgets.forEach((widget, idx) => {
+    for (let i = 0; i < count; i++) {
+      if (idx % count === i) {
+        if (!cols[i]) cols[i] = []
+        cols[i].push(widget)
+      }
+    }
+  })
+
+  return cols
+}
+
 const useFormCreator = (
   appId: string
 ): { schema: Ref<Schema>; initFormCreator: () => Promise<void>; loading: Ref<boolean> } => {
@@ -110,7 +128,7 @@ const useFormCreator = (
       return defaultInitSchema
     }
 
-    const { paginated, tables } = dataSource
+    const { paginated, tables, column } = dataSource
     const tableColumnsInfo = await getTableColumns(tables.map((table) => table.name))
 
     const wrapperSchema: Widget | Widget[] = paginated
@@ -125,11 +143,35 @@ const useFormCreator = (
       : []
 
     tableColumnsInfo.forEach((info) => {
-      const tableSchema = generateTableSchema(info)
+      const gridSchema: WidgetConfigMap['grid'] | null = column
+        ? {
+            ...cloneDeep(widgetInitConfig.grid),
+            uid: generateID(),
+            props: {
+              ...cloneDeep(widgetInitConfig.grid.props),
+              children: []
+            }
+          }
+        : null
+
+      delete gridSchema?.icon
+      let tableSchema = generateTableSchema(info)
+      if (column) {
+        const colWidgets = generateGridSchema(tableSchema, column)
+
+        colWidgets.forEach((widgets) => {
+          ;(gridSchema as WidgetConfigMap['grid']).props.children.push({
+            span: 24 / column,
+            widgets
+          })
+        })
+
+        tableSchema = [gridSchema!]
+        console.log(tableSchema)
+      }
 
       if (dataSource.tables.find((table) => table.name === info.table)?.subTable) {
         if (paginated) {
-          // todo: add `dataTable`
           ;(wrapperSchema as WidgetConfigMap['tabs' | 'steps']).props.children.push({
             title: info.tableComment || info.table,
             widgets: [generateDataTableSchema(info, tableSchema)]
@@ -158,6 +200,8 @@ const useFormCreator = (
             title: info.tableComment || info.table,
             widgets: tableSchema
           })
+
+          delete (wrapperSchema as WidgetConfigMap['tabs' | 'steps']).icon
         } else {
           ;(wrapperSchema as Widget[]).push(...tableSchema)
         }

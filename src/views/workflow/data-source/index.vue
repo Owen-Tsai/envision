@@ -20,11 +20,18 @@
             </template>
           </ASelect>
         </AFormItem>
-        <AFormItem :wrapper-col="{ style: { paddingLeft: '100px' } }">
+        <AFormItem label="表单分页">
           <ARadioGroup v-model:value="state.paginated">
             <ARadioButton :value="false">不分页</ARadioButton>
             <ARadioButton value="tabs">使用 tabs 分页</ARadioButton>
             <ARadioButton value="steps">使用 steps 分页</ARadioButton>
+          </ARadioGroup>
+        </AFormItem>
+        <AFormItem label="表单分栏">
+          <ARadioGroup v-model:value="state.column">
+            <ARadioButton :value="false">不分栏</ARadioButton>
+            <ARadioButton :value="2">两栏</ARadioButton>
+            <ARadioButton :value="3">三栏 + 纵向表单组件布局</ARadioButton>
           </ARadioGroup>
         </AFormItem>
         <a-alert
@@ -84,12 +91,10 @@ const { params } = useRoute()
 
 const value = ref<SelectValue[]>([])
 
-const state = reactive<{
-  tables: DataSourceInfo['tables']
-  paginated: false | 'tabs' | 'steps'
-}>({
+const state = reactive<DataSourceInfo>({
   tables: [],
-  paginated: false
+  paginated: false,
+  column: false
 })
 
 useSortable(dragWrapperEl, toRef(state, 'tables'), {
@@ -129,6 +134,7 @@ if (params.appId) {
   if (dataSource) {
     state.tables = dataSource.tables
     state.paginated = dataSource.paginated
+    state.column = dataSource.column
     value.value = dataSource.tables.map((table) => ({
       label: table.name,
       value: table.name,
