@@ -78,7 +78,7 @@ type JsonOptionType = {
 
 export type WPropsCommon = {
   field: FieldProps
-  event?: EventCbkProps
+  event: EventCbkProps
 } & CommonPropsBase
 
 // #region form widgets

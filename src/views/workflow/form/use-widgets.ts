@@ -107,6 +107,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '输入框'
       },
+      event: {},
       prefixType: 'text',
       suffixType: 'text'
     },
@@ -120,7 +121,8 @@ export const widgetInitConfig: WidgetConfigMap = {
     props: {
       field: {
         label: '文本域'
-      }
+      },
+      event: {}
     },
     uid: '',
     icon: getIcon('textarea')
@@ -133,6 +135,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '数字输入框'
       },
+      event: {},
       prefixType: 'text'
     },
     uid: '',
@@ -146,6 +149,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '下拉选择器'
       },
+      event: {},
       options: {
         type: 'static',
         staticData: [
@@ -166,6 +170,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '复选框'
       },
+      event: {},
       options: {
         type: 'static',
         staticData: [
@@ -185,6 +190,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '单选框'
       },
+      event: {},
       options: {
         type: 'static',
         staticData: [
@@ -206,6 +212,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '级联选择器'
       },
+      event: {},
       options: {
         type: 'static',
         staticData: `[{"label":"山东省","value":"37","children":[{"label":"济南市","value":"3701","children":[{"label":"市中区","value":"370101"},{"label":"历下区","value":"370102"}]},{"label":"青岛市","value":"3702","children":[{"label":"市北区","value":"370203"},{"label":"市南区","value":"370202"}]}]},{"label":"北京市","value":"11","children":[{"label":"东城区","value":"110101"},{"label":"西城区","value":"110102"}]}]`
@@ -221,7 +228,8 @@ export const widgetInitConfig: WidgetConfigMap = {
     props: {
       field: {
         label: '滑动输入条'
-      }
+      },
+      event: {}
     }
   },
   rate: {
@@ -234,6 +242,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '评分'
       },
+      event: {},
       characterType: 'icon',
       allowClear: true
     }
@@ -247,7 +256,8 @@ export const widgetInitConfig: WidgetConfigMap = {
     props: {
       field: {
         label: '开关'
-      }
+      },
+      event: {}
     }
   },
   datePicker: {
@@ -260,6 +270,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '日期选择器'
       },
+      event: {},
       picker: 'date',
       allowClear: true
     }
@@ -274,6 +285,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '日期范围选择器'
       },
+      event: {},
       picker: 'date',
       allowClear: true,
       defaultValue: [dayjs(), dayjs().add(1, 'day')],
@@ -289,7 +301,8 @@ export const widgetInitConfig: WidgetConfigMap = {
     props: {
       field: {
         label: '时间选择器'
-      }
+      },
+      event: {}
     }
   },
   timeRangePicker: {
@@ -302,6 +315,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '时间范围选择器'
       },
+      event: {},
       defaultValue: [dayjs(), dayjs().add(1, 'hour')],
       placeholder: ['', '']
     }
@@ -316,6 +330,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '树形选择器'
       },
+      event: {},
       treeData: {
         type: 'static',
         staticData:
@@ -332,7 +347,8 @@ export const widgetInitConfig: WidgetConfigMap = {
     props: {
       field: {
         label: '文件上传'
-      }
+      },
+      event: {}
     }
   },
   image: {
@@ -345,6 +361,7 @@ export const widgetInitConfig: WidgetConfigMap = {
       field: {
         label: '图片上传'
       },
+      event: {},
       accept: 'image/*',
       type: 'grid'
     }
@@ -421,6 +438,7 @@ export const widgetInitConfig: WidgetConfigMap = {
         name: '',
         label: '按钮'
       },
+      event: {},
       label: '按钮'
     }
   },

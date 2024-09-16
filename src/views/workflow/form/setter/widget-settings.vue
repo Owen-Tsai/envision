@@ -57,19 +57,24 @@
           />
         </AFormItem>
         <AFormItem label="校验规则">
-          <ASelect
-            :options="validateTypeOpts"
-            v-model:value="state.validateType"
-            class="mb-4"
-            @change="(v) => onTypeChange(v as string | undefined)"
-          />
+          <AFormItemRest>
+            <ASelect
+              :options="validateTypeOpts"
+              v-model:value="state.validateType"
+              @change="(v) => onTypeChange(v as string | undefined)"
+            />
+          </AFormItemRest>
           <Codemirror
             v-show="state.editorVisible"
             v-model="selectedWidget.props.field.rules"
             :tab-size="2"
             :extensions="extensions"
-            :style="{ height: '240px', width: '100%' }"
+            :style="{ height: '240px', width: '100%', marginTop: '16px' }"
           />
+        </AFormItem>
+        <!-- event handlers -->
+        <AFormItem label="动作列表">
+          <ActionConfig v-model:widget="selectedWidget" />
         </AFormItem>
       </template>
     </AForm>
@@ -86,6 +91,7 @@ import { Codemirror } from 'vue-codemirror'
 import { labelAlignOpts, validationTriggerOpts } from './use-settings-data'
 import useValidator from './use-validator'
 import extensions from '../codemirror'
+import ActionConfig from './action-settings.vue'
 import { injectionKey, type FormCreatorCtx, type FormWidget } from '@/types/workflow'
 
 const { selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
