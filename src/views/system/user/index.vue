@@ -243,6 +243,17 @@ import RoleFormModal from './roles-form.vue'
 import useDeptTree from './use-dept-tree'
 import { columns, useUserTable } from './use-user-table'
 import useActions from './use-actions'
+// layout specific
+const layout = import.meta.env.VITE_DEFAULT_LAYOUT
+const style = ref<{ minHeight: string; top: string }>({
+  minHeight: 'calc(100vh - 130px)',
+  top: '110px'
+})
+
+if (layout === 'split') {
+  style.value.minHeight = 'calc(100vh - 68px)'
+  style.value.top = '52px'
+}
 
 const filterForm = ref()
 
@@ -271,7 +282,7 @@ defineOptions({ name: 'SystemUser' })
 <style lang="scss" scoped>
 .dept-card {
   @apply sticky;
-  top: 110px;
-  min-height: calc(100vh - 130px);
+  top: v-bind('style.top');
+  min-height: v-bind('style.minHeight');
 }
 </style>

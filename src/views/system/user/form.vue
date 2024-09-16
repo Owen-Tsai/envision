@@ -114,6 +114,7 @@ const formData = ref<UserVO>({})
 const open = ref(true)
 
 const [systemUserSex, commonStatus] = useDict('system_user_sex', 'common_status')
+console.log(systemUserSex, commonStatus)
 
 const { data, pending } = useRequest(getDeptTree, { immediate: true })
 
