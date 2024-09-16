@@ -94,6 +94,7 @@ const submit = async () => {
     }
 
     emit('success')
+    open.value = false
   } catch (e) {
     //
   } finally {

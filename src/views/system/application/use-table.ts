@@ -13,8 +13,8 @@ export const columns: TableProps['columns'] = [
   { title: '应用名称', dataIndex: 'name', key: 'name', ellipsis: true },
   { title: '应用类别', dataIndex: 'type', key: 'type' },
   { title: '创建人', width: 120, dataIndex: 'creator' },
-  { title: '备注', width: 200, dataIndex: 'remark', ellipsis: true },
-  { title: '上架状态', width: 90, dataIndex: 'published', key: 'published' },
+  { title: '应用描述', width: 200, dataIndex: 'description', ellipsis: true },
+  { title: '上架状态', width: 120, dataIndex: 'published', key: 'published' },
   {
     title: '创建时间',
     minWidth: 120,

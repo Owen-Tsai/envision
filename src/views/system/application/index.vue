@@ -80,8 +80,8 @@
           @change="onChange"
         >
           <template #bodyCell="scope: TableScope<ApplicationVO>">
-            <template v-if="scope?.column.key === 'published'">
-              <EDictTag :dict-object="statusOpts" :value="scope?.text" />
+            <template v-if="scope?.column.key === 'type'">
+              <EDictTag :dict-object="typeOpts" :value="scope.record.type!" />
             </template>
             <template v-if="scope?.column.key === 'published'">
               <ASwitch
@@ -154,7 +154,9 @@ import type { ApplicationVO } from '@/api/system/application'
 const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
-const [statusOpts] = useDict('system_appication_status')
+const [typeOpts, statusOpts] = useDict('system_application_type', 'system_application_status')
+
+console.log(typeOpts, statusOpts)
 
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
