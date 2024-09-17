@@ -28,9 +28,16 @@
           </AButton>
         </ATooltip>
         <ATooltip title="预览表单" placement="right" :arrow="false">
-          <AButton type="primary" @click="visible.preview = true">
+          <AButton @click="visible.preview = true">
             <template #icon>
               <CaretRightFilled />
+            </template>
+          </AButton>
+        </ATooltip>
+        <ATooltip title="保存并继续下一步" placement="right" :arrow="false">
+          <AButton type="primary" @click="onSave">
+            <template #icon>
+              <DeliveredProcedureOutlined />
             </template>
           </AButton>
         </ATooltip>
@@ -108,6 +115,7 @@
 import { h, ref, reactive, computed, inject } from 'vue'
 import { cloneDeep } from 'lodash'
 import Draggable from 'vuedraggable'
+import emitter from '@/utils/emitter'
 import {
   PartitionOutlined,
   BuildOutlined,
@@ -115,7 +123,8 @@ import {
   CaretRightFilled,
   ApiOutlined,
   FunctionOutlined,
-  FullscreenOutlined
+  FullscreenOutlined,
+  DeliveredProcedureOutlined
 } from '@ant-design/icons-vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import { generateID } from '@/utils/fusion'
@@ -165,6 +174,11 @@ const cloneWidget = (widget: Widget) => {
   delete ret.icon
   ret.uid = id
   return ret
+}
+
+const onSave = () => {
+  // todo: save to DB:schema
+  emitter.emit('finished')
 }
 </script>
 

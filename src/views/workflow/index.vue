@@ -29,6 +29,7 @@
       <DataSourceConfig v-if="step === 0" @finished="onSetupFinish" />
       <Loader v-if="step === 1 && loading" />
       <FormCreator v-if="step === 1 && !loading" :schema="schema" class="h-full" />
+      <FlowCreator v-if="step === 2" />
     </div>
   </div>
 </template>
@@ -37,6 +38,7 @@
 import { ref, computed, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 import { Modal, type StepsProps } from 'ant-design-vue'
+import emitter from '@/utils/emitter'
 import { RollbackOutlined } from '@ant-design/icons-vue'
 import useFormCreator from './use-form-creator'
 import type { Schema } from '@/types/workflow'
@@ -44,6 +46,7 @@ import logo from '~img/company-logo.svg'
 import Loader from '@/components/loading/index.vue'
 import FormCreator from './form/index.vue'
 import DataSourceConfig from './data-source/index.vue'
+import FlowCreator from './flow/index.vue'
 
 const title = import.meta.env.VITE_APP_SHORT_TITLE
 
@@ -61,6 +64,10 @@ const onSetupFinish = () => {
   initFormCreator()
   step.value = 1
 }
+
+emitter.on('finished', () => {
+  step.value = 2
+})
 </script>
 
 <style lang="scss" scoped>
