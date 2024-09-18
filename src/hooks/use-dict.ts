@@ -2,12 +2,15 @@ import { ref, type Ref } from 'vue'
 import useDictStore from '@/stores/dict'
 import { getDictData, type DictDataEntry } from '@/api/system/dict/data'
 
-const useDict = (...args: string[]) => {
+// todo: add field `useString` in dictType table
+// it should be returned together with dict data
+
+export const useDict = (...args: string[]) => {
   const dictStore = useDictStore()
 
   const result = args.map((dictType) => {
     if (!dictType) {
-      return
+      return []
     }
     const dict = dictStore.getDict(dictType)
     const data = ref(dict || []) as Ref<DictDataEntry[]>
@@ -23,6 +26,34 @@ const useDict = (...args: string[]) => {
           convertedData.push({ ...entry })
         })
         data.value = convertedData
+        dictStore.setDict(dictType, convertedData)
+      })
+    }
+
+    return data
+  })
+
+  return result
+}
+
+export const useStringDict = (...args: string[]) => {
+  const dictStore = useDictStore()
+
+  const result = args.map((dictType) => {
+    if (!dictType) {
+      return []
+    }
+    const dict = dictStore.getDict(dictType)
+    const data = ref(dict || []) as Ref<DictDataEntry[]>
+    if (!dict) {
+      getDictData(dictType).then((res) => {
+        const convertedData: DictDataEntry[] = []
+        res.forEach((item) => {
+          const entry: DictDataEntry = { ...item }
+          convertedData.push({ ...entry })
+        })
+        data.value = convertedData
+        dictStore.setDict(dictType, convertedData)
       })
     }
 
