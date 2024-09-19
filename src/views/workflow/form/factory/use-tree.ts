@@ -1,4 +1,4 @@
-import type { Widget } from '@/types/workflow'
+import type { Widget } from '@/types/workflow/form'
 
 type Tree = {
   label: string

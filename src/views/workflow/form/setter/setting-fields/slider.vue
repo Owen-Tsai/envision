@@ -62,7 +62,7 @@
 <script lang="ts" setup>
 import { ref, computed, type PropType } from 'vue'
 import { tooltipPlacementOpts } from '../use-settings-data'
-import type { WPropsSlider } from '@/types/workflow'
+import type { WPropsSlider } from '@/types/workflow/form'
 
 const props = defineProps({
   opts: {

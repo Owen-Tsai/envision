@@ -61,7 +61,7 @@ import { message } from 'ant-design-vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { Codemirror } from 'vue-codemirror'
 import { generateID } from '@/utils/fusion'
-import { injectionKey, type FormCreatorCtx } from '@/types/workflow'
+import { injectionKey, type FormCreatorCtx } from '@/types/workflow/form'
 import extensions from '../../codemirror'
 
 const props = defineProps({

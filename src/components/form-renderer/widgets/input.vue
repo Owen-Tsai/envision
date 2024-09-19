@@ -22,7 +22,11 @@
 import { inject, type PropType } from 'vue'
 import AddonRenderer from '../addon-renderer.vue'
 import useModel from '../use-model'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 
 const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 

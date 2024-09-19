@@ -48,7 +48,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
-import type { WPropsSteps } from '@/types/workflow'
+import type { WPropsSteps } from '@/types/workflow/form'
 
 const typeOpts = [
   { label: '默认', value: 'default' },

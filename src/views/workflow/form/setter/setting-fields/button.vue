@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, type PropType } from 'vue'
 import IconSelect from '@/components/icon-select/index.vue'
-import type { WPropsButton } from '@/types/workflow'
+import type { WPropsButton } from '@/types/workflow/form'
 
 const typeOpts = [
   { value: 'default' },

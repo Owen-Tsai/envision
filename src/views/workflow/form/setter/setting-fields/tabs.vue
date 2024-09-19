@@ -35,7 +35,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
-import type { WPropsTabs } from '@/types/workflow'
+import type { WPropsTabs } from '@/types/workflow/form'
 
 const typeOpts = [
   { label: '线性', value: 'line' },

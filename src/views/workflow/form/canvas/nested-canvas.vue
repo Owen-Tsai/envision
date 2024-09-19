@@ -60,7 +60,7 @@ import Steps from './layout-widgets/steps.vue'
 import Grid from './layout-widgets/grid.vue'
 import SubForm from './layout-widgets/sub-form.vue'
 import DataTable from './layout-widgets/data-table.vue'
-import type { Widget } from '@/types/workflow'
+import type { Widget } from '@/types/workflow/form'
 
 defineOptions({
   name: 'NestedCanvas'

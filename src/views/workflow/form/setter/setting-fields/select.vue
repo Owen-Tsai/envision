@@ -119,7 +119,7 @@ import { CloseOutlined } from '@ant-design/icons-vue'
 import { optionTypeOpts, popoverPlacementOpts } from '../use-settings-data'
 import { getPlainDictTypeList, type DictTypeVO } from '@/api/system/dict/type'
 import TagInput from '@/components/tag-input/index.vue'
-import type { WPropsSelect } from '@/types/workflow'
+import type { WPropsSelect } from '@/types/workflow/form'
 
 const multiple = ref(false)
 const dictTypes = ref<DictTypeVO[]>([])

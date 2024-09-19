@@ -61,7 +61,7 @@ import { CloseOutlined } from '@ant-design/icons-vue'
 import { optionTypeOpts } from '../use-settings-data'
 import { getPlainDictTypeList, type DictTypeVO } from '@/api/system/dict/type'
 import TagInput from '@/components/tag-input/index.vue'
-import type { WPropsCheckbox } from '@/types/workflow'
+import type { WPropsCheckbox } from '@/types/workflow/form'
 
 const dictTypes = ref<DictTypeVO[]>([])
 

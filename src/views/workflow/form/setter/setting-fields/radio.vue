@@ -67,7 +67,7 @@ import type { CheckboxOptionType } from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { optionTypeOpts } from '../use-settings-data'
 import { getPlainDictTypeList, type DictTypeVO } from '@/api/system/dict/type'
-import type { WPropsRadio } from '@/types/workflow'
+import type { WPropsRadio } from '@/types/workflow/form'
 
 const appearance = [
   { label: '默认', value: 'default' },

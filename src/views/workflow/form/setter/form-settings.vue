@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { inject } from 'vue'
 import { labelAlignOpts, layoutOpts } from './use-settings-data'
-import { injectionKey, type FormCreatorCtx } from '@/types/workflow'
+import { injectionKey, type FormCreatorCtx } from '@/types/workflow/form'
 
 const { schema } = inject<FormCreatorCtx>(injectionKey)!
 </script>

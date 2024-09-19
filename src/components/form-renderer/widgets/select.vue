@@ -22,7 +22,11 @@
 import { ref, computed, watch, inject, type PropType } from 'vue'
 import { type SelectProps } from 'ant-design-vue'
 import { tryParse, filterOption } from '@/utils/fusion'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 import useDict from '@/hooks/use-dict'
 import useModel from '../use-model'
 

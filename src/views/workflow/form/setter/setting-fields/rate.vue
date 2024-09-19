@@ -41,7 +41,7 @@
 import { computed, type PropType } from 'vue'
 import { inputAddonOpts } from '../use-settings-data'
 import IconSelect from '@/components/icon-select/index.vue'
-import type { WPropsRate } from '@/types/workflow'
+import type { WPropsRate } from '@/types/workflow/form'
 
 const props = defineProps({
   opts: {

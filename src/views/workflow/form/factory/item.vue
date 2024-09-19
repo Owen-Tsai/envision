@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { type PropType } from 'vue'
-import type { Widget } from '@/types/workflow'
+import type { Widget } from '@/types/workflow/form'
 
 defineProps({
   widget: {

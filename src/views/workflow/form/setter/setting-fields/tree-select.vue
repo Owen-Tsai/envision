@@ -110,7 +110,7 @@ import { TreeSelect } from 'ant-design-vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { optionTypeOmitDictOpts, popoverPlacementOpts } from '../use-settings-data'
 import TagInput from '@/components/tag-input/index.vue'
-import type { WPropsTreeSelect } from '@/types/workflow'
+import type { WPropsTreeSelect } from '@/types/workflow/form'
 
 const options = [
   { label: '显示所有选中节点', value: TreeSelect.SHOW_ALL },

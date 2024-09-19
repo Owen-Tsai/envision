@@ -45,7 +45,7 @@
 import { computed, type PropType } from 'vue'
 import { Codemirror } from 'vue-codemirror'
 import extensions from '../../codemirror'
-import type { WPropsUpload } from '@/types/workflow'
+import type { WPropsUpload } from '@/types/workflow/form'
 
 const props = defineProps({
   opts: {

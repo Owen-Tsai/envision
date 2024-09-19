@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
 import NestedCanvas from '../nested-canvas.vue'
-import type { WidgetConfigMap } from '@/types/workflow'
+import type { WidgetConfigMap } from '@/types/workflow/form'
 
 const props = defineProps({
   element: {

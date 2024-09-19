@@ -19,7 +19,7 @@
 import { type PropType } from 'vue'
 import NestedCanvas from '../nested-canvas.vue'
 import { constructStepItems } from '@/utils/workflow'
-import type { WidgetConfigMap } from '@/types/workflow'
+import type { WidgetConfigMap } from '@/types/workflow/form'
 
 defineProps({
   element: {

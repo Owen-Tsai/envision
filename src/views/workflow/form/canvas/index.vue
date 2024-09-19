@@ -79,7 +79,7 @@ import Steps from './layout-widgets/steps.vue'
 import Grid from './layout-widgets/grid.vue'
 import SubForm from './layout-widgets/sub-form.vue'
 import DataTable from './layout-widgets/data-table.vue'
-import { injectionKey, debugKey, type Widget, type FormCreatorCtx } from '@/types/workflow'
+import { injectionKey, debugKey, type Widget, type FormCreatorCtx } from '@/types/workflow/form'
 
 provide<boolean>(debugKey, true)
 

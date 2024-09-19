@@ -20,7 +20,11 @@ import { ref, h, computed, inject, type PropType } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import WidgetRenderer from '../widget-renderer.vue'
 import type { TableProps } from 'ant-design-vue'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 
 const props = defineProps({
   widget: {

@@ -59,7 +59,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import { popoverPlacementOpts, datePickerModeOpts } from '../use-settings-data'
-import type { WPropsDateRangePicker } from '@/types/workflow'
+import type { WPropsDateRangePicker } from '@/types/workflow/form'
 
 const props = defineProps({
   opts: {

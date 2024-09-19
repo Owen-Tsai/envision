@@ -30,7 +30,7 @@ import {
   parentFieldKey,
   type WidgetConfigMap,
   type ParentFormPropType
-} from '@/types/workflow'
+} from '@/types/workflow/form'
 import useModel from '../use-model'
 
 const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)

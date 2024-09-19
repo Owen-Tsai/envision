@@ -32,7 +32,11 @@ import { PlusOutlined } from '@ant-design/icons-vue'
 import useModel from '../use-model'
 import { tryParse } from '@/utils/fusion'
 import request from '@/utils/request'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 
 const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 

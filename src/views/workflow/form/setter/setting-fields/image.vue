@@ -42,7 +42,7 @@
 import { computed, type PropType } from 'vue'
 import { Codemirror } from 'vue-codemirror'
 import extensions from '../../codemirror'
-import type { WPropsImage } from '@/types/workflow'
+import type { WPropsImage } from '@/types/workflow/form'
 
 const typeOptions = [
   { label: '图片墙', value: 'grid' },

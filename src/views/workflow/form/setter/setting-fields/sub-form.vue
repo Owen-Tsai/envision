@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import type { WPropsSubForm } from '@/types/workflow'
+import type { WPropsSubForm } from '@/types/workflow/form'
 
 const props = defineProps({
   opts: {

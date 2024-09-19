@@ -1,5 +1,5 @@
 import { computed, inject } from 'vue'
-import { formDataKey, type FormDataCtx, type ParentFormPropType } from '@/types/workflow'
+import { formDataKey, type FormDataCtx, type ParentFormPropType } from '@/types/workflow/form'
 
 const useModel = (field: string, parentFormConfig?: ParentFormPropType) => {
   const ctx = inject<FormDataCtx>(formDataKey)

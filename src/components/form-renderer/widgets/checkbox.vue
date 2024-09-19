@@ -29,7 +29,7 @@ import {
   debugKey,
   type WidgetConfigMap,
   type ParentFormPropType
-} from '@/types/workflow'
+} from '@/types/workflow/form'
 
 const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 const isDebugMode = inject<boolean>(debugKey, false)

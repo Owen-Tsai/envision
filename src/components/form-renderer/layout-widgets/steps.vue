@@ -32,7 +32,11 @@
 import { ref, inject, type PropType } from 'vue'
 import WidgetRenderer from '../widget-renderer.vue'
 import { constructStepItems } from '@/utils/workflow'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 
 defineProps({
   widget: {

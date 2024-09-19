@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
-import type { WPropsSwitch } from '@/types/workflow'
+import type { WPropsSwitch } from '@/types/workflow/form'
 
 const props = defineProps({
   opts: {

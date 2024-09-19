@@ -43,7 +43,7 @@ import { useWidget } from '../../use-widgets'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
 import { camelCase } from 'lodash'
 import { tryParse } from '@/utils/fusion'
-import { type FormWidget, type Widget } from '@/types/workflow'
+import { type FormWidget, type Widget } from '@/types/workflow/form'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })
 

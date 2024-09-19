@@ -85,7 +85,7 @@ import { ref, computed, type PropType } from 'vue'
 import { Cascader } from 'ant-design-vue'
 import { optionTypeOpts, popoverPlacementOpts } from '../use-settings-data'
 import { getPlainDictTypeList, type DictTypeVO } from '@/api/system/dict/type'
-import type { WPropsCascader } from '@/types/workflow'
+import type { WPropsCascader } from '@/types/workflow/form'
 
 const showCheckedStrategyOpts = [
   { label: '仅显示叶子节点', value: Cascader.SHOW_CHILD },

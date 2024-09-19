@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 import { getCurrentInstance, type PropType } from 'vue'
-import type { WidgetConfigMap } from '@/types/workflow'
+import type { WidgetConfigMap } from '@/types/workflow/form'
 
 defineProps({
   config: {

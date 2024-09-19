@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash'
 import { generateID } from '@/utils/fusion'
-import type { Widget, WPropsSubFormEntry, LayoutWidget } from '@/types/workflow'
+import type { Widget, WPropsSubFormEntry, LayoutWidget } from '@/types/workflow/form'
 
 export const getDuplicatedWidgets = (entry: WPropsSubFormEntry[]): Widget[] => {
   const widgetsToClone = entry[0].widgets

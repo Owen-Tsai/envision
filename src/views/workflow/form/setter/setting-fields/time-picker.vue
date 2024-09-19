@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import { popoverPlacementOpts, datePickerModeOpts } from '../use-settings-data'
-import type { WPropsTimePicker } from '@/types/workflow'
+import type { WPropsTimePicker } from '@/types/workflow/form'
 
 const props = defineProps({
   opts: {

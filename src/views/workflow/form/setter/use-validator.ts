@@ -1,7 +1,7 @@
 import { reactive, ref, computed, type Ref } from 'vue'
 import dayjs from 'dayjs'
 import type { SelectProps, FormItemProps } from 'ant-design-vue'
-import type { FormWidget } from '@/types/workflow'
+import type { FormWidget } from '@/types/workflow/form'
 
 const useValidator = (selectedWidet: Ref<FormWidget | undefined>) => {
   const validateTypeOpts: SelectProps['options'] = [

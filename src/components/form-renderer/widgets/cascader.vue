@@ -20,7 +20,11 @@ import { ref, computed, inject, type PropType } from 'vue'
 import request from '@/utils/request'
 import useModel from '../use-model'
 import { type CascaderProps } from 'ant-design-vue'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 import { tryParse } from '@/utils/fusion'
 
 const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)

@@ -25,7 +25,11 @@ import { ref, inject, computed, type PropType } from 'vue'
 import { tryParse } from '@/utils/fusion'
 import useModel from '../use-model'
 import type { TreeSelectProps } from 'ant-design-vue'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 
 const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 

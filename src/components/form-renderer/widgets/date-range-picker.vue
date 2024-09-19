@@ -17,7 +17,11 @@
 
 <script lang="ts" setup>
 import { inject, type PropType } from 'vue'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 import useModel from '../use-model'
 
 const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)

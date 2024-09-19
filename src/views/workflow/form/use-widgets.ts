@@ -2,14 +2,14 @@ import { inject } from 'vue'
 import dayjs from 'dayjs'
 import { camelCase, remove, cloneDeep } from 'lodash'
 import { generateID } from '@/utils/fusion'
-import { injectionKey } from '@/types/workflow'
+import { injectionKey } from '@/types/workflow/form'
 import type {
   FormCreatorCtx,
   WidgetType,
   WidgetConfigMap,
   Widget,
   LayoutWidget
-} from '@/types/workflow'
+} from '@/types/workflow/form'
 import defaultIcon from '@/components/efk-icons/custom.vue'
 
 const icons = import.meta.glob('@/components/efk-icons/*.vue', { eager: true })

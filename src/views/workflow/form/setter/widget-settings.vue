@@ -92,7 +92,7 @@ import { labelAlignOpts, validationTriggerOpts } from './use-settings-data'
 import useValidator from './use-validator'
 import extensions from '../codemirror'
 import ActionConfig from './action-settings.vue'
-import { injectionKey, type FormCreatorCtx, type FormWidget } from '@/types/workflow'
+import { injectionKey, type FormCreatorCtx, type FormWidget } from '@/types/workflow/form'
 
 const { selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 const setterComps = import.meta.glob('./setting-fields/*.vue', { eager: true })

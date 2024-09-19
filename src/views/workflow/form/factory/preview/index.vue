@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
 import FormRenderer from '@/components/form-renderer/index.vue'
-import type { Schema } from '@/types/workflow'
+import type { Schema } from '@/types/workflow/form'
 
 const props = defineProps({
   open: {

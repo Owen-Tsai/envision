@@ -20,7 +20,11 @@
 <script setup lang="ts">
 import { inject, type PropType } from 'vue'
 import WidgetRenderer from '../widget-renderer.vue'
-import { parentFieldKey, type WidgetConfigMap, type ParentFormPropType } from '@/types/workflow'
+import {
+  parentFieldKey,
+  type WidgetConfigMap,
+  type ParentFormPropType
+} from '@/types/workflow/form'
 
 defineProps({
   widget: {

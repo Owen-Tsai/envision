@@ -9,8 +9,13 @@
       <div class="header">
         <div class="font-bold">{{ evtName }}</div>
         <div class="flex items-center mt-1">
-          <AButton type="text" size="small" :icon="h(CodeOutlined)" />
-          <AButton type="text" size="small" :icon="h(DeleteOutlined)" />
+          <AButton type="text" size="small" :icon="h(CodeOutlined)" @click="toEdit" />
+          <AButton
+            type="text"
+            size="small"
+            :icon="h(DeleteOutlined)"
+            @click="deleteAction(evtName)"
+          />
         </div>
       </div>
       <div class="body pb-1">
@@ -53,7 +58,7 @@ import {
   type FormWidget,
   type SpecialWidget,
   type FunctionConfig
-} from '@/types/workflow'
+} from '@/types/workflow/form'
 
 type SelectValue = {
   label: string
@@ -68,7 +73,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:widget'])
+const emit = defineEmits(['update:widget', 'show-editor'])
 const selectDisplayValue = ref<Record<any, string>>({})
 
 const selectedWidget = computed({
@@ -100,6 +105,14 @@ const setAction = (evt: string) => {
   // set as handler
   selectedWidget.value.props.event[evt as EventType] = id
   selectDisplayValue.value[evt] = `${evt}_${id}`
+}
+
+const deleteAction = (evt: string) => {
+  delete selectedWidget.value.props.event[evt as EventType]
+}
+
+const toEdit = () => {
+  emit('show-editor')
 }
 </script>
 

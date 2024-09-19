@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { ref, h, reactive, computed, type PropType } from 'vue'
 import { DeleteOutlined } from '@ant-design/icons-vue'
-import type { WPropsDataTable, WPropsTableColumn } from '@/types/workflow'
+import type { WPropsDataTable, WPropsTableColumn } from '@/types/workflow/form'
 
 const modeOpts = [
   { label: '配置表格', value: 'table' },

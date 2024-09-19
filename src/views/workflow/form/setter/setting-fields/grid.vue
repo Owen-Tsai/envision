@@ -39,7 +39,7 @@
 import { computed, type PropType } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { clamp } from 'lodash'
-import type { WPropsGrid } from '@/types/workflow'
+import type { WPropsGrid } from '@/types/workflow/form'
 
 const alignOpts = [
   { label: '顶部对齐', value: 'top' },

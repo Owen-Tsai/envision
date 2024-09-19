@@ -56,7 +56,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import { popoverPlacementOpts } from '../use-settings-data'
-import type { WPropsTimeRangePicker } from '@/types/workflow'
+import type { WPropsTimeRangePicker } from '@/types/workflow/form'
 
 const props = defineProps({
   opts: {

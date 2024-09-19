@@ -41,7 +41,7 @@ import {
   type FormWidget,
   type Widget,
   type ParentFormPropType
-} from '@/types/workflow'
+} from '@/types/workflow/form'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })
 

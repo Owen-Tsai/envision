@@ -136,7 +136,12 @@ import PreviewModal from './preview/index.vue'
 import FuncModal from './function/index.vue'
 import APIModal from './remote-api/index.vue'
 import SchemaViewModal from './schema-view/index.vue'
-import { injectionKey, type WidgetType, type Widget, type FormCreatorCtx } from '@/types/workflow'
+import {
+  injectionKey,
+  type WidgetType,
+  type Widget,
+  type FormCreatorCtx
+} from '@/types/workflow/form'
 
 const toolbarTabs = [
   { title: '树视图', icon: PartitionOutlined },
