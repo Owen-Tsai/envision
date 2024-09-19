@@ -86,11 +86,9 @@
             <template v-if="scope?.column.key === 'published'">
               <ASwitch
                 v-model:checked="scope.record.published"
-                :checked-value="1"
-                :un-checked-value="0"
                 checked-children="已上架"
                 un-checked-children="未上架"
-                @change="(v) => onSetPublished(scope.record, v as number)"
+                @change="(v) => onSetPublished(scope.record, v as boolean)"
               />
             </template>
             <template v-if="scope?.column.key === 'createTime'">

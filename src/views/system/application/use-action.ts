@@ -25,7 +25,7 @@ const useActions = (requestData: () => void) => {
     push(`/workflow/${record.id}`)
   }
 
-  const onSetPublished = (record: ApplicationVO, published: number) => {
+  const onSetPublished = (record: ApplicationVO, published: boolean) => {
     setPublished(record.id!, published).then(() => {
       message.success('操作成功')
       requestData()

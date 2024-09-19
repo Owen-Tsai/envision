@@ -68,9 +68,10 @@ export const deleteApplication = (id: string) => {
   })
 }
 
-export const setPublished = (id: string, published: number) => {
+export const setPublished = (id: string, published: boolean) => {
   return request.put({
-    url: `${url}/published?id=${id}&published=${published}`
+    url: `${url}/update-published`,
+    data: { id, published }
   })
 }
 
