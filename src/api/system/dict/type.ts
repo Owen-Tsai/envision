@@ -13,6 +13,7 @@ export type DictTypeVO = {
   remark?: string
   status?: string | number
   createTime?: string
+  useString?: boolean
 }
 
 export const getDictTypeList = (params?: ListQueryParams) => {

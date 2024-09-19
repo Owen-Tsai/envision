@@ -11,6 +11,7 @@ export type DictDataItemVO = {
   remark: string
   sort: number
   status: number
+  useString?: boolean
 }
 
 export type DictDataEntry = Omit<DictDataItemVO, 'value'> & {

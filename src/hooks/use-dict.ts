@@ -19,37 +19,19 @@ export const useDict = (...args: string[]) => {
         const convertedData: DictDataEntry[] = []
         res.forEach((item) => {
           const entry: DictDataEntry = { ...item }
-          const intVal = parseInt(item.value)
-          if (!isNaN(intVal)) {
-            entry.value = intVal
+          if (!item.useString) {
+            // translate boolean
+            if (item.value === 'true') {
+              ;(entry.value as any) = true
+            } else if (item.value === 'false') {
+              ;(entry.value as any) = false
+            }
+            // translate number
+            const intVal = parseInt(item.value)
+            if (!isNaN(intVal)) {
+              entry.value = intVal
+            }
           }
-          convertedData.push({ ...entry })
-        })
-        data.value = convertedData
-        dictStore.setDict(dictType, convertedData)
-      })
-    }
-
-    return data
-  })
-
-  return result
-}
-
-export const useStringDict = (...args: string[]) => {
-  const dictStore = useDictStore()
-
-  const result = args.map((dictType) => {
-    if (!dictType) {
-      return []
-    }
-    const dict = dictStore.getDict(dictType)
-    const data = ref(dict || []) as Ref<DictDataEntry[]>
-    if (!dict) {
-      getDictData(dictType).then((res) => {
-        const convertedData: DictDataEntry[] = []
-        res.forEach((item) => {
-          const entry: DictDataEntry = { ...item }
           convertedData.push({ ...entry })
         })
         data.value = convertedData
