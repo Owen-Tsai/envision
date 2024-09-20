@@ -1,5 +1,5 @@
 <template>
-  <AModal v-model:open="computedOpen" title="Schema" width="1000px">
+  <AModal v-model:open="computedOpen" title="FormSchema" width="1000px">
     <div v-html="content" />
     <template #footer>
       <AButton type="primary" @click="computedOpen = false">关闭</AButton>

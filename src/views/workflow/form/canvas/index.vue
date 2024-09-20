@@ -3,13 +3,13 @@
     <EScrollbar wrapper-class="h-full" class="h-full">
       <div class="canvas-wrapper p-4">
         <AForm
-          :colon="schema.form.colon"
-          :label-align="schema.form.labelAlign"
+          :colon="schema.colon"
+          :label-align="schema.labelAlign"
           :label-col="labelCol"
           label-wrap
           :wrapper-col="wrapperCol"
-          :layout="schema.form.layout"
-          :disabled="schema.form.disabled"
+          :layout="schema.layout"
+          :disabled="schema.disabled"
           scroll-to-first-error
           class="dense-form"
         >
@@ -86,15 +86,15 @@ provide<boolean>(debugKey, true)
 const { schema, selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 const { deleteWidget, duplicateWidget, selectWidget } = useWidget()
 
-const widgets = ref(schema.form.widgets)
+const widgets = ref(schema.widgets)
 
 const labelCol = computed(() => {
-  const width = schema.form.labelWidth
-  return width ? { style: { width } } : tryParse(schema.form.labelCol)
+  const width = schema.labelWidth
+  return width ? { style: { width } } : tryParse(schema.labelCol)
 })
 
 const wrapperCol = computed(() => {
-  return tryParse(schema.form.wrapperCol)
+  return tryParse(schema.wrapperCol)
 })
 </script>
 

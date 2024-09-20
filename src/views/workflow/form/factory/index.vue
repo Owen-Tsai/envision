@@ -146,7 +146,7 @@ import {
 const toolbarTabs = [
   { title: '树视图', icon: PartitionOutlined },
   { title: '组件列表', icon: BuildOutlined },
-  { title: 'JSON Schema', icon: FileTextOutlined }
+  { title: 'JSON FormSchema', icon: FileTextOutlined }
 ]
 
 const activeTab = ref(1)
@@ -166,7 +166,7 @@ const schema = inject<FormCreatorCtx>(injectionKey)?.schema
 
 const componentTree = computed(() => {
   if (!schema) return []
-  return schemaToTree(schema.form.widgets) as any
+  return schemaToTree(schema.widgets) as any
 })
 
 const highlightedSchema = computed(() => {

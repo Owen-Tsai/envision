@@ -2,13 +2,13 @@
   <div>
     <AForm
       :model="formData"
-      :colon="schema.form.colon"
-      :label-align="schema.form.labelAlign"
+      :colon="schema.colon"
+      :label-align="schema.labelAlign"
       :label-col="labelCol"
       label-wrap
       :wrapper-col="wrapperCol"
-      :layout="schema.form.layout"
-      :disabled="schema.form.disabled"
+      :layout="schema.layout"
+      :disabled="schema.disabled"
       scroll-to-first-error
       class="flex-grow"
     >
@@ -26,11 +26,11 @@ import { ref, computed, provide, type PropType } from 'vue'
 import WidgetRenderer from './widget-renderer.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import { tryParse } from '@/utils/fusion'
-import { formDataKey, type Schema } from '@/types/workflow/form'
+import { formDataKey, type FormSchema } from '@/types/workflow/form'
 
 const props = defineProps({
   schema: {
-    type: Object as PropType<Schema>,
+    type: Object as PropType<FormSchema>,
     required: true
   },
   showFormData: {
@@ -39,15 +39,15 @@ const props = defineProps({
 })
 
 const formData = ref<Record<string, any>>({})
-const widgets = ref(props.schema.form.widgets)
+const widgets = ref(props.schema.widgets)
 
 const labelCol = computed(() => {
-  const width = props.schema.form.labelWidth
-  return width ? { style: { width } } : tryParse(props.schema.form.labelCol)
+  const width = props.schema.labelWidth
+  return width ? { style: { width } } : tryParse(props.schema.labelCol)
 })
 
 const wrapperCol = computed(() => {
-  return tryParse(props.schema.form.wrapperCol)
+  return tryParse(props.schema.wrapperCol)
 })
 
 const formDataJson = computed(() => useHighlighter(JSON.stringify(formData.value, null, 2), 'json'))

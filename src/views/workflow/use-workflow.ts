@@ -4,16 +4,23 @@ import { getTableColumns as fetch, type TableColumnsVO } from '@/api/system/appl
 import { generateID } from '@/utils/fusion'
 import { widgetInitConfig } from './form/use-widgets'
 import useWorkflow from '@/stores/workflow'
-import type { Schema, WidgetConfigMap, Widget } from '@/types/workflow'
+import type { FormSchema, WidgetConfigMap, Widget } from '@/types/workflow/form'
+import type { FlowSchema } from '@/types/workflow/flow'
 
-export const defaultInitSchema: Schema = {
-  form: {
-    widgets: [],
-    colon: true,
-    layout: 'horizontal'
-  },
+export const defaultFormSchema: FormSchema = {
+  widgets: [],
+  colon: true,
+  layout: 'horizontal',
   remoteAPIs: {},
   functions: {}
+}
+
+export const defaultFlowSchema: FlowSchema = {
+  flow: {
+    nodes: [
+      // todo: import use-nodes and instantiate start node
+    ]
+  }
 }
 
 const getTableColumns = async (tables: string[]) => {
@@ -114,18 +121,18 @@ const generateGridSchema = (widgets: Widget[], count: 2 | 3) => {
   return cols
 }
 
-const useFormCreator = (
+export const useFormCreator = (
   appId: string
-): { schema: Ref<Schema>; initFormCreator: () => Promise<void>; loading: Ref<boolean> } => {
-  const schema = ref<Schema>(cloneDeep(defaultInitSchema))
+): { schema: Ref<FormSchema>; initFormCreator: () => Promise<void>; loading: Ref<boolean> } => {
+  const schema = ref<FormSchema>(cloneDeep(defaultFormSchema))
   const loading = ref(false)
 
-  const generateInitalSchema = async (): Promise<Schema> => {
+  const generateInitalSchema = async (): Promise<FormSchema> => {
     const { getDataSource } = useWorkflow()
     const dataSource = getDataSource(appId)
 
     if (dataSource === null) {
-      return defaultInitSchema
+      return defaultFormSchema
     }
 
     const { paginated, tables, column } = dataSource
@@ -209,11 +216,8 @@ const useFormCreator = (
     })
 
     return {
-      ...defaultInitSchema,
-      form: {
-        ...defaultInitSchema.form,
-        widgets: Array.isArray(wrapperSchema) ? [...wrapperSchema] : [wrapperSchema]
-      }
+      ...defaultFormSchema,
+      widgets: Array.isArray(wrapperSchema) ? [...wrapperSchema] : [wrapperSchema]
     }
   }
 
@@ -234,4 +238,10 @@ const useFormCreator = (
   }
 }
 
-export default useFormCreator
+export const useFlowCreator = () => {
+  const schema = ref<FlowSchema>(cloneDeep(defaultFlowSchema))
+
+  return {
+    schema
+  }
+}

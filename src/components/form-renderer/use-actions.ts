@@ -1,4 +1,4 @@
-import { type EventType, type Schema } from '@/types/workflow/form'
+import { type EventType, type FormSchema } from '@/types/workflow/form'
 
 /**
  * Hook for using actions of EFK

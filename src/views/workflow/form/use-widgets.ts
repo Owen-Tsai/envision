@@ -28,7 +28,7 @@ export const useWidget = () => {
   const { schema, selectedWidget } = inject<FormCreatorCtx>(injectionKey)!
 
   const deleteWidget = (uid: string, siblings?: Widget[]) => {
-    const list = siblings || schema.form.widgets
+    const list = siblings || schema.widgets
     if (selectedWidget.value?.uid === uid) {
       selectedWidget.value = undefined
     }
@@ -40,7 +40,7 @@ export const useWidget = () => {
   }
 
   const duplicateWidget = (widget: Widget, siblings?: Widget[]) => {
-    const list = siblings || schema.form.widgets
+    const list = siblings || schema.widgets
 
     type Children = LayoutWidget['props']['children']
 

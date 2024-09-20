@@ -295,6 +295,32 @@ export type WPropsImage = {
 // #endregion
 
 // #region layout widgets
+export type WPropsGridCol = {
+  span: number
+  widgets: Widget[]
+}
+
+export type WPropsTabsPane = {
+  title: string
+  widgets: Widget[]
+}
+
+export type WPropsStep = {
+  title: string
+  desc?: string
+  widgets: Widget[]
+}
+
+export type WPropsSubFormEntry = {
+  widgets: Widget[]
+}
+
+export type WPropsTableForm = {
+  title?: string
+  width?: string
+  widgets: Widget[]
+}
+
 export type WPropsGrid = {
   align?: 'top' | 'middle' | 'bottom' | 'stretch'
   justify?: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
@@ -363,6 +389,8 @@ export type WPropsButton = {
 } & Pick<WPropsCommon, 'event' | 'hide' | 'disabled' | 'field'>
 // #endregion
 
+// #region widget maps
+
 type FormWidgetPropsMap = {
   input: WPropsInput
   textarea: WPropsTextarea
@@ -420,32 +448,9 @@ export type Widget = WidgetConfigMap[keyof WidgetConfigMap]
 export type FormWidget = WidgetConfigMap[keyof FormWidgetPropsMap]
 export type LayoutWidget = WidgetConfigMap[keyof LayoutWidgetPropsMap]
 export type SpecialWidget = WidgetConfigMap[keyof SpecialWidgetPropsMap]
+// #endregion
 
-export type WPropsGridCol = {
-  span: number
-  widgets: Widget[]
-}
-
-export type WPropsTabsPane = {
-  title: string
-  widgets: Widget[]
-}
-
-export type WPropsStep = {
-  title: string
-  desc?: string
-  widgets: Widget[]
-}
-
-export type WPropsSubFormEntry = {
-  widgets: Widget[]
-}
-
-export type WPropsTableForm = {
-  title?: string
-  width?: string
-  widgets: Widget[]
-}
+// #region schema&injection
 
 export type APIConfig = {
   name: string
@@ -459,13 +464,11 @@ export type FunctionConfig = {
   body?: string
 }
 
-export type Schema = {
-  form: {
-    widgets: Widget[]
-  } & FormProps
+export type FormSchema = {
+  widgets: Widget[]
   functions: Record<string, FunctionConfig>
   remoteAPIs: Record<string, APIConfig>
-}
+} & FormProps
 
 export const injectionKey = Symbol('efk')
 export const formDataKey = Symbol('formData')
@@ -473,7 +476,7 @@ export const parentFieldKey = Symbol('parentField')
 export const debugKey = Symbol('debug')
 
 export type FormCreatorCtx = {
-  schema: Schema
+  schema: FormSchema
   debug?: boolean
   selectedWidget: Ref<Widget | undefined>
   deleteWidget: (uid: string) => void

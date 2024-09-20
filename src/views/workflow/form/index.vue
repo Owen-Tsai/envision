@@ -14,11 +14,16 @@ import FactoryPanel from './factory/index.vue'
 import CanvasArea from './canvas/index.vue'
 import SettingPanel from './setter/index.vue'
 import { generateID } from '@/utils/fusion'
-import { injectionKey, type Schema, type Widget, type FormCreatorCtx } from '@/types/workflow'
+import {
+  injectionKey,
+  type FormSchema,
+  type Widget,
+  type FormCreatorCtx
+} from '@/types/workflow/form'
 
 const props = defineProps({
   schema: {
-    type: Object as PropType<Schema>,
+    type: Object as PropType<FormSchema>,
     required: true
   }
 })
@@ -36,7 +41,7 @@ const selectedWidget = ref<Widget>()
 
 const deleteWidget = (uid: string) => {
   const visit = (from?: Widget[]) => {
-    const widgets = from || computedSchema.value.form.widgets
+    const widgets = from || computedSchema.value.widgets
     for (let i = 0; i < widgets.length; i++) {
       const node = widgets[i]
 
@@ -65,7 +70,7 @@ const duplicateWidget = (config: Widget) => {
     ...config,
     uid: generateID()
   }
-  computedSchema.value.form.widgets.push(newConfig)
+  computedSchema.value.widgets.push(newConfig)
 }
 
 provide<FormCreatorCtx>(injectionKey, {
