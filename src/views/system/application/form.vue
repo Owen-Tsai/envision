@@ -44,7 +44,7 @@
 
 <script lang="ts" setup>
 import { ref, computed, type PropType } from 'vue'
-import { useStringDict } from '@/hooks/use-dict'
+import useDict from '@/hooks/use-dict'
 import { getDeptTree, type DeptTreeVO } from '@/api/system/dept'
 import {
   addApplication,
@@ -67,7 +67,7 @@ const props = defineProps({
 
 const emit = defineEmits(['success', 'close'])
 
-const [appTypeOpts] = useStringDict('system_application_type')
+const [appTypeOpts] = useDict('system_application_type')
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)

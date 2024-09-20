@@ -141,7 +141,7 @@ import {
   PlusOutlined,
   CodeOutlined
 } from '@ant-design/icons-vue'
-import { useDict, useStringDict } from '@/hooks/use-dict'
+import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import { useTable, columns } from './use-table'
 import useActions from './use-action'
@@ -152,8 +152,7 @@ import type { ApplicationVO } from '@/api/system/application'
 const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
-const [statusOpts] = useDict('system_application_status')
-const [typeOpts] = useStringDict('system_application_type')
+const [statusOpts, typeOpts] = useDict('system_application_status', 'system_application_type')
 
 console.log(typeOpts, statusOpts)
 

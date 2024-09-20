@@ -27,6 +27,9 @@
         <AFormItem label="备注" name="remark">
           <ATextarea v-model:value="formData.remark" />
         </AFormItem>
+        <AFormItem label="使用字符串" name="useString" extra="强制将字典数据视为字符串类型">
+          <ASwitch v-model:checked="formData.useString" />
+        </AFormItem>
       </AForm>
     </ASpin>
   </AModal>
