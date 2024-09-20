@@ -50,6 +50,8 @@ const options = ref<RadioGroupProps['options']>([])
 const settings = props.config.props.options
 const [dictData] = useDict(settings.dictType || '')
 
+console.log(settings, dictData)
+
 if (settings?.type === 'static') {
   options.value = settings.staticData || []
 } else if (settings?.type === 'dict') {
@@ -62,11 +64,12 @@ if (settings?.type === 'static') {
 }
 
 watch(
-  () => dictData?.value,
+  () => dictData.value,
   (val) => {
     if (settings.type === 'dict' && settings.dictType) {
       options.value = val
     }
-  }
+  },
+  { immediate: true }
 )
 </script>

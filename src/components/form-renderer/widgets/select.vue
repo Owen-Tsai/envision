@@ -66,7 +66,8 @@ watch(
     if (settings.type === 'dict' && settings.dictType) {
       options.value = val
     }
-  }
+  },
+  { immediate: true }
 )
 
 const filterFn = (input: string, option: any) => {

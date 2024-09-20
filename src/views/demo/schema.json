@@ -2,8 +2,9 @@
   "widgets": [
     {
       "type": "tabs",
+      "class": "layout",
       "name": "标签页",
-      "uid": "3pE0S3TakZLb",
+      "uid": "SIG1pxlhDhsk",
       "props": {
         "field": {},
         "children": [
@@ -12,108 +13,62 @@
             "widgets": [
               {
                 "type": "grid",
+                "class": "layout",
                 "name": "栅格布局",
-                "uid": "Yq8ZqunaJJhI",
+                "uid": "FDOVxRJjDZ0h",
                 "props": {
                   "field": {},
                   "gutter": 16,
-                  "align": "middle",
+                  "align": "top",
                   "children": [
                     {
-                      "span": 8,
+                      "span": 12,
                       "widgets": [
                         {
                           "name": "输入框",
+                          "class": "form",
                           "type": "input",
                           "props": {
                             "field": {
                               "label": "姓名",
                               "name": "name",
-                              "rules": "[\n  {\n    \"required\": true,\n \"trigger\": \"blur\"  },\n  {\n    \"min\": 2\n  }\n]"
+                              "required": true,
+                              "validateTrigger": [
+                                "blur"
+                              ]
                             },
+                            "event": {},
                             "prefixType": "text",
                             "suffixType": "text"
                           },
-                          "uid": "21ytccHluUXU"
-                        }
-                      ]
-                    },
-                    {
-                      "span": 8,
-                      "widgets": [
-                        {
-                          "type": "datePicker",
-                          "name": "日期选择器",
-                          "uid": "1ROOYj5JCAt6",
-                          "props": {
-                            "field": {
-                              "label": "出生年月",
-                              "name": "birthday"
-                            },
-                            "picker": "month",
-                            "allowClear": true
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "span": 8,
-                      "widgets": [
+                          "uid": "0heN76aI5CGw"
+                        },
                         {
                           "name": "单选框",
+                          "class": "form",
                           "type": "radio",
                           "props": {
                             "field": {
-                              "label": "单选框"
+                              "label": "性别",
+                              "name": "gender"
                             },
+                            "event": {},
                             "options": {
-                              "type": "static",
+                              "type": "dict",
                               "staticData": [
                                 {
-                                  "label": "男",
-                                  "value": "1"
+                                  "label": "选项一",
+                                  "value": "opt1"
                                 },
                                 {
-                                  "label": "女",
-                                  "value": "2"
+                                  "label": "选项二",
+                                  "value": "opt2"
                                 }
-                              ]
+                              ],
+                              "dictType": "system_user_sex"
                             }
                           },
-                          "uid": "hRldZ0EgeuQD"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "grid",
-                "name": "栅格布局",
-                "uid": "Eq43TBMFx4b1",
-                "props": {
-                  "field": {},
-                  "gutter": 16,
-                  "align": "middle",
-                  "children": [
-                    {
-                      "span": 12,
-                      "widgets": [
-                        {
-                          "name": "级联选择器",
-                          "type": "cascader",
-                          "uid": "vX4gJ8JQv9BI",
-                          "props": {
-                            "field": {
-                              "label": "所在地区",
-                              "name": "city"
-                            },
-                            "options": {
-                              "type": "static",
-                              "staticData": "[{\"label\":\"山东省\",\"value\":\"37\",\"children\":[{\"label\":\"济南市\",\"value\":\"3701\",\"children\":[{\"label\":\"市中区\",\"value\":\"370101\"},{\"label\":\"历下区\",\"value\":\"370102\"}]},{\"label\":\"青岛市\",\"value\":\"3702\",\"children\":[{\"label\":\"市北区\",\"value\":\"370203\"},{\"label\":\"市南区\",\"value\":\"370202\"}]}]},{\"label\":\"北京市\",\"value\":\"11\",\"children\":[{\"label\":\"东城区\",\"value\":\"110101\"},{\"label\":\"西城区\",\"value\":\"110102\"}]}]"
-                            },
-                            "placement": "SHOW_CHILD"
-                          }
+                          "uid": "IybsaE8vqUKi"
                         }
                       ]
                     },
@@ -122,16 +77,42 @@
                       "widgets": [
                         {
                           "name": "输入框",
+                          "class": "form",
                           "type": "input",
                           "props": {
                             "field": {
-                              "label": "家庭住址",
-                              "name": "addr"
+                              "label": "身份证号",
+                              "name": "idCard",
+                              "required": true,
+                              "validateTrigger": [
+                                "change",
+                                "blur"
+                              ],
+                              "rules": "[{\"pattern\":\"^[1-9]\\\\d{5}(18|19|([23]\\\\d))\\\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\\\d{3}[0-9Xx]$\",\"message\":\"请输入正确的身份证号\"}]"
                             },
+                            "event": {},
                             "prefixType": "text",
                             "suffixType": "text"
                           },
-                          "uid": "ruHWXY333C60"
+                          "uid": "Qwe1NDb108j8"
+                        },
+                        {
+                          "name": "数字输入框",
+                          "class": "form",
+                          "type": "inputNumber",
+                          "props": {
+                            "field": {
+                              "label": "年龄",
+                              "name": "age"
+                            },
+                            "event": {},
+                            "prefixType": "text",
+                            "max": 99,
+                            "min": 18,
+                            "precision": 0,
+                            "step": 1
+                          },
+                          "uid": "GXKo1IKzQzg8"
                         }
                       ]
                     }
@@ -139,39 +120,54 @@
                 }
               },
               {
-                "type": "grid",
-                "name": "栅格布局",
-                "uid": "SXc5BJPiybVl",
+                "name": "输入框",
+                "class": "form",
+                "type": "input",
                 "props": {
-                  "field": {},
-                  "gutter": 16,
-                  "align": "middle",
-                  "children": [
-                    {
-                      "span": 24,
-                      "widgets": [
-                        {
-                          "type": "textarea",
-                          "name": "文本域",
-                          "props": {
-                            "field": {
-                              "label": "个人介绍",
-                              "name": "intro"
-                            },
-                            "autoResize": false
-                          },
-                          "uid": "bfx7aERi0vcJ"
-                        }
-                      ]
-                    }
-                  ]
-                }
+                  "field": {
+                    "label": "家庭住址",
+                    "name": "address"
+                  },
+                  "event": {},
+                  "prefixType": "text",
+                  "suffixType": "text"
+                },
+                "uid": "Z5OP16gGiXcC"
+              },
+              {
+                "type": "textarea",
+                "class": "form",
+                "name": "文本域",
+                "props": {
+                  "field": {
+                    "label": "个人简介",
+                    "name": "intro"
+                  },
+                  "event": {}
+                },
+                "uid": "JoPZ6nFcO54Y"
               }
             ]
           },
           {
-            "title": "工作单位",
-            "widgets": []
+            "title": "单位信息",
+            "widgets": [
+              {
+                "type": "rate",
+                "class": "form",
+                "name": "评分",
+                "uid": "swZisS3rndv8",
+                "props": {
+                  "field": {
+                    "label": "好感度",
+                    "name": "rate"
+                  },
+                  "event": {},
+                  "characterType": "icon",
+                  "allowClear": true
+                }
+              }
+            ]
           }
         ]
       }
@@ -179,8 +175,8 @@
   ],
   "colon": true,
   "layout": "horizontal",
-  "labelCol": "",
-  "labelWidth": "80px",
   "remoteAPIs": {},
-  "functions": {}
+  "functions": {},
+  "labelWidth": "80px",
+  "labelAlign": "right"
 }
