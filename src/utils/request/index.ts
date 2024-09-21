@@ -58,5 +58,15 @@ export default {
     saveAs(blob, options.filename)
     destroyLoader()
     return res
+  },
+  upload: async (options: AxiosRequestConfig) => {
+    const res = await request({
+      method: 'post',
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      ...options
+    })
+    return res.data as string
   }
 }

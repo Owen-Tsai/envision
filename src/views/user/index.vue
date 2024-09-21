@@ -12,13 +12,14 @@
           <template v-else>
             <div class="flex flex-col items-center justify-center gap-4">
               <div class="relative">
-                <AAvatar :src="user?.avatar" :size="80" />
+                <AAvatar :src="data?.avatar" :size="80" />
                 <ATooltip placement="right" title="更换头像">
                   <AButton
                     shape="circle"
                     size="small"
                     type="primary"
                     class="absolute bottom-0 right-0"
+                    @click="chooseAvatar"
                   >
                     <template #icon>
                       <CameraOutlined />
@@ -26,7 +27,7 @@
                   </AButton>
                 </ATooltip>
               </div>
-              <div class="text-lg">{{ user?.nickname }}</div>
+              <div class="text-lg">{{ data?.nickname }}</div>
             </div>
             <div class="sub-info mt-6">
               <div>
@@ -72,10 +73,14 @@
         </ACard>
       </ACol>
     </ARow>
+
+    <input ref="uploadEl" type="file" class="hidden" @change="onFileChange" />
   </div>
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+import { message } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 import dayjs from 'dayjs'
 import {
@@ -85,16 +90,36 @@ import {
   MailOutlined
 } from '@ant-design/icons-vue'
 import useUserStore from '@/stores/user'
-import { getProfile } from '@/api/system/user/profile'
+import { getProfile, updateAvatar, updateProfile } from '@/api/system/user/profile'
 import useRequest from '@/hooks/use-request'
 import InfoForm from './info.vue'
 import PasswordForm from './password.vue'
 
+const uploadEl = ref<HTMLInputElement>()
 const { user } = storeToRefs(useUserStore())
 
-const { data, pending } = useRequest(getProfile, {
+const { data, pending, execute } = useRequest(getProfile, {
   immediate: true
 })
+
+const chooseAvatar = () => {
+  uploadEl.value?.click()
+}
+
+const onFileChange = () => {
+  const file = uploadEl.value?.files?.[0]
+  if (file) {
+    updateAvatar(file).then(async (res) => {
+      message.success('保存成功')
+      await updateProfile({
+        ...data.value,
+        avatar: res
+      })
+      user.value!.avatar = res
+      execute()
+    })
+  }
+}
 
 defineOptions({ name: 'UserConfig' })
 </script>

@@ -39,3 +39,12 @@ export const updatePassword = (data: { oldPassword: string; newPassword: string 
     data
   })
 }
+
+export const updateAvatar = (file: File) => {
+  return request.upload({
+    url: '/system/user/profile/update-avatar',
+    data: {
+      avatarFile: file
+    }
+  })
+}
