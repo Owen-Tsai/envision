@@ -3,7 +3,8 @@ import { cloneDeep } from 'lodash'
 import { getTableColumns as fetch, type TableColumnsVO } from '@/api/system/application'
 import { generateID } from '@/utils/fusion'
 import { widgetInitConfig } from './form/use-widgets'
-import useWorkflow from '@/stores/workflow'
+import useWorkflowStore from '@/stores/workflow'
+import { nodeInitConfig } from './flow/use-nodes'
 import type { FormSchema, WidgetConfigMap, Widget } from '@/types/workflow/form'
 import type { FlowSchema } from '@/types/workflow/flow'
 
@@ -16,11 +17,7 @@ export const defaultFormSchema: FormSchema = {
 }
 
 export const defaultFlowSchema: FlowSchema = {
-  flow: {
-    nodes: [
-      // todo: import use-nodes and instantiate start node
-    ]
-  }
+  nodes: [cloneDeep(nodeInitConfig.start)]
 }
 
 const getTableColumns = async (tables: string[]) => {
@@ -128,7 +125,7 @@ export const useFormCreator = (
   const loading = ref(false)
 
   const generateInitalSchema = async (): Promise<FormSchema> => {
-    const { getDataSource } = useWorkflow()
+    const { getDataSource } = useWorkflowStore()
     const dataSource = getDataSource(appId)
 
     if (dataSource === null) {
@@ -240,6 +237,8 @@ export const useFormCreator = (
 
 export const useFlowCreator = () => {
   const schema = ref<FlowSchema>(cloneDeep(defaultFlowSchema))
+
+  console.log(schema.value)
 
   return {
     schema

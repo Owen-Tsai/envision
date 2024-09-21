@@ -27,9 +27,9 @@
 
     <div class="flex-grow-0 h-full overflow-hidden">
       <DataSourceConfig v-if="step === 0" @finished="onSetupFinish" />
-      <Loader v-if="step === 1 && loading" />
-      <FormCreator v-if="step === 1 && !loading" :schema="schema" class="h-full" />
-      <FlowCreator v-if="step === 2" />
+      <Loader v-if="loading" />
+      <FormCreator v-if="step === 1 && !loading" :schema="formSchema" class="h-full" />
+      <FlowCreator v-if="step === 2" :schema="flowSchema" @finished="onDesignFinish" />
     </div>
   </div>
 </template>
@@ -37,11 +37,13 @@
 <script lang="ts" setup>
 import { ref, computed, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
-import { Modal, type StepsProps } from 'ant-design-vue'
-import emitter from '@/utils/emitter'
+import { Modal, message, type StepsProps } from 'ant-design-vue'
 import { RollbackOutlined } from '@ant-design/icons-vue'
-import { useFormCreator } from './use-workflow'
-import type { FormSchema } from '@/types/workflow/form'
+import dayjs from 'dayjs'
+import emitter from '@/utils/emitter'
+import { createAppDesignSchema, type AppDesignSchemaVO } from '@/api/workflow'
+import { useFlowCreator, useFormCreator } from './use-workflow'
+import type { Schema } from '@/types/workflow'
 import logo from '~img/company-logo.svg'
 import Loader from '@/components/loading/index.vue'
 import FormCreator from './form/index.vue'
@@ -58,11 +60,43 @@ const steps: StepsProps['items'] = [
 
 const step = ref(0)
 const { params } = useRoute()
-const { initFormCreator, loading, schema } = useFormCreator(params.appId as string)
+const { initFormCreator, loading, schema: formSchema } = useFormCreator(params.appId as string)
+const { schema: flowSchema } = useFlowCreator()
+
+const schema = computed<Schema>(() => {
+  return {
+    version: '1',
+    form: formSchema.value,
+    flow: flowSchema.value
+  }
+})
+
+const formData = computed<AppDesignSchemaVO>(() => {
+  return {
+    name: `${params.appId}-${dayjs().format('YYYYMMDDHHmmss')}-表单`,
+    conf: {},
+    schema: schema.value
+  }
+})
 
 const onSetupFinish = () => {
   initFormCreator()
   step.value = 1
+}
+
+const onDesignFinish = () => {
+  Modal.confirm({
+    title: '提示',
+    content: '是否保存当前应用？',
+    onOk: () => {
+      loading.value = true
+      createAppDesignSchema(formData.value).then((res) => {
+        console.log(res)
+        loading.value = false
+        message.success('保存成功')
+      })
+    }
+  })
 }
 
 emitter.on('finished', () => {

@@ -17,7 +17,21 @@ export default defineConfig({
   rules: [
     [/^size-(\d+)px/, ([, d]) => ({ height: `${d}px`, width: `${d}px` })],
     [/^size-(\d+)%/, ([, d]) => ({ height: `${d}%`, width: `${d}%` })],
-    [/^text-muted/, () => ({ color: 'var(--colorTextTertiary)' })]
+    [/^text-muted/, () => ({ color: 'var(--colorTextTertiary)' })],
+    [
+      /^radius-b/,
+      () => ({
+        'border-bottom-left-radius': 'var(--borderRadius)',
+        'border-bottom-right-radius': 'var(--borderRadius)'
+      })
+    ],
+    [
+      /^radius-t/,
+      () => ({
+        'border-top-left-radius': 'var(--borderRadius)',
+        'border-top-right-radius': 'var(--borderRadius)'
+      })
+    ]
   ],
   shortcuts: [
     {

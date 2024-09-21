@@ -103,7 +103,7 @@
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
-                <ATypographyLink>
+                <ATypographyLink @click="toDesignPage(scope!.record)">
                   <CodeOutlined />
                   设计
                 </ATypographyLink>
@@ -159,7 +159,7 @@ console.log(typeOpts, statusOpts)
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const { entry, visible, onDelete, onEdit, onSetPublished } = useActions(execute)
+const { entry, visible, onDelete, onEdit, onSetPublished, toDesignPage } = useActions(execute)
 
 defineOptions({ name: 'SystemService' })
 </script>

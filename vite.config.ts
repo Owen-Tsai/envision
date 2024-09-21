@@ -18,6 +18,13 @@ export default defineConfig(({ mode }) => {
         '~img': fileURLToPath(new URL('./src/assets/img', import.meta.url))
       }
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler'
+        }
+      }
+    },
     server: {
       port: 1127,
       host: true

@@ -1,0 +1,200 @@
+/* global style rules for flow editor */
+@mixin line {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - calc(var(--line-width) / 2));
+  width: var(--line-width);
+  background-color: var(--colorBorder);
+}
+
+@mixin bg-audit {
+  background-color: #fa8c16;
+}
+
+@mixin bg-cc {
+  background-color: #13c2c2;
+}
+
+@mixin bg-start {
+  background-color: var(--colorPrimary);
+}
+
+.node-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  --header-height: 32px;
+  --height: 88px;
+  --width: 240px;
+  --line-width: 3px;
+
+  .audit-node {
+    .header {
+      color: var(--colorWhite);
+      @include bg-audit();
+    }
+  }
+  .cc-node {
+    .header {
+      color: var(--colorWhite);
+      @include bg-cc();
+    }
+  }
+  .start-node {
+    .header {
+      color: var(--colorWhite);
+      @include bg-start();
+    }
+  }
+  .condition-node {
+    .header {
+      color: var(--colorPrimary);
+    }
+  }
+
+  .btn-add {
+    height: calc(var(--height) - 8px);
+    @apply flex-center relative;
+
+    &::before {
+      @include line;
+    }
+  }
+  .node {
+    height: var(--height);
+    width: var(--width);
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--borderRadius);
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    transition: all 0.2s;
+    @apply shadow-md relative;
+
+    .header {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      @apply radius-t px-4;
+
+      .close-icon {
+        display: none;
+        cursor: pointer;
+
+        &:hover {
+          color: var(--colorPrimary);
+        }
+      }
+
+      .node-name-input {
+        width: calc(var(--width) / 2);
+      }
+    }
+    .body {
+      flex-grow: 1;
+      background-color: var(--colorBgContainer);
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      @apply radius-b px-4;
+    }
+
+    &:hover {
+      @apply shadow-lg;
+      .input-wrapper .node-name {
+        text-decoration: dotted underline;
+      }
+      .close-icon {
+        display: block;
+      }
+    }
+
+    &.audit-node,
+    &.cc-node {
+      &::before {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        -webkit-transform: translateX(-50%);
+        transform: translate(-50%);
+        width: 0;
+        height: 4px;
+        border-style: solid;
+        border-width: 8px 6px 4px;
+        border-color: var(--colorBorder) transparent transparent;
+        background: var(--colorBgLayout);
+      }
+    }
+
+    &.condition-node {
+      background-color: var(--colorBgContainer);
+    }
+  }
+
+  .end-node {
+    padding-top: 16px;
+    position: relative;
+
+    &::before {
+      content: '';
+      height: 12px;
+      width: 12px;
+      background-color: var(--colorBorder);
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%);
+      border-radius: 50%;
+    }
+  }
+}
+
+.conditional-group {
+  .branches {
+    display: flex;
+    position: relative;
+    border-top: var(--line-width) solid var(--colorBorder);
+    border-bottom: var(--line-width) solid var(--colorBorder);
+    overflow: visible;
+    background-color: var(--colorBgLayout);
+
+    .branch {
+      position: relative;
+
+      &::before {
+        @include line;
+        z-index: 0;
+      }
+    }
+
+    .edge-line {
+      position: absolute;
+      background-color: var(--colorBgLayout);
+      height: var(--line-width);
+      width: 50%;
+    }
+
+    .line-tl {
+      top: calc(-1 * var(--line-width));
+      left: 0;
+    }
+    .line-tr {
+      top: calc(-1 * var(--line-width));
+      right: 0;
+    }
+    .line-bl {
+      bottom: calc(-1 * var(--line-width));
+      left: 0;
+    }
+    .line-br {
+      bottom: calc(-1 * var(--line-width));
+      right: 0;
+    }
+  }
+}

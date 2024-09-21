@@ -7,7 +7,7 @@ const useActions = (requestData: () => void) => {
   const entry = ref<ApplicationVO | undefined>()
   const visible = ref(false)
 
-  const { push } = useRouter()
+  // const { push } = useRouter()
 
   const onEdit = (record?: ApplicationVO) => {
     entry.value = record
@@ -22,7 +22,7 @@ const useActions = (requestData: () => void) => {
   }
 
   const toDesignPage = (record: ApplicationVO) => {
-    push(`/workflow/${record.id}`)
+    window.open(`${window.origin}/workflow/${record.id}`)
   }
 
   const onSetPublished = (record: ApplicationVO, published: boolean) => {

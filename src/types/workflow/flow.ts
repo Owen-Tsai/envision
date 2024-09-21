@@ -1,29 +1,7 @@
 import type { Ref } from 'vue'
 // #region Flow Types
-export type ProcessNodeType = 'audit' | 'cc' | 'start'
-export type NodeType = ProcessNodeType | 'condition'
-export type AddableNodeType = 'audit' | 'cc' | 'condition'
-type ConditionPropsNumber = {
-  uid: string
-  operator: '==' | '!=' | '>' | '>=' | '<' | '<=' | '~'
-  oprd1: number
-  oprd2?: number
-  includeBoundary?: [boolean, boolean]
-}
-
-type ConditionPropsString = {
-  uid: string
-  operator: '==' | '!=' | 'like' | 'notLike'
-  oprd: string
-}
-
-type ConditionPropsBoolean = {
-  uid: string
-  operator: '==' | '!='
-  oprd: boolean
-}
-
-export type ConditionProps = ConditionPropsNumber | ConditionPropsString | ConditionPropsBoolean
+export type NodeType = 'start' | 'audit' | 'group' | 'condition'
+export type ProcessNodeType = 'audit' | 'start' | 'group'
 
 export type NodeFieldProps = {
   uid: string
@@ -32,56 +10,54 @@ export type NodeFieldProps = {
 
 export type NPropsAudit = {
   actor: {
-    users: (number | string)[]
-    roles: (number | string)[]
+    strategy?: number | string
+    value?: (number | string)[]
+    text?: string
   }
   fields: NodeFieldProps[]
 }
 
-export type NPropsCc = {
-  actor: {
-    users: (number | string)[]
-    roles: (number | string)[]
-  }
-  fields: NodeFieldProps[]
+export type NPropsConditionalGroup = {
+  children: Array<Node[]>
 }
 
 export type NPropsCondition = {
-  condition: ConditionProps[]
+  // for now we use string (UEL, unified expression language)
+  // this should be replaced by a UEL (de)serializer for better UX
+  condition: string
 }
 
-export type NPropsStart = {
-  actor: {
-    type: number[] // 个人/单位 可以发起
-  }
+export type NPropsStart = {}
+
+export type ProcessNodePropsMap = {
+  start: NPropsStart
+  audit: NPropsAudit
+  group: NPropsConditionalGroup
 }
 
 export type NodePropsMap = {
-  start: NPropsStart
-  audit: NPropsAudit
-  cc: NPropsCc
   condition: NPropsCondition
-}
+} & ProcessNodePropsMap
 
 type ConfigOf<T extends keyof NodePropsMap> = {
   name: string
   type: T
-  class: T extends ProcessNodeType ? 'process' : 'condition'
   uid: string
   props: NodePropsMap[T]
 }
 
 export type NodeConfigMap = {
-  [x in ProcessNodeType]: ConfigOf<x>
+  [x in NodeType]: ConfigOf<x>
+}
+export type ProcessNodeConfigMap = {
+  [x in NodeType]: ConfigOf<x>
 }
 
 export type Node = NodeConfigMap[keyof NodeConfigMap]
 // #endregion
 
 export type FlowSchema = {
-  flow: {
-    nodes: Node[]
-  }
+  nodes: Node[]
 }
 
 export type FlowCreatorCtx = {
