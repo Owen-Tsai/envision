@@ -1,6 +1,6 @@
 import { ref, computed, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
-import { getFileList, type ListQueryParams } from '@/api/infra/file/list'
+import { getFileList, type ListQueryParams } from '@/api/infra/file'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 

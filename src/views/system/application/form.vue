@@ -37,6 +37,30 @@
         <AFormItem label="备注" name="description">
           <ATextarea v-model:value="formData.description" />
         </AFormItem>
+        <ARow>
+          <ACol :span="12">
+            <AFormItem label="前台图标" name="iconFe" extra="支持 png, svg, jpg 格式">
+              <EUpload
+                :accept="['png', 'svg', 'jpg', 'jpeg', 'gif']"
+                v-model:value="formData.iconFe"
+                :limit="1"
+                auto-upload
+                list-type="picture-card"
+              />
+            </AFormItem>
+          </ACol>
+          <ACol :span="12">
+            <AFormItem label="后台图标" name="iconBe" extra="支持 png, svg, jpg 格式">
+              <EUpload
+                :accept="['png', 'svg', 'jpg', 'jpeg', 'gif']"
+                v-model:value="formData.iconBe"
+                :limit="1"
+                auto-upload
+                list-type="picture-card"
+              />
+            </AFormItem>
+          </ACol>
+        </ARow>
       </AForm>
     </ASpin>
   </AModal>

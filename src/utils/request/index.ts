@@ -6,10 +6,10 @@ import errorCode from './error-code'
 import { createLoader, destroyLoader } from '@/components/loading'
 import type { AxiosRequestConfig } from 'axios'
 
-const request = (options: AxiosRequestConfig) => {
+const request = <T = any>(options: AxiosRequestConfig) => {
   const { url, method, data, params, responseType, ...config } = options
 
-  return service({
+  return service<T>({
     url,
     method,
     params,
@@ -59,14 +59,14 @@ export default {
     destroyLoader()
     return res
   },
-  upload: async (options: AxiosRequestConfig) => {
-    const res = await request({
+  upload: async <T = string>(options: AxiosRequestConfig) => {
+    const res = await request<{ code: number; data: T; msg?: string }>({
       method: 'post',
       headers: {
         'Content-Type': 'multipart/form-data'
       },
       ...options
     })
-    return res.data as string
+    return res as unknown as Promise<{ code: number; data: T; msg?: string }>
   }
 }

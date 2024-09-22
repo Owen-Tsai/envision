@@ -1,5 +1,5 @@
 import { message } from 'ant-design-vue'
-import { deleteFile, type FileVO } from '@/api/infra/file/list'
+import { deleteFile, type FileVO } from '@/api/infra/file'
 
 const useActions = (requestData: () => void) => {
   const onDelete = (record: FileVO) => {

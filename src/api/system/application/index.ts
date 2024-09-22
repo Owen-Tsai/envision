@@ -8,6 +8,8 @@ export type ApplicationVO = {
   code?: string // 业务标志？
   dept?: string
   sort?: number
+  iconFe?: string
+  iconBe?: string
   createTime?: string
   updateTime?: string
   published?: number
@@ -57,7 +59,7 @@ export const addApplication = (data: ApplicationVO) => {
 
 export const updateApplication = (data: ApplicationVO) => {
   return request.put({
-    url: `${url}/create`,
+    url: `${url}/update`,
     data
   })
 }

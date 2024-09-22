@@ -116,7 +116,7 @@ import { permission } from '@/hooks/use-permission'
 import { columns, useTable } from './use-table'
 import useActions from './use-actions'
 import type { FormInstance } from 'ant-design-vue'
-import type { FileVO } from '@/api/infra/file/list'
+import type { FileVO } from '@/api/infra/file'
 
 const filterForm = ref<FormInstance>()
 
