@@ -77,31 +77,41 @@ const exitNameEditing = () => {
 
 const actors = computed(() => {
   const { strategy, text, value } = computedProps.value.props.actor
+  const dft = '点击设置审核人'
   if (!value) {
-    return '点击设置审核人'
+    return dft
   }
   // 用户
   if (strategy === 30) {
     if (value.length > 1) {
       return `用户 ${text} 等 ${value.length} 人`
+    } else if (value.length === 1) {
+      return `用户 ${text}`
+    } else {
+      return dft
     }
-    return `用户 ${text}`
   }
 
   // 角色
   if (strategy === 10) {
     if (value.length > 1) {
       return `${text} 等 ${value.length} 个角色`
+    } else if (value.length === 1) {
+      return `角色 ${text}`
+    } else {
+      return dft
     }
-    return `角色 ${text}`
   }
 
   // 部门
   if (strategy === 20) {
     if (value.length > 1) {
       return `${text} 等 ${value.length} 个部门`
+    } else if (value.length === 1) {
+      return `部门 ${text} 的成员`
+    } else {
+      return dft
     }
-    return `部门 ${text} 的成员`
   }
 
   return ''

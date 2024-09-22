@@ -1,6 +1,6 @@
 <template>
   <div class="btn-add">
-    <APopover :arrow="false" trigger="click" placement="rightTop">
+    <APopover v-model:open="open" :arrow="false" trigger="click" placement="rightTop">
       <AButton type="primary" shape="circle" :icon="h(PlusOutlined)" />
       <template #content>
         <div class="flex gap-2">
@@ -29,13 +29,16 @@
 </template>
 
 <script setup lang="ts">
-import { h } from 'vue'
+import { h, ref } from 'vue'
 import { PlusOutlined, AuditOutlined, BranchesOutlined, SendOutlined } from '@ant-design/icons-vue'
 
 const emit = defineEmits(['addNode'])
 
+const open = ref(false)
+
 const addNode = (type: 'audit' | 'group') => {
   emit('addNode', type)
+  open.value = false
 }
 </script>
 

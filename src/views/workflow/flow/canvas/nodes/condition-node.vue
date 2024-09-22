@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <div class="body" @click="selectNode(config)">
+      <div class="body font-mono" @click="selectNode(config)">
         {{ computedProps.props.condition || '请设置条件' }}
       </div>
     </div>

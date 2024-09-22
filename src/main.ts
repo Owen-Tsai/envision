@@ -4,6 +4,7 @@ import { createI18n } from 'vue-i18n'
 import Antd from 'ant-design-vue'
 import EScrollbar from 'custom-vue-scrollbar'
 import DictTag from '@/components/dict-tag/index.vue'
+import Upload from '@/components/upload/index.vue'
 import '@/utils/dayjs'
 // use all the icons
 import * as antIcons from '@ant-design/icons-vue'
@@ -28,6 +29,7 @@ app.use(router)
 
 app.component('EScrollbar', EScrollbar)
 app.component('EDictTag', DictTag)
+app.component('EUpload', Upload)
 
 const icons: Record<string, any> = {}
 Object.keys(antIcons).forEach((k) => {

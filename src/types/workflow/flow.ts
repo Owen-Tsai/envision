@@ -66,3 +66,9 @@ export type FlowCreatorCtx = {
 }
 
 export const flowCtxInjectionKey = Symbol('flow')
+
+export enum ActorStrategy {
+  USER = 30,
+  ROLE = 10,
+  DEPT = 20
+}
