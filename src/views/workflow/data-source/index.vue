@@ -2,16 +2,16 @@
   <div class="view h-full overflow-auto">
     <ACard class="min-h-full">
       <AForm class="form" :label-col="{ style: { width: '100px' } }">
-        <AFormItem label="数据源" name="dataSourceConfigId">
+        <AFormItem label="数据源">
           <ASelect
-            v-model:value="dataSource"
+            v-model:value="state.dataSourceConfigId"
             :options="dataSourceOpts"
             :loading="dataSourcePending"
             :field-names="{ label: 'name', value: 'id' }"
             @change="execute"
           />
         </AFormItem>
-        <AFormItem label="数据表" name="table">
+        <AFormItem label="数据表">
           <ASelect
             v-model:value="value"
             :loading="pending || dataSourcePending"
@@ -68,11 +68,19 @@
           </div>
           <AEmpty v-if="state.tables.length === 0" />
         </AFormItem>
-        <div class="text-right">
-          <AButton type="primary" @click="toNextStep" :disabled="state.tables.length === 0">
+        <AFlex :gap="8" justify="end">
+          <AButton
+            v-if="!isAdd"
+            :disabled="state.tables.length === 0"
+            danger
+            @click="reGenerateSchema"
+          >
+            重新生成 Schema
+          </AButton>
+          <AButton type="primary" :disabled="state.tables.length === 0" @click="saveAndContinue">
             下一步
           </AButton>
-        </div>
+        </AFlex>
       </AForm>
     </ACard>
   </div>
@@ -80,12 +88,13 @@
 
 <script setup lang="ts">
 import { ref, reactive, useTemplateRef, toRef } from 'vue'
-import { useRoute } from 'vue-router'
-import useWorkflowStore, { type DataSourceInfo } from '@/stores/workflow'
+import { Modal } from 'ant-design-vue'
+import { useSchemaContext } from '../use-workflow'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import useRequest from '@/hooks/use-request'
 import { getTables, type TableVO } from '@/api/system/application'
 import { getDataSourceList } from '@/api/infra/data-source'
+import type { DataSourceInfo } from '@/types/workflow'
 
 type SelectValue = {
   label: string
@@ -94,18 +103,17 @@ type SelectValue = {
   subTable?: boolean
 }
 
-const emit = defineEmits(['finished'])
+const emit = defineEmits(['finish', 'generate'])
 const dragWrapperEl = useTemplateRef('dragWrapperEl')
-const { getDataSource, saveDataSource } = useWorkflowStore()
-const { params } = useRoute()
+const { schema, isAdd } = useSchemaContext()
 
 const value = ref<SelectValue[]>([])
-const dataSource = ref<number>(0)
 
 const state = reactive<DataSourceInfo>({
   tables: [],
   paginated: false,
-  column: false
+  column: false,
+  dataSourceConfigId: 0
 })
 
 useSortable(dragWrapperEl, toRef(state, 'tables'), {
@@ -130,13 +138,31 @@ const updateSelectedTables = (selectedTables: SelectValue[]) => {
   })
 }
 
-const toNextStep = () => {
-  console.log(state)
-  saveDataSource(params.appId as string, state)
-  emit('finished')
+const saveAndContinue = () => {
+  if (isAdd) {
+    schema.value.info = state
+    emit('generate')
+  } else {
+    // if not add and clicked on continue,
+    // do not modify schema.info
+    emit('finish')
+  }
 }
 
-const { data: tableOpts, pending, execute } = useRequest(() => getTables(dataSource.value))
+const reGenerateSchema = () => {
+  Modal.confirm({
+    title: '重新生成 Schema',
+    type: 'warn',
+    content:
+      '当前应用已经存在设计过的 Schema，重新生成将覆盖原有的 Schema。如果您希望继续设计应用，请取消后点击下一步按钮。确定要重新生成 Schema 吗？',
+    onOk: () => {
+      schema.value.info = state
+      emit('generate')
+    }
+  })
+}
+
+const { data: tableOpts, pending, execute } = useRequest(() => getTables(state.dataSourceConfigId))
 
 const { data: dataSourceOpts, pending: dataSourcePending } = useRequest(getDataSourceList, {
   immediate: true,
@@ -145,24 +171,20 @@ const { data: dataSourceOpts, pending: dataSourcePending } = useRequest(getDataS
   }
 })
 
-// created
-if (params.appId) {
-  const dataSource = getDataSource(params.appId as string)
-  console.log(dataSource)
-  if (dataSource) {
-    state.tables = dataSource.tables
-    state.paginated = dataSource.paginated
-    state.column = dataSource.column
-    value.value = dataSource.tables.map((table) => ({
-      label: table.name,
-      value: table.name,
-      option: {
-        tableName: table.name,
-        tableComment: table.comment
-      }
-    }))
+// init values
+const info = schema.value.info
+state.dataSourceConfigId = info.dataSourceConfigId
+state.tables = info.tables
+state.paginated = info.paginated
+state.column = info.column
+value.value = info.tables.map((table) => ({
+  label: table.name,
+  value: table.name,
+  option: {
+    tableName: table.name,
+    tableComment: table.comment
   }
-}
+}))
 </script>
 
 <style lang="scss" scoped>

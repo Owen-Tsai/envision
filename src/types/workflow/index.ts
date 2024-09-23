@@ -1,6 +1,17 @@
 import type { FormSchema } from '@/types/workflow/form'
 import type { FlowSchema } from '@/types/workflow/flow'
 
+export type DataSourceInfo = {
+  tables: {
+    name: string
+    comment?: string
+    subTable?: boolean
+  }[]
+  paginated?: false | 'tabs' | 'steps'
+  column?: false | 2 | 3
+  dataSourceConfigId: number
+}
+
 export type Schema = {
   // Schema 版本，针对扩展与兼容设计的字段
   version: string
@@ -9,10 +20,5 @@ export type Schema = {
   // 流程 Schema
   flow: FlowSchema
   // 应用信息
-  info: {
-    // 应用表单是否分步骤填写/提交
-    paginated?: boolean
-    // 应用所涉及的表名
-    tables: string[]
-  }
+  info: DataSourceInfo
 }

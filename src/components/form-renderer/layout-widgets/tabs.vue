@@ -6,12 +6,14 @@
     :destroy-inactive-tab-pane="widget.props.destroyInactivePanes"
   >
     <ATabPane v-for="(pane, i) in widget.props.children" :key="i" :tab="pane.title">
-      <WidgetRenderer
-        v-for="child in pane.widgets"
-        :key="child.uid"
-        :widget="child"
-        :parent-form-config="parentFormConfig"
-      />
+      <AForm>
+        <WidgetRenderer
+          v-for="child in pane.widgets"
+          :key="child.uid"
+          :widget="child"
+          :parent-form-config="parentFormConfig"
+        />
+      </AForm>
     </ATabPane>
   </ATabs>
 </template>

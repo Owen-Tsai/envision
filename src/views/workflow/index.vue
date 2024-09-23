@@ -27,16 +27,20 @@
     </header>
 
     <div class="flex-grow-0 h-full overflow-hidden">
-      <Loader v-if="generating || loading" />
-      <DataSourceConfig v-if="step === 0" @finished="onSetupFinish" />
-      <FormCreator v-if="step === 1 && !generating" :schema="formSchema" class="h-full" />
-      <FlowCreator v-if="step === 2" :schema="flowSchema" />
+      <Loader v-if="loading" />
+      <DataSourceConfig
+        v-if="step === 0 && schema"
+        @finish="step += 1"
+        @generate="reGenerateSchema"
+      />
+      <FormCreator v-if="step === 1 && schema" :schema="schema.form" class="h-full" />
+      <FlowCreator v-if="step === 2 && schema" :schema="schema.flow" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { ref, computed, provide } from 'vue'
 import { useRoute } from 'vue-router'
 import { Modal, message, type StepsProps } from 'ant-design-vue'
 import { RollbackOutlined } from '@ant-design/icons-vue'
@@ -46,7 +50,7 @@ import {
   updateAppDesignSchema,
   type AppDesignSchemaVO
 } from '@/api/workflow'
-import { useFlowCreator, useFormCreator } from './use-workflow'
+import { useFlowCreator, useFormCreator, schemaCtxKey, emptySchema } from './use-workflow'
 import type { Schema } from '@/types/workflow'
 import logo from '~img/company-logo.svg'
 import Loader from '@/components/loading/index.vue'
@@ -64,31 +68,34 @@ const steps: StepsProps['items'] = [
 
 const isAdd = ref(true)
 const step = ref(0)
-const loading = ref(false)
+const loading = ref(true)
 const { params } = useRoute()
-const {
-  initFormCreator,
-  loading: generating,
-  schema: formSchema
-} = useFormCreator(params.appId as string)
-const { schema: flowSchema } = useFlowCreator()
-
 const formData = ref<AppDesignSchemaVO>({})
+const schema = ref<Schema | undefined>()
 
-const schema = computed<Schema>(() => {
-  return {
-    version: '1',
-    form: formSchema.value,
-    flow: flowSchema.value,
-    info: {
-      tables: []
-    }
-  }
-})
+// todo
+// loading.value = true
+// fetch saved schame based on appId from routeParams
+// if fetched, set schema
+// if not, init with default schema
+schema.value = emptySchema
+loading.value = false
 
-const onSetupFinish = () => {
-  initFormCreator()
-  step.value = 1
+const { generateInitalSchema } = useFormCreator()
+
+const reGenerateSchema = () => {
+  loading.value = true
+  generateInitalSchema(schema.value!.info)
+    .then((data) => {
+      schema.value!.form = data
+      step.value = 1
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+    .finally(() => {
+      loading.value = false
+    })
 }
 
 const onAppSave = () => {
@@ -99,25 +106,29 @@ const onAppSave = () => {
     conf: `{}`
   }
 
-  Modal.confirm({
-    title: '提示',
-    content: '是否保存当前应用？',
-    onOk: async () => {
-      loading.value = true
-      if (isAdd.value) {
-        await createAppDesignSchema(formData.value)
-      } else {
-        await updateAppDesignSchema(formData.value)
-      }
-      loading.value = false
-      message.success('保存成功')
-    }
-  })
+  console.log(formData)
+  console.log(schema)
+
+  // Modal.confirm({
+  //   title: '提示',
+  //   content: '是否保存当前应用？',
+  //   onOk: async () => {
+  //     loading.value = true
+  //     if (isAdd.value) {
+  //       await createAppDesignSchema(formData.value)
+  //     } else {
+  //       await updateAppDesignSchema(formData.value)
+  //     }
+  //     loading.value = false
+  //     message.success('保存成功')
+  //   }
+  // })
 }
 
-// todo
-// loading.value = true
-// fetch saved schame based on appId from routeParams
+provide(schemaCtxKey, {
+  schema,
+  isAdd: isAdd.value
+})
 </script>
 
 <style lang="scss" scoped>

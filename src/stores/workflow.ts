@@ -1,15 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-
-export type DataSourceInfo = {
-  tables: {
-    name: string
-    comment?: string
-    subTable?: boolean
-  }[]
-  paginated: false | 'tabs' | 'steps'
-  column: false | 2 | 3
-}
+import type { DataSourceInfo } from '@/types/workflow'
 
 export default defineStore('workflow', () => {
   const appId = ref<string | null>(null)
@@ -26,6 +17,7 @@ export default defineStore('workflow', () => {
 
   return {
     saveDataSource,
-    getDataSource
+    getDataSource,
+    dataSource
   }
 })

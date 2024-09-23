@@ -1,4 +1,4 @@
-import { ref, type Ref } from 'vue'
+import { inject, ref, type Ref } from 'vue'
 import { cloneDeep } from 'lodash'
 import { getTableColumns as fetch, type TableColumnsVO } from '@/api/system/application'
 import { generateID } from '@/utils/fusion'
@@ -7,6 +7,9 @@ import useWorkflowStore from '@/stores/workflow'
 import { nodeInitConfig } from './flow/use-nodes'
 import type { FormSchema, WidgetConfigMap, Widget } from '@/types/workflow/form'
 import type { FlowSchema } from '@/types/workflow/flow'
+import type { Schema } from '@/types/workflow'
+
+export const schemaCtxKey = Symbol('schema')
 
 export const defaultFormSchema: FormSchema = {
   widgets: [],
@@ -18,6 +21,24 @@ export const defaultFormSchema: FormSchema = {
 
 export const defaultFlowSchema: FlowSchema = {
   nodes: [cloneDeep(nodeInitConfig.start)]
+}
+
+export const emptySchema: Schema = {
+  version: '1.0',
+  flow: { ...defaultFlowSchema },
+  form: { ...defaultFormSchema },
+  info: {
+    dataSourceConfigId: 0,
+    tables: [],
+    column: false,
+    paginated: false
+  }
+}
+
+export const useSchemaContext = () => {
+  const context = inject<{ schema: Ref<Schema>; isAdd: boolean }>(schemaCtxKey)!
+
+  return context
 }
 
 const getTableColumns = async (tables: string[]) => {
@@ -118,21 +139,11 @@ const generateGridSchema = (widgets: Widget[], count: 2 | 3) => {
   return cols
 }
 
-export const useFormCreator = (
-  appId: string
-): { schema: Ref<FormSchema>; initFormCreator: () => Promise<void>; loading: Ref<boolean> } => {
-  const schema = ref<FormSchema>(cloneDeep(defaultFormSchema))
-  const loading = ref(false)
+export const useFormCreator = () => {
+  const isGenerating = ref(false)
 
-  const generateInitalSchema = async (): Promise<FormSchema> => {
-    const { getDataSource } = useWorkflowStore()
-    const dataSource = getDataSource(appId)
-
-    if (dataSource === null) {
-      return defaultFormSchema
-    }
-
-    const { paginated, tables, column } = dataSource
+  const generateInitalSchema = async (schemaInfo: Schema['info']): Promise<FormSchema> => {
+    const { paginated, tables, column } = schemaInfo
     const tableColumnsInfo = await getTableColumns(tables.map((table) => table.name))
 
     const wrapperSchema: Widget | Widget[] = paginated
@@ -174,7 +185,7 @@ export const useFormCreator = (
         console.log(tableSchema)
       }
 
-      if (dataSource.tables.find((table) => table.name === info.table)?.subTable) {
+      if (tables.find((table) => table.name === info.table)?.subTable) {
         if (paginated) {
           ;(wrapperSchema as WidgetConfigMap['tabs' | 'steps']).props.children.push({
             title: info.tableComment || info.table,
@@ -218,20 +229,9 @@ export const useFormCreator = (
     }
   }
 
-  const initFormCreator = async () => {
-    loading.value = true
-    try {
-      schema.value = await generateInitalSchema()
-      loading.value = false
-    } catch (e) {
-      console.error(e)
-    }
-  }
-
   return {
-    schema,
-    loading,
-    initFormCreator
+    isGenerating,
+    generateInitalSchema
   }
 }
 
