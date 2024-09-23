@@ -4,8 +4,8 @@ import type { Schema } from '@/types/workflow'
 export type AppDesignSchemaVO = {
   id?: string
   name?: string
-  conf?: {} // left empty for now
-  schema?: Schema
+  conf?: string // left empty for now
+  schema?: string
   remark?: string
 }
 

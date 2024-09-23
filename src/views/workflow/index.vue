@@ -14,6 +14,7 @@
 
       <div class="actions">
         <AFlex justify="end" align="center" :gap="8">
+          <AButton v-show="step === 2" type="primary" @click="onAppSave">保存应用</AButton>
           <ATooltip title="返回首页" placement="bottom">
             <AButton type="text" @click="$router.push('/index')">
               <template #icon>
@@ -26,22 +27,25 @@
     </header>
 
     <div class="flex-grow-0 h-full overflow-hidden">
+      <Loader v-if="generating || loading" />
       <DataSourceConfig v-if="step === 0" @finished="onSetupFinish" />
-      <Loader v-if="loading" />
-      <FormCreator v-if="step === 1 && !loading" :schema="formSchema" class="h-full" />
-      <FlowCreator v-if="step === 2" :schema="flowSchema" @finished="onDesignFinish" />
+      <FormCreator v-if="step === 1 && !generating" :schema="formSchema" class="h-full" />
+      <FlowCreator v-if="step === 2" :schema="flowSchema" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, toRefs } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Modal, message, type StepsProps } from 'ant-design-vue'
 import { RollbackOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
-import emitter from '@/utils/emitter'
-import { createAppDesignSchema, type AppDesignSchemaVO } from '@/api/workflow'
+import {
+  createAppDesignSchema,
+  updateAppDesignSchema,
+  type AppDesignSchemaVO
+} from '@/api/workflow'
 import { useFlowCreator, useFormCreator } from './use-workflow'
 import type { Schema } from '@/types/workflow'
 import logo from '~img/company-logo.svg'
@@ -58,24 +62,27 @@ const steps: StepsProps['items'] = [
   { title: '流程编排' }
 ]
 
+const isAdd = ref(true)
 const step = ref(0)
+const loading = ref(false)
 const { params } = useRoute()
-const { initFormCreator, loading, schema: formSchema } = useFormCreator(params.appId as string)
+const {
+  initFormCreator,
+  loading: generating,
+  schema: formSchema
+} = useFormCreator(params.appId as string)
 const { schema: flowSchema } = useFlowCreator()
+
+const formData = ref<AppDesignSchemaVO>({})
 
 const schema = computed<Schema>(() => {
   return {
     version: '1',
     form: formSchema.value,
-    flow: flowSchema.value
-  }
-})
-
-const formData = computed<AppDesignSchemaVO>(() => {
-  return {
-    name: `${params.appId}-${dayjs().format('YYYYMMDDHHmmss')}-表单`,
-    conf: {},
-    schema: schema.value
+    flow: flowSchema.value,
+    info: {
+      tables: []
+    }
   }
 })
 
@@ -84,24 +91,33 @@ const onSetupFinish = () => {
   step.value = 1
 }
 
-const onDesignFinish = () => {
+const onAppSave = () => {
+  formData.value = {
+    ...formData.value,
+    schema: JSON.stringify(schema.value),
+    name: `${params.appId}-${dayjs().format('YYYYMMDDHHmmss')}`,
+    conf: `{}`
+  }
+
   Modal.confirm({
     title: '提示',
     content: '是否保存当前应用？',
-    onOk: () => {
+    onOk: async () => {
       loading.value = true
-      createAppDesignSchema(formData.value).then((res) => {
-        console.log(res)
-        loading.value = false
-        message.success('保存成功')
-      })
+      if (isAdd.value) {
+        await createAppDesignSchema(formData.value)
+      } else {
+        await updateAppDesignSchema(formData.value)
+      }
+      loading.value = false
+      message.success('保存成功')
     }
   })
 }
 
-emitter.on('finished', () => {
-  step.value = 2
-})
+// todo
+// loading.value = true
+// fetch saved schame based on appId from routeParams
 </script>
 
 <style lang="scss" scoped>

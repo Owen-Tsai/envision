@@ -12,7 +12,6 @@
             <ATooltip title="查看 Schema">
               <AButton :icon="h(CodeOutlined)" @click="visible.schema = true" />
             </ATooltip>
-            <AButton type="primary" @click="saveDesignSchema">保存应用</AButton>
           </div>
         </AFlex>
       </div>
@@ -44,7 +43,7 @@ const props = defineProps({
     required: true
   }
 })
-const emit = defineEmits(['update:schema', 'finished'])
+const emit = defineEmits(['update:schema'])
 
 const computedSchema = computed({
   get: () => props.schema,
@@ -60,10 +59,6 @@ const visible = reactive({
 })
 
 const selectedNode = ref<Node>()
-
-const saveDesignSchema = () => {
-  emit('finished')
-}
 
 watch(
   () => selectedNode.value,

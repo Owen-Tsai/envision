@@ -2,10 +2,19 @@
   <div class="view h-full overflow-auto">
     <ACard class="min-h-full">
       <AForm class="form" :label-col="{ style: { width: '100px' } }">
+        <AFormItem label="数据源" name="dataSourceConfigId">
+          <ASelect
+            v-model:value="dataSource"
+            :options="dataSourceOpts"
+            :loading="dataSourcePending"
+            :field-names="{ label: 'name', value: 'id' }"
+            @change="execute"
+          />
+        </AFormItem>
         <AFormItem label="数据表" name="table">
           <ASelect
             v-model:value="value"
-            :loading="pending"
+            :loading="pending || dataSourcePending"
             label-in-value
             mode="multiple"
             allow-clear
@@ -76,6 +85,7 @@ import useWorkflowStore, { type DataSourceInfo } from '@/stores/workflow'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import useRequest from '@/hooks/use-request'
 import { getTables, type TableVO } from '@/api/system/application'
+import { getDataSourceList } from '@/api/infra/data-source'
 
 type SelectValue = {
   label: string
@@ -90,6 +100,7 @@ const { getDataSource, saveDataSource } = useWorkflowStore()
 const { params } = useRoute()
 
 const value = ref<SelectValue[]>([])
+const dataSource = ref<number>(0)
 
 const state = reactive<DataSourceInfo>({
   tables: [],
@@ -125,7 +136,14 @@ const toNextStep = () => {
   emit('finished')
 }
 
-const { data: tableOpts, pending } = useRequest(getTables, { immediate: true })
+const { data: tableOpts, pending, execute } = useRequest(() => getTables(dataSource.value))
+
+const { data: dataSourceOpts, pending: dataSourcePending } = useRequest(getDataSourceList, {
+  immediate: true,
+  onSuccess() {
+    execute()
+  }
+})
 
 // created
 if (params.appId) {
