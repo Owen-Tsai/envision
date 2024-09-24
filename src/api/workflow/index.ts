@@ -39,9 +39,6 @@ export const listAppDesignSchema = () => {
 export const createAppDesignSchema = (data: AppDesignSchemaVO) => {
   return request.post<AppDesignSchemaVO>({
     url: `${url}/create`,
-    data,
-    headers: {
-      'Content-Type': 'application/octet-stream'
-    }
+    data
   })
 }

@@ -86,9 +86,12 @@ export const getTables = (dataSourceConfigId?: number) => {
   })
 }
 
-export const getTableColumns = (tables: string[]) => {
+export const getTableColumns = (tables: string[], dataSourceConfigId?: number) => {
   return request.get<TableColumnsVO[]>({
     url: `${url}/get-table-fields`,
-    params: { tables, dataSourceConfigId: 0 }
+    params: {
+      tables,
+      dataSourceConfigId: dataSourceConfigId || 0
+    }
   })
 }

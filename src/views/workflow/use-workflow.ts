@@ -41,8 +41,8 @@ export const useSchemaContext = () => {
   return context
 }
 
-const getTableColumns = async (tables: string[]) => {
-  const resp = await fetch(tables)
+const getTableColumns = async (tables: string[], dataSourceConfigId?: number) => {
+  const resp = await fetch(tables, dataSourceConfigId)
   return resp
 }
 
@@ -143,8 +143,11 @@ export const useFormCreator = () => {
   const isGenerating = ref(false)
 
   const generateInitalSchema = async (schemaInfo: Schema['info']): Promise<FormSchema> => {
-    const { paginated, tables, column } = schemaInfo
-    const tableColumnsInfo = await getTableColumns(tables.map((table) => table.name))
+    const { paginated, tables, column, dataSourceConfigId } = schemaInfo
+    const tableColumnsInfo = await getTableColumns(
+      tables.map((table) => table.name),
+      dataSourceConfigId
+    )
 
     const wrapperSchema: Widget | Widget[] = paginated
       ? ({
