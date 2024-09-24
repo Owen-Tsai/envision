@@ -49,8 +49,11 @@ import {
   createAppDesignSchema,
   updateAppDesignSchema,
   getSchemaByAppId,
+  getProcessXML,
+  updateProcessXML,
   type AppDesignSchemaVO
 } from '@/api/workflow'
+import { getApplicationDetail, type ApplicationVO } from '@/api/system/application'
 import { useFormCreator, schemaCtxKey, emptySchema } from './use-workflow'
 import type { Schema } from '@/types/workflow'
 import logo from '~img/company-logo.svg'
@@ -70,27 +73,35 @@ const steps: StepsProps['items'] = [
 const isAdd = ref(true)
 const step = ref(0)
 const loading = ref(true)
+const appDetail = ref<ApplicationVO>()
 const { params } = useRoute()
 const formData = ref<AppDesignSchemaVO>({})
 const schema = ref<Schema | undefined>()
 
-// todo
+// todo: get application detail based on params appId,
+// before load schema
 loading.value = true
-getSchemaByAppId(params.appId as string)
+getApplicationDetail(params.appId as string)
   .then((data) => {
-    if ((data as any) === null) {
-      schema.value = emptySchema
-    } else {
-      formData.value = data
-      schema.value = JSON.parse(data.appSchema!)
-      isAdd.value = false
-    }
+    appDetail.value = data
   })
-  .catch(() => {
-    schema.value = emptySchema
-  })
-  .finally(() => {
-    loading.value = false
+  .then(() => {
+    getSchemaByAppId(params.appId as string)
+      .then((data) => {
+        if ((data as any) === null) {
+          schema.value = emptySchema
+        } else {
+          formData.value = data
+          schema.value = JSON.parse(data.appSchema!)
+          isAdd.value = false
+        }
+      })
+      .catch(() => {
+        schema.value = emptySchema
+      })
+      .finally(() => {
+        loading.value = false
+      })
   })
 
 const { generateInitalSchema } = useFormCreator()
@@ -119,19 +130,30 @@ const onAppSave = () => {
     appId: params.appId as string
   }
 
-  console.log(formData)
-  console.log(schema)
-
   Modal.confirm({
     title: '提示',
     content: '是否保存当前应用？',
     onOk: async () => {
       loading.value = true
+      const xml = await getProcessXML({
+        id: params.appId as string,
+        name: appDetail.value?.name || 'unnamed',
+        data: schema.value!.flow.nodes
+      })
+
+      await updateProcessXML({
+        id: appDetail.value?.processIds!,
+        name: appDetail.value?.name || 'unnamed',
+        bpmnXml: xml.data,
+        category: appDetail.value?.type || 'unknown'
+      })
+
       if (isAdd.value) {
         await createAppDesignSchema(formData.value)
       } else {
         await updateAppDesignSchema(formData.value)
       }
+
       loading.value = false
       message.success('保存成功')
     }

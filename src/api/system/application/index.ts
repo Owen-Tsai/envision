@@ -14,6 +14,7 @@ export type ApplicationVO = {
   updateTime?: string
   published?: number
   description?: string
+  processIds?: string
 }
 
 export type ListQueryParams = {

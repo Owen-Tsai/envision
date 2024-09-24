@@ -10,6 +10,23 @@ export type AppDesignSchemaVO = {
   remark?: string
 }
 
+export type XMLGenerateVO = {
+  id: string
+  name: string
+  data: Schema['flow']['nodes']
+}
+
+export type XMLRespVO = {
+  data: string
+}
+
+export type XMLUpdateVO = {
+  id: string // process id
+  name: string // app name
+  category: string // app type
+  bpmnXml: string // generated xml
+}
+
 const url = `/workflow/form-schema`
 
 export const getAppDesignSchema = (id: string) => {
@@ -46,6 +63,20 @@ export const listAppDesignSchema = () => {
 export const createAppDesignSchema = (data: AppDesignSchemaVO) => {
   return request.post<AppDesignSchemaVO>({
     url: `${url}/create`,
+    data
+  })
+}
+
+export const getProcessXML = (data: XMLGenerateVO) => {
+  return request.post<XMLRespVO>({
+    url: '/fusionx/framework/xml-by-json',
+    data
+  })
+}
+
+export const updateProcessXML = (data: XMLUpdateVO) => {
+  return request.put({
+    url: '/bpm/model/update',
     data
   })
 }
