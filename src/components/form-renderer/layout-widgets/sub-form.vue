@@ -1,9 +1,9 @@
 <template>
   <AFormItem :label="widget.props.field.label">
     <div class="entry-container">
-      <div class="entry" v-for="(entry, index) in ctx?.formData.value[field]" :key="index">
+      <div class="entry" v-for="(entry, index) in formData[field]" :key="index">
         <div v-for="(widget, j) in widget.props.children[0].widgets" :key="j">
-          <WidgetRenderer :widget="widget" :parent-form-config="{ field, index }" />
+          <WidgetRenderer :widget="widget" :field-ctx-config="{ parentField: { field, index } }" />
         </div>
 
         <ATooltip title="删除此组">
@@ -25,13 +25,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, h, inject, type PropType } from 'vue'
+import { ref, h, inject, type PropType, type Ref } from 'vue'
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import WidgetRenderer from '../widget-renderer.vue'
+import type { WidgetConfigMap } from '@/types/workflow/form'
+import { formModelCtxKey, type FormModelContext } from '@/types/workflow'
 
-import { formDataKey, type WidgetConfigMap, type FormDataCtx } from '@/types/workflow/form'
-
-const ctx = inject<FormDataCtx>(formDataKey)
+const ctx = inject<FormModelContext>(formModelCtxKey)
+const formData = ctx?.formData as Ref<Record<string, any>>
 
 const props = defineProps({
   widget: {
@@ -44,15 +45,15 @@ const field = props.widget.props.field.name || props.widget.uid
 const children = ref(props.widget.props.children)
 
 if (ctx) {
-  ctx.formData.value[field] = [] as any
+  formData.value[field] = [] as any
 }
 
 const addEntry = () => {
-  ctx?.formData.value[field].push({})
+  formData.value[field].push({})
 }
 
 const removeEntry = (i: number) => {
-  ctx?.formData.value[field].splice(i, 1)
+  formData.value[field].splice(i, 1)
 }
 </script>
 

@@ -17,14 +17,8 @@
 
 <script lang="ts" setup>
 import { inject, type PropType } from 'vue'
-import {
-  parentFieldKey,
-  type WidgetConfigMap,
-  type ParentFormPropType
-} from '@/types/workflow/form'
+import { type WidgetConfigMap } from '@/types/workflow/form'
 import useModel from '../use-model'
-
-const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 
 const props = defineProps({
   config: {
@@ -33,5 +27,5 @@ const props = defineProps({
   }
 })
 
-const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 </script>

@@ -9,8 +9,12 @@
     v-else-if="widget.class === 'form'"
     :label="widget.props.field.label"
     :name="
-      parentFormConfig
-        ? [parentFormConfig.field, parentFormConfig.index, widget.props.field.name || widget.uid]
+      fieldCtxConfig?.parentField
+        ? [
+            fieldCtxConfig?.parentField.field,
+            fieldCtxConfig?.parentField.index,
+            widget.props.field.name || widget.uid
+          ]
         : widget.props.field.name
     "
     :label-col="labelCol"
@@ -37,10 +41,10 @@ import TabsRenderer from './layout-widgets/tabs.vue'
 import StepsRenderer from './layout-widgets/steps.vue'
 import TableRenderer from './layout-widgets/data-table.vue'
 import {
-  parentFieldKey,
+  fieldCtxConfigKey,
+  type FieldCtxConfig,
   type FormWidget,
-  type Widget,
-  type ParentFormPropType
+  type Widget
 } from '@/types/workflow/form'
 
 const components = import.meta.glob('@/components/form-renderer/widgets/*.vue', { eager: true })
@@ -52,8 +56,8 @@ const props = defineProps({
     type: Object as PropType<Widget>,
     required: true
   },
-  parentFormConfig: {
-    type: Object as PropType<ParentFormPropType>
+  fieldCtxConfig: {
+    type: Object as PropType<FieldCtxConfig>
   }
 })
 
@@ -79,5 +83,9 @@ const widgetToRender = computed(() => {
   return null
 })
 
-provide(parentFieldKey, props.parentFormConfig)
+provide<FieldCtxConfig>(fieldCtxConfigKey, {
+  step: props.fieldCtxConfig?.step,
+  parentField: props.fieldCtxConfig?.parentField,
+  formData: props.fieldCtxConfig?.formData
+})
 </script>

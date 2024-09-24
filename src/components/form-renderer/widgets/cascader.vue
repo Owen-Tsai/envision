@@ -20,14 +20,8 @@ import { ref, computed, inject, type PropType } from 'vue'
 import request from '@/utils/request'
 import useModel from '../use-model'
 import { type CascaderProps } from 'ant-design-vue'
-import {
-  parentFieldKey,
-  type WidgetConfigMap,
-  type ParentFormPropType
-} from '@/types/workflow/form'
+import { type WidgetConfigMap } from '@/types/workflow/form'
 import { tryParse } from '@/utils/fusion'
-
-const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 
 const props = defineProps({
   config: {
@@ -40,7 +34,7 @@ const fieldNames = computed(() => tryParse(props.config.props.fieldNames))
 const defaultValue = computed(() => tryParse(props.config.props.defaultValue))
 
 const options = ref<CascaderProps['options']>([])
-const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const settings = props.config.props.options
 if (settings?.type === 'static') {

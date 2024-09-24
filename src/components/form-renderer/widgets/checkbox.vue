@@ -24,14 +24,8 @@ import { ref, inject, watch, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import useModel from '../use-model'
 import type { CheckboxGroupProps } from 'ant-design-vue'
-import {
-  parentFieldKey,
-  debugKey,
-  type WidgetConfigMap,
-  type ParentFormPropType
-} from '@/types/workflow/form'
+import { debugKey, type WidgetConfigMap } from '@/types/workflow/form'
 
-const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 const isDebugMode = inject<boolean>(debugKey, false)
 
 const props = defineProps({
@@ -42,7 +36,7 @@ const props = defineProps({
 })
 
 const options = ref<CheckboxGroupProps['options']>([])
-const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 const settings = props.config.props.options
 const [dictData] = useDict(settings.dictType || '')
 

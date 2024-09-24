@@ -11,7 +11,7 @@
         v-for="child in col.widgets"
         :key="child.uid"
         :widget="child"
-        :parent-form-config="parentFormConfig"
+        :field-ctx-config="fieldCtxConfig"
       />
     </ACol>
   </ARow>
@@ -20,11 +20,7 @@
 <script setup lang="ts">
 import { inject, type PropType } from 'vue'
 import WidgetRenderer from '../widget-renderer.vue'
-import {
-  parentFieldKey,
-  type WidgetConfigMap,
-  type ParentFormPropType
-} from '@/types/workflow/form'
+import { fieldCtxConfigKey, type WidgetConfigMap, type FieldCtxConfig } from '@/types/workflow/form'
 
 defineProps({
   widget: {
@@ -33,5 +29,5 @@ defineProps({
   }
 })
 
-const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
+const fieldCtxConfig = inject<FieldCtxConfig | undefined>(fieldCtxConfigKey, undefined)
 </script>

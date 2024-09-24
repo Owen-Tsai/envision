@@ -23,11 +23,11 @@
 
 <script setup lang="ts">
 import { ref, computed, provide, watch, type PropType } from 'vue'
+import { clone } from 'lodash'
 import WidgetRenderer from './widget-renderer.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import { tryParse } from '@/utils/fusion'
-import { formDataKey } from '@/types/workflow/form'
-import type { Schema } from '@/types/workflow'
+import { formModelCtxKey, type Schema, type FormModelContext } from '@/types/workflow'
 
 const props = defineProps({
   schema: {
@@ -42,7 +42,7 @@ const props = defineProps({
 const formSchema = computed(() => props.schema.form)
 const widgets = computed(() => formSchema.value.widgets)
 
-const formData = ref<Record<string, any> | Record<string, any>[]>()
+const formData = ref<Record<string, any> | Record<string, any>[]>({})
 
 const labelCol = computed(() => {
   const width = formSchema.value.labelWidth
@@ -58,13 +58,14 @@ const formDataJson = computed(() => useHighlighter(JSON.stringify(formData.value
 // read schema to init formData
 console.log(props.schema)
 if (props.schema.info.paginated) {
-  formData.value = new Array(props.schema.info.tables.length).fill({})
+  formData.value = new Array(props.schema.info.tables.length).fill(undefined).map(() => ({}))
 } else {
   formData.value = {}
 }
 
-provide(formDataKey, {
-  formData
+provide<FormModelContext>(formModelCtxKey, {
+  formData,
+  schema: props.schema
 })
 </script>
 

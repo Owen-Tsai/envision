@@ -25,15 +25,8 @@
 import { ref, inject, type PropType, watch } from 'vue'
 import useDict from '@/hooks/use-dict'
 import type { RadioGroupProps } from 'ant-design-vue'
-import {
-  debugKey,
-  parentFieldKey,
-  type WidgetConfigMap,
-  type ParentFormPropType
-} from '@/types/workflow/form'
+import { debugKey, type WidgetConfigMap } from '@/types/workflow/form'
 import useModel from '../use-model'
-
-const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 
 const isDebugMode = inject<boolean>(debugKey, false)
 
@@ -44,7 +37,7 @@ const props = defineProps({
   }
 })
 
-const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 const options = ref<RadioGroupProps['options']>([])
 
 const settings = props.config.props.options

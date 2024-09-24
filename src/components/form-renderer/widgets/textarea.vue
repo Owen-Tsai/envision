@@ -16,13 +16,7 @@
 <script lang="ts" setup>
 import { inject, computed, type PropType } from 'vue'
 import useModel from '../use-model'
-import {
-  parentFieldKey,
-  type WidgetConfigMap,
-  type ParentFormPropType
-} from '@/types/workflow/form'
-
-const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
+import { type WidgetConfigMap } from '@/types/workflow/form'
 
 const props = defineProps({
   config: {
@@ -31,7 +25,7 @@ const props = defineProps({
   }
 })
 
-const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const autosize = computed(() => {
   if (props.config.props.minRows || props.config.props.maxRows) {

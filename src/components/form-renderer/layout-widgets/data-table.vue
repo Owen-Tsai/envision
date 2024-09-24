@@ -4,27 +4,34 @@
       <AButton :icon="h(PlusOutlined)" @click="visible = true">新增</AButton>
     </AFlex>
     <ATable :columns="widget.props.columns" :data-source="data" :pagination="pagination" />
-    <AModal v-model:open="visible" :title="title" :width="widget.props.children[0].width">
-      <WidgetRenderer
-        v-for="child in formWidgets"
-        :key="child.uid"
-        :widget="child"
-        :parent-form-config="parentFormConfig"
-      />
+    <AModal
+      v-model:open="visible"
+      :title="title"
+      :width="widget.props.children[0].width"
+      @ok="onSave"
+    >
+      <AForm :model="formData">
+        <div>step: {{ fieldCtxConfig.step }}</div>
+        <WidgetRenderer
+          v-for="child in formWidgets"
+          :key="child.uid"
+          :widget="child"
+          :field-ctx-config="{ formData: formData }"
+        />
+      </AForm>
     </AModal>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, h, computed, inject, type PropType } from 'vue'
+import request from '@/utils/request'
+import { kebabCase } from 'lodash'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import WidgetRenderer from '../widget-renderer.vue'
 import type { TableProps } from 'ant-design-vue'
-import {
-  parentFieldKey,
-  type WidgetConfigMap,
-  type ParentFormPropType
-} from '@/types/workflow/form'
+import { fieldCtxConfigKey, type WidgetConfigMap, type FieldCtxConfig } from '@/types/workflow/form'
+import { formModelCtxKey, type FormModelContext } from '@/types/workflow'
 
 const props = defineProps({
   widget: {
@@ -33,7 +40,11 @@ const props = defineProps({
   }
 })
 
+const fieldCtxConfig = inject<FieldCtxConfig | undefined>(fieldCtxConfigKey, undefined)!
+const { schema } = inject(formModelCtxKey) as FormModelContext
+
 const data = ref<any>([])
+const formData = ref<Record<string, any>>({})
 const visible = ref(false)
 const mode = ref<'edit' | 'add'>('add')
 
@@ -56,9 +67,19 @@ const pagination = computed<TableProps['pagination']>(() => {
   return undefined
 })
 
-const onSave = () => {}
+const onSave = () => {
+  // 1. need to know the current step and designated table name
+  const current = fieldCtxConfig.step!
+  const targetTableInfo = schema.info.tables[current]
+  // 2. figure out which API address to submit to
+  const api = `/system/${kebabCase(targetTableInfo.name.replace('system_', ''))}/create`
+  // 3. AForm bind to formData
+  // 4. we need every widget inside table to bind modelValues to formData instead of useModel
+  // 5. submit formData to designated API
+  request.post({ url: api, data: formData.value }).then((res) => {
+    console.log(res)
+  })
+}
 
 const loadData = () => {}
-
-const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
 </script>

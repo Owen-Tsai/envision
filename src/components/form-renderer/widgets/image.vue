@@ -32,13 +32,7 @@ import { PlusOutlined } from '@ant-design/icons-vue'
 import useModel from '../use-model'
 import { tryParse } from '@/utils/fusion'
 import request from '@/utils/request'
-import {
-  parentFieldKey,
-  type WidgetConfigMap,
-  type ParentFormPropType
-} from '@/types/workflow/form'
-
-const parentFormConfig = inject<ParentFormPropType | undefined>(parentFieldKey, undefined)
+import { type WidgetConfigMap } from '@/types/workflow/form'
 
 const props = defineProps({
   config: {
@@ -47,7 +41,7 @@ const props = defineProps({
   }
 })
 
-const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 
 const headers = computed(() => tryParse(props.config.props.headers) || undefined)
 const data = computed(() => tryParse(props.config.props.data) || undefined)

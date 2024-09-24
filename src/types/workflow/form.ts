@@ -472,8 +472,7 @@ export type FormSchema = {
 } & FormProps
 
 export const injectionKey = Symbol('efk')
-export const formDataKey = Symbol('formData')
-export const parentFieldKey = Symbol('parentField')
+export const fieldCtxConfigKey = Symbol('fieldCtx')
 export const debugKey = Symbol('debug')
 
 export type FormCreatorCtx = {
@@ -487,4 +486,11 @@ export type FormCreatorCtx = {
 export type ParentFormPropType = {
   field: string
   index: number
+}
+
+export type FieldCtxConfig = {
+  step?: number
+  parentField?: ParentFormPropType
+  // for dataTable widget, provide formData to bind to widgets inside table
+  formData?: Record<string, any>
 }
