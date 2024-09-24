@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref, reactive, computed, inject } from 'vue'
+import { h, ref, reactive, computed, inject, type PropType } from 'vue'
 import { cloneDeep } from 'lodash'
 import Draggable from 'vuedraggable'
 import {
@@ -127,18 +127,21 @@ import PreviewModal from './preview/index.vue'
 import FuncModal from './function/index.vue'
 import APIModal from './remote-api/index.vue'
 import SchemaViewModal from './schema-view/index.vue'
-import {
-  injectionKey,
-  type WidgetType,
-  type Widget,
-  type FormCreatorCtx
-} from '@/types/workflow/form'
+import { type WidgetType, type Widget } from '@/types/workflow/form'
+import { type Schema } from '@/types/workflow'
 
 const toolbarTabs = [
   { title: '树视图', icon: PartitionOutlined },
   { title: '组件列表', icon: BuildOutlined },
   { title: 'JSON FormSchema', icon: FileTextOutlined }
 ]
+
+const props = defineProps({
+  schema: {
+    type: Object as PropType<Schema>,
+    required: true
+  }
+})
 
 const activeTab = ref(1)
 const visible = reactive({
@@ -153,15 +156,12 @@ const buildingBlocks = computed(() => {
   return keys.map((e) => widgetInitConfig[e])
 })
 
-const schema = inject<FormCreatorCtx>(injectionKey)?.schema
-
 const componentTree = computed(() => {
-  if (!schema) return []
-  return schemaToTree(schema.widgets) as any
+  return schemaToTree(props.schema.form.widgets) as any
 })
 
 const highlightedSchema = computed(() => {
-  return useHighlighter(JSON.stringify(schema, null, 2), 'json')
+  return useHighlighter(JSON.stringify(props.schema.form, null, 2), 'json')
 })
 
 const cloneWidget = (widget: Widget) => {

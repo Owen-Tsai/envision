@@ -484,10 +484,6 @@ export type FormCreatorCtx = {
   duplicateWidget: (config: Widget) => void
 }
 
-export type FormDataCtx = {
-  formData: Ref<Record<string, any>>
-}
-
 export type ParentFormPropType = {
   field: string
   index: number

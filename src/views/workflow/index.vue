@@ -33,7 +33,7 @@
         @finish="step += 1"
         @generate="reGenerateSchema"
       />
-      <FormCreator v-if="step === 1 && schema" :schema="schema.form" class="h-full" />
+      <FormCreator v-if="step === 1 && schema" :schema="schema" class="h-full" />
       <FlowCreator v-if="step === 2 && schema" :schema="schema.flow" />
     </div>
   </div>

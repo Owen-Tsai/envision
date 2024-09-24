@@ -2,13 +2,13 @@
   <div>
     <AForm
       :model="formData"
-      :colon="schema.colon"
-      :label-align="schema.labelAlign"
+      :colon="formSchema.colon"
+      :label-align="formSchema.labelAlign"
       :label-col="labelCol"
       label-wrap
       :wrapper-col="wrapperCol"
-      :layout="schema.layout"
-      :disabled="schema.disabled"
+      :layout="formSchema.layout"
+      :disabled="formSchema.disabled"
       scroll-to-first-error
       class="flex-grow"
     >
@@ -22,15 +22,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, provide, type PropType } from 'vue'
+import { ref, computed, provide, watch, type PropType } from 'vue'
 import WidgetRenderer from './widget-renderer.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import { tryParse } from '@/utils/fusion'
-import { formDataKey, type FormSchema } from '@/types/workflow/form'
+import { formDataKey } from '@/types/workflow/form'
+import type { Schema } from '@/types/workflow'
 
 const props = defineProps({
   schema: {
-    type: Object as PropType<FormSchema>,
+    type: Object as PropType<Schema>,
     required: true
   },
   showFormData: {
@@ -38,19 +39,29 @@ const props = defineProps({
   }
 })
 
-const formData = ref<Record<string, any>>({})
-const widgets = ref(props.schema.widgets)
+const formSchema = computed(() => props.schema.form)
+const widgets = computed(() => formSchema.value.widgets)
+
+const formData = ref<Record<string, any> | Record<string, any>[]>()
 
 const labelCol = computed(() => {
-  const width = props.schema.labelWidth
-  return width ? { style: { width } } : tryParse(props.schema.labelCol)
+  const width = formSchema.value.labelWidth
+  return width ? { style: { width } } : tryParse(formSchema.value.labelCol)
 })
 
 const wrapperCol = computed(() => {
-  return tryParse(props.schema.wrapperCol)
+  return tryParse(formSchema.value.wrapperCol)
 })
 
 const formDataJson = computed(() => useHighlighter(JSON.stringify(formData.value, null, 2), 'json'))
+
+// read schema to init formData
+console.log(props.schema)
+if (props.schema.info.paginated) {
+  formData.value = new Array(props.schema.info.tables.length).fill({})
+} else {
+  formData.value = {}
+}
 
 provide(formDataKey, {
   formData

@@ -1,5 +1,13 @@
+import type { Ref } from 'vue'
 import type { FormSchema } from '@/types/workflow/form'
 import type { FlowSchema } from '@/types/workflow/flow'
+
+export const formModelCtxKey = Symbol('formModel')
+
+export type FormModelContext = {
+  formData: Ref<Record<string, any> | Array<Record<string, any>>>
+  schema: Schema
+}
 
 export type DataSourceInfo = {
   tables: {

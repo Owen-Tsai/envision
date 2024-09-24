@@ -30,6 +30,9 @@
   <AFormItem label="切换时销毁DOM" name="destroyInactivePanes" class="setter-boolean-field">
     <ASwitch v-model:checked="computedProps.destroyInactivePanes" />
   </AFormItem>
+  <AFormItem label="步骤模式" name="stepsMode" class="setter-boolean-field">
+    <ASwitch v-model:checked="computedProps.stepsMode" />
+  </AFormItem>
 </template>
 
 <script lang="ts" setup>
