@@ -139,7 +139,7 @@ const updateSelectedTables = (selectedTables: SelectValue[]) => {
 }
 
 const saveAndContinue = () => {
-  if (isAdd) {
+  if (isAdd.value) {
     schema.value.info = state
     emit('generate')
   } else {

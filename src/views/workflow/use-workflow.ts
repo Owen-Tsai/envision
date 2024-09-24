@@ -36,7 +36,7 @@ export const emptySchema: Schema = {
 }
 
 export const useSchemaContext = () => {
-  const context = inject<{ schema: Ref<Schema>; isAdd: boolean }>(schemaCtxKey)!
+  const context = inject<{ schema: Ref<Schema>; isAdd: Ref<boolean> }>(schemaCtxKey)!
 
   return context
 }

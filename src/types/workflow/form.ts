@@ -334,6 +334,7 @@ export type WPropsTabs = {
   destroyInactivePanes?: boolean
   size?: 'large' | 'middle' | 'small'
   type?: 'line' | 'card'
+  stepsMode?: boolean
   children: WPropsTabsPane[]
 } & LayoutFieldProps
 

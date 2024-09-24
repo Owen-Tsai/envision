@@ -48,9 +48,10 @@ import dayjs from 'dayjs'
 import {
   createAppDesignSchema,
   updateAppDesignSchema,
+  getSchemaByAppId,
   type AppDesignSchemaVO
 } from '@/api/workflow'
-import { useFlowCreator, useFormCreator, schemaCtxKey, emptySchema } from './use-workflow'
+import { useFormCreator, schemaCtxKey, emptySchema } from './use-workflow'
 import type { Schema } from '@/types/workflow'
 import logo from '~img/company-logo.svg'
 import Loader from '@/components/loading/index.vue'
@@ -74,12 +75,23 @@ const formData = ref<AppDesignSchemaVO>({})
 const schema = ref<Schema | undefined>()
 
 // todo
-// loading.value = true
-// fetch saved schame based on appId from routeParams
-// if fetched, set schema
-// if not, init with default schema
-schema.value = emptySchema
-loading.value = false
+loading.value = true
+getSchemaByAppId(params.appId as string)
+  .then((data) => {
+    if ((data as any) === null) {
+      schema.value = emptySchema
+    } else {
+      formData.value = data
+      schema.value = JSON.parse(data.appSchema!)
+      isAdd.value = false
+    }
+  })
+  .catch(() => {
+    schema.value = emptySchema
+  })
+  .finally(() => {
+    loading.value = false
+  })
 
 const { generateInitalSchema } = useFormCreator()
 
@@ -101,33 +113,34 @@ const reGenerateSchema = () => {
 const onAppSave = () => {
   formData.value = {
     ...formData.value,
-    schema: JSON.stringify(schema.value),
+    appSchema: JSON.stringify(schema.value),
     name: `${params.appId}-${dayjs().format('YYYYMMDDHHmmss')}`,
-    conf: `{}`
+    conf: `{}`,
+    appId: params.appId as string
   }
 
   console.log(formData)
   console.log(schema)
 
-  // Modal.confirm({
-  //   title: '提示',
-  //   content: '是否保存当前应用？',
-  //   onOk: async () => {
-  //     loading.value = true
-  //     if (isAdd.value) {
-  //       await createAppDesignSchema(formData.value)
-  //     } else {
-  //       await updateAppDesignSchema(formData.value)
-  //     }
-  //     loading.value = false
-  //     message.success('保存成功')
-  //   }
-  // })
+  Modal.confirm({
+    title: '提示',
+    content: '是否保存当前应用？',
+    onOk: async () => {
+      loading.value = true
+      if (isAdd.value) {
+        await createAppDesignSchema(formData.value)
+      } else {
+        await updateAppDesignSchema(formData.value)
+      }
+      loading.value = false
+      message.success('保存成功')
+    }
+  })
 }
 
 provide(schemaCtxKey, {
   schema,
-  isAdd: isAdd.value
+  isAdd
 })
 </script>
 
