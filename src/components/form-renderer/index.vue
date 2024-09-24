@@ -1,6 +1,7 @@
 <template>
   <div>
     <AForm
+      ref="formRef"
       :model="formData"
       :colon="formSchema.colon"
       :label-align="formSchema.labelAlign"
@@ -23,10 +24,11 @@
 
 <script setup lang="ts">
 import { ref, computed, provide, watch, type PropType } from 'vue'
-import { clone } from 'lodash'
+import { type FormInstance } from 'ant-design-vue'
 import WidgetRenderer from './widget-renderer.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import { tryParse } from '@/utils/fusion'
+import { useActions } from './use-actions'
 import { formModelCtxKey, type Schema, type FormModelContext } from '@/types/workflow'
 
 const props = defineProps({
@@ -39,6 +41,7 @@ const props = defineProps({
   }
 })
 
+const formRef = ref<FormInstance>()
 const formSchema = computed(() => props.schema.form)
 const widgets = computed(() => formSchema.value.widgets)
 
@@ -55,6 +58,17 @@ const wrapperCol = computed(() => {
 
 const formDataJson = computed(() => useHighlighter(JSON.stringify(formData.value, null, 2), 'json'))
 
+provide<FormModelContext>(formModelCtxKey, {
+  formData,
+  schema: props.schema
+})
+
+const { eventBus } = useActions()
+
+const validate = () => {
+  return formRef.value?.validate()
+}
+
 // read schema to init formData
 console.log(props.schema)
 if (props.schema.info.paginated) {
@@ -63,9 +77,9 @@ if (props.schema.info.paginated) {
   formData.value = {}
 }
 
-provide<FormModelContext>(formModelCtxKey, {
-  formData,
-  schema: props.schema
+defineExpose({
+  ...eventBus,
+  validate
 })
 </script>
 
