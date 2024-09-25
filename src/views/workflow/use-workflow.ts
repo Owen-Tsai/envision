@@ -20,7 +20,12 @@ export const defaultFormSchema: FormSchema = {
 }
 
 export const defaultFlowSchema: FlowSchema = {
-  nodes: [cloneDeep(nodeInitConfig.start)]
+  nodes: [
+    {
+      ...cloneDeep(nodeInitConfig.start),
+      uid: generateID()
+    }
+  ]
 }
 
 export const emptySchema: Schema = {
