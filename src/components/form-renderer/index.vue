@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import { ref, computed, provide, watch, type PropType } from 'vue'
+import { provideLocal } from '@vueuse/core'
 import { type FormInstance } from 'ant-design-vue'
 import WidgetRenderer from './widget-renderer.vue'
 import useHighlighter from '@/hooks/use-highlighter'
@@ -58,7 +59,7 @@ const wrapperCol = computed(() => {
 
 const formDataJson = computed(() => useHighlighter(JSON.stringify(formData.value, null, 2), 'json'))
 
-provide<FormModelContext>(formModelCtxKey, {
+provideLocal<FormModelContext>(formModelCtxKey, {
   formData,
   schema: props.schema
 })

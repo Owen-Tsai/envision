@@ -1,4 +1,4 @@
-import { inject } from 'vue'
+import { injectLocal } from '@vueuse/core'
 import request from '@/utils/request'
 import { flatten, kebabCase } from 'lodash'
 import emitter from '@/utils/emitter'
@@ -14,7 +14,7 @@ import { formModelCtxKey, type FormModelContext } from '@/types/workflow'
  *     Also, expose these functions in FormRenderer component.
  */
 export const useActions = () => {
-  const { schema, formData } = inject(formModelCtxKey) as FormModelContext
+  const { schema, formData } = injectLocal(formModelCtxKey) as FormModelContext
   const handler = (evt: EventType) => {}
 
   const eventBus = {
