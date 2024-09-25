@@ -1,6 +1,6 @@
 import { inject, ref, type Ref } from 'vue'
 import { cloneDeep } from 'lodash'
-import { getTableColumns as fetch, type TableColumnsVO } from '@/api/system/application'
+import { getTableColumns as fetch, type TableColumnsVO } from '@/api/application'
 import { generateID } from '@/utils/fusion'
 import { widgetInitConfig } from './form/use-widgets'
 import { nodeInitConfig } from './flow/use-nodes'

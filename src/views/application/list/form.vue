@@ -75,7 +75,7 @@ import {
   updateApplication,
   getApplicationDetail,
   type ApplicationVO
-} from '@/api/system/application'
+} from '@/api/application'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {

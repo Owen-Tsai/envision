@@ -92,7 +92,7 @@ import { Modal } from 'ant-design-vue'
 import { useSchemaContext } from '../use-workflow'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import useRequest from '@/hooks/use-request'
-import { getTables, type TableVO } from '@/api/system/application'
+import { getTables, type TableVO } from '@/api/application'
 import { getDataSourceList } from '@/api/infra/data-source'
 import type { DataSourceInfo } from '@/types/workflow'
 

@@ -53,7 +53,7 @@ import {
   updateProcessXML,
   type AppDesignSchemaVO
 } from '@/api/workflow'
-import { getApplicationDetail, type ApplicationVO } from '@/api/system/application'
+import { getApplicationDetail, type ApplicationVO } from '@/api/application'
 import { useFormCreator, schemaCtxKey, emptySchema } from './use-workflow'
 import type { Schema } from '@/types/workflow'
 import logo from '~img/company-logo.svg'

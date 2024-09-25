@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard v-if="permission.has('system:application:query')" class="mb-4">
+    <ACard v-if="permission.has('system:apply-plan:query')" class="mb-4">
       <AForm
         ref="filterForm"
         :label-col="{ span: 6 }"
@@ -10,27 +10,23 @@
       >
         <ARow :gutter="[0, 16]">
           <ACol :lg="8" :span="24">
-            <AFormItem label="应用名称" name="name">
-              <AInput v-model:value="queryParams.name" placeholder="请输入字典名称" allow-clear />
+            <AFormItem label="计划名称" name="item">
+              <AInput v-model:value="queryParams.item" placeholder="请输入计划名称" allow-clear />
             </AFormItem>
           </ACol>
           <ACol :lg="8" :span="24">
-            <AFormItem label="应用类型" name="type">
-              <AInput v-model:value="queryParams.type" placeholder="请输入应用类型" allow-clear />
+            <AFormItem label="所属应用" name="appId">
+              <ASelect v-model:value="queryParams.appId" allow-clear />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="上架状态" name="status">
-              <ASelect
-                v-model:value="queryParams.published"
-                :options="statusOpts"
-                placeholder="请选择应用上架状态"
-              />
+            <AFormItem label="开始时间" name="startTime">
+              <ADatePicker v-model:value="queryParams.startTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="创建时间">
-              <ARangePicker v-model:value="queryParams.createTime" value-format="YYYY-MM-DD" />
+            <AFormItem label="截止时间" name="endTime">
+              <ADatePicker v-model:value="queryParams.endTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
           <ACol :lg="{ span: 8, offset: filterExpanded ? 8 : 0 }" :span="24">
@@ -51,7 +47,7 @@
       <template #extra>
         <AFlex :gap="8">
           <AButton
-            v-if="permission.has('system:application:create')"
+            v-if="permission.has('system:apply-plan:create')"
             type="primary"
             :loading="pending"
             @click="onEdit()"
@@ -79,25 +75,18 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope: TableScope<ApplicationVO>">
-            <template v-if="scope?.column.key === 'type'">
-              <EDictTag :dict-object="typeOpts" :value="scope.record.type!" />
+          <template #bodyCell="scope: TableScope<PlanVO>">
+            <template v-if="scope?.column.key === 'appId'">这里应该显示应用名称</template>
+            <template v-if="scope?.column.key === 'startTime'">
+              {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm') }}
             </template>
-            <template v-if="scope?.column.key === 'published'">
-              <ASwitch
-                v-model:checked="scope.record.published"
-                checked-children="已上架"
-                un-checked-children="未上架"
-                @change="(v) => onSetPublished(scope.record, v as boolean)"
-              />
-            </template>
-            <template v-if="scope?.column.key === 'createTime'">
-              {{ dayjs(scope.text).format('YYYY-MM-DD') }}
+            <template v-if="scope?.column.key === 'endTime'">
+              {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm') }}
             </template>
             <template v-if="scope?.column.title === '操作'">
               <AFlex :gap="16">
                 <ATypographyLink
-                  v-if="permission.has('system:application:update')"
+                  v-if="permission.has('system:apply-plan:update')"
                   @click="onEdit(scope!.record)"
                 >
                   <EditOutlined />
@@ -105,10 +94,10 @@
                 </ATypographyLink>
                 <ATypographyLink @click="toDesignPage(scope!.record)">
                   <CodeOutlined />
-                  设计
+                  设计应用
                 </ATypographyLink>
                 <APopconfirm
-                  v-if="permission.has('system:application:delete')"
+                  v-if="permission.has('system:apply-plan:delete')"
                   title="该操作无法撤销，确定要删除吗？"
                   :overlay-style="{ width: '240px' }"
                   @confirm="onDelete(scope!.record)"
@@ -141,25 +130,21 @@ import {
   PlusOutlined,
   CodeOutlined
 } from '@ant-design/icons-vue'
-import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import { useTable, columns } from './use-table'
 import useActions from './use-action'
 import FormModal from './form.vue'
 import type { FormInstance } from 'ant-design-vue'
-import type { ApplicationVO } from '@/api/system/application'
+import type { PlanVO } from '@/api/application/plan'
 
 const filterForm = ref<FormInstance>()
 
 const [filterExpanded, toggle] = useToggle(false)
-const [statusOpts, typeOpts] = useDict('system_application_status', 'system_application_type')
-
-console.log(typeOpts, statusOpts)
 
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const { entry, visible, onDelete, onEdit, onSetPublished, toDesignPage } = useActions(execute)
+const { entry, visible, onDelete, onEdit, toDesignPage } = useActions(execute)
 
 defineOptions({ name: 'SystemService' })
 </script>

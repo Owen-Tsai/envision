@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
-import { deleteApplication, setPublished, type ApplicationVO } from '@/api/system/application'
+import { deleteApplication, setPublished, type ApplicationVO } from '@/api/application'
 
 const useActions = (requestData: () => void) => {
   const entry = ref<ApplicationVO | undefined>()

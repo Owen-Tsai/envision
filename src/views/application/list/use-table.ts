@@ -1,11 +1,7 @@
 import { ref, computed, type Ref } from 'vue'
 import dayjs from 'dayjs'
 import useRequest from '@/hooks/use-request'
-import {
-  getApplicationList,
-  type ListQueryParams,
-  type ApplicationVO
-} from '@/api/system/application'
+import { getApplicationList, type ListQueryParams, type ApplicationVO } from '@/api/application'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
