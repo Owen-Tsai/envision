@@ -61,12 +61,17 @@
           </ACol>
           <ACol :lg="12" :span="24">
             <AFormItem label="角色" name="roleIds">
-              <ASelect v-model:value="formData.roleIds"></ASelect>
+              <ASelect
+                v-model:value="formData.roleIds"
+                :options="roles"
+                :field-names="{ label: 'name', value: 'id' }"
+                :loading="rolePending"
+              />
             </AFormItem>
           </ACol>
           <ACol :lg="12" :span="24">
             <AFormItem label="岗位" name="postIds">
-              <ASelect v-model:value="formData.postIds"></ASelect>
+              <ASelect v-model:value="formData.postIds" />
             </AFormItem>
           </ACol>
           <ACol :lg="12" :span="24">
@@ -92,6 +97,7 @@ import useDict from '@/hooks/use-dict'
 import useRequest from '@/hooks/use-request'
 import { getUserDetail, updateUser, createUser, type UserVO } from '@/api/system/user'
 import { getDeptTree } from '@/api/system/dept'
+import { getRoleSimpleList } from '@/api/system/role'
 
 const formRef = ref<FormInstance>()
 
@@ -117,6 +123,7 @@ const [systemUserSex, commonStatus] = useDict('system_user_sex', 'common_status'
 console.log(systemUserSex, commonStatus)
 
 const { data, pending } = useRequest(getDeptTree, { immediate: true })
+const { data: roles, pending: rolePending } = useRequest(getRoleSimpleList, { immediate: true })
 
 const resetFields = () => {
   formRef.value?.resetFields()

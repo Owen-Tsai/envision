@@ -57,3 +57,9 @@ export const deleteRole = (id: number) => {
     url: `/system/role/delete?id=${id}`
   })
 }
+
+export const getRoleSimpleList = () => {
+  return request.get<Pick<RoleVO, 'id' | 'name'>[]>({
+    url: '/system/role/simple-list'
+  })
+}
