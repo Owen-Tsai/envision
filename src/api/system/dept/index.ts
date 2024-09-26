@@ -58,3 +58,9 @@ export const deleteDept = (id: number) => {
     url: `/system/dept/delete?id=${id}`
   })
 }
+
+export const getDeptSimpleList = () => {
+  return request.get<Array<{ id: number; name: string }>>({
+    url: '/system/dept/simple-list'
+  })
+}

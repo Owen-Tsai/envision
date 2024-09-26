@@ -1,0 +1,110 @@
+<template>
+  <ACard>
+    <ARow>
+      <ACol :span="11" class="user">
+        <div class="flex items-center gap-2 lg:gap-4">
+          <AAvatar :src="user?.avatar" :size="screen.lg ? 64 : 48" />
+          <div>
+            <div class="text-xl lg:text-2xl">欢迎回来，{{ user?.nickname }}</div>
+            <div class="info">
+              <span>{{ depts?.find((d) => d.id === user?.deptId)?.name }}</span>
+              <ADivider type="vertical" />
+              <span>未绑定手机</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 mt-6">
+          <RouterLink v-for="link in links" :key="link.path" :to="link.path" class="link">
+            <div class="flex items-center gap-2">
+              <img :src="link.icon" />
+              <div>{{ link.name }}</div>
+            </div>
+          </RouterLink>
+        </div>
+      </ACol>
+      <ACol :span="13" class="stats">
+        <div class="title">整体情况统计</div>
+        <div class="grid grid-cols-3 gap-2">
+          <AStatistic
+            v-for="(entry, i) in stats"
+            :key="i"
+            :title="entry.name"
+            :suffix="entry.suffix"
+            :value="entry.value"
+          >
+            <template #formatter>
+              <ECounter :end-val="entry.value" :decimal-places="entry.decimal || 0" />
+            </template>
+          </AStatistic>
+        </div>
+      </ACol>
+    </ARow>
+  </ACard>
+</template>
+
+<script setup lang="ts">
+import { Grid } from 'ant-design-vue'
+import { storeToRefs } from 'pinia'
+import useRequest from '@/hooks/use-request'
+import { EditOutlined } from '@ant-design/icons-vue'
+import useUserStore from '@/stores/user'
+import { desensitizePhoneNumber } from '@/utils/fusion'
+import { getDeptSimpleList } from '@/api/system/dept'
+import iGroup from '~img/icon-ugroup.svg'
+import iDept from '~img/icon-dept.svg'
+import iProfile from '~img/icon-id-card.svg'
+import iAccount from '~img/icon-account.svg'
+
+const links = [
+  { name: '用户管理', icon: iGroup, path: '/system/user' },
+  { name: '部门管理', icon: iDept, path: '/system/dept' },
+  { name: '角色设置', icon: iAccount, path: '/system/role' },
+  { name: '个人设置', icon: iProfile, path: '/me' }
+]
+
+const stats = [
+  { name: '应用总数', value: 6 },
+  { name: '上架应用数', value: 2 },
+  { name: '计划启用数', value: 7 },
+  { name: '业务办理量', value: 8, suffix: '人次' },
+  { name: '办理通过率', value: 90.65, suffix: '%', decimal: 2 }
+]
+
+const { user } = storeToRefs(useUserStore())
+const { data: depts, pending: deptPending } = useRequest(getDeptSimpleList, {
+  immediate: true
+})
+
+const screen = Grid.useBreakpoint()
+</script>
+
+<style lang="scss" scoped>
+.user {
+  border-right: 1px solid var(--colorBorder);
+  padding-right: 24px;
+}
+.link {
+  color: var(--colorText);
+  background-color: var(--colorFillSecondary);
+  border-radius: var(--borderRadius);
+  padding: 4px 8px;
+
+  img {
+    @apply size-32px;
+  }
+
+  &:hover {
+    background-color: var(--colorFill);
+  }
+}
+.stats {
+  padding-left: 24px;
+
+  .title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+}
+</style>

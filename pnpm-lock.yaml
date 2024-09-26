@@ -89,6 +89,9 @@ importers:
       vue-codemirror:
         specifier: ^6.1.1
         version: 6.1.1(codemirror@6.0.1(@lezer/common@1.2.1))(vue@3.5.6(typescript@5.3.3))
+      vue-countup-v3:
+        specifier: ^1.4.2
+        version: 1.4.2(vue@3.5.6(typescript@5.3.3))
       vue-echarts:
         specifier: ^6.7.3
         version: 6.7.3(@vue/runtime-core@3.5.6)(echarts@5.5.1)(vue@3.5.6(typescript@5.3.3))
@@ -1425,6 +1428,9 @@ packages:
   core-js@3.38.1:
     resolution: {integrity: sha512-OP35aUorbU3Zvlx7pjsFdu1rGNnD4pgw/CWoYzRY3t2EzoVT7shKHY1dlAy3f41cGIO7ZDPQimhGFTlEYkG/Hw==}
 
+  countup.js@2.8.0:
+    resolution: {integrity: sha512-f7xEhX0awl4NOElHulrl4XRfKoNH3rB+qfNSZZyjSZhaAoUk6elvhH+MNxMmlmuUJ2/QNTWPSA7U4mNtIAKljQ==}
+
   create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
 
@@ -2645,6 +2651,11 @@ packages:
     peerDependencies:
       codemirror: 6.x
       vue: 3.x
+
+  vue-countup-v3@1.4.2:
+    resolution: {integrity: sha512-nRC65jBcdgwybxqztgd/WaK8ZN5T9ECPyiCFGYFMewCsvqdRVo1CtpT7JREcPNF837Fgu/izTSFiuzrIGD6w0A==}
+    peerDependencies:
+      vue: ^3.0.0
 
   vue-demi@0.13.11:
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
@@ -4195,6 +4206,8 @@ snapshots:
 
   core-js@3.38.1: {}
 
+  countup.js@2.8.0: {}
+
   create-require@1.1.1: {}
 
   crelt@1.0.6: {}
@@ -5392,6 +5405,11 @@ snapshots:
       '@codemirror/state': 6.4.1
       '@codemirror/view': 6.33.0
       codemirror: 6.0.1(@lezer/common@1.2.1)
+      vue: 3.5.6(typescript@5.3.3)
+
+  vue-countup-v3@1.4.2(vue@3.5.6(typescript@5.3.3)):
+    dependencies:
+      countup.js: 2.8.0
       vue: 3.5.6(typescript@5.3.3)
 
   vue-demi@0.13.11(vue@3.5.6(typescript@5.3.3)):

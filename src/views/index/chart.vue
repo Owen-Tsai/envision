@@ -1,40 +1,5 @@
 <template>
-  <ACard>
-    <div class="stat-container">
-      <div>
-        <div class="icon-wrapper bg-1">
-          <img :src="icon1" />
-        </div>
-        <AStatistic title="人才总量" :value="287359" suffix="人" />
-      </div>
-      <div>
-        <div class="icon-wrapper bg-2">
-          <img :src="icon2" />
-        </div>
-        <AStatistic title="年度人才增量" :value="1342">
-          <template #suffix>
-            <div class="positive">
-              <CaretUpFilled />
-              <span>24</span>
-            </div>
-          </template>
-        </AStatistic>
-      </div>
-      <div>
-        <div class="icon-wrapper bg-3">
-          <img :src="icon3" />
-        </div>
-        <AStatistic title="年度人才减量" :value="212">
-          <template #suffix>
-            <div class="nagative">
-              <CaretUpFilled />
-              <span>8</span>
-            </div>
-          </template>
-        </AStatistic>
-      </div>
-    </div>
-    <ADivider />
+  <ACard title="业务办理趋势图">
     <div class="chart-container">
       <VChart :option="option" :theme="theme" autoresize />
     </div>

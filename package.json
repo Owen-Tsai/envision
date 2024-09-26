@@ -50,6 +50,7 @@
     "shiki": "^1.18.0",
     "vue": "^3.5.6",
     "vue-codemirror": "^6.1.1",
+    "vue-countup-v3": "^1.4.2",
     "vue-echarts": "^6.7.3",
     "vue-i18n": "^9.14.0",
     "vue-router": "^4.4.5",

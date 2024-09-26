@@ -1,22 +1,15 @@
 <template>
-  <ACard title="快捷操作">
+  <ACard title="常用应用">
     <template #extra>
-      <ATypographyLink>管理</ATypographyLink>
+      <ATypographyLink>创建应用</ATypographyLink>
     </template>
-    <div class="grid grid-cols-3 gap-x-1 gap-y-5">
+    <div class="grid grid-cols-2 gap-2">
       <div v-for="(action, i) in actions" :key="i" class="action-item">
         <div class="icon">
-          <component v-if="action.icon" :is="icons[action.icon]" class="text-lg" />
-          <div class="px-1" v-else>{{ getShortName(action.label) }}</div>
+          <img class="icon-img" v-if="action.icon" :src="action.icon" />
+          <div class="icon-div" v-else>{{ getShortName(action.label) }}</div>
         </div>
         <div class="label">{{ action.label }}</div>
-      </div>
-
-      <div class="action-item">
-        <div class="icon icon-plus">
-          <PlusOutlined />
-        </div>
-        <div class="label">新增</div>
       </div>
     </div>
   </ACard>
@@ -25,17 +18,15 @@
 <script lang="ts" setup>
 import { ref, getCurrentInstance } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
+import icon from '~img/icon-package.svg'
 
 const icons = getCurrentInstance()?.proxy?.$icons!
 
 const actions = ref([
-  { label: '托育补贴审核' },
-  { label: '通知发布', icon: 'NotificationOutlined' },
-  { label: '人才引进补贴审核' },
-  { label: '人才公寓审核' },
-  { label: '留言反馈', icon: 'MessageOutlined' },
-  { label: '流程管理', icon: 'SisternodeOutlined' },
-  { label: '人才卡审核', icon: 'IdcardOutlined' }
+  { label: '生活补贴审核', icon },
+  { label: '测试应用10001审核', icon },
+  { label: '测试应用10002审核', icon },
+  { label: '测试应用10003审核', icon }
 ])
 
 const getShortName = (name: string) => {
@@ -45,7 +36,9 @@ const getShortName = (name: string) => {
 
 <style lang="scss" scoped>
 .action-item {
-  @apply flex flex-col items-center px-2 cursor-pointer;
+  @apply flex p-2 cursor-pointer gap-2;
+  background-color: var(--colorFillTertiary);
+  border-radius: var(--borderRadius);
 
   .icon-plus {
     background-color: transparent !important;
@@ -53,12 +46,14 @@ const getShortName = (name: string) => {
     color: var(--colorTextSecondary);
   }
 
-  .icon {
-    @apply h-10 w-10 rounded inline-flex items-center justify-center;
+  .icon-div {
+    @apply h-12 w-12 rounded inline-flex items-center justify-center flex-shrink-0;
     background-color: var(--colorFillTertiary);
   }
+  .icon-img {
+    @apply h-12 w-12;
+  }
   .label {
-    @apply truncate w-full overflow-hidden text-center mt-2 text-xs;
   }
   &:hover {
     color: var(--colorPrimaryText);
