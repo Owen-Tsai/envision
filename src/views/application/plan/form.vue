@@ -24,6 +24,7 @@
             :options="appOpts"
             allow-clear
             :field-names="{ label: 'name', value: 'id' }"
+            @change="setFlowId"
           />
         </AFormItem>
         <AFormItem label="常态化" name="daily">
@@ -31,18 +32,10 @@
         </AFormItem>
         <template v-if="!formData.daily">
           <AFormItem label="开始时间" name="startTime">
-            <ADatePicker
-              v-model:value="formData.startTime"
-              :show-time="{ showSecond: false }"
-              value-format="YYYY-MM-DD HH:mm"
-            />
+            <ADatePicker v-model:value="formData.startTime" value-format="YYYY-MM-DD HH:mm:ss" />
           </AFormItem>
           <AFormItem label="截止时间" name="endTime">
-            <ADatePicker
-              v-model:value="formData.endTime"
-              :show-time="{ showSecond: false }"
-              value-format="YYYY-MM-DD HH:mm"
-            />
+            <ADatePicker v-model:value="formData.endTime" value-format="YYYY-MM-DD HH:mm:ss" />
           </AFormItem>
         </template>
       </AForm>
@@ -76,7 +69,7 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
 const formData = ref<Partial<PlanVO>>({
-  id: ''
+  daily: false
 })
 const { data: appOpts } = useRequest(getApplicationSimpleList, { immediate: true })
 
@@ -114,6 +107,10 @@ const onDailyChange = (checked: boolean) => {
     formData.value.startTime = undefined
     formData.value.endTime = undefined
   }
+}
+
+const setFlowId = () => {
+  formData.value.flow = appOpts.value?.find((v) => v.id === formData.value.appId)?.processIds
 }
 
 if (props.record?.id) {

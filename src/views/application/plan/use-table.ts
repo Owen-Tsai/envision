@@ -8,7 +8,6 @@ import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 export const columns: TableProps['columns'] = [
   { title: '计划名称', dataIndex: 'item', key: 'item', ellipsis: true },
   { title: '应用名称', dataIndex: 'appId', key: 'appId' },
-  { title: '创建人', width: 120, dataIndex: 'creator' },
   {
     title: '开始时间',
     minWidth: 120,
@@ -29,7 +28,7 @@ export const columns: TableProps['columns'] = [
       return dayjs(a.endTime).isSameOrBefore(b.endTime) ? 1 : -1
     }
   },
-  { title: '操作', key: 'actions', width: 220 }
+  { title: '操作', key: 'actions', width: 240 }
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
