@@ -8,6 +8,7 @@ export type PlanVO = {
   endTime?: string
   daily?: boolean
   appId?: string
+  flow?: string
 }
 
 export type ListQueryParams = {
@@ -43,12 +44,12 @@ export const updatePlan = (data: PlanVO) => {
 
 export const deletePlan = (id: string) => {
   return request.delete({
-    url: `${url}/delete/${id}`
+    url: `${url}/delete?id=${id}`
   })
 }
 
 export const getPlanDetail = (id: string) => {
   return request.get<PlanVO>({
-    url: `${url}/get/${id}`
+    url: `${url}/get?id=${id}`
   })
 }

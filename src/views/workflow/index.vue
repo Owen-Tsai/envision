@@ -42,6 +42,7 @@
 <script lang="ts" setup>
 import { ref, computed, provide } from 'vue'
 import { useRoute } from 'vue-router'
+import { flattenDeep, drop } from 'lodash'
 import { Modal, message, type StepsProps } from 'ant-design-vue'
 import { RollbackOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
@@ -51,6 +52,8 @@ import {
   getSchemaByAppId,
   getProcessXML,
   updateProcessXML,
+  addMenuById,
+  updateMenuById,
   type AppDesignSchemaVO
 } from '@/api/workflow'
 import { getApplicationDetail, type ApplicationVO } from '@/api/application'
@@ -121,6 +124,17 @@ const reGenerateSchema = () => {
     })
 }
 
+const getSteps = () => {
+  const list = flattenDeep(schema.value?.flow.nodes).map((node) => {
+    return {
+      uid: node.uid,
+      name: node.name
+    }
+  })
+
+  return drop(list)
+}
+
 const onAppSave = () => {
   formData.value = {
     ...formData.value,
@@ -149,9 +163,11 @@ const onAppSave = () => {
       })
 
       if (isAdd.value) {
-        await createAppDesignSchema(formData.value)
+        const id = await createAppDesignSchema(formData.value)
+        await addMenuById(id, getSteps())
       } else {
-        await updateAppDesignSchema(formData.value)
+        const id = await updateAppDesignSchema(formData.value)
+        await updateMenuById(id, getSteps())
       }
 
       loading.value = false

@@ -42,7 +42,7 @@ export const getSchemaByAppId = (appId: string) => {
 }
 
 export const updateAppDesignSchema = (data: AppDesignSchemaVO) => {
-  return request.put<AppDesignSchemaVO>({
+  return request.put<string>({
     url: `${url}/update`,
     data
   })
@@ -61,7 +61,7 @@ export const listAppDesignSchema = () => {
 }
 
 export const createAppDesignSchema = (data: AppDesignSchemaVO) => {
-  return request.post<AppDesignSchemaVO>({
+  return request.post<string>({
     url: `${url}/create`,
     data
   })
@@ -78,5 +78,19 @@ export const updateProcessXML = (data: XMLUpdateVO) => {
   return request.put({
     url: '/bpm/model/update',
     data
+  })
+}
+
+export const addMenuById = (id: string, map: Array<{ uid: string; name: string }>) => {
+  return request.post({
+    url: `${url}/add-menu-by-id`,
+    data: { id, map }
+  })
+}
+
+export const updateMenuById = (id: string, map: Array<{ uid: string; name: string }>) => {
+  return request.post({
+    url: `${url}/update-menu-by-id`,
+    data: { id, map }
   })
 }
