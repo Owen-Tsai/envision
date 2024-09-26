@@ -97,7 +97,6 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
 const formData = ref<Partial<ApplicationVO>>({
-  id: 'asjd9i3j10ma',
   published: 0
 })
 const deptOpts = ref<DeptTreeVO>()

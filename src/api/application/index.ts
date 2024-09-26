@@ -46,7 +46,7 @@ export const getApplicationList = (params?: ListQueryParams) => {
 }
 
 export const getApplicationSimpleList = () => {
-  return request.get<Pick<ApplicationVO, 'id' | 'name'>[]>({
+  return request.get<Pick<ApplicationVO, 'id' | 'name' | 'processIds'>[]>({
     url: `${url}/get-list`
   })
 }
