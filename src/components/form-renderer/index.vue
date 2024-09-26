@@ -9,7 +9,7 @@
       label-wrap
       :wrapper-col="wrapperCol"
       :layout="formSchema.layout"
-      :disabled="formSchema.disabled"
+      :disabled="formSchema.disabled || disabled"
       scroll-to-first-error
       class="flex-grow"
     >
@@ -39,7 +39,8 @@ const props = defineProps({
   },
   showFormData: {
     type: Boolean
-  }
+  },
+  disabled: Boolean
 })
 
 const formRef = ref<FormInstance>()

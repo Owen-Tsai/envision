@@ -57,6 +57,22 @@ export const fixedRoutes: RouteRecordRaw[] = [
         meta: {
           title: '代码生成配置'
         }
+      },
+      {
+        path: '/business/:appId/audit',
+        name: 'BusinessAuditList',
+        component: () => import('@/views/business/audit/index.vue'),
+        meta: {
+          title: '应用审核'
+        }
+      },
+      {
+        path: '/business/:appId/audit/form',
+        name: 'BusinessAuditForm',
+        component: () => import('@/views/business/audit/form.vue'),
+        meta: {
+          title: '应用审核'
+        }
       }
     ]
   }

@@ -44,6 +44,7 @@ menuItems.value.unshift({
 loading.value = false
 
 const onSelect = (key: string) => {
+  console.log(key)
   if (key.includes('http')) {
     window.open(key)
     // when opening a new browser tab/window
@@ -51,6 +52,7 @@ const onSelect = (key: string) => {
     const { path } = currentRoute.value
     selectedKeys.value = [path]
   } else {
+    console.log(selectedKeys)
     push(key)
   }
 }
@@ -74,8 +76,8 @@ const setDefaultExpandedKeys = () => {
 }
 
 watchEffect(() => {
-  const { path } = currentRoute.value
-  selectedKeys.value = [path]
+  const { path, fullPath } = currentRoute.value
+  selectedKeys.value = [fullPath]
   setDefaultExpandedKeys()
 })
 

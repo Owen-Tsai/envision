@@ -21,6 +21,9 @@ export const useActions = () => {
     getFormData: () => {
       return formData.value
     },
+    setFormData: (value: any) => {
+      formData.value = value
+    },
     getSchema: () => {
       return schema
     },
