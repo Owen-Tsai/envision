@@ -4,13 +4,15 @@
       <div class="aspinDiv" v-show="formRendering">
         <a-spin />
       </div>
-      <FormRenderer
-        ref="formRenderer"
-        v-if="appSchema"
-        :schema="appSchema as Schema"
-        :key="appSchema"
-        disabled
-      />
+      <div class="audit-view">
+        <FormRenderer
+          ref="formRenderer"
+          v-if="appSchema"
+          :key="appSchema"
+          disabled
+          :schema="appSchema"
+        />
+      </div>
     </ACard>
     <ACard title="审批任务" style="margin-top: 20px">
       <a-form>

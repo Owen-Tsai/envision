@@ -96,3 +96,29 @@ html {
 //   font-weight: var(--shiki-dark-font-weight) !important;
 //   text-decoration: var(--shiki-dark-text-decoration) !important;
 // }
+
+.audit-view {
+  .ant-select-disabled .ant-select-selector {
+    background-color: transparent !important;
+    color: var(--colorText) !important;
+    border: none !important;
+    border-bottom: 1px solid var(--colorBorder) !important;
+    border-radius: 0 !important;
+  }
+  .ant-input-affix-wrapper-disabled {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--colorBorder) !important;
+    border-radius: 0 !important;
+    input {
+      color: var(--colorText) !important;
+    }
+  }
+  .ant-picker-disabled {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--colorBorder) !important;
+    border-radius: 0 !important;
+    color: var(--colorText) !important;
+  }
+}
