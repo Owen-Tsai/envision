@@ -10,7 +10,7 @@
     <ASpin :spinning="loading">
       <AForm
         ref="formRef"
-        :label-col="{ style: { width: '80px' } }"
+        :label-col="{ style: { width: '140px' } }"
         :model="formData"
         :rules="rules"
         class="mt-4"
@@ -23,6 +23,18 @@
         </AFormItem>
         <AFormItem label="业务类别" name="type">
           <ASelect v-model:value="formData.type" :options="appTypeOpts" />
+        </AFormItem>
+        <AFormItem label="用户类别" name="userType">
+          <ASelect v-model:value="formData.userType">
+            <a-select-option value="3">个人用户</a-select-option>
+            <a-select-option value="4">单位用户</a-select-option>
+          </ASelect>
+        </AFormItem>
+        <AFormItem label="单位开通权限并审核" name="comopen" v-if="formData.userType === '3'">
+          <ASelect v-model:value="formData.comopen">
+            <a-select-option value="0">否</a-select-option>
+            <a-select-option value="1">是</a-select-option>
+          </ASelect>
         </AFormItem>
         <AFormItem label="主管部门" name="dept">
           <ATreeSelect

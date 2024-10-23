@@ -7,7 +7,6 @@
         </template>
       </AButton>
       <img class="logo" :src="logo" />
-      <h1 class="title mb-0">{{ title }}</h1>
     </div>
 
     <div class="actions">
@@ -62,7 +61,7 @@ import { ref, computed, toRefs } from 'vue'
 import { Modal } from 'ant-design-vue'
 import { BellOutlined, MenuOutlined } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
-import logo from '~img/company-logo.svg'
+import logo from '~img/logo-full.svg'
 import useAppStore from '@/stores/app'
 import useUserStore from '@/stores/user'
 import useBreakpoint from '@/hooks/use-breakpoint'
@@ -120,7 +119,7 @@ header {
   @apply flex-center;
   gap: 8px;
   .logo {
-    @apply size-30px;
+    height: 40px;
     border-radius: 6px;
     user-select: none;
     -webkit-user-drag: none;

@@ -15,6 +15,8 @@ export type ApplicationVO = {
   published?: number
   description?: string
   processIds?: string
+  userType?: string
+  comopen?: number
 }
 
 export type ListQueryParams = {
