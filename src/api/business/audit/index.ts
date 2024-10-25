@@ -33,7 +33,7 @@ export const backTask = async (data) => {
 
 export const getEchoData = (appId: string, applyId: string) => {
   return request.get<EchoDataVO>({
-    url: `/fusionx/framework/data-echo?appId=${appId}&applyId=${applyId}`
+    url: `/fusionx/framework/data-echo?appId=${appId}&targetId=${applyId}`
   })
 }
 
