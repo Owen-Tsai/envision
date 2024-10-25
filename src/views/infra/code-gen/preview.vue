@@ -13,7 +13,7 @@
     <div class="modal-content-wrapper">
       <ARow :gutter="40" class="h-full">
         <ACol :lg="7" class="h-full">
-          <EScrollbar :auto-expand="false" :throttle-wait="0" wrapper-class="h-full" class="h-full">
+          <Scrollbar :auto-expand="false" :throttle-wait="0" wrapper-class="h-full" class="h-full">
             <ATree
               :tree-data="filePathTree"
               default-expand-all
@@ -22,7 +22,7 @@
               class="h-full"
               @select="(keys) => onSelect(keys)"
             />
-          </EScrollbar>
+          </Scrollbar>
         </ACol>
         <ACol :lg="17" class="h-full">
           <ATabs v-model:active-key="selectedKeys![0]" class="h-full code-tabs-pane">
@@ -32,14 +32,14 @@
               :tab="last(file.filePath.split('/'))"
               class="h-full"
             >
-              <EScrollbar
+              <Scrollbar
                 :auto-expand="false"
                 :throttle-wait="50"
                 wrapper-class="h-full"
                 class="h-full"
               >
                 <div class="h-full" v-html="code" />
-              </EScrollbar>
+              </Scrollbar>
             </ATabPane>
           </ATabs>
         </ACol>
@@ -50,7 +50,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import { last } from 'lodash'
+import { last } from 'lodash-es'
 import { previewCode, type CodePreviewVO } from '@/api/infra/code-gen'
 import useHighlighter from '@/hooks/use-highlighter'
 import type { BundledLanguage } from 'shiki/langs'
@@ -135,7 +135,7 @@ const filePathTree = computed<FileNode[]>(() => {
     }
 
     for (let i = 0; i < pathFrags.length; i++) {
-      let oldFullPath = fullPath
+      const oldFullPath = fullPath
       fullPath =
         fullPath.length === 0 ? pathFrags[i] : fullPath.replaceAll('.', '/') + '/' + pathFrags[i]
       if (existedMap[fullPath]) {
@@ -162,7 +162,9 @@ const constructTree = (files: FileNode[]) => {
       return parent.key === child.pKey
     })
 
-    branchArr.length > 0 ? (parent.children = branchArr) : ''
+    if (branchArr.length > 0) {
+      parent.children = branchArr
+    }
     return parent.pKey === '/'
   })
 

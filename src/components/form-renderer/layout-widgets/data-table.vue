@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { ref, reactive, h, computed, inject, type PropType } from 'vue'
 import request from '@/utils/request'
-import { kebabCase } from 'lodash'
+import { kebabCase } from 'lodash-es'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import WidgetRenderer from '../widget-renderer.vue'
 import type { TableProps } from 'ant-design-vue'

@@ -10,11 +10,11 @@
         :collapsed-width="56"
         class="layout-sider px-1"
       >
-        <EScrollbar :auto-expand="false" :throttle-wait="50" wrapper-class="h-full" class="h-full">
+        <Scrollbar :auto-expand="false" :throttle-wait="50" wrapper-class="h-full" class="h-full">
           <div class="h-full overflow-y-auto pb-2">
             <Menu />
           </div>
-        </EScrollbar>
+        </Scrollbar>
         <AButton class="menu-btn" type="text" size="small" @click="toggle()">
           <template #icon>
             <MenuUnfoldOutlined v-if="collapsed" />

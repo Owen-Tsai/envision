@@ -9,7 +9,7 @@
   >
     <div class="mt-4 flex gap-4">
       <div class="list">
-        <EScrollbar wrapper-class="h-full" class="h-full">
+        <Scrollbar wrapper-class="h-full" class="h-full">
           <div
             v-for="(config, fid, i) in schema.functions"
             :key="i"
@@ -23,7 +23,7 @@
             <PlusOutlined />
             新增函数
           </div>
-        </EScrollbar>
+        </Scrollbar>
       </div>
       <div class="form">
         <div v-show="activeFid !== undefined">

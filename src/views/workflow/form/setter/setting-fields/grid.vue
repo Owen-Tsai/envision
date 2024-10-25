@@ -38,7 +38,7 @@
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
-import { clamp } from 'lodash'
+import { clamp } from 'lodash-es'
 import type { WPropsGrid } from '@/types/workflow/form'
 
 const alignOpts = [

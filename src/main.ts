@@ -2,10 +2,11 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createI18n } from 'vue-i18n'
 import Antd from 'ant-design-vue'
-import EScrollbar from 'custom-vue-scrollbar'
+import Scrollbar from 'custom-vue-scrollbar'
 import DictTag from '@/components/dict-tag/index.vue'
 import Upload from '@/components/upload/index.vue'
 import Counter from 'vue-countup-v3'
+import { iconPlugin } from '@fusionx/utils'
 import '@/utils/dayjs'
 // use all the icons
 import * as antIcons from '@ant-design/icons-vue'
@@ -28,19 +29,13 @@ app.use(createPinia())
 app.use(Antd)
 app.use(router)
 
-app.component('EScrollbar', EScrollbar)
+app.component('Scrollbar', Scrollbar)
 app.component('EDictTag', DictTag)
 app.component('EUpload', Upload)
 app.component('ECounter', Counter)
 
-const icons: Record<string, any> = {}
-Object.keys(antIcons).forEach((k) => {
-  // app.component(k, (antIcons as Record<string, any>)[k])
-  if (k !== 'default' && k !== 'createFromIconfontCN' && !k.includes('TwoTone')) {
-    icons[k] = (antIcons as Record<string, any>)[k]
-  }
+app.use(iconPlugin, {
+  icons: antIcons
 })
-
-app.config.globalProperties.$icons = icons
 
 app.mount('#app')

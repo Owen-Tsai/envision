@@ -1,5 +1,5 @@
 import { inject, ref, type Ref } from 'vue'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import { getTableColumns as fetch, type TableColumnsVO } from '@/api/application'
 import { generateID } from '@/utils/fusion'
 import { widgetInitConfig } from './form/use-widgets'
@@ -122,7 +122,9 @@ const generateTableSchema = (columnsInfo: TableColumnsVO) => {
     if (!column.createOperation || !column.htmlType) return
 
     const widget = generateWidgetSchema(column, table)
-    widget && tableSchema.push(widget)
+    if (widget) {
+      tableSchema.push(widget)
+    }
   })
 
   return tableSchema

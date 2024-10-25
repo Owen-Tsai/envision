@@ -1,6 +1,6 @@
 <template>
   <AUpload
-    :action="uploadUrl"
+    :action="action || uploadUrl"
     :accept="accept.join(',')"
     :max-count="limit"
     :list-type="listType"
@@ -21,7 +21,9 @@
         选择文件
       </AButton>
 
-      <template v-else-if="listType === 'picture-card' && limit && fileList.length < limit">
+      <template
+        v-else-if="listType === 'picture-card' && limit && limit !== 0 && fileList.length < limit"
+      >
         <div class="upload-trigger">
           <LoadingOutlined v-if="loading" />
           <PlusOutlined v-else />
@@ -42,6 +44,7 @@ import useUpload from '@/hooks/use-upload'
 const { LIST_IGNORE } = Upload
 
 const props = defineProps({
+  action: String,
   accept: {
     type: Array as PropType<string[]>,
     default: () => ['pdf, png, svg, jpg, doc, docx']
@@ -107,7 +110,6 @@ const updateModel = () => {
 }
 
 const handleSuccess = (file: UploadFile) => {
-  console.log('success')
   message.success('上传成功')
   emit('success')
   emit('finished')
@@ -138,8 +140,7 @@ const onRemove: UploadProps['onRemove'] = (file) => {
   }
 }
 
-const onStatusChange: UploadProps['onChange'] = ({ file, fileList, event }) => {
-  console.log(file, fileList, event)
+const onStatusChange: UploadProps['onChange'] = ({ file }) => {
   if (file.status === 'done') {
     handleSuccess(file)
   } else if (file.status === 'error') {

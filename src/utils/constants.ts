@@ -11,3 +11,5 @@ export const DICT_SYSTEM_DATA_SCOPE = {
   deptAndChildren: 4,
   self: 5
 }
+
+export const HEADER_HEIGHT = import.meta.env.VITE_DEFAULT_LAYOUT === 'default' ? 56 : 0

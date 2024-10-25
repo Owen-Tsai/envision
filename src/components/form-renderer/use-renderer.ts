@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import { generateID } from '@/utils/fusion'
 import type { Widget, WPropsSubFormEntry, LayoutWidget } from '@/types/workflow/form'
 

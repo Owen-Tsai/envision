@@ -86,7 +86,7 @@
 
 <script lang="ts" setup>
 import { inject, computed, type Ref } from 'vue'
-import { find, kebabCase } from 'lodash'
+import { find, kebabCase } from 'lodash-es'
 import { Codemirror } from 'vue-codemirror'
 import { labelAlignOpts, validationTriggerOpts } from './use-settings-data'
 import useValidator from './use-validator'

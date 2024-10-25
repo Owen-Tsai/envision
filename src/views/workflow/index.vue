@@ -42,7 +42,7 @@
 <script lang="ts" setup>
 import { ref, computed, provide } from 'vue'
 import { useRoute } from 'vue-router'
-import { flattenDeep, drop } from 'lodash'
+import { flattenDeep, drop } from 'lodash-es'
 import { Modal, message, type StepsProps } from 'ant-design-vue'
 import { RollbackOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
@@ -156,7 +156,7 @@ const onAppSave = () => {
       })
 
       await updateProcessXML({
-        id: appDetail.value?.processIds!,
+        id: appDetail.value!.processIds!,
         name: appDetail.value?.name || 'unnamed',
         bpmnXml: xml.data,
         category: appDetail.value?.type || 'unknown'

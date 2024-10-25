@@ -1,6 +1,6 @@
 import { inject } from 'vue'
 import dayjs from 'dayjs'
-import { camelCase, remove, cloneDeep } from 'lodash'
+import { camelCase, remove, cloneDeep } from 'lodash-es'
 import { generateID } from '@/utils/fusion'
 import { injectionKey } from '@/types/workflow/form'
 import type {
@@ -10,9 +10,9 @@ import type {
   Widget,
   LayoutWidget
 } from '@/types/workflow/form'
-import defaultIcon from '@/components/efk-icons/custom.vue'
+import defaultIcon from '@/components/fux-core/_icons/custom.vue'
 
-const icons = import.meta.glob('@/components/efk-icons/*.vue', { eager: true })
+const icons = import.meta.glob('@/components/fux-core/_icons/*.vue', { eager: true })
 
 const getIcon = (widgetType: WidgetType) => {
   const keys = Object.keys(icons)

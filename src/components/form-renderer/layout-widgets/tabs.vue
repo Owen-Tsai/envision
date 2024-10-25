@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { ref, inject, type PropType } from 'vue'
-import { kebabCase } from 'lodash'
+import { kebabCase } from 'lodash-es'
 import request from '@/utils/request'
 import WidgetRenderer from '../widget-renderer.vue'
 import { formModelCtxKey, type FormModelContext } from '@/types/workflow'

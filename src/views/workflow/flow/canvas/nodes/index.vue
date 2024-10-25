@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-import { cloneDeep, drop } from 'lodash'
+import { cloneDeep, drop } from 'lodash-es'
 import { generateID } from '@/utils/fusion'
 import StartNode from './start-node.vue'
 import AuditNode from './audit-node.vue'

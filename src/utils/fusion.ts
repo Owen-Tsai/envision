@@ -1,5 +1,5 @@
 import { customAlphabet } from 'nanoid'
-import { throttle } from 'lodash'
+import { throttle } from 'lodash-es'
 
 export const desensitizePhoneNumber = (str: string) => {
   const start = str.substring(0, 3)
