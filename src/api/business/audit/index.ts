@@ -31,6 +31,10 @@ export const backTask = async (data) => {
   return await request.put({ url: '/bpm/task/return', data })
 }
 
+export const backInitiatorTask = async (data) => {
+  return await request.put({ url: '/bpm/task/return', data })
+}
+
 export const getEchoData = (appId: string, applyId: string) => {
   return request.get<EchoDataVO>({
     url: `/fusionx/framework/data-echo?appId=${appId}&targetId=${applyId}`
