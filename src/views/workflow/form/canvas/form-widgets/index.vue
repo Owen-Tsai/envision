@@ -41,7 +41,7 @@
 import { computed, type PropType, type Component } from 'vue'
 import { useWidget } from '../../use-widgets'
 import { FullscreenOutlined, DeleteFilled, CopyFilled } from '@ant-design/icons-vue'
-import { camelCase } from 'lodash'
+import { camelCase } from 'lodash-es'
 import { tryParse } from '@/utils/fusion'
 import { type FormWidget, type Widget } from '@/types/workflow/form'
 

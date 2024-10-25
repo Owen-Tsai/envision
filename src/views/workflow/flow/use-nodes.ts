@@ -1,5 +1,5 @@
 import { inject } from 'vue'
-import { remove } from 'lodash'
+import { remove } from 'lodash-es'
 import {
   flowCtxInjectionKey,
   type FlowCreatorCtx,

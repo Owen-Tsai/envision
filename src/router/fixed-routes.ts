@@ -29,6 +29,22 @@ export const fixedRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: '/app-design',
+    name: 'AppDesignRoot',
+    component: MinimalLayout,
+    redirect: 'AppDesign',
+    children: [
+      {
+        path: '',
+        name: 'AppDesign',
+        component: () => import('@/views/app-design/index.vue'),
+        meta: {
+          title: '应用设计'
+        }
+      }
+    ]
+  },
+  {
     path: '/',
     name: '__root__',
     component: DefaultLayout,

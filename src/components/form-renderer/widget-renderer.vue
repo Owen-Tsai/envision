@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { computed, provide, type PropType, type Component } from 'vue'
-import { camelCase } from 'lodash'
+import { camelCase } from 'lodash-es'
 import { tryParse } from '@/utils/fusion'
 import SubFormRenderer from './layout-widgets/sub-form.vue'
 import GridRenderer from './layout-widgets/grid.vue'

@@ -1,6 +1,6 @@
 <template>
   <div class="h-full">
-    <EScrollbar wrapper-class="h-full" class="h-full">
+    <Scrollbar wrapper-class="h-full" class="h-full">
       <div class="canvas-wrapper p-4">
         <AForm
           :colon="schema.colon"
@@ -62,7 +62,7 @@
           </Draggable>
         </AForm>
       </div>
-    </EScrollbar>
+    </Scrollbar>
   </div>
 </template>
 

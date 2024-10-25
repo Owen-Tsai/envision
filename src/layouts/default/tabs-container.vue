@@ -1,5 +1,5 @@
 <template>
-  <EScrollbar
+  <Scrollbar
     :thumb-width="8"
     :content-style="{ width: 'fit-content', minWidth: '100%' }"
     wrapper-class="sticky top-14 z-9"
@@ -29,7 +29,7 @@
         </template>
       </ADropdown>
     </div>
-  </EScrollbar>
+  </Scrollbar>
 </template>
 
 <script lang="ts" setup>

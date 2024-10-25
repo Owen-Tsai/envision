@@ -1,11 +1,17 @@
-import { ref, toRefs, type Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import useDictStore from '@/stores/dict'
 import { getDictData, type DictDataEntry } from '@/api/system/dict/data'
 
-// todo: add field `useString` in dictType table
-// it should be returned together with dict data
+export function useDict(...args: string[]): Ref<DictDataEntry[]>[]
+export function useDict(arg: undefined | string): Ref<DictDataEntry[]>[]
 
-export const useDict = (...args: string[]) => {
+export function useDict(arg: string | undefined, ...rest: string[]) {
+  if (arg === undefined) {
+    return [[]]
+  }
+
+  const args = [arg, ...rest]
+
   const dictStore = useDictStore()
 
   const result = args.map((dictType) => {

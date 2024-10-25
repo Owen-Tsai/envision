@@ -4,3 +4,38 @@ $header-height: 56px;
   font-family: 'TitleFont';
   font-weight: bold;
 }
+
+@mixin panel-collapse-handle($dir) {
+  display: none;
+  position: absolute;
+  background-color: var(--colorBgContainer);
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: var(--fontSizeXS);
+  height: 48px;
+  border: 1px solid var(--colorBorder);
+  border-radius: 999px;
+
+  @if ($dir == 'left') {
+    right: 0;
+    transform: translate(50%, -50%);
+  } @else {
+    left: 0;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@mixin panel-collapse-trigger($dir) {
+  position: absolute;
+  width: 6px;
+  top: 0;
+  bottom: 0;
+
+  @if ($dir == 'left') {
+    right: 0;
+  } @else {
+    left: 0;
+  }
+}

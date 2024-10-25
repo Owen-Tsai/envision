@@ -1,9 +1,8 @@
-import { defineConfig, presetMini } from 'unocss'
-import directives from '@unocss/transformer-directives'
+import { defineConfig, presetMini, transformerDirectives } from 'unocss'
 
 export default defineConfig({
   presets: [presetMini()],
-  transformers: [directives()],
+  transformers: [transformerDirectives()],
   theme: {
     colors: {},
     breakpoints: {

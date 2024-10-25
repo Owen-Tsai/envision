@@ -3,15 +3,13 @@
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.ts", "src/**/*.d.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "strict": true,
-    "lib": ["ES2021", "DOM"],
+    "lib": ["DOM", "ESNext"],
     "composite": true,
-    "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "noImplicitAny": false,
     "baseUrl": ".",
-    "moduleResolution": "Node",
     "paths": {
-      "@/*": ["./src/*"],
-      "~img/*": ["./src/assets/img/*"]
+      "@/*": ["./src/*"]
     }
   }
 }

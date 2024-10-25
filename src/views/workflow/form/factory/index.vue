@@ -38,7 +38,7 @@
     </div>
 
     <div class="h-full flex-1 min-w-0 panel">
-      <EScrollbar
+      <Scrollbar
         v-show="activeTab === 0"
         class="h-full"
         wrapper-class="h-full"
@@ -62,8 +62,8 @@
             </template>
           </ATree>
         </div>
-      </EScrollbar>
-      <EScrollbar v-show="activeTab === 1" class="h-full" wrapper-class="h-full">
+      </Scrollbar>
+      <Scrollbar v-show="activeTab === 1" class="h-full" wrapper-class="h-full">
         <!-- widget list -->
         <Draggable
           :list="buildingBlocks"
@@ -78,8 +78,8 @@
             <Item :widget="element" />
           </template>
         </Draggable>
-      </EScrollbar>
-      <EScrollbar
+      </Scrollbar>
+      <Scrollbar
         v-show="activeTab === 2"
         direction="horizontal"
         class="h-full"
@@ -95,7 +95,7 @@
         <div class="schema-panel flex-shrink-1">
           <div v-html="highlightedSchema" />
         </div>
-      </EScrollbar>
+      </Scrollbar>
     </div>
     <PreviewModal v-model:open="visible.preview" :schema="schema" />
     <FuncModal v-model:open="visible.func" />
@@ -106,7 +106,7 @@
 
 <script lang="ts" setup>
 import { h, ref, reactive, computed, inject, type PropType } from 'vue'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import Draggable from 'vuedraggable'
 import {
   PartitionOutlined,

@@ -13,10 +13,10 @@
     </div>
 
     <div class="h-full overflow-auto">
-      <EScrollbar wrapper-class="h-full" class="h-full">
+      <Scrollbar wrapper-class="h-full" class="h-full">
         <FormSettings v-show="activeTab === tabs[0]" class="p-4" />
         <WidgetSettings v-show="activeTab === tabs[1]" class="p-4 pb-12" />
-      </EScrollbar>
+      </Scrollbar>
     </div>
   </div>
 </template>

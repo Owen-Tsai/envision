@@ -41,7 +41,7 @@
 import { ref, computed, getCurrentInstance, type PropType } from 'vue'
 import Icon from '@ant-design/icons-vue'
 import { Form, type PopoverProps } from 'ant-design-vue'
-import { chunk } from 'lodash'
+import { chunk } from 'lodash-es'
 
 const ctx = Form.useInjectFormItemContext()
 

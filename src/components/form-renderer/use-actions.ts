@@ -1,6 +1,6 @@
 import { injectLocal } from '@vueuse/core'
 import request from '@/utils/request'
-import { flatten, kebabCase } from 'lodash'
+import { flatten, kebabCase } from 'lodash-es'
 import emitter from '@/utils/emitter'
 import { type EventType, type FormSchema } from '@/types/workflow/form'
 import { formModelCtxKey, type FormModelContext } from '@/types/workflow'

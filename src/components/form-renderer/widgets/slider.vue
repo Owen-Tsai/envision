@@ -10,7 +10,7 @@
     :range="config.props.range"
     :reverse="config.props.reverse"
     :tooltip-open="config.props.hideTooltip === true ? false : undefined"
-    :step="config.props.disableStep && marks ? null : config.props.step"
+    :step="config.props.disableStep && marks ? undefined : config.props.step"
   />
 </template>
 
