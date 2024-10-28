@@ -28,5 +28,5 @@ const props = defineProps({
   }
 })
 
-const { model } = useModel(props.config.props.field.name || props.config.uid, parentFormConfig)
+const { model } = useModel(props.config.props.field.name || props.config.uid)
 </script>
