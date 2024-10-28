@@ -254,7 +254,10 @@ const initWidgetConfig: Partial<WidgetMap> = {
       children: [
         { widgets: [], title: '标签页1' },
         { widgets: [], title: '标签页2' }
-      ]
+      ],
+      state: {
+        current: 0
+      }
     },
     icon: getIcon('tabs')
   },
@@ -268,7 +271,10 @@ const initWidgetConfig: Partial<WidgetMap> = {
       children: [
         { widgets: [], title: '步骤1' },
         { widgets: [], title: '步骤2' }
-      ]
+      ],
+      state: {
+        current: 0
+      }
     },
     icon: getIcon('steps')
   },

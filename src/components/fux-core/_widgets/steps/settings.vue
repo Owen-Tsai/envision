@@ -21,6 +21,20 @@
       </div>
     </AFormItemRest>
   </AFormItem>
+  <AFormItem label="显示操作按钮" name="state.showActions" class="boolean-field">
+    <ASwitch v-model:checked="model.state.showActions" />
+  </AFormItem>
+  <AFormItem label="切换步骤">
+    <AButtonGroup>
+      <AButton :disabled="model.state.current <= 0" @click="model.state.current--">上一步</AButton>
+      <AButton
+        :disabled="model.state.current >= model.children.length - 1"
+        @click="model.state.current++"
+      >
+        下一步
+      </AButton>
+    </AButtonGroup>
+  </AFormItem>
 </template>
 
 <script setup lang="ts">

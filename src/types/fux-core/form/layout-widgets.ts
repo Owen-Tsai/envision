@@ -34,6 +34,10 @@ export interface WPropsTabs extends WPropsCommon {
   size?: 'large' | 'middle' | 'small'
   type?: 'line' | 'card'
   stepsMode?: boolean
+  state: {
+    current: number
+    showActions: boolean
+  }
   children: WPropsTabsPane[]
 }
 
@@ -47,6 +51,10 @@ export interface WPropsSteps extends WPropsCommon {
   size?: 'default' | 'small'
   type?: 'default' | 'navigation' | 'dot'
   children: WPropsStep[]
+  state: {
+    current: number
+    showActions: boolean
+  }
 }
 
 export interface WPropsSubForm extends WPropsCommon {

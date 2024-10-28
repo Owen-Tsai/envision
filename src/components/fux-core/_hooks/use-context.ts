@@ -1,17 +1,19 @@
 import { provide, inject, ref, type Ref } from 'vue'
+import { injectLocal, provideLocal } from '@vueuse/core'
 import { FORM_DATA_KEY, DESIGNER_KEY, RENDERER_KEY, WORKFLOW_KEY } from '../_utils/const'
 import { deleteWidgetByUid, copyWidget as copy } from '../_utils/widget'
 import type { FormSchema, Widget } from '@/types/fux-core/form'
-import type { FlowSchema, Node, NodeConfigMap } from '@/types/fux-core/flow'
+import type { FlowSchema, Node } from '@/types/fux-core/flow'
 import type { FormDataCtx, FormDesignerCtx, FormRendererCtx } from '@/types/fux-core/form/context'
 import type { WorkflowDesignerCtx } from '@/types/fux-core/flow/context'
+import type { AppSchema } from '@/types/fux-core'
 
 export const useFormDataProvider = (formData: Ref<Record<string, any>>) => {
-  provide<FormDataCtx>(FORM_DATA_KEY, { formData })
+  provideLocal<FormDataCtx>(FORM_DATA_KEY, { formData })
 }
 
 export const useFormDataInjection = () => {
-  return inject<FormDataCtx>(FORM_DATA_KEY)!
+  return injectLocal<FormDataCtx>(FORM_DATA_KEY)!
 }
 
 export const useDesignerProvider = (schema: Ref<FormSchema>) => {
@@ -46,15 +48,16 @@ export const useDesignerInjection = () => {
   return inject<FormDesignerCtx>(DESIGNER_KEY)!
 }
 
-export const useRendererProvider = (state: Ref<Record<string, any>>) => {
-  provide<FormRendererCtx>(RENDERER_KEY, {
+export const useRendererProvider = (appSchema: Ref<AppSchema>, state: Ref<Record<string, any>>) => {
+  provideLocal<FormRendererCtx>(RENDERER_KEY, {
     prod: true,
-    $state: state
+    $state: state,
+    appSchema
   })
 }
 
 export const useRendererInjection = () => {
-  return inject<FormRendererCtx>(RENDERER_KEY)
+  return injectLocal<FormRendererCtx>(RENDERER_KEY)
 }
 
 export const useWorkflowCtxProvider = (schema: Ref<FlowSchema>) => {

@@ -2,16 +2,16 @@
   <div :class="{ 'with-data': showData }">
     <AForm
       :model="formData"
-      :colon="schema?.colon"
-      :disabled="schema?.disabled"
-      :label-align="schema?.labelAlign"
+      :colon="schema?.form.colon"
+      :disabled="schema?.form.disabled"
+      :label-align="schema?.form.labelAlign"
       :label-col="labelCol"
       label-wrap
-      :layout="schema?.layout"
+      :layout="schema?.form.layout"
       :wrapper-col="wrapperCol"
       class="flex-grow"
     >
-      <WidgetRenderer v-for="widget in schema.widgets" :key="widget.uid" :config="widget" />
+      <WidgetRenderer v-for="widget in schema.form.widgets" :key="widget.uid" :config="widget" />
     </AForm>
     <div v-if="showData" class="data" v-html="highlighted" />
   </div>
@@ -22,32 +22,45 @@ import { ref, computed } from 'vue'
 import { tryParse } from '@fusionx/utils'
 import { useFormDataProvider, useRendererProvider } from '../_hooks'
 import useApi from './use-api'
+import useInstanceMethods from './use-instance'
 import WidgetRenderer from '../_widgets/index.vue'
 import useHighlighter from '@/hooks/use-highlighter'
-import type { FormSchema } from '@/types/fux-core/form'
+import type { AppSchema } from '@/types/fux-core'
 
 const { schema, showData } = defineProps<{
-  schema: FormSchema
+  schema: AppSchema
   showData?: boolean
 }>()
+
+const emit = defineEmits(['update:schema'])
+const computedSchema = computed({
+  get: () => schema,
+  set: (val) => emit('update:schema', val)
+})
 
 const $state = ref<Record<string, any>>({})
 const formData = ref<Record<string, any>>({})
 useFormDataProvider(formData)
 
-useApi(schema, $state)
+useApi(schema.form, $state)
 
-useRendererProvider($state)
+useRendererProvider(computedSchema, $state)
+
+const methods = useInstanceMethods()
 
 const highlighted = computed(() => useHighlighter(JSON.stringify(formData?.value, null, 2), 'json'))
 
 const labelCol = computed(() => {
-  const width = schema.labelWidth
-  return width ? { style: { width } } : tryParse(schema.labelCol)
+  const width = schema.form.labelWidth
+  return width ? { style: { width } } : tryParse(schema.form.labelCol)
 })
 
 const wrapperCol = computed(() => {
-  return tryParse(schema.wrapperCol)
+  return tryParse(schema.form.wrapperCol)
+})
+
+defineExpose({
+  ...methods
 })
 </script>
 

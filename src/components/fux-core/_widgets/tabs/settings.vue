@@ -29,6 +29,14 @@
   <AFormItem label="步骤模式" name="stepsMode" class="boolean-field">
     <ASwitch v-model:checked="model.stepsMode" />
   </AFormItem>
+  <AFormItem
+    v-if="model.stepsMode"
+    label="显示操作按钮"
+    name="state.showActions"
+    class="boolean-field"
+  >
+    <ASwitch v-model:checked="model.state.showActions" />
+  </AFormItem>
 </template>
 
 <script lang="ts" setup>
