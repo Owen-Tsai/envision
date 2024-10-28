@@ -28,7 +28,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import InputTag from '@/components/tag-input/index.vue'
-import type { WPropsUpload } from '@/types/fux-core'
+import type { WPropsUpload } from '@/types/fux-core/form'
 
 const listTypeOpts = [
   { label: '普通列表', value: 'text' },

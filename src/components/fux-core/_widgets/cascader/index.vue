@@ -21,7 +21,7 @@ import { useModel } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
 import request from '@/utils/request'
 import type { CascaderProps } from 'ant-design-vue'
-import type { WidgetMap } from '@/types/fux-core'
+import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['cascader']

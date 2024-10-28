@@ -40,7 +40,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { addonOpts } from '../../_utils/const'
-import type { WPropsRate } from '@/types/fux-core'
+import type { WPropsRate } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsRate

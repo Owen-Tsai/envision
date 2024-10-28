@@ -3,7 +3,7 @@ import { useRendererInjection } from './use-context'
 import evalExpression from '../_utils/expression'
 import useDict from '@/hooks/use-dict'
 import type { SelectProps, CheckboxGroupProps, RadioGroupProps } from 'ant-design-vue'
-import type { WidgetMap, WidgetPropsMap } from '@/types/fux-core'
+import type { WidgetMap, WidgetPropsMap } from '@/types/fux-core/form'
 import type { DictDataEntry } from '@/api/system/dict/data'
 
 type OptionType<T> = T extends WidgetMap['select']
@@ -32,7 +32,6 @@ export const useOptions = <
   if (optionAttr?.type === 'static') {
     options.value = optionAttr.value || []
   } else if (optionAttr?.type === 'dict') {
-    console.log(rendererCtx, optionAttr)
     if (optionAttr.value && rendererCtx && rendererCtx.prod) {
       dictData.value = useDict(optionAttr.value)
     }

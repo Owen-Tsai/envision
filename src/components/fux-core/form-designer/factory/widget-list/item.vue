@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Widget } from '@/types/fux-core'
+import type { Widget } from '@/types/fux-core/form'
 
 const { widget } = defineProps<{
   widget: Widget

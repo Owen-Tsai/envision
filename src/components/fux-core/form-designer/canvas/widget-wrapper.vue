@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useDesignerInjection } from '../../_hooks'
-import type { Widget, FormWidget } from '@/types/fux-core'
+import type { Widget, FormWidget } from '@/types/fux-core/form'
 
 const { widget } = defineProps<{
   widget: Widget

@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
-import type { WPropsTextarea } from '@/types/fux-core'
+import type { WPropsTextarea } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsTextarea

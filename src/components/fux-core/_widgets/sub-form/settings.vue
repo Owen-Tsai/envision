@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { WPropsSubForm } from '@/types/fux-core'
+import type { WPropsSubForm } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsSubForm

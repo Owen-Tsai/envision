@@ -31,7 +31,7 @@ import { PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import WidgetRenderer from '../index.vue'
 import { useModel } from '../../_hooks'
 import type { FormItemProps } from 'ant-design-vue'
-import type { WidgetMap, Widget } from '@/types/fux-core'
+import type { WidgetMap, Widget } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['subForm']

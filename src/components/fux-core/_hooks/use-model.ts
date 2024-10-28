@@ -2,7 +2,7 @@ import { computed } from 'vue'
 import { set, get } from 'lodash-es'
 import dateTransformer from '../_transformers/date'
 import { useFormDataInjection } from './use-context'
-import type { Widget } from '@/types/fux-core'
+import type { Widget } from '@/types/fux-core/form'
 
 const { toSubmitFormat, toWidgetFormat } = dateTransformer
 

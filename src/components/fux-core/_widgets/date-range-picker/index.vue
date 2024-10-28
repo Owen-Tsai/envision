@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { WidgetMap } from '@/types/fux-core'
+import type { WidgetMap } from '@/types/fux-core/form'
 import { useModel } from '../../_hooks'
 
 const { config } = defineProps<{

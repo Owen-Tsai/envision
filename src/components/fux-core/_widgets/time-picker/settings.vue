@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { popoverPlacementOpts } from '../../_utils/const'
-import type { WPropsTimePicker } from '@/types/fux-core'
+import type { WPropsTimePicker } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsTimePicker

@@ -47,7 +47,7 @@
 
 <script lang="ts" setup>
 import { computed, type PropType } from 'vue'
-import type { WPropsSlider } from '@/types/fux-core'
+import type { WPropsSlider } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsSlider

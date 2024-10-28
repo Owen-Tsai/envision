@@ -17,7 +17,7 @@ import SetterPanel from './setter/index.vue'
 import Canvas from './canvas/index.vue'
 import { useDesignerProvider } from '../_hooks'
 import type { Props } from './interface'
-import type { FormSchema } from '@/types/fux-core'
+import type { FormSchema } from '@/types/fux-core/form'
 
 const { factoryPanel, setterPanel, schema: propsSchema } = defineProps<Props>()
 

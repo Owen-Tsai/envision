@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import type { WPropsSwitch } from '@/types/fux-core'
+import type { WPropsSwitch } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsSwitch

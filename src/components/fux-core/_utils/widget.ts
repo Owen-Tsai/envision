@@ -1,6 +1,6 @@
 import { cloneDeep } from 'lodash-es'
 import { generateId } from '@fusionx/utils'
-import type { FormSchema, Widget } from '@/types/fux-core'
+import type { FormSchema, Widget } from '@/types/fux-core/form'
 
 type Tree = {
   label: string

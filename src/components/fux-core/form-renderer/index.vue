@@ -24,7 +24,7 @@ import { useFormDataProvider, useRendererProvider } from '../_hooks'
 import useApi from './use-api'
 import WidgetRenderer from '../_widgets/index.vue'
 import useHighlighter from '@/hooks/use-highlighter'
-import type { FormSchema } from '@/types/fux-core'
+import type { FormSchema } from '@/types/fux-core/form'
 
 const { schema, showData } = defineProps<{
   schema: FormSchema

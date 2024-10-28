@@ -21,7 +21,7 @@
 import Draggable from 'vuedraggable'
 import WidgetWrapper from './widget-wrapper.vue'
 import WidgetRenderer from '../../_widgets/index.vue'
-import type { Widget } from '@/types/fux-core'
+import type { Widget } from '@/types/fux-core/form'
 
 const { widgets } = defineProps<{
   widgets: Widget[]

@@ -34,7 +34,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
-import type { WPropsTabs } from '@/types/fux-core'
+import type { WPropsTabs } from '@/types/fux-core/form'
 
 const typeOpts = [
   { label: '线性', value: 'line' },

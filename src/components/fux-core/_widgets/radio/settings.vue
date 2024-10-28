@@ -66,7 +66,7 @@ import { getPlainDictTypeList } from '@/api/system/dict/type'
 import useRequest from '@/hooks/use-request'
 import { useOptionSettings } from '../../_hooks/use-options'
 import type { CheckboxOptionType } from 'ant-design-vue'
-import type { WPropsRadio } from '@/types/fux-core'
+import type { WPropsRadio } from '@/types/fux-core/form'
 
 const appearance = [
   { label: '默认', value: 'default' },

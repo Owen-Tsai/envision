@@ -91,7 +91,7 @@ import { Cascader } from 'ant-design-vue'
 import { Codemirror } from 'vue-codemirror'
 import extensions from '@/utils/codemirror'
 import { optionSourceOpts, popoverPlacementOpts } from '../../_utils/const'
-import type { WPropsCascader } from '@/types/fux-core'
+import type { WPropsCascader } from '@/types/fux-core/form'
 
 const showCheckedStrategyOpts = [
   { label: '仅显示叶子节点', value: Cascader.SHOW_CHILD },

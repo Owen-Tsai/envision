@@ -82,7 +82,7 @@ import { useDesignerInjection } from '../../_hooks/use-context'
 import { Codemirror } from 'vue-codemirror'
 import extensions from '@/utils/codemirror'
 import { message, type FormProps } from 'ant-design-vue'
-import type { APIConfig } from '@/types/fux-core'
+import type { APIConfig } from '@/types/fux-core/form'
 
 const reqTypeOpts = [
   { label: 'GET', value: 'get' },

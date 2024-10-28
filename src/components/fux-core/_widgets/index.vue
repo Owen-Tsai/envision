@@ -24,7 +24,7 @@
 import { computed } from 'vue'
 import { camelCase } from 'lodash-es'
 import { tryParse } from '@fusionx/utils'
-import type { FormWidget, Widget } from '@/types/fux-core'
+import type { FormWidget, Widget } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: Widget
@@ -35,7 +35,6 @@ const components = import.meta.glob('./**/index.vue', { eager: true, import: 'de
 const widgetToRenderer = computed(() => {
   const type = config.type
   for (const key in components) {
-    console.log(key, components[key])
     const name = key.split('/').slice(-2, -1)[0]
     if (camelCase(name) === type) {
       return components[key] as any

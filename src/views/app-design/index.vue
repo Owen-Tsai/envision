@@ -5,46 +5,62 @@
         <img class="logo" :src="logo" />
         <h1 class="title mb-0">{{ title }}</h1>
         <ADivider type="vertical" class="h-8" />
-        <h1 class="title mb-0">应用设计器</h1>
+        <h1 class="title mb-0">应用设计</h1>
+      </div>
+
+      <div class="step-bar">
+        <ASteps v-model:current="step" :items="steps" size="small" />
       </div>
 
       <div class="actions">
         <AFlex justify="end" align="center" :gap="8">
+          <ATooltip title="查看 Schema">
+            <AButton :icon="h(CodeOutlined)" @click="schemaVisible = true" />
+          </ATooltip>
+          <AButton v-show="step === 2" type="primary" @click="saveAppDesign">保存应用</AButton>
           <ATooltip title="返回首页" placement="bottom">
-            <AButton type="text" @click="$router.push('/index')">
-              <template #icon>
-                <RollbackOutlined />
-              </template>
-            </AButton>
+            <AButton type="text" :icon="h(RollbackOutlined)" @click="$router.push('/index')" />
           </ATooltip>
         </AFlex>
       </div>
     </header>
 
     <div class="flex-grow-0 h-full overflow-hidden">
-      <!-- <Loader v-if="loading" /> -->
-      <FormDesigner v-model:schema="schema" />
+      <DataSourceConfig v-if="step === 0" @finish="step = 1" />
+      <FormDesign v-if="step === 1" />
+      <WorkflowDesign v-if="step === 2" />
     </div>
+
+    <AModal v-model:open="schemaVisible" title="应用 Schema">
+      <div v-html="highlighted" />
+
+      <template #footer>
+        <div class="text-right">
+          <AButton type="primary" @click="schemaVisible = false">关闭</AButton>
+        </div>
+      </template>
+    </AModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RollbackOutlined } from '@ant-design/icons-vue'
+import { h, ref, computed } from 'vue'
+import { RollbackOutlined, CodeOutlined } from '@ant-design/icons-vue'
 import logo from '~img/company-logo.svg'
-import Loader from '@/components/loading/index.vue'
-import FormDesigner from '@/components/fux-core/form-designer/index.vue'
-import type { FormSchema } from '@/types/fux-core'
+import DataSourceConfig from './data-source/index.vue'
+import FormDesign from './form/index.vue'
+import WorkflowDesign from './workflow/index.vue'
+import useHighlighter from '@/hooks/use-highlighter'
+import { useSteps, useAppDesigner } from './use-app-design'
 
 const title = import.meta.env.VITE_APP_SHORT_TITLE
 
-const loading = ref(true)
+const { step, steps } = useSteps()
 
-const schema = ref<FormSchema>({
-  widgets: [],
-  labelWidth: '88px',
-  labelAlign: 'right'
-})
+const { appSchema, saveAppDesign } = useAppDesigner()
+
+const schemaVisible = ref(false)
+const highlighted = computed(() => useHighlighter(JSON.stringify(appSchema.value, null, 2), 'json'))
 </script>
 
 <style lang="scss" scoped>

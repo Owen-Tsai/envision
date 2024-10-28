@@ -109,7 +109,7 @@ import { Codemirror } from 'vue-codemirror'
 import extensions from '@/utils/codemirror'
 import { TreeSelect } from 'ant-design-vue'
 import { popoverPlacementOpts, optionSourceOpts } from '../../_utils/const'
-import type { WPropsTreeSelect } from '@/types/fux-core'
+import type { WPropsTreeSelect } from '@/types/fux-core/form'
 
 const displayStrategyOpts = [
   { label: '显示所有选中节点', value: TreeSelect.SHOW_ALL },

@@ -42,7 +42,7 @@ import { tryParse } from '@fusionx/utils'
 import { useDesignerInjection } from '../../_hooks'
 import WidgetRenderer from '../../_widgets/index.vue'
 import WidgetWrapper from './widget-wrapper.vue'
-import type { Widget } from '@/types/fux-core'
+import type { Widget } from '@/types/fux-core/form'
 
 const { schema } = useDesignerInjection()
 

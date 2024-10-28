@@ -1,40 +1,27 @@
-import type { FormWidgetPropsMap } from './form-widgets'
-import type { LayoutWidgetPropsMap } from './layout-widgets'
-import type { SpecialWidgetPropsMap } from './special-widgets'
-import type { APIConfig, FormProps, FunctionConfig } from './misc'
-export * from './form-widgets'
-export * from './layout-widgets'
-export * from './special-widgets'
-export * from './misc'
+import type { FormSchema } from './form'
+import type { FlowSchema } from './flow'
 
-export type WidgetPropsMap = FormWidgetPropsMap & LayoutWidgetPropsMap & SpecialWidgetPropsMap
-
-export type ConfigOf<T extends keyof WidgetPropsMap> = {
-  name: string
-  icon?: string
-  type: T
-  class: T extends keyof FormWidgetPropsMap
-    ? 'form'
-    : T extends keyof LayoutWidgetPropsMap
-      ? 'layout'
-      : 'special'
-  uid: string
-  props: WidgetPropsMap[T]
+export interface AppInfo {
+  // 分页情况
+  paginated?: false | 'steps' | 'tabs'
+  // 涉及的数据表
+  tables: Array<{
+    name: string
+    comment?: string
+    subTable?: boolean
+    id: number | string
+  }>
+  // 布局列数
+  gridColumns?: false | 2 | 3
 }
 
-export type WidgetType = keyof WidgetPropsMap
-
-export type WidgetMap = {
-  [x in WidgetType]: ConfigOf<x>
-}
-
-export type Widget = WidgetMap[keyof WidgetMap]
-export type FormWidget = WidgetMap[keyof FormWidgetPropsMap]
-export type LayoutWidget = WidgetMap[keyof LayoutWidgetPropsMap]
-export type SpecialWidget = WidgetMap[keyof SpecialWidgetPropsMap]
-
-export interface FormSchema extends FormProps {
-  function?: Record<string, FunctionConfig>
-  api?: Record<string, APIConfig>
-  widgets: Widget[]
+export interface AppSchema {
+  // Schema 版本，针对扩展与兼容设计的字段
+  version: string
+  // 表单 Schema
+  form: FormSchema
+  // 流程 Schema
+  flow: FlowSchema
+  // 应用信息
+  info: AppInfo
 }

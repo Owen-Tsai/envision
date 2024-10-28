@@ -35,7 +35,7 @@
 import { computed, type PropType } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { clamp } from 'lodash-es'
-import type { WPropsGrid } from '@/types/fux-core'
+import type { WPropsGrid } from '@/types/fux-core/form'
 
 const alignOpts = [
   { label: '顶部对齐', value: 'top' },

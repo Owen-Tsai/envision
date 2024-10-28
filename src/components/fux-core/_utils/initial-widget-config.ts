@@ -1,7 +1,7 @@
 import { camelCase } from 'lodash-es'
 import defaultIcon from '@/components/fux-core/_icons/custom.vue'
 import dayjs from 'dayjs'
-import type { WidgetMap, WidgetType } from '@/types/fux-core'
+import type { WidgetMap, WidgetType } from '@/types/fux-core/form'
 
 const icons = import.meta.glob('@/components/fux-core/_icons/*.vue', {
   eager: true,

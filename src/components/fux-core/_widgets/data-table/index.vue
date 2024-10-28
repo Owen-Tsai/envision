@@ -30,7 +30,7 @@ import { useRendererInjection } from '../../_hooks'
 import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
-import type { WidgetMap } from '@/types/fux-core'
+import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['dataTable']

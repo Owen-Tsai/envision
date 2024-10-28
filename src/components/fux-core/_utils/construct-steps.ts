@@ -1,5 +1,5 @@
 import type { StepsProps } from 'ant-design-vue'
-import type { WPropsSteps } from '@/types/fux-core'
+import type { WPropsSteps } from '@/types/fux-core/form'
 
 const constructSteps = (steps: WPropsSteps['children']): StepsProps['items'] => {
   return steps.map((e) => ({

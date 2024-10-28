@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { WPropsSteps } from '@/types/fux-core'
+import type { WPropsSteps } from '@/types/fux-core/form'
 
 const typeOpts = [
   { label: '默认', value: 'default' },

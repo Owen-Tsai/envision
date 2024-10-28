@@ -68,4 +68,16 @@ export const DESIGNER_KEY = Symbol('designer')
  */
 export const RENDERER_KEY = Symbol('renderer')
 
+/**
+ * workflow designer key
+ */
+export const WORKFLOW_KEY = Symbol('workflow')
+
+// #endregion
+
+// #region enums
+export enum NodeTaskStrategy {
+  ROLE = 10,
+  ORG = 'org'
+}
 // #endregion

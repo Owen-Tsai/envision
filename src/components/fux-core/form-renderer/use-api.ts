@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 import type { Ref } from 'vue'
-import type { FormSchema } from '@/types/fux-core'
+import type { FormSchema } from '@/types/fux-core/form'
 
 const useApi = (schema: FormSchema, $state: Ref<Record<string, any>>) => {
   const api = schema.api

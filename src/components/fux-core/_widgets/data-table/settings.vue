@@ -75,7 +75,7 @@
 <script setup lang="ts">
 import { ref, h, reactive, computed } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
-import type { WPropsDataTable, WPropsTableColumn } from '@/types/fux-core'
+import type { WPropsDataTable, WPropsTableColumn } from '@/types/fux-core/form'
 
 const modeOpts = [
   { label: '配置表格', value: 'table' },

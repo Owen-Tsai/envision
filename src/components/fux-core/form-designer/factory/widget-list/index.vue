@@ -30,7 +30,7 @@ import initWidgetConfig from '@/components/fux-core/_utils/initial-widget-config
 import { cloneDeep } from 'lodash-es'
 import { generateId } from '@fusionx/utils'
 import Item from './item.vue'
-import type { Widget, WidgetMap } from '@/types/fux-core'
+import type { Widget, WidgetMap } from '@/types/fux-core/form'
 
 const searchText = ref('')
 

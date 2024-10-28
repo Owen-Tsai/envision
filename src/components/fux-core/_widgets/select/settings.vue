@@ -123,7 +123,7 @@ import TagInput from '@/components/tag-input/index.vue'
 import useRequest from '@/hooks/use-request'
 import { useOptionSettings } from '../../_hooks/use-options'
 import { getPlainDictTypeList } from '@/api/system/dict/type'
-import type { WPropsSelect } from '@/types/fux-core'
+import type { WPropsSelect } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsSelect

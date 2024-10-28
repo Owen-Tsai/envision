@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { useModel } from '../../_hooks'
 import AddonRenderer from '@/components/_internal/addon-renderer.vue'
-import type { WidgetMap } from '@/types/fux-core'
+import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['inputNumber']

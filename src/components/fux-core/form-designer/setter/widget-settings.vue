@@ -77,7 +77,7 @@ import { labelAlignOpts, validationTriggerOpts, widgetTypeOpts } from '../../_ut
 import useValidator from './use-validation'
 import { Codemirror } from 'vue-codemirror'
 import extensions from '@/utils/codemirror'
-import type { FormWidget } from '@/types/fux-core'
+import type { FormWidget } from '@/types/fux-core/form'
 import type { SelectValue } from 'ant-design-vue/es/select'
 import initWidgetConfig from '../../_utils/initial-widget-config'
 

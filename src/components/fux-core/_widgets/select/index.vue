@@ -23,7 +23,7 @@ import { ref, computed, watch } from 'vue'
 import { type SelectProps } from 'ant-design-vue'
 import { tryParse, filterOption } from '@fusionx/utils'
 import { useModel, useOptions } from '../../_hooks'
-import type { WidgetMap } from '@/types/fux-core'
+import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['select']

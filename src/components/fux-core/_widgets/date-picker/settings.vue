@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { popoverPlacementOpts, datePickerModeOpts } from '../../_utils/const'
-import type { WPropsDatePicker } from '@/types/fux-core'
+import type { WPropsDatePicker } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsDatePicker

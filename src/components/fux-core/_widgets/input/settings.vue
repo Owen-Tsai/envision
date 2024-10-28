@@ -63,7 +63,7 @@
 import { computed } from 'vue'
 import { addonOpts } from '../../_utils/const'
 import IconSelect from '@/components/icon-select/index.vue'
-import type { WPropsInput } from '@/types/fux-core'
+import type { WPropsInput } from '@/types/fux-core/form'
 
 const { attrs } = defineProps<{
   attrs: WPropsInput

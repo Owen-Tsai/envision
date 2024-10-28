@@ -10,7 +10,7 @@
 
 <script lang="ts" setup>
 import { useModel, useOptionInfo, useOptions } from '../../_hooks'
-import type { WidgetMap } from '@/types/fux-core'
+import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['checkbox']

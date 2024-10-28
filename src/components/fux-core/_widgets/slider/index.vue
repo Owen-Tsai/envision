@@ -18,7 +18,7 @@
 import { computed } from 'vue'
 import { useModel } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
-import type { WidgetMap } from '@/types/fux-core'
+import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['slider']

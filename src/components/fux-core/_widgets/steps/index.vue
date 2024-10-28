@@ -26,7 +26,7 @@ import { useRendererInjection } from '../../_hooks'
 import Nested from '../../form-designer/canvas/nested.vue'
 import WidgetRenderer from '../index.vue'
 import constructSteps from '../../_utils/construct-steps'
-import type { WidgetMap } from '@/types/fux-core'
+import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['steps']
