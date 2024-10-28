@@ -1,8 +1,9 @@
 import { computed } from 'vue'
 import { set, get } from 'lodash-es'
 import dateTransformer from '../_transformers/date'
-import { useFormDataInjection } from './use-context'
-import type { Widget } from '@/types/fux-core/form'
+import evalExpression from '../_utils/expression'
+import { useFormDataInjection, useRendererInjection } from './use-context'
+import type { Widget, FormWidget } from '@/types/fux-core/form'
 
 const { toSubmitFormat, toWidgetFormat } = dateTransformer
 
@@ -36,4 +37,17 @@ export const useModel = (widget: Widget) => {
   })
 
   return { model }
+}
+
+export const useDefaultValue = (config: FormWidget) => {
+  const formCtx = useFormDataInjection()
+  const rendererCtx = useRendererInjection()
+
+  if (rendererCtx?.prod && formCtx) {
+    const { $state } = rendererCtx
+    if ((config.props as any).defaultValue) {
+      const value = evalExpression((config.props as any).defaultValue, $state)
+      formCtx.formData.value[config.props.field?.name || config.uid] = value
+    }
+  }
 }

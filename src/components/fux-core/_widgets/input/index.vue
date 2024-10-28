@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { useModel } from '../../_hooks'
+import { useModel, useDefaultValue } from '../../_hooks'
 import AddonRenderer from '@/components/_internal/addon-renderer.vue'
 import type { WidgetMap } from '@/types/fux-core/form'
 
@@ -28,4 +28,5 @@ const { config } = defineProps<{
 }>()
 
 const { model } = useModel(config)
+useDefaultValue(config)
 </script>
