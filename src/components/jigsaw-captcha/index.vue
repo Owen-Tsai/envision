@@ -1,12 +1,13 @@
 <template>
-  <AModal v-model:open="visible" title="请拖动滑块完成验证" :width="448">
+  <AModal v-model:open="visible" title="请拖动滑块完成验证" :width="448" destroy-on-close>
     <template #footer></template>
     <ASpin :spinning="pending">
       <div class="mt-4">
-        <div class="relative">
+        <div class="relative" :style="`--width: ${width}px; --height: ${height}px;`">
           <img
+            v-if="data"
             :src="`data:image/png;base64,${data?.repData.originalImageBase64}`"
-            :style="imgStyle"
+            class="puzzle-image"
           />
           <div
             class="absolute top-0 right-0 p-2 inline-flex items-center justify-center cursor-pointer"
@@ -16,20 +17,24 @@
           </div>
           <Transition name="slide-up">
             <div
-              v-show="validateResult.visible"
-              :class="['validation-result', validateResult.success ? 'success' : 'error']"
+              v-show="validationInfo.visible"
+              :class="['validation-result', validationInfo.success ? 'success' : 'error']"
             >
-              {{ validateResult.msg }}
+              {{ validationInfo.msg }}
             </div>
           </Transition>
         </div>
 
-        <div ref="dragTrackEl" class="drag-track">
-          <div class="drag-progress" :style="{ left: dragAreaLeftTemp || dragAreaLeft }">
+        <div
+          ref="dragTrackEl"
+          class="drag-track"
+          :style="`--height: ${height}px; --top: ${-height - 16}px`"
+        >
+          <div class="drag-progress" :style="{ left: ghostPosLeft || posLeft }">
             <div ref="dragHandleEl" :class="['drag-handle', pressed ? 'pressed' : null]">
               <MenuOutlined :rotate="90" />
             </div>
-            <div class="drag-block" :style="dragBlockStyle">
+            <div class="puzzle-block">
               <img :src="`data:image/png;base64,${data?.repData.jigsawImageBase64}`" />
             </div>
           </div>
@@ -40,47 +45,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, type CSSProperties } from 'vue'
-import { message } from 'ant-design-vue'
+import { ref, computed, watch } from 'vue'
 import { ReloadOutlined, MenuOutlined } from '@ant-design/icons-vue'
-import { useMouseInElement, useMousePressed } from '@vueuse/core'
-import { aesEncrypt } from '@/utils/encryption'
-import { getCaptcha, checkCaptcha, type CaptchaValidationDTO } from '@/api/login'
+import useMouseDrag, { SIZE_OFFSET } from './use-mouse'
+import useValidation, { BACKEND_FIXED_IMG_WIDTH } from './use-validation'
+import { getCaptcha } from '@/api/login'
 import useRequest from '@/hooks/use-request'
 
-const backendFixedImgWidth = 310
-const dragHandleWidthOffset = 32
+const {
+  open,
+  width = 400,
+  height = 200
+} = defineProps<{
+  open: boolean
+  width?: number
+  height?: number
+}>()
 
-const props = defineProps({
-  open: Boolean,
-  imgWidth: {
-    type: Number,
-    default: 400
-  },
-  imgHeight: {
-    type: Number,
-    default: 200
-  }
-})
+const emit = defineEmits<{
+  (e: 'update:open', val: boolean): void
+  (e: 'success', val: string): void
+}>()
 
-const emit = defineEmits(['update:open', 'success'])
-
-const imgStyle = computed<CSSProperties>(() => {
-  return {
-    height: `${props.imgHeight}px`,
-    width: `${props.imgWidth}px`
-  }
-})
-
-const dragBlockStyle = computed<CSSProperties>(() => {
-  return {
-    height: `${props.imgHeight}px`,
-    top: `${-props.imgHeight - 16}px`
-  }
-})
+// 鼠标拖拽的锚点元素
+const dragHandleEl = ref<HTMLDivElement>()
+// 锚点拖拽时的轨道元素
+const dragTrackEl = ref<HTMLDivElement>()
 
 const visible = computed({
-  get: () => props.open,
+  get: () => open,
   set: (val) => {
     emit('update:open', val)
   }
@@ -90,89 +83,37 @@ const { data, execute, pending } = useRequest(getCaptcha, {
   immediate: true
 })
 
-// mouse drag
-const allowDrag = ref(true)
-const dragHandleEl = ref<HTMLDivElement>()
-const dragTrackEl = ref<HTMLDivElement>()
-const dragAreaLeftTemp = ref<string | number | null>(null)
-const dragAreaLeft = computed(() =>
-  allowDrag.value && pressed.value && dragTrackEl.value ? `${elementX.value - 32}px` : 0
-)
-const validateResult = ref({
-  visible: false,
-  msg: '',
-  success: false
+const { allowDrag, ghostPosLeft, posLeft, pressed, x } = useMouseDrag(dragHandleEl, dragTrackEl)
+
+const { validate, validationInfo } = useValidation({
+  onSuccess: (val) => {
+    emit('success', val)
+  },
+  onError: () => {
+    reLoad()
+  }
 })
 
-const { pressed } = useMousePressed({ target: dragHandleEl })
-const { elementX } = useMouseInElement(dragTrackEl)
-
-const validate = () => {
-  const secretKey = data.value?.repData.secretKey
-  const token = data.value?.repData.token || ''
-  const pointObj = {
-    x: ((elementX.value - 32) * backendFixedImgWidth) / props.imgWidth,
-    y: 5.0
-  }
-  const pointJson = JSON.stringify(pointObj)
-  const vo: CaptchaValidationDTO = {
-    pointJson: secretKey ? aesEncrypt(pointJson, secretKey) : pointJson,
-    token
-  }
-
-  allowDrag.value = false
-
-  checkCaptcha(vo).then((res) => {
-    if (res.success) {
-      const captchaVerification = secretKey
-        ? aesEncrypt(`${token}---${pointJson}`, secretKey)
-        : `${token}---${pointJson}`
-
-      validateResult.value = {
-        visible: true,
-        msg: '验证通过',
-        success: true
-      }
-
-      emit('success', captchaVerification)
-    } else {
-      message.error(res.repMsg)
-      validateResult.value = {
-        visible: true,
-        msg: '验证失败',
-        success: false
-      }
-      setTimeout(() => {
-        validateResult.value.visible = false
-        allowDrag.value = true
-        dragAreaLeftTemp.value = dragAreaLeft.value
-        execute()
-      }, 1000)
-    }
-  })
+const reLoad = () => {
+  validationInfo.value.visible = false
+  allowDrag.value = true
+  ghostPosLeft.value = posLeft.value
+  execute()
 }
 
-watch(elementX, (val) => {
-  const clampLimit = props.imgWidth - dragHandleWidthOffset
-  if (val <= dragHandleWidthOffset) {
-    elementX.value = dragHandleWidthOffset
-  }
-  if (val >= clampLimit) {
-    elementX.value = clampLimit
-  }
-})
-
-watch(pressed, (newVal, oldVal) => {
+watch(pressed, async (newVal, oldVal) => {
   if (oldVal === true && newVal === false && visible.value && allowDrag.value) {
     // released touch
-    dragAreaLeftTemp.value = elementX.value
-    validate()
+    console.log(posLeft.value)
+    ghostPosLeft.value = x.value
+    allowDrag.value = false
+    await validate(((x.value - SIZE_OFFSET) * BACKEND_FIXED_IMG_WIDTH) / width, data.value)
   }
 })
 
 watch(visible, (val) => {
   if (val) {
-    execute()
+    reLoad()
   }
 })
 
@@ -182,6 +123,19 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
+.puzzle-image {
+  width: var(--width);
+  height: var(--height);
+}
+.puzzle-block {
+  position: absolute;
+  left: 0;
+  height: var(--height);
+  top: var(--top);
+  img {
+    height: 100%;
+  }
+}
 .drag-track {
   @apply w-full h-2 mt-4;
   width: 100%;
@@ -213,13 +167,6 @@ defineExpose({
   &.pressed {
     background-color: var(--colorPrimary);
     color: #fff;
-  }
-}
-.drag-block {
-  position: absolute;
-  left: 0;
-  img {
-    height: 100%;
   }
 }
 .validation-result {

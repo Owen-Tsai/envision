@@ -73,12 +73,14 @@ const { error, pending, execute } = useRequest(() => login(formState.value), {
     setRememberedForm()
 
     const query = route.query
-    let redirect: string | null = query.redirect as string | null
+    const redirect: string | null = query.redirect as string | null
     delete query.redirect
     router.push({ path: redirect || '/', query })
   },
   onError() {
-    captchaEnabled && captcha.value?.refetch()
+    if (captchaEnabled) {
+      captcha.value?.refetch()
+    }
   }
 })
 

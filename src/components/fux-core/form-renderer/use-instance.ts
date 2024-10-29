@@ -1,9 +1,11 @@
 import { type Ref } from 'vue'
 import { useFormDataInjection, useRendererInjection } from '../_hooks'
-import { kebabCase, merge } from 'lodash-es'
+import { kebabCase, merge, set } from 'lodash-es'
 import request from '@/utils/request'
 import emitter from '@/utils/emitter'
 import type { AppSchema } from '@/types/fux-core'
+
+const test = 'has'
 
 const useInstanceMethods = () => {
   const { formData } = useFormDataInjection()
@@ -17,11 +19,8 @@ const useInstanceMethods = () => {
     formData.value = data
   }
 
-  const mergeFormData = (data: Record<string, any>) => {
-    formData.value = {
-      ...formData.value,
-      ...data
-    }
+  const mergeFormData = (key: string, value: any) => {
+    set(formData.value, key, value)
   }
 
   const getSchema = () => {
