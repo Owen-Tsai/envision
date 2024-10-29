@@ -10,7 +10,7 @@ type Tree = {
 }
 
 export const schemaToTree = (schema: FormSchema) => {
-  const widgets = schema.widgets
+  const widgets = schema?.widgets
   if (!widgets) return []
 
   const tree: Tree[] = []

@@ -2,7 +2,7 @@ import { provide, inject, ref, type Ref } from 'vue'
 import { injectLocal, provideLocal } from '@vueuse/core'
 import { FORM_DATA_KEY, DESIGNER_KEY, RENDERER_KEY, WORKFLOW_KEY } from '../_utils/const'
 import { deleteWidgetByUid, copyWidget as copy } from '../_utils/widget'
-import type { FormSchema, Widget } from '@/types/fux-core/form'
+import type { Widget } from '@/types/fux-core/form'
 import type { FlowSchema, Node } from '@/types/fux-core/flow'
 import type { FormDataCtx, FormDesignerCtx, FormRendererCtx } from '@/types/fux-core/form/context'
 import type { WorkflowDesignerCtx } from '@/types/fux-core/flow/context'
@@ -16,19 +16,19 @@ export const useFormDataInjection = () => {
   return injectLocal<FormDataCtx>(FORM_DATA_KEY)!
 }
 
-export const useDesignerProvider = (schema: Ref<FormSchema>) => {
+export const useDesignerProvider = (schema: Ref<AppSchema>) => {
   const selectedWidget = ref<Widget | undefined>()
 
   const deleteWidget = (uid: string) => {
-    if (schema.value?.widgets) {
-      deleteWidgetByUid(schema.value.widgets, uid)
+    if (schema.value.form.widgets) {
+      deleteWidgetByUid(schema.value.form.widgets, uid)
       selectedWidget.value = undefined
     }
   }
 
   const copyWidget = (widget: Widget) => {
-    if (schema.value?.widgets) {
-      copy(widget, schema.value.widgets)
+    if (schema.value.form.widgets) {
+      copy(widget, schema.value.form.widgets)
     }
   }
 

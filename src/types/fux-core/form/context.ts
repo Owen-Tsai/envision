@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import type { FormSchema, Widget } from './index'
+import type { Widget } from './index'
 import type { AppSchema } from '..'
 
 export interface FormDataCtx {
@@ -7,7 +7,7 @@ export interface FormDataCtx {
 }
 
 export interface FormDesignerCtx {
-  schema: Ref<FormSchema>
+  schema: Ref<AppSchema>
   selectedWidget: Ref<Widget | undefined>
   deleteWidget: (uid: string) => void
   copyWidget: (widget: Widget) => void

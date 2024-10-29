@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 import type { Ref } from 'vue'
-import type { FormSchema } from '@/types/fux-core/form'
+import type { AppSchema } from '@/types/fux-core'
 
-const useApi = (schema: FormSchema, $state: Ref<Record<string, any>>) => {
-  const api = schema.api
+const useApi = (schema: Ref<AppSchema>, state: Ref<Record<string, any>>) => {
+  console.log(schema.value)
+  const api = schema.value.form?.api
 
   if (api) {
     for (const uid in api) {
@@ -15,7 +16,7 @@ const useApi = (schema: FormSchema, $state: Ref<Record<string, any>>) => {
           params
         })
         .then((res) => {
-          $state.value[dataIndex] = res.data
+          state.value[dataIndex] = res.data
         })
     }
   }

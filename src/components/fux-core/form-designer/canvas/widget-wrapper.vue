@@ -9,7 +9,10 @@
   >
     <slot></slot>
 
-    <div class="caption">{{ caption }}</div>
+    <div class="caption">
+      {{ caption }}
+      <EyeInvisibleFilled v-if="widget.props.hide" />
+    </div>
     <div class="action drag-handle absolute top-0 left-0 cursor-move">
       <DragOutlined />
     </div>

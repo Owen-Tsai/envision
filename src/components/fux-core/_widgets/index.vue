@@ -1,13 +1,13 @@
 <template>
-  <template v-if="config.class === 'layout'">
+  <template v-if="config.class === 'layout' && visible">
     <!-- layout widgets -->
     <component :is="widgetToRenderer" :config="config" />
   </template>
-  <template v-else-if="config.class === 'special'">
+  <template v-else-if="config.class === 'special' && visible">
     <!-- special widgets -->
   </template>
   <AFormItem
-    v-else-if="config.class === 'form'"
+    v-else-if="config.class === 'form' && visible"
     :extra="config.props.field?.extra"
     :label="config.props.field?.label"
     :name="config.props.field?.name || config.uid"
@@ -23,14 +23,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { camelCase } from 'lodash-es'
+import { useRendererInjection } from '../_hooks'
 import { tryParse } from '@fusionx/utils'
 import type { FormWidget, Widget } from '@/types/fux-core/form'
+
+const ctx = useRendererInjection()
 
 const { config } = defineProps<{
   config: Widget
 }>()
 
 const components = import.meta.glob('./**/index.vue', { eager: true, import: 'default' })
+
+const visible = computed(() => !ctx?.prod || (!config.props.hide && ctx.prod))
 
 const widgetToRenderer = computed(() => {
   const type = config.type

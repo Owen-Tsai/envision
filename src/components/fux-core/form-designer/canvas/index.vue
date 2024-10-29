@@ -3,12 +3,12 @@
     <Scrollbar wrapper-class="!h-full" class="h-full">
       <div class="canvas-wrapper dense">
         <AForm
-          :colon="schema?.colon"
-          :disabled="schema?.disabled"
-          :label-align="schema?.labelAlign"
+          :colon="schema.form.colon"
+          :disabled="schema.form.disabled"
+          :label-align="schema.form.labelAlign"
           :label-col="labelCol"
           label-wrap
-          :layout="schema?.layout"
+          :layout="schema.form.layout"
           :wrapper-col="wrapperCol"
           class="h-full"
         >
@@ -46,19 +46,19 @@ import type { Widget } from '@/types/fux-core/form'
 
 const { schema } = useDesignerInjection()
 
-const widgets = ref(schema?.value.widgets)
+const widgets = ref(schema.value.form.widgets)
 const wrapperEl = ref<HTMLElement>()
 
 const { height } = useElementBounding(wrapperEl)
 const heightValue = computed(() => height.value + 'px')
 
 const labelCol = computed(() => {
-  const width = schema?.value.labelWidth
-  return width ? { style: { width } } : tryParse(schema?.value.labelCol)
+  const width = schema.value.form.labelWidth
+  return width ? { style: { width } } : tryParse(schema.value.form.labelCol)
 })
 
 const wrapperCol = computed(() => {
-  return tryParse(schema?.value.wrapperCol)
+  return tryParse(schema.value.form.wrapperCol)
 })
 </script>
 

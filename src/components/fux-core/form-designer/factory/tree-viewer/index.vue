@@ -26,7 +26,7 @@ import { useDesignerInjection } from '@/components/fux-core/_hooks/use-context'
 
 const { schema } = useDesignerInjection()
 
-const widgetTree = computed(() => schemaToTree(schema!.value))
+const widgetTree = computed(() => schemaToTree(schema.value.form))
 </script>
 
 <style lang="scss" scoped>

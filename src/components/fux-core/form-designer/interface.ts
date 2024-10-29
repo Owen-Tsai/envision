@@ -1,4 +1,4 @@
-import type { FormSchema } from '@/types/fux-core/form'
+import type { AppSchema } from '@/types/fux-core'
 
 export interface PanelProps {
   width?: number | string
@@ -8,5 +8,5 @@ export interface PanelProps {
 export interface Props {
   factoryPanel?: PanelProps
   setterPanel?: PanelProps
-  schema: FormSchema
+  schema: AppSchema
 }

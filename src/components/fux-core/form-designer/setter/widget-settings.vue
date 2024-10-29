@@ -1,5 +1,5 @@
 <template>
-  <AEmpty v-if="schema.widgets.length <= 0" description="添加组件进行配置" />
+  <AEmpty v-if="schema.form.widgets.length <= 0" description="添加组件进行配置" />
   <AEmpty v-else-if="selectedWidget === undefined" description="选中组件进行配置" />
   <AForm v-else :model="selectedWidget" layout="vertical">
     <AFormItem label="字段标签" name="label">

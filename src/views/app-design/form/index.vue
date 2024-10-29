@@ -1,5 +1,5 @@
 <template>
-  <FormDesigner v-model:schema="appSchema.form" />
+  <FormDesigner v-model:schema="appSchema" />
 </template>
 
 <script setup lang="ts">

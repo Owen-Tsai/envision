@@ -9,7 +9,7 @@
     <div class="flex gap-6">
       <div class="w-1/4">
         <div
-          v-for="(api, uid, i) in schema.api"
+          v-for="(api, uid, i) in schema.form.api"
           :key="i"
           :class="[
             'item',
@@ -25,7 +25,7 @@
       </div>
       <div class="w-3/4">
         <AForm
-          v-if="schema.api && Object.keys(schema.api).length > 0"
+          v-if="schema.form.api && Object.keys(schema.form.api).length > 0"
           :model="selectedItem"
           :label-col="{ span: 4 }"
           :rules="rules"
@@ -62,7 +62,7 @@
         <AEmpty
           v-else
           :description="
-            !schema.api || Object.keys(schema.api).length <= 0
+            !schema.form.api || Object.keys(schema.form.api).length <= 0
               ? '请先增加一个 API'
               : '请选中一个 API'
           "
@@ -132,8 +132,8 @@ const { schema } = useDesignerInjection()
 
 const addApi = () => {
   const id = generateId()
-  if (!schema.value.api) {
-    schema.value.api = {}
+  if (!schema.value.form.api) {
+    schema.value.form.api = {}
   }
   selectedItem.value = {
     method: 'get',
@@ -141,7 +141,7 @@ const addApi = () => {
     url: '',
     dataIndex: id
   }
-  schema.value.api[id] = {
+  schema.value.form.api[id] = {
     ...selectedItem.value
   }
   selectedUid.value = id
@@ -149,20 +149,20 @@ const addApi = () => {
 
 const onSelect = (uid: string) => {
   selectedUid.value = uid
-  selectedItem.value = schema.value.api![uid]
+  selectedItem.value = schema.value.form.api![uid]
 }
 
 const onItemDelete = () => {
-  delete schema.value.api![selectedUid.value!]
+  delete schema.value.form.api![selectedUid.value!]
   selectedUid.value = undefined
   message.success('删除成功')
 }
 
 const onItemSave = () => {
-  if (!schema.value.api) {
-    schema.value.api = {}
+  if (!schema.value.form.api) {
+    schema.value.form.api = {}
   }
-  schema.value.api[selectedUid.value!] = {
+  schema.value.form.api[selectedUid.value!] = {
     ...selectedItem.value
   }
   message.success('修改成功')

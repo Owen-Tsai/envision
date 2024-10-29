@@ -17,12 +17,12 @@ import SetterPanel from './setter/index.vue'
 import Canvas from './canvas/index.vue'
 import { useDesignerProvider } from '../_hooks'
 import type { Props } from './interface'
-import type { FormSchema } from '@/types/fux-core/form'
+import type { AppSchema } from '@/types/fux-core'
 
 const { factoryPanel, setterPanel, schema: propsSchema } = defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: 'update:schema', schema: FormSchema): void
+  (e: 'update:schema', schema: AppSchema): void
 }>()
 
 const schema = computed({

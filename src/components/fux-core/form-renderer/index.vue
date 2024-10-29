@@ -27,18 +27,11 @@ import WidgetRenderer from '../_widgets/index.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import type { AppSchema } from '@/types/fux-core'
 
-const { schema, showData, state } = withDefaults(
-  defineProps<{
-    schema: AppSchema
-    showData?: boolean
-    state?: Record<string, any>
-  }>(),
-  {
-    state: () => ({
-      __test: 'test'
-    })
-  }
-)
+const { schema, showData, state } = defineProps<{
+  schema: AppSchema
+  showData?: boolean
+  state?: Record<string, any>
+}>()
 
 const emit = defineEmits(['update:schema', 'update:state'])
 const computedSchema = computed({
@@ -46,14 +39,14 @@ const computedSchema = computed({
   set: (val) => emit('update:schema', val)
 })
 const computedState = computed({
-  get: () => state,
+  get: () => state || {},
   set: (val) => emit('update:state', val)
 })
 
 const formData = ref<Record<string, any>>({})
 useFormDataProvider(formData)
 
-useApi(schema.form, computedState)
+useApi(computedSchema, computedState)
 
 useRendererProvider(computedSchema, computedState)
 
