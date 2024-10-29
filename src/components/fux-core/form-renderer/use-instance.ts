@@ -42,24 +42,39 @@ const useInstanceMethods = () => {
     })
   }
 
-  /**
-   * 保存当前步骤。注意，要求表单中仅有一个表示步骤的组件
-   */
-  const saveStep = async () => {
-    if (!appSchema.value.info.paginated) {
-      throw new Error('[FusionX/表单渲染器] 仅可在分页模式下调用`saveStep`')
-    }
-    // 获取当前表单的步骤
+  const getStepWidget = () => {
     const stepWidget = appSchema.value.form.widgets.find(
       (widget) => widget.type === 'steps' || widget.type === 'tabs'
     )
     if (!stepWidget) {
       throw new Error(
-        '[FusionX/表单渲染器] 分页表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+        '[FusionX/表单渲染器] 无法获取步骤组件: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+      )
+    }
+
+    return stepWidget
+  }
+
+  const getCurrentStep = (): number => {
+    const stepWidget = getStepWidget()
+
+    if (!stepWidget) {
+      throw new Error(
+        '[FusionX/表单渲染器] 无法获取当前步骤: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
       )
     }
 
     const currentStep = stepWidget.props.state.current
+    return currentStep
+  }
+
+  /**
+   * 保存当前步骤。注意，要求表单中仅有一个表示步骤的组件
+   */
+  const saveStep = async () => {
+    const stepWidget = getStepWidget()
+    const currentStep = getCurrentStep()
+
     // 获取当前步骤提交的接口
     const module = appSchema.value.info.tables[currentStep]
     const api = `/applications/${kebabCase(module.name)}/create`
@@ -121,6 +136,7 @@ const useInstanceMethods = () => {
     hide,
     show,
     setWidgetAttrs,
+    getCurrentStep,
     saveStep,
     toPrevStep,
     save,
