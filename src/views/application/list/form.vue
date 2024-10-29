@@ -92,7 +92,8 @@ import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写应用名称' }],
-  type: [{ required: true, message: '请选择应用类型' }]
+  type: [{ required: true, message: '请选择应用类型' }],
+  userType: [{ required: true, message: '请选择用户类型' }]
 }
 
 const props = defineProps({

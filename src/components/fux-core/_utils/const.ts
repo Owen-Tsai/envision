@@ -78,6 +78,6 @@ export const WORKFLOW_KEY = Symbol('workflow')
 // #region enums
 export enum NodeTaskStrategy {
   ROLE = 10,
-  ORG = 'org'
+  ORG = 30
 }
 // #endregion

@@ -80,7 +80,11 @@ const onSelectChange = () => {
 watch(
   () => model.value.actor.strategy,
   (val) => {
-    model.value.actor.value = undefined
+    if (val === NodeTaskStrategy.ORG) {
+      model.value.actor.value = ['org']
+    } else {
+      model.value.actor.value = undefined
+    }
     model.value.actor.text = val === NodeTaskStrategy.ORG ? '发起人所属单位' : undefined
   }
 )

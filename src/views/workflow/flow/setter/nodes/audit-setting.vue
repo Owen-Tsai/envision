@@ -69,9 +69,8 @@ const options: SegmentedProps['options'] = [
 ]
 
 const auditActorStrategyOpts = [
-  { label: '指定用户', value: ActorStrategy.USER },
-  { label: '指定角色', value: ActorStrategy.ROLE },
-  { label: '指定部门的所有成员', value: ActorStrategy.DEPT }
+  { label: '本单位', value: ActorStrategy.USER },
+  { label: '指定角色', value: ActorStrategy.ROLE }
 ]
 
 const props = defineProps({
@@ -156,9 +155,14 @@ getDeptTree().then((res) => {
 
 watch(
   () => computedConfig.value.actor.strategy,
-  () => {
-    computedConfig.value.actor.value = undefined
-    computedConfig.value.actor.text = undefined
+  (item) => {
+    if (item === 30) {
+      computedConfig.value.actor.value = ['org']
+      computedConfig.value.actor.text = '单位'
+    } else {
+      computedConfig.value.actor.value = undefined
+      computedConfig.value.actor.text = undefined
+    }
   }
 )
 </script>

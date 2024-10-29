@@ -27,7 +27,7 @@ export type XMLUpdateVO = {
   bpmnXml: string // generated xml
 }
 
-const url = `/workflow/form-schema`
+const url = `/workflow/app-schema`
 
 export const getAppDesignSchema = (id: string) => {
   return request.get<AppDesignSchemaVO>({
