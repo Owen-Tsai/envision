@@ -56,14 +56,14 @@ const genGridSchema = (count: 2 | 3, widgets: Widget[]): WidgetMap['grid'] => {
   return ret
 }
 
-const genTableWidgetsSchema = (info: ConfigDetailVO): Widget[] => {
+const genTableWidgetsSchema = (info: ConfigDetailVO, step?: number): Widget[] => {
   const { columns, table } = info
   // widgets of table
   const tableSchema: Widget[] = []
   columns.forEach((column) => {
     if (!column.createOperation || !column.htmlType) return
 
-    const widget = genWidgetSchema(column, table.tableName || '')
+    const widget = genWidgetSchema(column, table.tableName || '', step)
     if (widget) {
       tableSchema.push(widget)
     }
@@ -74,7 +74,8 @@ const genTableWidgetsSchema = (info: ConfigDetailVO): Widget[] => {
 
 const genWidgetSchema = (
   column: ConfigDetailVO['columns'][number],
-  tableName: string
+  tableName: string,
+  step?: number
 ): Widget | undefined => {
   const type = (column.htmlType === 'datetime' ? 'datePicker' : column.htmlType) as keyof WidgetMap
   if (widgetConfigMap[type]) {
@@ -85,7 +86,10 @@ const genWidgetSchema = (
         ...cloneDeep(widgetConfigMap[type]!.props),
         field: {
           label: column.columnComment || column.columnName,
-          name: `${tableName}:${column.javaField}`
+          name:
+            step !== undefined
+              ? `${step}.${tableName}:${column.javaField}`
+              : `${tableName}:${column.javaField}`
         }
       }
     }
@@ -110,8 +114,6 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
 
   const tableColumnsInfo: ConfigDetailVO[] = []
 
-  console.log(tables)
-
   for (const table of tables) {
     const resp = await getTableColumns(table.id as number)
     tableColumnsInfo.push(resp)
@@ -128,7 +130,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
       } as Widget)
     : []
 
-  tableColumnsInfo.forEach((info) => {
+  tableColumnsInfo.forEach((info, idx) => {
     const gridSchema: WidgetMap['grid'] | null = gridColumns
       ? {
           ...cloneDeep(widgetConfigMap.grid)!,
@@ -142,7 +144,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
 
     delete gridSchema?.icon
 
-    let tableSchema = genTableWidgetsSchema(info)
+    let tableSchema = paginated ? genTableWidgetsSchema(info, idx) : genTableWidgetsSchema(info)
     if (gridColumns) {
       // const colWidgets = genGridSchema(tableSchema, column)
       const gridSchema = genGridSchema(gridColumns, tableSchema)
@@ -186,8 +188,8 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
 
   return {
     widgets: Array.isArray(schemaWrapper) ? [...schemaWrapper] : [schemaWrapper],
-    layout: info.gridColumns === 3 ? 'vertical' : 'vertical',
-    labelWidth: info.gridColumns === 3 ? undefined : '88px',
+    layout: info.gridColumns === 3 ? 'vertical' : 'horizontal',
+    labelWidth: info.gridColumns === 3 ? undefined : '100px',
     colon: info.gridColumns !== 3,
     labelAlign: info.gridColumns === 3 ? undefined : 'right'
   }
