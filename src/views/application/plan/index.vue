@@ -76,7 +76,7 @@
           @change="onChange"
         >
           <template #bodyCell="scope: TableScope<PlanVO>">
-            <template v-if="scope?.column.key === 'appId'">这里应该显示应用名称</template>
+            <template v-if="scope?.column.key === 'appId'">{{ scope.record.appName }}</template>
             <template v-if="scope?.column.key === 'startTime'">
               {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm') }}
             </template>

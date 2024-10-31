@@ -9,6 +9,8 @@ export type PlanVO = {
   daily?: boolean
   appId?: string
   flow?: string
+  fjfl?: string[]
+  appName?: string
 }
 
 export type ListQueryParams = {
@@ -51,5 +53,16 @@ export const deletePlan = (id: string) => {
 export const getPlanDetail = (id: string) => {
   return request.get<PlanVO>({
     url: `${url}/get?id=${id}`
+  })
+}
+
+export const getAttachTypeSimpleList = () => {
+  return request.get({
+    url: `/attach/type/get_attach_type_simple_list`
+  })
+}
+export const getAttachTypeStr = (data: PlanVO) => {
+  return request.get<PlanVO>({
+    url: `/attach/type/get_attach_type_str`
   })
 }

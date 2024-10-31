@@ -27,6 +27,19 @@
             @change="setFlowId"
           />
         </AFormItem>
+        <AFormItem label="需求附件" name="fjfl">
+          <a-select
+            v-model:value="formData.fjfl"
+            mode="multiple"
+            style="width: 100%"
+            placeholder="请选择"
+            :options="fjflOpts"
+            :field-names="{ label: 'name', value: 'id' }"
+            :max-tag-count="5"
+            :loading="fjflPending"
+            @change="setFjflIds"
+          ></a-select>
+        </AFormItem>
         <AFormItem label="常态化" name="daily">
           <ASwitch v-model:checked="formData.daily" @change="(v) => onDailyChange(v as boolean)" />
         </AFormItem>
@@ -47,12 +60,14 @@
 import { ref, computed, type PropType } from 'vue'
 import useRequest from '@/hooks/use-request'
 import { getApplicationSimpleList } from '@/api/application'
+import { getAttachTypeSimpleList } from '@/api/application/plan'
 import { createPlan, updatePlan, getPlanDetail, type PlanVO } from '@/api/application/plan'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
   item: [{ required: true, message: '请填写申报计划名称' }],
   appId: [{ required: true, message: '请选择应用' }],
+  fjfl: [{ required: true, message: '请选择需求附件' }],
   startTime: [{ required: true, message: '请选择计划开始时间' }],
   endTime: [{ required: true, message: '请选择计划截止时间' }]
 }
@@ -72,9 +87,10 @@ const formData = ref<Partial<PlanVO>>({
   daily: false
 })
 const { data: appOpts } = useRequest(getApplicationSimpleList, { immediate: true })
-
+const { data: fjflOpts, pending: fjflPending } = useRequest(getAttachTypeSimpleList, {
+  immediate: true
+})
 const isAdd = computed(() => props.record === undefined)
-
 const submit = async () => {
   try {
     loading.value = true
@@ -111,6 +127,9 @@ const onDailyChange = (checked: boolean) => {
 
 const setFlowId = () => {
   formData.value.flow = appOpts.value?.find((v) => v.id === formData.value.appId)?.processIds
+}
+const setFjflIds = (value: string[]) => {
+  console.log(`selected ${value}`)
 }
 
 if (props.record?.id) {
