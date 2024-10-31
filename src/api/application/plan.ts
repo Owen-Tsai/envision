@@ -61,8 +61,3 @@ export const getAttachTypeSimpleList = () => {
     url: `/attach/type/get_attach_type_simple_list`
   })
 }
-export const getAttachTypeStr = (data: PlanVO) => {
-  return request.get<PlanVO>({
-    url: `/attach/type/get_attach_type_str`
-  })
-}
