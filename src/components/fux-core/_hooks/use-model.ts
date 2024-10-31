@@ -1,15 +1,11 @@
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { set, get } from 'lodash-es'
-import dateTransformer from '../_transformers/date'
+import date from '../_transformers/date'
 import evalExpression from '../_utils/expression'
 import { useFormDataInjection, useRendererInjection } from './use-context'
-import type { Widget, FormWidget } from '@/types/fux-core/form'
+import type { Widget, FormWidget, WidgetMap } from '@/types/fux-core/form'
 
-const { toSubmitFormat, toWidgetFormat } = dateTransformer
-
-const needTransform = (widget: Widget) => {
-  return widget.type === 'datePicker' || widget.type === 'dateRangePicker'
-}
+const { requireTransform, toSubmitValue, toWidgetValue } = date
 
 export const useModel = (widget: Widget) => {
   const formDataCtx = useFormDataInjection()
@@ -19,22 +15,42 @@ export const useModel = (widget: Widget) => {
     get: () => {
       if (!formDataCtx) return undefined
       const { formData } = formDataCtx
-      if (needTransform(widget)) {
-        return toWidgetFormat(get(formData.value, key), widget.props.valueFormat)
+      console.log('called get', formData.value)
+      if (requireTransform(widget)) {
+        return toWidgetValue(
+          get(formData.value, key),
+          (widget as WidgetMap['datePicker']).props.valueFormat
+        )
       } else {
         return get(formData.value, key)
       }
     },
     set: (val) => {
-      if (needTransform(widget)) {
-        val = toSubmitFormat(val, widget.props.submitFormat)
-      }
       if (formDataCtx !== undefined) {
         const { formData } = formDataCtx
-        set(formData.value, key, val)
+        if (requireTransform(widget)) {
+          set(
+            formData.value,
+            key,
+            toSubmitValue(val, (widget as WidgetMap['datePicker']).props.submitFormat)
+          )
+        } else {
+          set(formData.value, key, val)
+        }
       }
     }
   })
+
+  watch(
+    () => model.value,
+    (newVal, oldVal) => {
+      if (oldVal === undefined && newVal !== undefined) {
+        // if the value is created for the first time,
+        // re-call the setter to update format
+        model.value = newVal
+      }
+    }
+  )
 
   return { model }
 }

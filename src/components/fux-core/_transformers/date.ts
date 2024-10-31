@@ -1,20 +1,40 @@
 import dayjs from 'dayjs'
+import type { Widget } from '@/types/fux-core/form'
 
 const dateTransformer = {
-  toSubmitFormat: (rawValue: string | string[], format = 'YYYY-MM-DD HH:mm:ss') => {
-    const normalize = (value: string): string => {
-      const parsed = parseInt(value)
-      return isNaN(parsed) ? value : dayjs(parsed).format(format)
+  requireTransform: (widget: Widget) => {
+    return (
+      (widget.type === 'datePicker' || widget.type === 'dateRangePicker') &&
+      !!widget.props.submitFormat
+    )
+  },
+  /**
+   * Convert valueFormat (typically a timestamp) to submit format.
+   * Should be invoked by setter
+   */
+  toSubmitValue: (
+    rawValue: string | string[] | number | number[],
+    format = 'YYYY-MM-DD HH:mm:ss'
+  ) => {
+    if (!rawValue) return rawValue
+    const normalize = (value: string | number): string | number => {
+      const parsed = typeof value === 'number' ? value : parseInt(value, 10)
+      return isNaN(parsed) ? dayjs(value).format(format) : dayjs(parsed).format(format)
     }
 
     return Array.isArray(rawValue) ? rawValue.map(normalize) : normalize(rawValue)
   },
-  toWidgetFormat: (value: string | string[], format: string = 'x'): string | string[] => {
-    if (!value) return ''
+  /**
+   * Convert submitFormat to valueFormat (typically a timestamp).
+   * Should be invoked by getter
+   */
+  toWidgetValue: (rawValue: string | string[] | number | number[], format = 'x') => {
+    if (!rawValue) return rawValue
+    const normalize = (value: string | number): string | number => {
+      return dayjs(value).format(format)
+    }
 
-    const normalize = (v: string): string => dayjs(v).format(format)
-
-    return Array.isArray(value) ? value.map(normalize) : normalize(value)
+    return Array.isArray(rawValue) ? rawValue.map(normalize) : normalize(rawValue)
   }
 }
 
