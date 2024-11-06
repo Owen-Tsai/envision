@@ -10,7 +10,7 @@
     v-else-if="config.class === 'form' && visible"
     :extra="config.props.field?.extra"
     :label="config.props.field?.label"
-    :name="config.props.field?.name || config.uid"
+    :name="fieldName || config.uid"
     :required="config.props.field?.required"
     :label-align="config.props.field?.labelAlign"
     :label-col="labelCol"
@@ -56,5 +56,9 @@ const labelCol = computed(() => {
 
 const wrapperCol = computed(() => {
   return tryParse((config as FormWidget).props.field.wrapperCol)
+})
+
+const fieldName = computed(() => {
+  return config.props.field?.name?.split('.')
 })
 </script>
