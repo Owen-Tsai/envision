@@ -1,4 +1,5 @@
 import type { NodeConfigMap } from '@/types/fux-core/flow'
+import { generateId } from '@fusionx/utils'
 
 const initialNodeConfig: NodeConfigMap = {
   audit: {
@@ -14,7 +15,7 @@ const initialNodeConfig: NodeConfigMap = {
     name: '发起人',
     props: {},
     type: 'start',
-    uid: ''
+    uid: generateId()
   }
 }
 

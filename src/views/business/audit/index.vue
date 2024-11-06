@@ -75,7 +75,7 @@
           :pagination="pagination"
           @change="onChange"
         >
-          <template #bodyCell="scope: TableScope<Life_SubsidyVO>">
+          <template #bodyCell="scope: TableScope<any>">
             <template v-if="scope!.column.key === 'status'">
               <EDictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
@@ -119,11 +119,11 @@ const [commonStatus] = useDict('common_status')
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
-const userTaskId = route.query.userTaskId
-console.log('userTaskId: ' + userTaskId)
+const taskDefKey = route.query.taskDefKey
+// console.log('taskDefKey: ' + taskDefKey)
 // route.query.appId
 const appId = route.params.appId
-console.log('appId: ' + appId)
+// console.log('appId: ' + appId)
 
 const onAudit = (record: any) => {
   push(
@@ -133,8 +133,10 @@ const onAudit = (record: any) => {
       record.comApplyId +
       '&taskId=' +
       record.taskId +
-      '&parentProcessInstanceId=' +
-      record.parentProcessInstanceId
+      '&processInstanceId=' +
+      record.processInstanceId +
+      '&taskDefKey=' +
+      taskDefKey
   )
 }
 
