@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { getSimpleList } from '@/api/system/role'
+import { getSimpleAuditList, getSimpleList } from '@/api/system/role'
 import useRequest from '@/hooks/use-request'
 import { NodeTaskStrategy } from '../../_utils/const'
 import { filterOption } from '@/utils/fusion'
@@ -55,7 +55,7 @@ const auditActorStrategyOpts = [
   { label: '所属单位', value: NodeTaskStrategy.ORG }
 ]
 
-const { data: rolesList, pending } = useRequest(getSimpleList, { immediate: true })
+const { data: rolesList, pending } = useRequest(getSimpleAuditList, { immediate: true })
 
 const { attrs } = defineProps<{
   attrs: NPropsAudit

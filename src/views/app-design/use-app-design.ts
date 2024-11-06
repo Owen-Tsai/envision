@@ -71,6 +71,7 @@ export const useAppDesigner = () => {
   const appSchema = ref<AppSchema>(_defaultAppSchema)
   const appEditMode = ref<'create' | 'update' | 'unknown'>('unknown')
   const loading = ref(false)
+  const schemaId = ref<string>('')
 
   const loadAppSchema = async () => {
     loading.value = true
@@ -78,8 +79,10 @@ export const useAppDesigner = () => {
       const data = await getAppDesignSchemaByAppId(params.appId as string)
       if (data === null || !data.appSchema) {
         appSchema.value = _defaultAppSchema
+        appEditMode.value = 'create'
       } else {
         appSchema.value = JSON.parse(data.appSchema)
+        schemaId.value = data.id
         appEditMode.value = 'update'
       }
     } catch (e) {
@@ -135,7 +138,8 @@ export const useAppDesigner = () => {
       appSchema: JSON.stringify(appSchema.value),
       name: `${params.appId}-${dayjs().format('YYYYMMDDHHmmss')}`,
       conf: `{}`,
-      appId: params.appId as string
+      appId: params.appId as string,
+      id: schemaId.value
     })
 
     Modal.confirm({

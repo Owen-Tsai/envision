@@ -21,7 +21,8 @@ export const fixedRoutes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'WorkflowDesign',
-        component: () => import('@/views/workflow/index.vue'),
+        // component: () => import('@/views/workflow/index.vue'),
+        component: () => import('@/views/app-design/index.vue'),
         meta: {
           title: '应用设计'
         }

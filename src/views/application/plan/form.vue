@@ -45,10 +45,10 @@
         </AFormItem>
         <template v-if="!formData.daily">
           <AFormItem label="开始时间" name="startTime">
-            <ADatePicker v-model:value="formData.startTime" value-format="YYYY-MM-DD HH:mm:ss" />
+            <ADatePicker v-model:value="formData.startTime" value-format="x" />
           </AFormItem>
           <AFormItem label="截止时间" name="endTime">
-            <ADatePicker v-model:value="formData.endTime" value-format="YYYY-MM-DD HH:mm:ss" />
+            <ADatePicker v-model:value="formData.endTime" value-format="x" />
           </AFormItem>
         </template>
       </AForm>

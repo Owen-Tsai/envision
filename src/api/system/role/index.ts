@@ -25,6 +25,12 @@ export const getSimpleList = () => {
   })
 }
 
+export const getSimpleAuditList = () => {
+  return request.get<RoleVO[]>({
+    url: '/system/role/list-all-simple-audit'
+  })
+}
+
 export const getRolesList = (params?: CommonQueryParams) => {
   return request.get<PaginatedList<RoleVO>>({
     url: '/system/role/page',

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export type ListQueryParams = CommonQueryParams & {
-  userTaskId?: string
+  taskDefKey?: string
 }
 
 export type EchoDataVO = {
@@ -9,14 +9,21 @@ export type EchoDataVO = {
   data: Record<string, any>
 }
 
+export type AuditProcessDetailsListType = Array<{
+  title: string
+  subTitle: string
+  description: string
+  status: string
+}>
+
 export const getList = (taskDefKey: string) => {
   return request.get({
-    url: `/fux-bpm/get-task-by-task-def-key?taskDefKey=${taskDefKey}`
+    url: `/fux-bpm/get-my-task?actId=${taskDefKey}`
   })
 }
 
 export const getProcessInstance = async (id: string) => {
-  return await request.get({ url: '/bpm/process-instance/get?id=' + id })
+  return await request.get({ url: '/fux-bpm/get-process-info?processId=' + id })
 }
 
 export const approveTask = async (data) => {
@@ -25,6 +32,13 @@ export const approveTask = async (data) => {
 
 export const rejectTask = async (data) => {
   return await request.put({ url: '/bpm/task/reject', data })
+}
+
+export const backStartUserTask = async (data: { id: string; reason: string }) => {
+  return await request.put({
+    url: '/fusionx/framework/return-to-initiator',
+    data
+  })
 }
 
 export const backTask = async (data) => {
@@ -50,5 +64,11 @@ export const getTaskListByProcessInstanceId = async (processInstanceId?: string)
 export const getBackOptions = (parentProcessInstanceId?: string) => {
   return request.get({
     url: `/bpm/task/list-by-return?id=${parentProcessInstanceId}`
+  })
+}
+
+export const getAuditProcessDetail = (processInstanceId: string) => {
+  return request.get({
+    url: `/fux-bpm/get-process-log?processInstanceId=${processInstanceId}`
   })
 }

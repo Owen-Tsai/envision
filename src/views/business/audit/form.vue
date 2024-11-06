@@ -14,6 +14,9 @@
         />
       </div>
     </ACard>
+    <ACard title="审批记录" style="margin-top: 20px">
+      <a-steps direction="horizontal" :items="auditProcessDetailsList"></a-steps>
+    </ACard>
     <ACard title="审批任务" style="margin-top: 20px">
       <a-form>
         <a-form-item label="流程名">
@@ -28,7 +31,8 @@
         <a-form-item>
           <a-space wrap>
             <a-button type="primary" block @click="operation(1)">通过</a-button>
-            <a-button block @click="backModalShow = true">退回</a-button>
+            <a-button block @click="backModalShow = true">退回到审核人</a-button>
+            <a-button block @click="backStartUser()">退回到发起人</a-button>
             <a-button danger block @click="operation(2)">不通过</a-button>
           </a-space>
         </a-form-item>
@@ -43,35 +47,29 @@
         :options="backModal"
       ></a-select>
     </a-modal>
-
-    <!--    <ACard title="审批记录" style="margin-top: 20px">-->
-    <!--      <a-steps-->
-    <!--          direction="vertical"-->
-    <!--          :current="1"-->
-    <!--          :items="approvalRecord"-->
-    <!--      ></a-steps>-->
-    <!--    </ACard>-->
   </div>
 </template>
 
 <script setup lang="ts">
-import FormRenderer from '@/components/form-renderer/index.vue'
+import FormRenderer from '@/components/fux-core/form-renderer/index.vue'
 import { ref, onMounted, nextTick, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   approveTask,
   rejectTask,
-  backTask,
   getProcessInstance,
   getEchoData,
   getBackOptions,
-  getTaskListByProcessInstanceId
+  getAuditProcessDetail,
+  type AuditProcessDetailsListType,
+  backStartUserTask,
+  backTask
 } from '@/api/business/audit'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
-import { Modal } from 'ant-design-vue'
-import { Schema } from '@/types/workflow'
+import { Modal, message } from 'ant-design-vue'
 import type { SelectProps } from 'ant-design-vue'
+import { set } from 'lodash-es'
 const route = useRoute()
 import useTabsStore from '@/stores/tabs'
 const tabsView = useTabsStore()
@@ -84,9 +82,10 @@ const backValue = ref<string>()
 const backModal = ref<SelectProps['options']>([])
 onMounted(() => {
   // get(<string>route.query.appId)
-  getProcessInstanceMethod(route.query.parentProcessInstanceId as string)
-  getEchoDataMethod(route.query.appId as string, route.query.applyId)
+  getProcessInstanceMethod(route.query.processInstanceId as string)
+  getEchoDataMethod(route.query.appId as string, route.query.applyId as string)
   getBackOptionsMethod(route.query.taskId as string)
+  getAuditProcessDetailMethod(route.query.processInstanceId as string)
 })
 const basicInfo = ref({
   title: '',
@@ -96,7 +95,7 @@ const idea = ref('')
 const getProcessInstanceMethod = async (parentProcessInstanceId: string) => {
   const data = await getProcessInstance(parentProcessInstanceId)
   basicInfo.value.title = data.name
-  basicInfo.value.name = data.startUser.nickname
+  basicInfo.value.name = data.starter
 }
 const getEchoDataMethod = async (appId: string, applyId: string) => {
   const res = await getEchoData(appId, applyId)
@@ -110,7 +109,10 @@ const getEchoDataMethod = async (appId: string, applyId: string) => {
     if (data[key] && !Array.isArray(data[key])) {
       const fields = Object.keys(data[key])
       if (appSchema.value.info.paginated) {
-        // ignore for now
+        const findIndex = appSchema.value.info.tables.findIndex((table) => table.name == key)
+        fields.forEach((field) => {
+          set(ret, `${findIndex}.${key}:${field}`, data[key][field])
+        })
       } else {
         fields.forEach((field) => {
           ret[`${key}:${field}`] = data[key][field]
@@ -138,22 +140,45 @@ const getBackOptionsMethod = async (parentProcessInstanceId: string) => {
   backModal.value = data
   console.log(backModal.value)
 }
-const approvalRecord = ref([
-  {
-    title: '第一步审核',
-    description: '审核通过，审核意见：经考查****，予以通过。'
-  },
-  {
-    title: '第二步审核',
-    description: '待审核'
-  },
-  {
-    title: '第三步审核',
-    description: '待审核'
+const getAuditProcessDetailMethod = async (parentProcessInstanceId: string) => {
+  auditProcessDetailsList.value = await getAuditProcessDetail(parentProcessInstanceId)
+}
+
+const auditProcessDetailsList = ref<AuditProcessDetailsListType>([])
+
+// 退回到发起人方法
+const backStartUser = async () => {
+  const backVo = {
+    id: route.query.applyId as string,
+    reason: idea.value
   }
-])
+  const modal = Modal.confirm({
+    title: '确定退回到发起人吗?',
+    icon: createVNode(ExclamationCircleOutlined),
+    async onOk() {
+      try {
+        return await new Promise((resolve, reject) => {
+          backStartUserTask(backVo).then(() => {
+            modal.destroy()
+            message.success('审批成功！')
+            tabsView.removeAndOpenTab(
+              `/business/${route.query.appId}/audit?taskDefKey=${route.query.taskDefKey}`
+            )
+          })
+        })
+      } catch {
+        return console.log('审批失败!')
+      }
+    },
+    onCancel() {
+      console.log('Cancel')
+    },
+    class: 'test'
+  })
+}
+
 const operation = async (flag: number) => {
-  let taskId = route.query.taskId
+  const taskId = route.query.taskId
   let data = {
     id: taskId,
     reason: idea.value
@@ -167,17 +192,11 @@ const operation = async (flag: number) => {
         try {
           return await new Promise((resolve, reject) => {
             approveTask(data).then(() => {
-              Modal.info({
-                title: '审批成功！',
-                content: '',
-                onOk() {
-                  tabsView.removeTab(
-                    fullPath.value,
-                    '/business/' + route.query.appId + '/audit?userTaskId=' + route.query.taskId
-                  )
-                  modal.destroy()
-                }
-              })
+              message.success('审核成功！')
+              modal.destroy()
+              tabsView.removeAndOpenTab(
+                `/business/${route.query.appId}/audit?taskDefKey=${route.query.taskDefKey}`
+              )
             })
           })
         } catch {
@@ -198,17 +217,11 @@ const operation = async (flag: number) => {
         try {
           return await new Promise((resolve, reject) => {
             rejectTask(data).then(() => {
-              Modal.info({
-                title: '审批成功！',
-                content: '',
-                onOk() {
-                  tabsView.removeTab(
-                    fullPath.value,
-                    '/business/' + route.query.appId + '/audit?userTaskId=' + route.query.taskId
-                  )
-                  modal.destroy()
-                }
-              })
+              message.success('审核成功！')
+              modal.destroy()
+              tabsView.removeAndOpenTab(
+                `/business/${route.query.appId}/audit?taskDefKey=${route.query.taskDefKey}`
+              )
             })
           })
         } catch {
@@ -234,18 +247,11 @@ const operation = async (flag: number) => {
         try {
           return await new Promise((resolve, reject) => {
             backTask(data).then(() => {
-              Modal.info({
-                title: '审批成功！',
-                content: '',
-                onOk() {
-                  backModalShow.value = false
-                  tabsView.removeTab(
-                    fullPath.value,
-                    '/business/' + route.query.appId + '/audit?userTaskId=' + route.query.taskId
-                  )
-                  modal.destroy()
-                }
-              })
+              message.success('审核成功！')
+              modal.destroy()
+              tabsView.removeAndOpenTab(
+                `/business/${route.query.appId}/audit?taskDefKey=${route.query.taskDefKey}`
+              )
             })
           })
         } catch {
