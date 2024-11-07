@@ -16,7 +16,12 @@
           </ACol>
           <ACol :lg="8" :span="24">
             <AFormItem label="所属应用" name="appId">
-              <ASelect v-model:value="queryParams.appId" allow-clear />
+              <ASelect
+                v-model:value="queryParams.appId"
+                :options="appOpts"
+                allow-clear
+                :field-names="{ label: 'name', value: 'id' }"
+              />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
@@ -122,6 +127,7 @@
 import { ref } from 'vue'
 import dayjs from 'dayjs'
 import { useToggle } from '@vueuse/core'
+import useRequest from '@/hooks/use-request'
 import {
   DownOutlined,
   ReloadOutlined,
@@ -136,6 +142,7 @@ import useActions from './use-action'
 import FormModal from './form.vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { PlanVO } from '@/api/application/plan'
+import { getApplicationSimpleList } from '@/api/application'
 
 const filterForm = ref<FormInstance>()
 
@@ -145,6 +152,6 @@ const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, 
   useTable(filterForm)
 
 const { entry, visible, onDelete, onEdit, toDesignPage } = useActions(execute)
-
+const { data: appOpts } = useRequest(getApplicationSimpleList, { immediate: true })
 defineOptions({ name: 'SystemService' })
 </script>
