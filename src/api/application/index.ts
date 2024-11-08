@@ -23,7 +23,6 @@ export type ListQueryParams = {
   name?: string
   type?: string
   published?: number
-  createTime?: string
   updateTime?: string
 } & CommonQueryParams
 
