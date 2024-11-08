@@ -1,10 +1,11 @@
 import request from '@/utils/request'
+import type { Dayjs } from 'dayjs'
 
 export type PlanVO = {
   id?: string
   item?: string
   description?: string
-  startTime?: string[] | number[]
+  startTime?: string
   endTime?: string
   daily?: boolean
   appId?: string
@@ -16,8 +17,7 @@ export type PlanVO = {
 export type ListQueryParams = {
   item?: string
   appId?: string
-  startTime?: string
-  endTime?: string
+  startTime?: [string, string] | [Dayjs, Dayjs]
   daily?: boolean
 } & CommonQueryParams
 

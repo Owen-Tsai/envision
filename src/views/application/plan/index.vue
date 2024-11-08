@@ -25,13 +25,16 @@
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
-            <AFormItem label="开始时间" name="startTime">
+            <!-- <AFormItem label="开始时间" name="startTime">
               <ADatePicker v-model:value="queryParams.startTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
           <ACol v-show="filterExpanded" :lg="8" :span="24">
             <AFormItem label="截止时间" name="endTime">
               <ADatePicker v-model:value="queryParams.endTime" value-format="YYYY-MM-DD" />
+            </AFormItem> -->
+            <AFormItem label="起止时间" name="startTime">
+              <ARangePicker v-model:value="queryParams.startTime" value-format="YYYY-MM-DD" />
             </AFormItem>
           </ACol>
           <ACol :lg="{ span: 8, offset: filterExpanded ? 8 : 0 }" :span="24">
