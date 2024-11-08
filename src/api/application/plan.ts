@@ -4,7 +4,7 @@ export type PlanVO = {
   id?: string
   item?: string
   description?: string
-  startTime?: string
+  startTime?: string[] | number[]
   endTime?: string
   daily?: boolean
   appId?: string

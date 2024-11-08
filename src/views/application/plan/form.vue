@@ -44,11 +44,8 @@
           <ASwitch v-model:checked="formData.daily" @change="(v) => onDailyChange(v as boolean)" />
         </AFormItem>
         <template v-if="!formData.daily">
-          <AFormItem label="开始时间" name="startTime">
-            <ADatePicker v-model:value="formData.startTime" value-format="x" />
-          </AFormItem>
-          <AFormItem label="截止时间" name="endTime">
-            <ADatePicker v-model:value="formData.endTime" value-format="x" />
+          <AFormItem label="起止时间" name="startTime">
+            <ARangePicker v-model:value="formData.startTime" picker="date" value-format="x" />
           </AFormItem>
         </template>
       </AForm>
@@ -63,6 +60,7 @@ import { getApplicationSimpleList } from '@/api/application'
 import { getAttachTypeSimpleList } from '@/api/application/plan'
 import { createPlan, updatePlan, getPlanDetail, type PlanVO } from '@/api/application/plan'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
+import type { Dayjs } from 'dayjs'
 
 const rules: FormProps['rules'] = {
   item: [{ required: true, message: '请填写申报计划名称' }],
@@ -95,6 +93,11 @@ const submit = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
+
+    console.log(formData.value)
+    if (formData.value.startTime) {
+      formData.value.startTime = formData.value.startTime.map((v) => parseInt(v))
+    }
 
     if (isAdd.value) {
       await createPlan(formData.value)
