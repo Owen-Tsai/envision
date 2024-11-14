@@ -1,6 +1,6 @@
 <template>
   <div class="view">
-    <ACard title="申请信息">
+    <ACard title="申请信息" style="margin-bottom: 20px">
       <div class="aspinDiv" v-show="formRendering">
         <a-spin />
       </div>
@@ -14,10 +14,17 @@
         />
       </div>
     </ACard>
+    <AttachClass
+      ref="attachClass"
+      :app-id="appId"
+      :apply-id="applyId"
+      :plan-id="planId"
+      :current-audit-process="'0'"
+    ></AttachClass>
     <ACard title="审批记录" style="margin-top: 20px">
       <a-steps direction="horizontal" :items="auditProcessDetailsList"></a-steps>
     </ACard>
-    <ACard title="审批任务" style="margin-top: 20px">
+    <ACard title="审批任务" v-if="taskDefKey != 'All'" style="margin-top: 20px">
       <a-form>
         <a-form-item label="流程名">
           <span>{{ basicInfo.title }}</span>
@@ -51,6 +58,7 @@
 </template>
 
 <script setup lang="ts">
+import AttachClass from '@/components/attach/attach-class/index.vue'
 import FormRenderer from '@/components/fux-core/form-renderer/index.vue'
 import { ref, onMounted, nextTick, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
@@ -73,19 +81,29 @@ import { set } from 'lodash-es'
 const route = useRoute()
 import useTabsStore from '@/stores/tabs'
 const tabsView = useTabsStore()
-const { fullPath } = toRefs(useRoute())
 const appSchema = ref()
 const formRenderer = ref()
 const formRendering = ref<boolean>(true)
 const backModalShow = ref<boolean>(false)
 const backValue = ref<string>()
 const backModal = ref<SelectProps['options']>([])
+const attachClass = ref()
+
+const appId = route.query.appId as string
+const applyId = route.query.applyId as string
+const taskId = route.query.taskId as string
+const processInstanceId = route.query.processInstanceId as string
+const taskDefKey = route.query.taskDefKey as string
+const planId = ref<string>('')
+
 onMounted(() => {
-  // get(<string>route.query.appId)
-  getProcessInstanceMethod(route.query.processInstanceId as string)
-  getEchoDataMethod(route.query.appId as string, route.query.applyId as string)
-  getBackOptionsMethod(route.query.taskId as string)
-  getAuditProcessDetailMethod(route.query.processInstanceId as string)
+  // get(<string>appId)
+  getEchoDataMethod(appId, applyId)
+  getAuditProcessDetailMethod(processInstanceId)
+  if (taskDefKey != 'All') {
+    getProcessInstanceMethod(processInstanceId)
+    getBackOptionsMethod(taskId)
+  }
 })
 const basicInfo = ref({
   title: '',
@@ -100,7 +118,8 @@ const getProcessInstanceMethod = async (parentProcessInstanceId: string) => {
 const getEchoDataMethod = async (appId: string, applyId: string) => {
   const res = await getEchoData(appId, applyId)
   console.log('echo', res)
-  const { data, schema } = res
+  const { data, schema, plan } = res
+  planId.value = plan.id
   appSchema.value = JSON.parse(schema)
   const keys = Object.keys(data)
   const ret: any = {}
@@ -124,6 +143,8 @@ const getEchoDataMethod = async (appId: string, applyId: string) => {
   console.log(ret)
   nextTick(() => {
     formRenderer.value.setFormData(ret)
+    // 拿到planid之后去查询申报计划附件列表
+    attachClass.value.refreshList()
   })
   formRendering.value = false
 }
@@ -149,7 +170,7 @@ const auditProcessDetailsList = ref<AuditProcessDetailsListType>([])
 // 退回到发起人方法
 const backStartUser = async () => {
   const backVo = {
-    id: route.query.applyId as string,
+    id: applyId,
     reason: idea.value
   }
   const modal = Modal.confirm({
@@ -161,9 +182,7 @@ const backStartUser = async () => {
           backStartUserTask(backVo).then(() => {
             modal.destroy()
             message.success('审批成功！')
-            tabsView.removeAndOpenTab(
-              `/business/${route.query.appId}/audit?taskDefKey=${route.query.taskDefKey}`
-            )
+            tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
           })
         })
       } catch {
@@ -178,7 +197,7 @@ const backStartUser = async () => {
 }
 
 const operation = async (flag: number) => {
-  const taskId = route.query.taskId
+  const taskId = taskId
   let data = {
     id: taskId,
     reason: idea.value
@@ -194,9 +213,7 @@ const operation = async (flag: number) => {
             approveTask(data).then(() => {
               message.success('审核成功！')
               modal.destroy()
-              tabsView.removeAndOpenTab(
-                `/business/${route.query.appId}/audit?taskDefKey=${route.query.taskDefKey}`
-              )
+              tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
             })
           })
         } catch {
@@ -219,9 +236,7 @@ const operation = async (flag: number) => {
             rejectTask(data).then(() => {
               message.success('审核成功！')
               modal.destroy()
-              tabsView.removeAndOpenTab(
-                `/business/${route.query.appId}/audit?taskDefKey=${route.query.taskDefKey}`
-              )
+              tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
             })
           })
         } catch {
@@ -235,7 +250,7 @@ const operation = async (flag: number) => {
     })
   } else if (flag == 3) {
     data = {
-      id: route.query.taskId,
+      id: taskId,
       targetTaskDefinitionKey: backValue.value,
       reason: idea.value
     }
@@ -249,9 +264,7 @@ const operation = async (flag: number) => {
             backTask(data).then(() => {
               message.success('审核成功！')
               modal.destroy()
-              tabsView.removeAndOpenTab(
-                `/business/${route.query.appId}/audit?taskDefKey=${route.query.taskDefKey}`
-              )
+              tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
             })
           })
         } catch {
