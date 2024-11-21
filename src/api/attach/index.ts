@@ -19,3 +19,10 @@ export const getUploadList = (planId: string, applyId: string, appId: string) =>
     }
   })
 }
+
+export const getAttachView = (attachId: string, modeName: string) => {
+  return request.getRaw({
+    url: `/common/attach/get?attachId=${attachId}&modeName=${modeName}`,
+    responseType: 'blob'
+  })
+}

@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { EyeOutlined } from '@ant-design/icons-vue'
-import { getUploadList, type UploadListType } from '@/api/attach'
+import { getAttachView, getUploadList, type UploadListType } from '@/api/attach'
 
 const props = defineProps({
   planId: {
@@ -48,10 +48,13 @@ const props = defineProps({
 })
 
 //查看或下载附件方法
-const view = (attachDO: any) => {
-  console.log('查看附件: ', attachDO)
-  const url = import.meta.env.VITE_API_URL + '/common/attach/get?attachId=' + attachDO.id
-  window.open(url, '_blank')
+const view = async (attachDO: any) => {
+  // console.log('查看附件: ', attachDO)
+  // const url = import.meta.env.VITE_API_URL + '/common/attach/get?attachId=' + attachDO.id
+  // window.open(url, '_blank')
+  const data = await getAttachView(attachDO.id, attachDO.modeName)
+  const url = URL.createObjectURL(data)
+  window.open(url)
 }
 
 const refreshList = async () => {
