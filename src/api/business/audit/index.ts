@@ -7,6 +7,7 @@ export type ListQueryParams = CommonQueryParams & {
 export type EchoDataVO = {
   schema: string
   data: Record<string, any>
+  plan: object
 }
 
 export type AuditProcessDetailsListType = Array<{
