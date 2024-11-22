@@ -47,7 +47,12 @@ const props = defineProps({
 const editMode = ref<boolean>(false)
 const newName = ref<string>('')
 
-const info = ref({})
+const info = ref({
+  pid: '',
+  pname: '',
+  id: '',
+  name: ''
+})
 
 const nullInfo = ref({
   pid: '',

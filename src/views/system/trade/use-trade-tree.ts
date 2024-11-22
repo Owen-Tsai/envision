@@ -5,7 +5,7 @@ import { filterTree, type Tree } from '@/utils/tree'
 
 const useTradeTree = () => {
   const filteredTreeData = ref<Tree[]>()
-  const selectedKeys = ref<number[]>([])
+  const selectedKeys = ref<string[]>([])
   const currentDeptName = ref('全部')
   const searchText = ref('')
 
