@@ -9,7 +9,12 @@
   <div v-for="(step, i) in config.props.children" :key="i">
     <div v-if="i === config.props.state?.current" class="steps-container pt-4">
       <template v-if="ctx?.prod">
-        <WidgetRenderer v-for="widget in step.widgets" :key="widget.uid" :config="widget" />
+        <WidgetRenderer
+          v-for="widget in step.widgets"
+          :key="widget.uid"
+          :config="widget"
+          :fields="fields"
+        />
       </template>
       <template v-if="!ctx">
         <div class="draggable-area" :class="{ 'empty-slot': step.widgets.length <= 0 }">
@@ -44,6 +49,7 @@ import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['steps']
+  fields: any[]
 }>()
 
 const emit = defineEmits(['update:config'])

@@ -31,19 +31,57 @@
       </AForm>
     </div>
     <div v-show="active === 2">
-      <AAlert message="仍在开发中" type="warning" class="mb-6" show-icon />
+      <!--      <AAlert message="仍在开发中" type="warning" class="mb-6" show-icon />-->
+      <a-form ref="formRef" name="field_config_form" :model="model.fields">
+        <a-space
+          v-for="(fieldConfig, index) in model.fields"
+          :key="index"
+          style="display: flex; margin-bottom: 8px; gap: 20px"
+          align="baseline"
+        >
+          <a-form-item
+            label="字段名"
+            :name="[index, 'name']"
+            :rules="[{ required: true, message: '请填写字段名！', trigger: 'blur' }]"
+          >
+            <a-input v-model:value="fieldConfig.name" placeholder="字段名"></a-input>
+          </a-form-item>
+          <a-form-item
+            label="字段配置"
+            :name="[index, 'config']"
+            :rules="[{ required: true, message: '请选择字段配置！', trigger: 'blur' }]"
+          >
+            <a-select
+              v-model:value="fieldConfig.config"
+              :options="fieldConfigOpts"
+              style="width: 130px"
+            ></a-select>
+          </a-form-item>
+          <MinusSquareOutlined
+            @click="removeFieldConfig(fieldConfig)"
+            :style="{ fontSize: '20px' }"
+          />
+        </a-space>
+        <a-form-item>
+          <a-button type="dashed" block @click="addFieldConfig">
+            <PlusSquareOutlined />
+            添加字段配置
+          </a-button>
+        </a-form-item>
+      </a-form>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, reactive } from 'vue'
 import { getSimpleAuditList, getSimpleList } from '@/api/system/role'
 import useRequest from '@/hooks/use-request'
 import { NodeTaskStrategy } from '../../_utils/const'
 import { filterOption } from '@/utils/fusion'
 import type { SegmentedProps } from 'ant-design-vue'
 import type { NPropsAudit } from '@/types/fux-core/flow'
+import { PlusSquareOutlined, MinusSquareOutlined } from '@ant-design/icons-vue'
 
 const options: SegmentedProps['options'] = [
   { label: '审核人设置', value: 1 },
@@ -88,4 +126,27 @@ watch(
     model.value.actor.text = val === NodeTaskStrategy.ORG ? '发起人所属单位' : undefined
   }
 )
+
+const fieldConfigOpts = [
+  { label: '可见', value: 'show' },
+  { label: '隐藏', value: 'hide' },
+  { label: '只读', value: 'readonly' },
+  { label: '可编辑', value: 'edit' }
+]
+type FieldConfigType = {
+  name: string
+  config: string
+}
+const removeFieldConfig = (item: FieldConfigType) => {
+  const index = model.value.fields.indexOf(item)
+  if (index !== -1) {
+    model.value.fields.splice(index, 1)
+  }
+}
+const addFieldConfig = () => {
+  model.value.fields.push({
+    name: '',
+    config: ''
+  })
+}
 </script>

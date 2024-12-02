@@ -8,7 +8,12 @@
     <ACol v-for="(col, i) in config.props.children" :key="i" :span="col.span">
       <!-- widget renderer loop rendering -->
       <template v-if="ctx?.prod">
-        <WidgetRenderer v-for="widget in col.widgets" :key="widget.uid" :config="widget" />
+        <WidgetRenderer
+          v-for="widget in col.widgets"
+          :key="widget.uid"
+          :config="widget"
+          :fields="fields"
+        />
       </template>
       <template v-if="!ctx">
         <div class="draggable-area" :class="{ 'empty-slot': col.widgets.length <= 0 }">
@@ -27,6 +32,7 @@ import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['grid']
+  fields: any[]
 }>()
 
 const ctx = useRendererInjection()

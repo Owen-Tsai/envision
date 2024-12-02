@@ -97,6 +97,20 @@ const useInstanceMethods = () => {
     stepWidget.props.state.current -= 1
   }
 
+  const toNextStep = () => {
+    const stepWidget = appSchema.value.form.widgets.find(
+      (widget) => widget.type === 'steps' || widget.type === 'tabs'
+    )
+    console.log('是否步骤模式：', stepWidget)
+    if (!stepWidget) {
+      throw new Error(
+        '[FusionX/表单渲染器] 分页表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+      )
+    }
+    stepWidget.props.state.current += 1
+    console.log(stepWidget.props.state.current)
+  }
+
   /**
    * 暂存整个表单（不进行校验）
    */
@@ -139,6 +153,7 @@ const useInstanceMethods = () => {
     getCurrentStep,
     saveStep,
     toPrevStep,
+    toNextStep,
     save,
     submit
   }

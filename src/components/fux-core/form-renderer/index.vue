@@ -1,9 +1,10 @@
 <template>
   <div :class="{ 'with-data': showData }">
     <AForm
+      ref="form"
       :model="formData"
       :colon="schema?.form.colon"
-      :disabled="schema?.form.disabled"
+      :disabled="schema?.form.disabled || disabled"
       :label-align="schema?.form.labelAlign"
       :label-col="labelCol"
       label-wrap
@@ -11,7 +12,13 @@
       :wrapper-col="wrapperCol"
       class="flex-grow"
     >
-      <WidgetRenderer v-for="widget in schema.form.widgets" :key="widget.uid" :config="widget" />
+      <WidgetRenderer
+        v-for="widget in schema.form.widgets"
+        :key="widget.uid"
+        :config="widget"
+        :fields="getFields"
+        :showAll="showAll"
+      />
     </AForm>
     <div v-if="showData" class="data" v-html="highlighted" />
   </div>
@@ -26,12 +33,17 @@ import useInstanceMethods from './use-instance'
 import WidgetRenderer from '../_widgets/index.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import type { AppSchema } from '@/types/fux-core'
+import type { FormInstance } from 'ant-design-vue'
 
-const { schema, showData, state } = defineProps<{
+const { schema, showData, state, taskDefKey } = defineProps<{
   schema: AppSchema
   showData?: boolean
   state?: Record<string, any>
+  disabled?: boolean
+  taskDefKey?: string
 }>()
+
+const form = ref<FormInstance>()
 
 const emit = defineEmits(['update:schema', 'update:state'])
 const computedSchema = computed({
@@ -63,8 +75,38 @@ const wrapperCol = computed(() => {
   return tryParse(schema.form.wrapperCol)
 })
 
+const showAll = computed(() => taskDefKey === 'All')
+const getFields = computed(() => {
+  if (taskDefKey) {
+    if (taskDefKey == 'All') {
+      const fields = []
+      schema?.flow.nodes.forEach((node) => {
+        if (node.props.fields) {
+          node.props.fields.forEach((field) => {
+            fields.push(field)
+          })
+        }
+      })
+      // console.log(fields)
+      return fields
+    }
+    // console.log(
+    //     'fields',
+    //     schema?.flow.nodes.find((node) => node.uid == taskDefKey)?.props.fields as any[]
+    // )
+    return schema?.flow.nodes.find((node) => node.uid == taskDefKey)?.props.fields as any[]
+  } else {
+    return []
+  }
+})
+
+const validate = (namePaths?: string[]) => {
+  return form.value?.validateFields(namePaths)
+}
+
 defineExpose({
-  ...methods
+  ...methods,
+  validate
 })
 </script>
 

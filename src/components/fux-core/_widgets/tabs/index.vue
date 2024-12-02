@@ -8,7 +8,12 @@
   >
     <ATabPane v-for="(pane, i) in config.props.children" :key="i" :tab="pane.title">
       <template v-if="ctx?.prod">
-        <WidgetRenderer v-for="widget in pane.widgets" :key="widget.uid" :config="widget" />
+        <WidgetRenderer
+          v-for="widget in pane.widgets"
+          :key="widget.uid"
+          :config="widget"
+          :fields="fields"
+        />
       </template>
       <template v-if="!ctx">
         <div class="draggable-area" :class="{ 'empty-slot': pane.widgets.length <= 0 }">
@@ -42,6 +47,7 @@ import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['tabs']
+  fields: any[]
 }>()
 
 const emit = defineEmits(['update:config'])

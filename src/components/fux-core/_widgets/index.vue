@@ -1,13 +1,13 @@
 <template>
   <template v-if="config.class === 'layout' && visible">
     <!-- layout widgets -->
-    <component :is="widgetToRenderer" :config="config" />
+    <component :is="widgetToRenderer" :config="widgetConfig" :fields="fields" />
   </template>
   <template v-else-if="config.class === 'special' && visible">
     <!-- special widgets -->
   </template>
   <AFormItem
-    v-else-if="config.class === 'form' && visible"
+    v-else-if="show"
     :extra="config.props.field?.extra"
     :label="config.props.field?.label"
     :name="fieldName || config.uid"
@@ -16,12 +16,12 @@
     :label-col="labelCol"
     :wrapper-col="wrapperCol"
   >
-    <component :is="widgetToRenderer" :config="config" />
+    <component :is="widgetToRenderer" :config="widgetConfig" />
   </AFormItem>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { camelCase } from 'lodash-es'
 import { useRendererInjection } from '../_hooks'
 import { tryParse } from '@fusionx/utils'
@@ -29,9 +29,13 @@ import type { FormWidget, Widget } from '@/types/fux-core/form'
 
 const ctx = useRendererInjection()
 
-const { config } = defineProps<{
+const { config, fields, showAll } = defineProps<{
   config: Widget
+  fields: any[]
+  showAll?: boolean
 }>()
+
+const widgetConfig = ref(config)
 
 const components = import.meta.glob('./**/index.vue', { eager: true, import: 'default' })
 
@@ -61,4 +65,47 @@ const wrapperCol = computed(() => {
 const fieldName = computed(() => {
   return config.props.field?.name?.split('.')
 })
+
+const fieldConfig = computed(() => {
+  let config = ''
+  const res = fields.find((fcfg) => fcfg.name == fieldName.value[fieldName.value.length - 1])
+  if (res) {
+    config = res.config
+  }
+  return config
+})
+
+const show = computed(() => {
+  // console.log(fieldName.value)
+  if (!visible.value && showAll) {
+    return true
+  } else {
+    if (fields !== null) {
+      // console.log('config', config)
+      // console.log('fieldName', fieldName.value)
+      // console.log('fieldConfig', fieldConfig.value)
+      if (fieldConfig.value == 'show') {
+        return true
+      } else if (fieldConfig.value == 'hide') {
+        return false
+      } else {
+        return fieldConfig.value == 'edit' || fieldConfig.value == 'readonly' ? true : visible.value
+      }
+    } else {
+      return visible.value
+    }
+  }
+})
+watch(
+  () => fieldConfig.value,
+  (val) => {
+    if (val === 'readonly') {
+      widgetConfig.value.props.readonly = true
+    }
+    if (val === 'edit') {
+      widgetConfig.value.props.readonly = false
+      widgetConfig.value.props.disabled = false
+    }
+  }
+)
 </script>

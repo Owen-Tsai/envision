@@ -11,7 +11,17 @@
           :key="appSchema"
           disabled
           :schema="appSchema"
+          :taskDefKey="taskDefKey"
         />
+        <div>
+          <MultiButton
+            v-if="multiMode"
+            :currentStep="multiFormCurrentStep"
+            :isEnd="multiFormTabIsEnd"
+            :prevStep="multiPrevStep"
+            :nextStep="multiNextStep"
+          ></MultiButton>
+        </div>
       </div>
     </ACard>
     <AttachClass
@@ -60,26 +70,27 @@
 <script setup lang="ts">
 import AttachClass from '@/components/attach/attach-class/index.vue'
 import FormRenderer from '@/components/fux-core/form-renderer/index.vue'
-import { ref, onMounted, nextTick, toRefs } from 'vue'
+import { createVNode, nextTick, onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   approveTask,
-  rejectTask,
-  getProcessInstance,
-  getEchoData,
-  getBackOptions,
-  getAuditProcessDetail,
   type AuditProcessDetailsListType,
   backStartUserTask,
-  backTask
+  backTask,
+  getAuditProcessDetail,
+  getBackOptions,
+  getEchoData,
+  getProcessInstance,
+  rejectTask
 } from '@/api/business/audit'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
-import { createVNode } from 'vue'
-import { Modal, message } from 'ant-design-vue'
 import type { SelectProps } from 'ant-design-vue'
+import { message, Modal } from 'ant-design-vue'
 import { set } from 'lodash-es'
-const route = useRoute()
 import useTabsStore from '@/stores/tabs'
+import MultiButton from './multiButton.vue'
+
+const route = useRoute()
 const tabsView = useTabsStore()
 const appSchema = ref()
 const formRenderer = ref()
@@ -95,6 +106,22 @@ const taskId = route.query.taskId as string
 const processInstanceId = route.query.processInstanceId as string
 const taskDefKey = route.query.taskDefKey as string
 const planId = ref<string>('')
+
+const multiMode = ref(false)
+const multiFormCurrentStep = computed(() => {
+  return formRenderer.value?.getCurrentStep()
+})
+const multiFormTabIsEnd = computed(() => {
+  return formRenderer.value?.getCurrentStep() >= appSchema.value.info.tables.length - 1
+})
+// 多表返回上一步的方法
+const multiPrevStep = () => {
+  formRenderer.value.toPrevStep()
+}
+// 多表进入下一步的方法
+const multiNextStep = () => {
+  formRenderer.value.toNextStep()
+}
 
 onMounted(() => {
   // get(<string>appId)
@@ -128,6 +155,7 @@ const getEchoDataMethod = async (appId: string, applyId: string) => {
     if (data[key] && !Array.isArray(data[key])) {
       const fields = Object.keys(data[key])
       if (appSchema.value.info.paginated) {
+        multiMode.value = true
         const findIndex = appSchema.value.info.tables.findIndex((table) => table.name == key)
         fields.forEach((field) => {
           set(ret, `${findIndex}.${key}:${field}`, data[key][field])
@@ -197,10 +225,10 @@ const backStartUser = async () => {
 }
 
 const operation = async (flag: number) => {
-  const taskId = taskId
   let data = {
     id: taskId,
-    reason: idea.value
+    reason: idea.value,
+    fields: getFields()
   }
   if (flag == 1) {
     const modal = Modal.confirm({
@@ -277,6 +305,50 @@ const operation = async (flag: number) => {
       class: 'test'
     })
   }
+}
+
+const getFields = () => {
+  const allFields = appSchema.value?.flow.nodes.find((node) => node.uid == taskDefKey)?.props.fields
+  // console.log(allFields)
+  const editFields = allFields.filter((field) => field.config == 'edit')
+  // console.log(editFields)
+  const fieldNameArr = [] as Array<string>
+  editFields.forEach((field) => {
+    fieldNameArr.push(field.name as string)
+  })
+  const fields = {}
+  if (fieldNameArr.length > 0) {
+    console.log(formRenderer.value.getFormData())
+    const originFormData = formRenderer.value.getFormData()
+    const tablesLength = appSchema.value.info.tables.length
+    const formData = {}
+    if (tablesLength > 1) {
+      for (let i = 0; i < tablesLength; i++) {
+        // console.log(originFormData[i])
+        const datakeys = Object.keys(originFormData[i])
+        datakeys.forEach((keyName) => {
+          set(formData, keyName, originFormData[i][keyName])
+        })
+      }
+    } else {
+      const datakeys = Object.keys(originFormData)
+      datakeys.forEach((keyName) => {
+        set(formData, keyName, originFormData[keyName])
+      })
+    }
+    // console.log(formData)
+    fieldNameArr.forEach((fieldName) => {
+      const tableNameId = fieldName.split(':')[0] + ':id'
+      // console.log(tableNameId)
+      if (!fields.hasOwnProperty(tableNameId)) {
+        set(fields, tableNameId, formData[tableNameId])
+      }
+      set(fields, fieldName, formData[fieldName])
+    })
+    // console.log(fields)
+    return fields
+  }
+  return fields
 }
 </script>
 <style>

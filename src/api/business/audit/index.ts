@@ -17,9 +17,15 @@ export type AuditProcessDetailsListType = Array<{
   status: string
 }>
 
-export const getList = (taskDefKey: string) => {
+export const getList = (taskDefKey: string, appId: string) => {
+  let url = '/fux-bpm/get-my-task?'
+  if (taskDefKey == 'All') {
+    url += `appId=${appId}&all=true`
+  } else {
+    url += `actId=${taskDefKey}`
+  }
   return request.get({
-    url: `/fux-bpm/get-my-task?actId=${taskDefKey}`
+    url: url
   })
 }
 
@@ -27,15 +33,22 @@ export const getProcessInstance = async (id: string) => {
   return await request.get({ url: '/fux-bpm/get-process-info?processId=' + id })
 }
 
-export const approveTask = async (data) => {
+export type TaskVO = {
+  id: string
+  reason: string
+  fields: object
+  targetTaskDefinitionKey?: string
+}
+
+export const approveTask = async (data: TaskVO) => {
   return await request.put({ url: '/bpm/task/approve', data })
 }
 
-export const rejectTask = async (data) => {
+export const rejectTask = async (data: TaskVO) => {
   return await request.put({ url: '/bpm/task/reject', data })
 }
 
-export const backStartUserTask = async (data: { id: string; reason: string }) => {
+export const backStartUserTask = async (data: TaskVO) => {
   return await request.put({
     url: '/fusionx/framework/return-to-initiator',
     data
@@ -43,10 +56,6 @@ export const backStartUserTask = async (data: { id: string; reason: string }) =>
 }
 
 export const backTask = async (data) => {
-  return await request.put({ url: '/bpm/task/return', data })
-}
-
-export const backInitiatorTask = async (data) => {
   return await request.put({ url: '/bpm/task/return', data })
 }
 

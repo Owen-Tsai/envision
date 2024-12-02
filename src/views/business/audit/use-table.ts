@@ -19,9 +19,12 @@ export const useTable = (filterFormRef: Ref<FormInstance | undefined>) => {
   const route = useRoute()
 
   const queryParams = ref<ListQueryParams>({})
-  const { data, pending, execute } = useRequest(() => getList(route.query.taskDefKey as any), {
-    immediate: true
-  })
+  const { data, pending, execute } = useRequest(
+    () => getList(route.query.taskDefKey as any, route.params.appId as string),
+    {
+      immediate: true
+    }
+  )
 
   const pagination = computed<TablePaginationConfig>(() => ({
     pageSize: queryParams.value.pageSize,

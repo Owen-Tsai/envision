@@ -11,7 +11,12 @@
     />
     <AModal v-model:open="visible" :title="modalTitle" :width="config.props.formWidth" @ok="onSave">
       <AForm :model="modalFormData">
-        <WidgetRenderer v-for="child in config.props.widgets" :key="child.uid" :config="child" />
+        <WidgetRenderer
+          v-for="child in config.props.widgets"
+          :key="child.uid"
+          :config="child"
+          :fields="fields"
+        />
       </AForm>
     </AModal>
   </div>
@@ -34,6 +39,7 @@ import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['dataTable']
+  fields: any[]
 }>()
 
 const rendererCtx = useRendererInjection()

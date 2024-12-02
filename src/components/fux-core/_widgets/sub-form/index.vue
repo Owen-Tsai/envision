@@ -3,7 +3,7 @@
     <div class="entry-container">
       <div class="entry" v-for="(entry, index) in model[field]" :key="index">
         <div v-for="(widget, j) in config.props.children" :key="j">
-          <WidgetRenderer :config="transformConfig(widget, index)" />
+          <WidgetRenderer :config="transformConfig(widget, index)" :fields="fields" />
         </div>
 
         <ATooltip title="删除此组">
@@ -35,6 +35,7 @@ import type { WidgetMap, Widget } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
   config: WidgetMap['subForm']
+  fields: any[]
 }>()
 
 const { model } = useModel(config)
