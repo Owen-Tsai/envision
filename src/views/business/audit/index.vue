@@ -83,10 +83,16 @@
               {{ dayjs(scope.record.startTime).format('YYYY-MM-DD') }}
             </template>
             <template v-if="scope?.column.title === '操作'">
-              <AFlex :gap="16">
+              <AFlex :gap="16" v-if="taskDefKey != 'All'">
                 <ATypographyLink @click="onAudit(scope.record)">
                   <EditOutlined />
                   审核
+                </ATypographyLink>
+              </AFlex>
+              <AFlex :gap="16" v-else>
+                <ATypographyLink @click="onAudit(scope.record)">
+                  <EyeOutlined />
+                  查看
                 </ATypographyLink>
               </AFlex>
             </template>
@@ -101,7 +107,7 @@
 import { ref } from 'vue'
 import dayjs from 'dayjs'
 import { useToggle } from '@vueuse/core'
-import { ReloadOutlined, ExportOutlined, EditOutlined } from '@ant-design/icons-vue'
+import { ReloadOutlined, EyeOutlined, EditOutlined } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { columns, useTable } from './use-table'
 import type { FormInstance } from 'ant-design-vue'
