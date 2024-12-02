@@ -24,7 +24,4 @@ export const tryParse = (str: string | undefined) => {
   }
 }
 
-export const generateID = customAlphabet(
-  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-  12
-)
+export const generateID = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 12)

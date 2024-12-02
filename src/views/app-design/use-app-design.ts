@@ -1,4 +1,4 @@
-import { ref, provide, type Ref, inject } from 'vue'
+import { ref, provide, type Ref, inject, createVNode } from 'vue'
 import { message, Modal } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import { merge, flattenDeep, drop } from 'lodash-es'
@@ -114,21 +114,25 @@ export const useAppDesigner = () => {
 
   const genAuditMenu = async () => {
     const getSteps = () => {
-      const list = flattenDeep(appSchema.value?.flow.nodes).map((node) => {
-        return {
-          uid: node.uid,
-          name: node.name
-        }
-      })
+      const list = flattenDeep(appSchema.value?.flow.nodes)
+        .map((node) => {
+          // console.log(node)
+          if (node.props.actor?.value[0] != 'org') {
+            return {
+              uid: node.uid,
+              name: node.name
+            }
+          }
+        })
+        .filter(Boolean)
 
       return drop(list)
     }
 
+    const id = await createAppSchema(appDesignForm.value)
     if (appEditMode.value === 'create') {
-      const id = await createAppSchema(appDesignForm.value)
       await addMenuById(id, getSteps())
     } else {
-      const id = await updateAppSchema(appDesignForm.value)
       await updateMenuById(id, getSteps())
     }
   }
@@ -143,8 +147,8 @@ export const useAppDesigner = () => {
     })
 
     Modal.confirm({
-      title: '提示',
-      content: '是否保存当前应用？',
+      title: '是否保存当前应用？',
+      content: createVNode('div', { style: 'color:red;' }, '请确保当前应用已无审核中的申报！'),
       onOk: async () => {
         loading.value = true
         await genFlowXML()
