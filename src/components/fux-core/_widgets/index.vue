@@ -68,9 +68,11 @@ const fieldName = computed(() => {
 
 const fieldConfig = computed(() => {
   let config = ''
-  const res = fields.find((fcfg) => fcfg.name == fieldName.value[fieldName.value.length - 1])
-  if (res) {
-    config = res.config
+  if (fieldName.value) {
+    const res = fields.find((fcfg) => fcfg.name == fieldName.value[fieldName.value.length - 1])
+    if (res) {
+      config = res.config
+    }
   }
   return config
 })
