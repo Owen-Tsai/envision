@@ -7,7 +7,7 @@
     <!-- special widgets -->
   </template>
   <AFormItem
-    v-else-if="show"
+    v-else-if="config.class === 'form' && show"
     :extra="config.props.field?.extra"
     :label="config.props.field?.label"
     :name="fieldName || config.uid"
@@ -67,6 +67,9 @@ const fieldName = computed(() => {
 })
 
 const fieldConfig = computed(() => {
+  if (!ctx?.prod) {
+    return null
+  }
   let config = ''
   if (fieldName.value) {
     const res = fields?.find((fcfg) => fcfg.name == fieldName.value[fieldName.value.length - 1])
@@ -98,15 +101,22 @@ const show = computed(() => {
     }
   }
 })
+
+const setPropWhenApplicable = (prop: string, value: any) => {
+  if (widgetConfig.value.props) {
+    widgetConfig.value.props[prop] = value
+  }
+}
+
 watch(
   () => fieldConfig.value,
   (val) => {
     if (val === 'readonly') {
-      widgetConfig.value.props.readonly = true
+      setPropWhenApplicable('readonly', true)
     }
     if (val === 'edit') {
-      widgetConfig.value.props.readonly = false
-      widgetConfig.value.props.disabled = false
+      setPropWhenApplicable('readonly', false)
+      setPropWhenApplicable('disabled', false)
     }
   }
 )
