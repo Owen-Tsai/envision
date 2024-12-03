@@ -106,7 +106,7 @@ const columnConfigModal = reactive<{
   columns: WPropsTableColumn[]
   visible: boolean
 }>({
-  columns: [],
+  columns: attrs.columns || [],
   visible: false
 })
 
