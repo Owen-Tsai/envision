@@ -2,11 +2,13 @@
   <div class="view h-full overflow-auto">
     <ACard class="min-h-full">
       <AForm class="form" :label-col="{ style: { width: '100px' } }">
-        <AAlert v-if="hasModified" type="warning" show-icon>
-          当前应用的数据源配置已经改变，请重新生成表单或
-          <AButton type="link" @click="reload">撤销更改</AButton>
-          。
-        </AAlert>
+        <AAlert
+          v-if="hasModified"
+          type="warning"
+          show-icon
+          message="当前应用已经保存，如不需要重新生成 Schema，请直接点击页面上方步骤条中的对应步骤进行切换"
+          class="mb-4"
+        />
         <AFormItem label="数据表" extra="仅可选择导入至 基础设施/代码生成 中的数据表">
           <ASelect
             v-model:value="selectedValues"
