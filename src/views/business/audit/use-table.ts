@@ -11,7 +11,7 @@ export const columns: TableProps['columns'] = [
   { key: 'startUser', title: '申请人姓名', dataIndex: 'startUser' },
   // { key: 'membertype', title: '申请人类型', dataIndex: 'membertype' },
   // { key: 'workunit', title: '单位名称', dataIndex: 'workunit' },
-  { key: 'startTime', title: '创建时间', dataIndex: 'startTime' },
+  { key: 'createTime', title: '创建时间', dataIndex: 'createTime' },
   { key: 'actions', title: '操作', dataIndex: 'actions', width: 240 }
 ]
 
