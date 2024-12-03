@@ -66,9 +66,10 @@ export interface WPropsSubForm extends WPropsCommon {
 export type WPropsTableColumn = {
   align?: 'left' | 'right' | 'center'
   title?: string
-  width?: string
+  width?: number
   key?: string
   formatter?: string
+  dataIndex?: string
 }
 
 export type WPropsTablePagination = {

@@ -18,11 +18,14 @@ const genDataTableSchema = (info: ConfigDetailVO, widgets: Widget[]): WidgetMap[
       widgets: widgets,
       columns: columns.map((column) => ({
         key: column.javaField,
-        title: column.columnComment || column.columnName
+        title: column.columnComment || column.columnName,
+        dataIndex: column.javaField
       })),
       url: '/applications/' + info.table.tableName
     }
   }
+
+  ret.props.columns?.push({ key: 'actions', title: '操作', dataIndex: 'actions' })
 
   delete ret.icon
 
@@ -145,7 +148,9 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
 
     delete gridSchema?.icon
 
-    let tableSchema = paginated ? genTableWidgetsSchema(info, idx) : genTableWidgetsSchema(info)
+    let tableSchema: Widget[] = paginated
+      ? genTableWidgetsSchema(info, idx)
+      : genTableWidgetsSchema(info)
     if (gridColumns) {
       // const colWidgets = genGridSchema(tableSchema, column)
       const gridSchema = genGridSchema(gridColumns, tableSchema)
@@ -155,6 +160,13 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
 
     if (tables.find((table) => table.id === info.table.id)?.subTable) {
       if (paginated) {
+        tableSchema = genTableWidgetsSchema(info)
+        if (gridColumns) {
+          // const colWidgets = genGridSchema(tableSchema, column)
+          const gridSchema = genGridSchema(gridColumns, tableSchema)
+
+          tableSchema = [gridSchema]
+        }
         ;(schemaWrapper as WidgetMap['tabs' | 'steps']).props.children.push({
           title: info.table.tableComment || info.table.tableName || '',
           widgets: [genDataTableSchema(info, tableSchema)]
