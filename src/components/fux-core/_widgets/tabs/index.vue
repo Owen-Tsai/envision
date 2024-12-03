@@ -45,9 +45,9 @@ import WidgetRenderer from '../index.vue'
 import { kebabCase } from 'lodash-es'
 import type { WidgetMap } from '@/types/fux-core/form'
 
-const { config } = defineProps<{
+const { config, fields } = defineProps<{
   config: WidgetMap['tabs']
-  fields: any[]
+  fields?: any[]
 }>()
 
 const emit = defineEmits(['update:config'])

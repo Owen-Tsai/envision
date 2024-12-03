@@ -1,7 +1,7 @@
 <template>
   <AFormItem :label="config.props.field.label" :rules="rules">
     <div class="entry-container">
-      <div class="entry" v-for="(entry, index) in model[field]" :key="index">
+      <div class="entry" v-for="(entry, index) in model?.[field] || {}" :key="index">
         <div v-for="(widget, j) in config.props.children" :key="j">
           <WidgetRenderer :config="transformConfig(widget, index)" :fields="fields" />
         </div>
@@ -33,9 +33,9 @@ import { useModel } from '../../_hooks'
 import type { FormItemProps } from 'ant-design-vue'
 import type { WidgetMap, Widget } from '@/types/fux-core/form'
 
-const { config } = defineProps<{
+const { config, fields } = defineProps<{
   config: WidgetMap['subForm']
-  fields: any[]
+  fields?: any[]
 }>()
 
 const { model } = useModel(config)

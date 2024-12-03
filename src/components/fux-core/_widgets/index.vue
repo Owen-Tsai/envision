@@ -31,7 +31,7 @@ const ctx = useRendererInjection()
 
 const { config, fields, showAll } = defineProps<{
   config: Widget
-  fields: any[]
+  fields?: any[]
   showAll?: boolean
 }>()
 

@@ -38,9 +38,9 @@ import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
 import type { WidgetMap } from '@/types/fux-core/form'
 
-const { config } = defineProps<{
+const { config, fields } = defineProps<{
   config: WidgetMap['dataTable']
-  fields: any[]
+  fields?: any[]
 }>()
 
 const rendererCtx = useRendererInjection()

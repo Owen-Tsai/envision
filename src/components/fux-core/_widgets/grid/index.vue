@@ -30,9 +30,9 @@ import Nested from '../../form-designer/canvas/nested.vue'
 import WidgetRenderer from '../index.vue'
 import type { WidgetMap } from '@/types/fux-core/form'
 
-const { config } = defineProps<{
+const { config, fields } = defineProps<{
   config: WidgetMap['grid']
-  fields: any[]
+  fields?: any[]
 }>()
 
 const ctx = useRendererInjection()

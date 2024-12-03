@@ -47,9 +47,9 @@ import WidgetRenderer from '../index.vue'
 import constructSteps from '../../_utils/construct-steps'
 import type { WidgetMap } from '@/types/fux-core/form'
 
-const { config } = defineProps<{
+const { config, fields } = defineProps<{
   config: WidgetMap['steps']
-  fields: any[]
+  fields?: any[]
 }>()
 
 const emit = defineEmits(['update:config'])
