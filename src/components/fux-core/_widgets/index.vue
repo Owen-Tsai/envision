@@ -15,6 +15,7 @@
     :label-align="config.props.field?.labelAlign"
     :label-col="labelCol"
     :wrapper-col="wrapperCol"
+    :rules="rules"
   >
     <component :is="widgetToRenderer" :config="widgetConfig" />
   </AFormItem>
@@ -107,6 +108,10 @@ const setPropWhenApplicable = (prop: string, value: any) => {
     widgetConfig.value.props[prop] = value
   }
 }
+
+const rules = computed(() => {
+  return tryParse((config as FormWidget).props.field.rules)
+})
 
 watch(
   () => fieldConfig.value,
