@@ -18,11 +18,11 @@ export type AuditProcessDetailsListType = Array<{
 }>
 
 export const getList = (taskDefKey: string, appId: string) => {
-  let url = '/fux-bpm/get-my-task?'
+  let url = ''
   if (taskDefKey == 'All') {
-    url += `appId=${appId}&all=true`
+    url = `/com-apply/get-apply-info-repertory?appId=${appId}`
   } else {
-    url += `actId=${taskDefKey}`
+    url += `/fux-bpm/get-my-task?actId=${taskDefKey}`
   }
   return request.get({
     url: url
