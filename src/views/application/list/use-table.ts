@@ -8,7 +8,7 @@ import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 export const columns: TableProps['columns'] = [
   { title: '应用名称', dataIndex: 'name', key: 'name', ellipsis: true },
   { title: '应用类别', dataIndex: 'type', key: 'type' },
-  { title: '创建人', width: 120, dataIndex: 'creator' },
+  { title: '创建人', width: 120, dataIndex: 'creatornName' },
   { title: '应用描述', width: 200, dataIndex: 'description', ellipsis: true },
   { title: '上架状态', width: 120, dataIndex: 'published', key: 'published' },
   {
