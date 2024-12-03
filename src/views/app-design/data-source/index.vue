@@ -80,7 +80,7 @@
             v-else
             type="primary"
             :disabled="tableSortList.length <= 0"
-            @click="generateInitalSchema"
+            @click="generateInitialSchema"
           >
             生成初始 Schema
           </AButton>
@@ -125,7 +125,7 @@ useSortable(dragWrapperEl, tableSortList, {
   animation: 200
 })
 
-const generateInitalSchema = async () => {
+const generateInitialSchema = async () => {
   const doGenerate = async () => {
     appSchema.value.info.tables = tableSortList.value
     generating.value = true

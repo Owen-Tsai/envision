@@ -19,7 +19,8 @@ const genDataTableSchema = (info: ConfigDetailVO, widgets: Widget[]): WidgetMap[
       columns: columns.map((column) => ({
         key: column.javaField,
         title: column.columnComment || column.columnName
-      }))
+      })),
+      url: '/applications/' + info.table.tableName
     }
   }
 
