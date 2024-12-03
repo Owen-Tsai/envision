@@ -72,6 +72,11 @@ export const RENDERER_KEY = Symbol('renderer')
  * workflow designer key
  */
 export const WORKFLOW_KEY = Symbol('workflow')
+/**
+ * model injection key
+ * used in widgets like dataTable, which has nested form element
+ */
+export const MODEL_KEY = Symbol('model')
 
 // #endregion
 

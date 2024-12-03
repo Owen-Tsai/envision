@@ -2,13 +2,13 @@ import { computed, watch } from 'vue'
 import { set, get } from 'lodash-es'
 import date from '../_transformers/date'
 import evalExpression from '../_utils/expression'
-import { useFormDataInjection, useRendererInjection } from './use-context'
+import { useFormDataInjection, useRendererInjection, useModelInjection } from './use-context'
 import type { Widget, FormWidget, WidgetMap } from '@/types/fux-core/form'
 
 const { requireTransform, toSubmitValue, toWidgetValue } = date
 
 export const useModel = (widget: Widget) => {
-  const formDataCtx = useFormDataInjection()
+  const formDataCtx = useModelInjection() || useFormDataInjection()
   const key = widget.props.field?.name || widget.uid
 
   const model = computed({

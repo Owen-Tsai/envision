@@ -18,6 +18,7 @@
           :fields="fields"
         />
       </AForm>
+      <pre>{{ modalFormData }}</pre>
     </AModal>
   </div>
   <div v-if="!isProd && config.props.state.mode === 'form'">
@@ -31,7 +32,7 @@
 import { h, ref, reactive, computed } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import request from '@/utils/request'
-import { useRendererInjection } from '../../_hooks'
+import { useRendererInjection, useModelProvider } from '../../_hooks'
 import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
@@ -77,7 +78,7 @@ const urlPrefix = config.props.url
 
 // modal form
 const visible = ref(false)
-const modalFormData = reactive<Record<string, any>>({})
+const modalFormData = ref<Record<string, any>>({})
 const modalEditMode = ref<'create' | 'update'>('create')
 const modalTitle = computed(() => {
   const label = config.props.field.label
@@ -101,11 +102,13 @@ const onSave = async () => {
   const api = `${urlPrefix}/${modalEditMode.value}`
   loading.value = true
   if (modalEditMode.value === 'update') {
-    await request.put({ url: api, data: modalFormData })
+    await request.put({ url: api, data: modalFormData.value })
   } else {
-    await request.post({ url: api, data: modalFormData })
+    await request.post({ url: api, data: modalFormData.value })
   }
   visible.value = false
   await loadData()
 }
+
+useModelProvider(modalFormData)
 </script>

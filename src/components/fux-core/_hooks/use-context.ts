@@ -1,6 +1,6 @@
 import { provide, inject, ref, type Ref } from 'vue'
 import { injectLocal, provideLocal } from '@vueuse/core'
-import { FORM_DATA_KEY, DESIGNER_KEY, RENDERER_KEY, WORKFLOW_KEY } from '../_utils/const'
+import { FORM_DATA_KEY, DESIGNER_KEY, RENDERER_KEY, WORKFLOW_KEY, MODEL_KEY } from '../_utils/const'
 import { deleteWidgetByUid, copyWidget as copy } from '../_utils/widget'
 import type { Widget } from '@/types/fux-core/form'
 import type { FlowSchema, Node } from '@/types/fux-core/flow'
@@ -87,4 +87,14 @@ export const useWorkflowCtxProvider = (schema: Ref<FlowSchema>) => {
 
 export const useWorkflowCtxInjection = () => {
   return inject<WorkflowDesignerCtx>(WORKFLOW_KEY)!
+}
+
+export const useModelProvider = (model: Ref<Record<string, any>>) => {
+  provide(MODEL_KEY, {
+    formData: model
+  })
+}
+
+export const useModelInjection = () => {
+  return inject<FormDataCtx>(MODEL_KEY)
 }
