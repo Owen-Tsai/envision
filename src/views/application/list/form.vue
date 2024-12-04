@@ -46,7 +46,7 @@
             :tree-data="deptOpts"
           />
         </AFormItem>
-        <AFormItem label="备注" name="description">
+        <AFormItem label="应用描述" name="description">
           <ATextarea v-model:value="formData.description" />
         </AFormItem>
         <ARow>
