@@ -24,6 +24,7 @@ export type ConfigVO = {
   templateType?: number
   frontType?: number
   scene?: number
+  isBusiness?: number
 }
 
 export type ColumnVO = {

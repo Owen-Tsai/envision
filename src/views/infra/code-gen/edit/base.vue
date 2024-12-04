@@ -21,6 +21,14 @@
           <AInput v-model:value="formData.author" placeholder="请输入作者名称" />
         </AFormItem>
       </ACol>
+      <ACol :lg="12">
+        <AFormItem label="是否业务表" name="isBusiness">
+          <ASelect v-model:value="formData.isBusiness" placeholder="请选择是否业务表">
+            <ASelectOption value="1">是</ASelectOption>
+            <ASelectOption value="0">否</ASelectOption>
+          </ASelect>
+        </AFormItem>
+      </ACol>
       <ACol :lg="24">
         <AFormItem label="备注" name="remark">
           <ATextarea v-model:value="formData.remark" />
@@ -56,7 +64,8 @@ const rules: FormProps['rules'] = {
   tableName: [{ required: true, message: '请输入表名称' }],
   tableComment: [{ required: true, message: '请输入表描述' }],
   className: [{ required: true, message: '请输入实体类名称' }],
-  author: [{ required: true, message: '请输入作者名称' }]
+  author: [{ required: true, message: '请输入作者名称' }],
+  isBusiness: [{ required: true, message: '请选择是否业务表' }]
 }
 
 defineExpose({
