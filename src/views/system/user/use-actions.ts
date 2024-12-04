@@ -21,8 +21,8 @@ const useActions = (requestData: () => void) => {
   }
 
   const onSetRole = (record: UserVO) => {
-    entry.value = record
     visible.roleConfig = true
+    entry.value = record
   }
 
   const onDelete = (record: UserVO) => {

@@ -60,16 +60,6 @@
             </AFormItem>
           </ACol>
           <ACol :lg="12" :span="24">
-            <AFormItem label="角色" name="roleIds">
-              <ASelect
-                v-model:value="formData.roleIds"
-                :options="roles"
-                :field-names="{ label: 'name', value: 'id' }"
-                :loading="rolePending"
-              />
-            </AFormItem>
-          </ACol>
-          <ACol :lg="12" :span="24">
             <AFormItem label="岗位" name="postIds">
               <ASelect v-model:value="formData.postIds" />
             </AFormItem>

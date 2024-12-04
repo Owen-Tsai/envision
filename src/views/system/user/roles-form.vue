@@ -49,7 +49,7 @@ const emit = defineEmits(['success', 'close'])
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)
-const open = ref(false)
+const open = ref(true)
 const formData = ref<{ roleIds: number[] }>({
   roleIds: []
 })
