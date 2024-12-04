@@ -30,7 +30,7 @@
             <a-select-option value="4">单位用户</a-select-option>
           </ASelect>
         </AFormItem>
-        <AFormItem label="单位开通权限并审核" name="comopen" v-if="formData.userType === '3'">
+        <AFormItem label="单位开通权限" name="comopen" v-if="formData.userType === '3'">
           <ASelect v-model:value="formData.comopen">
             <a-select-option value="0">否</a-select-option>
             <a-select-option value="1">是</a-select-option>
