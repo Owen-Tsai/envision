@@ -116,3 +116,27 @@ export const copyWidget = (widgetToCopy: Widget, siblings: Widget[]) => {
 
   siblings.push(newWidget)
 }
+
+/**
+ * 获取 widets 中所有字段的 `field.name`（即字段名称）
+ * @returns 返回一个字符串数组
+ */
+export const getWidgetFieldNames = (widgets: Widget[]): string[] => {
+  const ret: string[] = []
+
+  widgets.forEach((w) => {
+    if (w.class === 'form') {
+      ret.push(w.props.field.name || w.uid)
+    } else {
+      if (w.type === 'grid' || w.type === 'steps' || w.type === 'tabs') {
+        if (w.props.children) {
+          w.props.children.forEach((child) => {
+            ret.push(...getWidgetFieldNames(child.widgets))
+          })
+        }
+      }
+    }
+  })
+
+  return ret
+}

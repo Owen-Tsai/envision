@@ -15,7 +15,6 @@ export const useModel = (widget: Widget) => {
     get: () => {
       if (!formDataCtx) return undefined
       const { formData } = formDataCtx
-      console.log('called get', formData.value)
       if (requireTransform(widget)) {
         return toWidgetValue(
           get(formData.value, key),
