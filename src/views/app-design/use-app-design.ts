@@ -146,17 +146,28 @@ export const useAppDesigner = () => {
       id: schemaId.value
     })
 
-    Modal.confirm({
-      title: '是否保存当前应用？',
-      content: createVNode('div', { style: 'color:red;' }, '请确保当前应用已无审核中的申报！'),
-      onOk: async () => {
-        loading.value = true
-        await genFlowXML()
-        await genAuditMenu()
-        loading.value = false
-        message.success('保存成功')
+    //在这里检查一下流程中有没有未选择审核人的节点
+    let not_auditor_node = false
+    flattenDeep(appSchema.value?.flow.nodes).forEach((node) => {
+      if (!(node.type == 'start') && !node.props.actor?.value) {
+        not_auditor_node = true
       }
     })
+    if (!not_auditor_node) {
+      Modal.confirm({
+        title: '是否保存当前应用？',
+        content: createVNode('div', { style: 'color:red;' }, '请确保当前应用已无审核中的申报！'),
+        onOk: async () => {
+          loading.value = true
+          await genFlowXML()
+          await genAuditMenu()
+          loading.value = false
+          message.success('保存成功')
+        }
+      })
+    } else {
+      message.error('流程编排中包含未选择审核人的节点！')
+    }
   }
 
   // onCreated
