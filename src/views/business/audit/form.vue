@@ -89,6 +89,7 @@ import { message, Modal } from 'ant-design-vue'
 import { set } from 'lodash-es'
 import useTabsStore from '@/stores/tabs'
 import MultiButton from './multiButton.vue'
+import { provideLocal } from '@vueuse/core'
 
 const route = useRoute()
 const tabsView = useTabsStore()
@@ -106,6 +107,9 @@ const taskId = route.query.taskId as string
 const processInstanceId = route.query.processInstanceId as string
 const taskDefKey = route.query.taskDefKey as string
 const planId = ref<string>('')
+// 定义此申报中所有组件均可访问的参数
+const appParamsCtx = ref<Record<string, any>>({})
+appParamsCtx.value.applyId = applyId
 
 const multiMode = ref(false)
 const multiFormCurrentStep = computed(() => {
@@ -323,12 +327,15 @@ const getFields = () => {
     const tablesLength = appSchema.value.info.tables.length
     const formData = {}
     if (tablesLength > 1) {
+      const tabs = formRenderer.value.getStepWidget()
       for (let i = 0; i < tablesLength; i++) {
-        // console.log(originFormData[i])
-        const datakeys = Object.keys(originFormData[i])
-        datakeys.forEach((keyName) => {
-          set(formData, keyName, originFormData[i][keyName])
-        })
+        if (!tabs.props.children[i].widgets.some((e) => e.type == 'dataTable')) {
+          // console.log(originFormData[i])
+          const datakeys = Object.keys(originFormData[i])
+          datakeys.forEach((keyName) => {
+            set(formData, keyName, originFormData[i][keyName])
+          })
+        }
       }
     } else {
       const datakeys = Object.keys(originFormData)
@@ -350,6 +357,7 @@ const getFields = () => {
   }
   return fields
 }
+provideLocal('appParamsCtx', appParamsCtx)
 </script>
 <style>
 .aspinDiv {
