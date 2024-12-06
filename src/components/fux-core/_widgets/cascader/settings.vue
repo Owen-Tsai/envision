@@ -68,6 +68,14 @@
   <AFormItem label="选项懒加载" class="boolean-field">
     <ASwitch v-model:checked="model.lazyLoad" />
   </AFormItem>
+  <AFormItem
+    v-if="model.lazyLoad"
+    label="懒加载地址"
+    name="lazyLoadUrl"
+    extra="接口需接受value参数"
+  >
+    <AInput v-model:value="model.lazyLoadUrl" placeholder="/api/example/get" />
+  </AFormItem>
   <AFormItem label="允许选择父级" name="allowParentNode" class="boolean-field">
     <ASwitch v-model:checked="model.allowParentNode" />
   </AFormItem>
