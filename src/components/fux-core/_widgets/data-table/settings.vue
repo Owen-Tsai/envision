@@ -39,7 +39,7 @@
   <AModal
     v-model:open="columnConfigModal.visible"
     title="数据表列配置"
-    :width="840"
+    :width="1000"
     @ok="saveColumnsConfig"
   >
     <AForm :model="columnConfigModal" class="mt-4 dense-form">
@@ -59,6 +59,9 @@
         </AFormItem>
         <AFormItem label="对齐方式" :name="['columns', index, 'align']" class="flex-1">
           <ASelect v-model:value="item.align" :options="colAlignOpts" />
+        </AFormItem>
+        <AFormItem label="格式" :name="['columns', index, 'formatter']" class="flex-1">
+          <ASelect v-model:value="item.formatter" :options="colFormatterOpts" />
         </AFormItem>
         <AButton
           class="flex-shrink-0"
@@ -86,6 +89,11 @@ const colAlignOpts = [
   { label: '左对齐', value: 'left' },
   { label: '居中', value: 'center' },
   { label: '右对齐', value: 'right' }
+]
+
+const colFormatterOpts = [
+  { label: '时间', value: 'date' },
+  { label: '字典', value: 'dict' }
 ]
 
 const { attrs } = defineProps<{
