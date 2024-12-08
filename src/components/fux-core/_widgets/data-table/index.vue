@@ -7,11 +7,11 @@
       @change="onPageChange"
     >
       <template #bodyCell="scope: TableScope<any>">
-        <template v-if="scope?.column.formatter === 'date'">
-          {{ dayjs(scope?.record[scope?.column.key]).format('YYYY-MM-DD') }}
+        <template v-if="getFormatter(scope.index)?.type === 'dict'">
+          <EDictTag :dict-object="dicts[scope.index].value" :value="scope.text" />
         </template>
-        <template v-if="scope?.column.formatter === 'datetime'">
-          {{ dayjs(scope?.record[scope?.column.key]).format('YYYY-MM-DD HH:mm:ss') }}
+        <template v-if="getFormatter(scope.index)?.type === 'custom'">
+          {{ renderColumn(getFormatter(scope.index)!.value, scope.record) }}
         </template>
         <template v-if="scope?.column.key === 'actions'">
           <AFlex :gap="16">
@@ -50,11 +50,12 @@ import { injectLocal } from '@vueuse/core'
 import { EyeOutlined } from '@ant-design/icons-vue'
 import { requestLite } from '@/utils/request'
 import { useModelProvider, useRendererInjection } from '../../_hooks'
+import evalExpression from '../../_utils/expression'
+import useDict from '@/hooks/use-dict'
 import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
 import type { WidgetMap } from '@/types/fux-core/form'
-import dayjs from 'dayjs'
 
 const { config, fields } = defineProps<{
   config: WidgetMap['dataTable']
@@ -62,7 +63,7 @@ const { config, fields } = defineProps<{
 }>()
 
 const rendererCtx = useRendererInjection()
-const appParams = injectLocal('appParamsCtx')
+const appParams = injectLocal<Record<string, any>>('appParamsCtx')
 const disabledForm = ref(false)
 const loading = ref(false)
 
@@ -93,6 +94,21 @@ const pagination = computed<TableProps['pagination']>(() => {
   return undefined
 })
 
+const getFormatter = (index: number) => {
+  return config.props.columns?.[index]?.formatter
+}
+
+// dict
+const dictTypes = config.props.columns
+  ?.filter((item) => item.formatter?.type === 'dict')
+  .map((item) => item.formatter!.value)
+const dicts = useDict(...(dictTypes || []))
+
+// custom
+const renderColumn = (expression: string, record: any) => {
+  return evalExpression(expression, record)
+}
+
 const urlPrefix = config.props.url
 
 // modal form
@@ -105,13 +121,14 @@ const modalTitle = computed(() => {
 })
 
 const loadData = async () => {
+  if (!isProd.value) return
   loading.value = true
   console.log(urlPrefix)
   const api = `${urlPrefix}/page`
   const res = await requestLite.get({
     url: api,
     params: {
-      declareId: appParams.value.applyId ? appParams.value.applyId : '',
+      declareId: appParams?.value.applyId || '',
       current: tableData.current
     }
   })

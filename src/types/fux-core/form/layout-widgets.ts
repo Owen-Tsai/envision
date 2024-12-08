@@ -68,7 +68,10 @@ export type WPropsTableColumn = {
   title?: string
   width?: number
   key?: string
-  formatter?: string
+  formatter?: {
+    type: 'dict' | 'custom' | null
+    value: string
+  }
   dataIndex?: string
 }
 

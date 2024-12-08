@@ -19,7 +19,11 @@ const genDataTableSchema = (info: ConfigDetailVO, widgets: Widget[]): WidgetMap[
       columns: columns.map((column) => ({
         key: column.javaField,
         title: column.columnComment || column.columnName,
-        dataIndex: column.javaField
+        dataIndex: column.javaField,
+        formatter: {
+          type: column.dictTypeStr ? 'dict' : null,
+          value: column.dictTypeStr || ''
+        }
       })),
       url: '/applications/' + info.table.tableName
     }

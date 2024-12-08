@@ -60,9 +60,7 @@
         <AFormItem label="对齐方式" :name="['columns', index, 'align']" class="flex-1">
           <ASelect v-model:value="item.align" :options="colAlignOpts" />
         </AFormItem>
-        <AFormItem label="格式" :name="['columns', index, 'formatter']" class="flex-1">
-          <ASelect v-model:value="item.formatter" :options="colFormatterOpts" />
-        </AFormItem>
+        <AButton type="dashed" @click="configFormatter(index)">配置格式</AButton>
         <AButton
           class="flex-shrink-0"
           :icon="h(CloseOutlined)"
@@ -73,12 +71,52 @@
       <AButton type="dashed" block @click="addColumn">新增一列</AButton>
     </AForm>
   </AModal>
+
+  <AModal v-model:open="formatterConfig.visible" title="格式化配置" @ok="saveColumnsConfig">
+    <AForm :model="columnConfigModal">
+      <AFormItem label="格式化类型" :name="['formatter', 'type']">
+        <ARadioGroup
+          v-model:value="columnConfigModal.columns[formatterConfig.index]!.formatter!.type"
+          :options="colFormatterOpts"
+        />
+      </AFormItem>
+      <AFormItem
+        v-if="columnConfigModal.columns[formatterConfig.index]?.formatter?.type === 'dict'"
+        label="字典"
+        :name="['formatter', 'value']"
+      >
+        <ASelect
+          v-model:value="columnConfigModal.columns[formatterConfig.index]!.formatter!.value"
+          :options="data"
+          :loading="pending"
+          :field-names="{ label: 'name', value: 'id' }"
+        />
+      </AFormItem>
+      <AFormItem
+        v-else-if="columnConfigModal.columns[formatterConfig.index]?.formatter?.type === 'custom'"
+        label="格式化函数"
+        :name="['formatter', 'value']"
+      >
+        <Codemirror
+          v-model="columnConfigModal.columns[formatterConfig.index]!.formatter!.value"
+          :extensions="extensions"
+          style="height: 100px"
+        />
+      </AFormItem>
+    </AForm>
+  </AModal>
 </template>
 
 <script setup lang="ts">
-import { ref, h, reactive, computed } from 'vue'
+import { ref, h, reactive, computed, nextTick } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
+import useRequest from '@/hooks/use-request'
+import { getPlainDictTypeList } from '@/api/system/dict/type'
+import extensions from '@/utils/codemirror'
+import { Codemirror } from 'vue-codemirror'
 import type { WPropsDataTable, WPropsTableColumn } from '@/types/fux-core/form'
+
+const { data, pending } = useRequest(getPlainDictTypeList, { immediate: true })
 
 const modeOpts = [
   { label: '配置表格', value: 'table' },
@@ -92,8 +130,9 @@ const colAlignOpts = [
 ]
 
 const colFormatterOpts = [
-  { label: '时间', value: 'date' },
-  { label: '字典', value: 'dict' }
+  { label: '不设置', value: null },
+  { label: '字典', value: 'dict' },
+  { label: '自定义', value: 'custom' }
 ]
 
 const { attrs } = defineProps<{
@@ -118,12 +157,42 @@ const columnConfigModal = reactive<{
   visible: false
 })
 
+const formatterConfig = reactive<{
+  index: number
+  visible: boolean
+}>({
+  index: 0,
+  visible: false
+})
+
 const saveColumnsConfig = () => {
   model.value.columns = columnConfigModal.columns
   columnConfigModal.visible = false
 }
 
 const addColumn = () => {
-  columnConfigModal.columns.push({})
+  columnConfigModal.columns.push({
+    formatter: {
+      type: null,
+      value: ''
+    }
+  })
+}
+
+const configFormatter = (index: number) => {
+  formatterConfig.index = index
+
+  console.log(columnConfigModal.columns[formatterConfig.index])
+
+  if (!columnConfigModal.columns[index].formatter) {
+    columnConfigModal.columns[index].formatter = {
+      type: null,
+      value: ''
+    }
+  }
+
+  nextTick(() => {
+    formatterConfig.visible = true
+  })
 }
 </script>
