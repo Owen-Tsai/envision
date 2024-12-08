@@ -40,33 +40,37 @@
     v-model:open="columnConfigModal.visible"
     title="数据表列配置"
     :width="1000"
+    force-render
     @ok="saveColumnsConfig"
   >
     <AForm :model="columnConfigModal" class="mt-4 dense-form">
-      <div
-        v-for="(item, index) in columnConfigModal.columns"
-        :key="index"
-        class="flex items-center gap-4 mb-4"
-      >
-        <AFormItem label="列名称" :name="['columns', index, 'title']" class="flex-1">
-          <AInput v-model:value="item.title" />
-        </AFormItem>
-        <AFormItem label="键名" :name="['columns', index, 'key']" class="flex-1">
-          <AInput v-model:value="item.key" />
-        </AFormItem>
-        <AFormItem label="宽度" :name="['columns', index, 'width']" class="flex-1">
-          <AInput v-model:value="item.width" placeholder="请输入含单位的值" />
-        </AFormItem>
-        <AFormItem label="对齐方式" :name="['columns', index, 'align']" class="flex-1">
-          <ASelect v-model:value="item.align" :options="colAlignOpts" />
-        </AFormItem>
-        <AButton type="dashed" @click="configFormatter(index)">配置格式</AButton>
-        <AButton
-          class="flex-shrink-0"
-          :icon="h(CloseOutlined)"
-          type="dashed"
-          @click="columnConfigModal.columns.splice(index, 1)"
-        />
+      <div ref="dragWrapperEl">
+        <div
+          v-for="(item, index) in columnConfigModal.columns"
+          :key="item.idx"
+          class="flex items-center gap-4 mb-4"
+        >
+          <div class="handle">111</div>
+          <AFormItem label="列名称" :name="['columns', index, 'title']" class="flex-1">
+            <AInput v-model:value="item.title" />
+          </AFormItem>
+          <AFormItem label="键名" :name="['columns', index, 'key']" class="flex-1">
+            <AInput v-model:value="item.key" />
+          </AFormItem>
+          <AFormItem label="宽度" :name="['columns', index, 'width']" class="flex-1">
+            <AInput v-model:value="item.width" placeholder="请输入含单位的值" />
+          </AFormItem>
+          <AFormItem label="对齐方式" :name="['columns', index, 'align']" class="flex-1">
+            <ASelect v-model:value="item.align" :options="colAlignOpts" />
+          </AFormItem>
+          <AButton type="dashed" @click="configFormatter(index)">配置格式</AButton>
+          <AButton
+            class="flex-shrink-0"
+            :icon="h(CloseOutlined)"
+            type="dashed"
+            @click="columnConfigModal.columns.splice(index, 1)"
+          />
+        </div>
       </div>
       <AButton type="dashed" block @click="addColumn">新增一列</AButton>
     </AForm>
@@ -108,12 +112,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, h, reactive, computed, nextTick } from 'vue'
+import { ref, toRef, h, reactive, computed, nextTick, useTemplateRef } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import useRequest from '@/hooks/use-request'
 import { getPlainDictTypeList } from '@/api/system/dict/type'
 import extensions from '@/utils/codemirror'
 import { Codemirror } from 'vue-codemirror'
+import { useSortable } from '@vueuse/integrations/useSortable'
 import type { WPropsDataTable, WPropsTableColumn } from '@/types/fux-core/form'
 
 const { data, pending } = useRequest(getPlainDictTypeList, { immediate: true })
@@ -150,11 +155,23 @@ const model = computed({
 
 const usePagination = ref(false)
 const columnConfigModal = reactive<{
-  columns: WPropsTableColumn[]
+  columns: Array<WPropsTableColumn & { idx?: number }>
   visible: boolean
 }>({
   columns: attrs.columns || [],
   visible: false
+})
+
+columnConfigModal.columns = columnConfigModal.columns.map((e, i) => ({
+  ...e,
+  idx: i
+}))
+
+const dragWrapperEl = useTemplateRef('dragWrapperEl')
+
+useSortable(dragWrapperEl, columnConfigModal.columns, {
+  animation: 200,
+  handle: '.handle'
 })
 
 const formatterConfig = reactive<{
