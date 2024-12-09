@@ -1,11 +1,7 @@
-import { type Ref } from 'vue'
 import { useFormDataInjection, useRendererInjection } from '../_hooks'
 import { kebabCase, merge, set } from 'lodash-es'
 import request from '@/utils/request'
 import emitter from '@/utils/emitter'
-import type { AppSchema } from '@/types/fux-core'
-
-const test = 'has'
 
 const useInstanceMethods = () => {
   const { formData } = useFormDataInjection()

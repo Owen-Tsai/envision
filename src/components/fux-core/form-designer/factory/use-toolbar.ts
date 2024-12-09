@@ -1,4 +1,5 @@
-import { ref, reactive } from 'vue'
+import { reactive } from 'vue'
+import { emitter } from '@fusionx/utils'
 import { BuildOutlined, FileTextOutlined, PartitionOutlined } from '@ant-design/icons-vue'
 
 export const toolbarItems = [
@@ -14,6 +15,8 @@ export const useToolbar = () => {
     api: false,
     schemaView: false
   })
+
+  emitter.on('show:func-modal', () => (visible.func = true))
 
   return {
     visible
