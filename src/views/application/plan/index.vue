@@ -51,7 +51,7 @@
       </AForm>
     </ACard>
 
-    <ACard title="应用管理">
+    <ACard title="申报计划">
       <template #extra>
         <AFlex :gap="8">
           <AButton
