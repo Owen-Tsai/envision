@@ -123,6 +123,7 @@ watch(
       setPropWhenApplicable('readonly', false)
       setPropWhenApplicable('disabled', false)
     }
-  }
+  },
+  { immediate: true }
 )
 </script>
