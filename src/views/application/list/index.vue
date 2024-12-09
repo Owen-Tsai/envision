@@ -11,22 +11,16 @@
         <ARow :gutter="[0, 16]">
           <ACol :lg="8" :span="24">
             <AFormItem label="应用名称" name="name">
-              <AInput
-                v-model:value="queryParams.name"
-                placeholder="请输入字典名称"
-                allow-clear
-                @clear="onFilterResetFields('name')"
-              />
+              <AInput v-model:value="queryParams.name" placeholder="请输入应用名称" allow-clear />
             </AFormItem>
           </ACol>
           <ACol :lg="8" :span="24">
-            <AFormItem label="应用类型" name="type">
+            <AFormItem label="应用类别" name="type">
               <ASelect
                 v-model:value="queryParams.type"
                 :options="typeOpts"
-                placeholder="请选择应用类型"
+                placeholder="请选择应用类别"
                 allow-clear
-                @clear="onFilterResetFields('type')"
               ></ASelect>
             </AFormItem>
           </ACol>
@@ -37,7 +31,6 @@
                 :options="statusOpts"
                 placeholder="请选择应用上架状态"
                 allow-clear
-                @clear="onFilterResetFields('published')"
               />
             </AFormItem>
           </ACol>
@@ -169,17 +162,8 @@ const [statusOpts, typeOpts] = useDict('system_application_status', 'system_appl
 
 console.log(typeOpts, statusOpts)
 
-const {
-  data,
-  pending,
-  execute,
-  queryParams,
-  onFilter,
-  onChange,
-  onFilterReset,
-  onFilterResetFields,
-  pagination
-} = useTable(filterForm)
+const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
+  useTable(filterForm)
 
 const { entry, visible, onDelete, onEdit, onSetPublished, toDesignPage } = useActions(execute)
 
