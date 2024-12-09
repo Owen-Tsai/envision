@@ -14,6 +14,7 @@
 
         <div class="btns flex flex-col gap-2 items-center">
           <ToolbatBtn title="API 数据源" :icon="ApiOutlined" @click="visible.api = true" />
+          <ToolbatBtn title="函数" :icon="FunctionOutlined" @click="visible.func = true" />
           <ToolbatBtn
             title="预览表单"
             is-primary
@@ -48,13 +49,13 @@
 
   <PreviewModal v-model:open="visible.preview" />
   <ApiModal v-model:open="visible.api" />
+  <FuncModal v-model:open="visible.func" />
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { useToggle } from '@vueuse/core'
+import { ref } from 'vue'
 import { toolbarItems, useToolbar } from './use-toolbar'
-import { ApiOutlined, CaretRightFilled } from '@ant-design/icons-vue'
+import { ApiOutlined, CaretRightFilled, FunctionOutlined } from '@ant-design/icons-vue'
 import { useCollapse } from '../../_hooks'
 import ToolbarItem from './toolbar-item.vue'
 import ToolbatBtn from './toolbar-btn.vue'
@@ -63,6 +64,7 @@ import TreeViewer from './tree-viewer/index.vue'
 import SchemaViewer from './schema-viewer/index.vue'
 import PreviewModal from '../previewer/index.vue'
 import ApiModal from '../api-modal/index.vue'
+import FuncModal from '../func-modal/index.vue'
 import { HEADER_HEIGHT } from '@/utils/constants'
 import type { PanelProps } from '../interface'
 

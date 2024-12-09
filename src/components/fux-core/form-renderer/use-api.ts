@@ -3,7 +3,6 @@ import type { Ref } from 'vue'
 import type { AppSchema } from '@/types/fux-core'
 
 const useApi = (schema: Ref<AppSchema>, state: Ref<Record<string, any>>) => {
-  console.log(schema.value)
   const api = schema.value.form?.api
 
   if (api) {
