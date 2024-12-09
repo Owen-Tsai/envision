@@ -196,7 +196,8 @@ const auditProcessDetailsList = ref<AuditProcessDetailsListType>([])
 const backStartUser = async () => {
   const backVo = {
     id: applyId,
-    reason: idea.value
+    reason: idea.value,
+    fields: getFields()
   }
   const modal = Modal.confirm({
     title: '确定退回到发起人吗?',
@@ -222,7 +223,7 @@ const backStartUser = async () => {
 }
 
 const operation = async (flag: number) => {
-  let data = {
+  const data = {
     id: taskId,
     reason: idea.value,
     fields: getFields()
@@ -282,10 +283,11 @@ const operation = async (flag: number) => {
       class: 'test'
     })
   } else if (flag == 3) {
-    data = {
+    const backTaskData = {
       id: taskId,
       targetTaskDefinitionKey: backValue.value,
-      reason: idea.value
+      reason: idea.value,
+      fields: getFields()
     }
     const modal = Modal.confirm({
       title: '确定退回吗?',
@@ -294,7 +296,7 @@ const operation = async (flag: number) => {
       async onOk() {
         try {
           return await new Promise((resolve, reject) => {
-            backTask(data)
+            backTask(backTaskData)
               .then(() => {
                 message.success('审核成功！')
                 modal.destroy()
