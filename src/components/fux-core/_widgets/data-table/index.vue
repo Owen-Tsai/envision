@@ -91,7 +91,7 @@ const pagination = computed<TableProps['pagination']>(() => {
     }
   }
 
-  return undefined
+  return false
 })
 
 const getFormatter = (index: number) => {
