@@ -48,11 +48,16 @@ export const useDesignerInjection = () => {
   return inject<FormDesignerCtx>(DESIGNER_KEY)!
 }
 
-export const useRendererProvider = (appSchema: Ref<AppSchema>, state: Ref<Record<string, any>>) => {
+export const useRendererProvider = (
+  appSchema: Ref<AppSchema>,
+  state: Ref<Record<string, any>>,
+  auditMode: Ref<boolean>
+) => {
   provideLocal<FormRendererCtx>(RENDERER_KEY, {
     prod: true,
     $state: state,
-    appSchema
+    appSchema,
+    auditMode
   })
 }
 

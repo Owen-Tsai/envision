@@ -12,6 +12,7 @@
           disabled
           :schema="appSchema"
           :taskDefKey="taskDefKey"
+          audit-mode
         />
         <div>
           <MultiButton

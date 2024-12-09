@@ -58,7 +58,7 @@ export const useDefaultValue = (config: FormWidget) => {
   const formCtx = useFormDataInjection()
   const rendererCtx = useRendererInjection()
 
-  if (rendererCtx?.prod && formCtx) {
+  if (rendererCtx?.auditMode.value == false && rendererCtx?.prod && formCtx) {
     const { $state } = rendererCtx
     if ((config.props as any).defaultValue) {
       const value = evalExpression((config.props as any).defaultValue, $state)

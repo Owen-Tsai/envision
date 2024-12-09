@@ -35,12 +35,13 @@ import useHighlighter from '@/hooks/use-highlighter'
 import type { AppSchema } from '@/types/fux-core'
 import type { FormInstance } from 'ant-design-vue'
 
-const { schema, showData, state, taskDefKey } = defineProps<{
+const { schema, showData, state, taskDefKey, auditMode } = defineProps<{
   schema: AppSchema
   showData?: boolean
   state?: Record<string, any>
   disabled?: boolean
   taskDefKey?: string
+  auditMode?: boolean
 }>()
 
 const form = ref<FormInstance>()
@@ -54,13 +55,16 @@ const computedState = computed({
   get: () => state || {},
   set: (val) => emit('update:state', val)
 })
+const computedAuditMode = computed(() => {
+  return auditMode
+})
 
 const formData = ref<Record<string, any>>({})
 useFormDataProvider(formData)
 
 useApi(computedSchema, computedState)
 
-useRendererProvider(computedSchema, computedState)
+useRendererProvider(computedSchema, computedState, computedAuditMode)
 
 const methods = useInstanceMethods()
 

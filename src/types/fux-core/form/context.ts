@@ -17,4 +17,5 @@ export interface FormRendererCtx {
   prod?: boolean
   $state: Ref<Record<string, any>>
   appSchema: Ref<AppSchema>
+  auditMode: Ref<boolean>
 }
