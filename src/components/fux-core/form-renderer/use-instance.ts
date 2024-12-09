@@ -151,6 +151,7 @@ const useInstanceMethods = () => {
     show,
     setWidgetAttrs,
     getCurrentStep,
+    getStepWidget,
     saveStep,
     toPrevStep,
     toNextStep,
