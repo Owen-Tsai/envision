@@ -182,14 +182,6 @@ const getEchoDataMethod = async (appId: string, applyId: string) => {
 }
 const getBackOptionsMethod = async (parentProcessInstanceId: string) => {
   const data = await getBackOptions(parentProcessInstanceId)
-  // let options: any = []
-  // data.forEach((item) => {
-  //   let option = {
-  //     label: item.name,
-  //     value: item.taskDefinitionKey
-  //   }
-  //   options.pop(option)
-  // })
   backModal.value = data
   console.log(backModal.value)
 }
@@ -242,11 +234,15 @@ const operation = async (flag: number) => {
       async onOk() {
         try {
           return await new Promise((resolve, reject) => {
-            approveTask(data).then(() => {
-              message.success('审核成功！')
-              modal.destroy()
-              tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
-            })
+            approveTask(data)
+              .then(() => {
+                message.success('审核成功！')
+                modal.destroy()
+                tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
+              })
+              .catch(() => {
+                modal.destroy()
+              })
           })
         } catch {
           return console.log('审批失败!')
@@ -265,11 +261,15 @@ const operation = async (flag: number) => {
       async onOk() {
         try {
           return await new Promise((resolve, reject) => {
-            rejectTask(data).then(() => {
-              message.success('审核成功！')
-              modal.destroy()
-              tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
-            })
+            rejectTask(data)
+              .then(() => {
+                message.success('审核成功！')
+                modal.destroy()
+                tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
+              })
+              .catch(() => {
+                modal.destroy()
+              })
           })
         } catch {
           return console.log('审批失败!')
@@ -293,11 +293,15 @@ const operation = async (flag: number) => {
       async onOk() {
         try {
           return await new Promise((resolve, reject) => {
-            backTask(data).then(() => {
-              message.success('审核成功！')
-              modal.destroy()
-              tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
-            })
+            backTask(data)
+              .then(() => {
+                message.success('审核成功！')
+                modal.destroy()
+                tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
+              })
+              .catch(() => {
+                modal.destroy()
+              })
           })
         } catch {
           return console.log('审批失败!')
