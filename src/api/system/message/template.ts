@@ -20,7 +20,7 @@ export type ListQueryParams = CommonQueryParams & {
   type?: number
 }
 
-const prefix = '/system/notify-template'
+const prefix = '/admin-api/system/notify-template'
 
 export const getTemplateList = (params: ListQueryParams) => {
   return request.get<PaginatedList<TemplateVO>>({

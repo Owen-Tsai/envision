@@ -26,7 +26,7 @@ export type TreeQueryParams = {
   leaderUserId?: number
 }
 
-const prefix = '/system/dept'
+const prefix = '/admin-api/system/dept'
 
 export const getDeptTree = (params?: TreeQueryParams) => {
   return request.get<DeptTreeVO>({

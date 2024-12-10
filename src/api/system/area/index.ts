@@ -18,7 +18,7 @@ export type AddAreaVO = {
   pid: string
 }
 
-const prefix = '/system/area/'
+const prefix = '/admin-api/system/area'
 
 export const getAreaTree = () => {
   return request.get<AreaTreeVO>({

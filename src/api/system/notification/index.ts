@@ -15,7 +15,7 @@ export type ListQueryParams = CommonQueryParams & {
   type?: number
 }
 
-const prefix = '/system/notice'
+const prefix = '/admin-api/system/notice'
 
 export const getNotificationList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<NotificationVO>>({

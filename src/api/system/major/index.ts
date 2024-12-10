@@ -18,7 +18,7 @@ export type AddMajorVO = {
   pid: string
 }
 
-const prefix = '/system/major'
+const prefix = '/admin-api/system/major'
 
 export const getMajorTree = () => {
   return request.get<MajorTreeVO>({

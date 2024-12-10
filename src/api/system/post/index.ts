@@ -15,7 +15,7 @@ export type ListQueryParams = CommonQueryParams & {
   code?: string
 }
 
-const prefix = '/system/post'
+const prefix = '/admin-api/system/post'
 
 export function getPostPage(params?: ListQueryParams) {
   return request.get<PaginatedList<PostVO>>({

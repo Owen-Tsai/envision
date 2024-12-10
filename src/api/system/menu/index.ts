@@ -34,7 +34,7 @@ export type MenuVO = {
   skipProcess?: boolean
 }
 
-const prefix = '/system/menu'
+const prefix = '/admin-api/system/menu'
 
 export const getMenuTree = (params?: TreeQueryParams) => {
   return request.get<MenuVO[]>({
