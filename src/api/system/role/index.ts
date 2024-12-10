@@ -21,7 +21,7 @@ export type ListQueryParams = CommonQueryParams & {
 
 export const getSimpleList = () => {
   return request.get<RoleVO[]>({
-    url: 'system/role/simple-list'
+    url: '/system/role/simple-list'
   })
 }
 

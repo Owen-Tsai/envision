@@ -30,6 +30,7 @@
             tree-checkable
             tree-default-expand-all
             tree-check-strictly
+            @change="onMenuSelected"
           />
         </AFormItem>
         <AFormItem v-if="mode === 'data'" label="数据权限范围" name="dataScope">
@@ -97,7 +98,7 @@ const formData = ref<RolePermissionVO>({
 const menuTree = ref<MenuVO[]>([])
 const deptTree = ref<DeptTreeVO>([])
 
-const tempMenuIds = ref<number[]>([])
+const tempMenuIds = ref<{ label: string; value: number }[]>([])
 
 const submit = async () => {
   try {
@@ -111,9 +112,14 @@ const submit = async () => {
 
     message.success('保存成功')
     emit('success')
+    open.value = false
   } finally {
     loading.value = false
   }
+}
+
+const onMenuSelected = () => {
+  formData.value.menuIds = tempMenuIds.value.map((e) => e.value)
 }
 
 const resetFields = () => {
