@@ -1,6 +1,13 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.ts", "src/**/*.d.ts"],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "auto-imports.d.ts"
+  ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "lib": ["DOM", "ESNext"],
@@ -9,7 +16,9 @@
     "noImplicitAny": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "~img/*": ["./src/assets/img"],
+      "~vis/*": ["./src/assets/vis"]
     }
   }
 }
