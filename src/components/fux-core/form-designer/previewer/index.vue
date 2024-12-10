@@ -6,7 +6,7 @@
     width="100%"
     destroy-on-close
   >
-    <FormRdenderer :schema="schema" show-data />
+    <FormRdenderer :schema="schema" show-data v-model:state="state" />
     <template #footer>
       <AButton type="primary" @click="isOpen = false">关闭</AButton>
     </template>
@@ -14,7 +14,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useDesignerInjection } from '@/components/fux-core/_hooks'
 import FormRdenderer from '../../form-renderer/index.vue'
 
@@ -27,6 +26,7 @@ const emit = defineEmits<{
 }>()
 
 const { schema } = useDesignerInjection()
+const state = ref<Record<string, any>>({})
 
 const isOpen = computed({
   get() {

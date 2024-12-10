@@ -16,8 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { useModel } from '../../_hooks'
+import { useModel, useOptions } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
 import request from '@/utils/request'
 import type { CascaderProps } from 'ant-design-vue'
@@ -30,15 +29,7 @@ const { config } = defineProps<{
 const { model } = useModel(config)
 const fieldNames = computed(() => tryParse(config.props.fieldNames))
 const defaultValue = computed(() => tryParse(config.props.defaultValue))
-const options = ref<CascaderProps['options']>([])
-
-const settings = config.props.options
-if (settings?.type === 'static') {
-  options.value =
-    (typeof settings.value === 'string' ? tryParse(settings.value) : settings.value) || []
-} else {
-  // todo: fill data from $state[settings.value]
-}
+const { options } = useOptions(config)
 
 const loadData: CascaderProps['loadData'] = (selectedOpts) => {
   const url = config.props.lazyLoadUrl

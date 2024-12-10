@@ -1,6 +1,6 @@
 import { ref, watch, computed, type Ref, type WritableComputedRef } from 'vue'
 import { useRendererInjection } from './use-context'
-import evalExpression from '../_utils/expression'
+import { emitter } from '@fusionx/utils'
 import useDict from '@/hooks/use-dict'
 import type { SelectProps, CheckboxGroupProps, RadioGroupProps } from 'ant-design-vue'
 import type { WidgetMap, WidgetPropsMap } from '@/types/fux-core/form'
@@ -23,7 +23,7 @@ export const useOptions = <
   T extends WidgetMap['select'] | WidgetMap['checkbox'] | WidgetMap['radio']
 >(
   config: T
-): { options: Ref<OptionType<T> | []> } => {
+): { options: Ref<any> } => {
   const optionAttr = config.props.options
   const options = ref<OptionType<T> | []>([])
   const dictData = ref<Ref<DictDataEntry[]>[]>()
@@ -36,7 +36,9 @@ export const useOptions = <
       dictData.value = useDict(optionAttr.value)
     }
   } else if (optionAttr?.type === 'expression') {
-    // todo: fill with data from instance.$states.[apiName]
+    if (optionAttr.value && rendererCtx && rendererCtx.prod) {
+      options.value = rendererCtx.$state.value[optionAttr.value]
+    }
   }
 
   watch(
@@ -49,22 +51,16 @@ export const useOptions = <
     { immediate: true }
   )
 
-  watch(
-    () => rendererCtx?.$state.value,
-    (val) => {
-      if (rendererCtx && val) {
-        if (optionAttr.value && optionAttr.type === 'expression') {
-          options.value = evalExpression(`{{${optionAttr.value}}}` as string, val)
-        }
+  emitter.on('update:state', () => {
+    nextTick(() => {
+      if (optionAttr.type === 'expression' && optionAttr.value && rendererCtx) {
+        options.value = rendererCtx.$state.value[optionAttr.value]
       }
-    },
-    {
-      deep: true
-    }
-  )
+    })
+  })
 
   return {
-    options: options.value || []
+    options
   }
 }
 

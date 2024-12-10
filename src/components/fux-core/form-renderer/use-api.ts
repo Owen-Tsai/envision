@@ -1,4 +1,6 @@
 import request from '@/utils/request'
+import { set } from 'lodash-es'
+import { emitter } from '@fusionx/utils'
 import type { Ref } from 'vue'
 import type { AppSchema } from '@/types/fux-core'
 
@@ -15,7 +17,8 @@ const useApi = (schema: Ref<AppSchema>, state: Ref<Record<string, any>>) => {
           params
         })
         .then((res) => {
-          state.value[dataIndex] = res.data
+          set(state.value, dataIndex, res)
+          emitter.emit('update:state')
         })
     }
   }

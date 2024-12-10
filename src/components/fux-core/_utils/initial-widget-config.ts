@@ -104,7 +104,9 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '单选框',
     uid: '',
     props: {
-      field: {},
+      field: {
+        label: '单选框'
+      },
       options: {
         type: 'static',
         value: [

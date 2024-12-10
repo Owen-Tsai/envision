@@ -25,6 +25,15 @@
         </div>
       </AFormItemRest>
     </template>
+    <template v-if="model.options.type === 'expression'">
+      <AInput
+        v-model:value="model.options.value"
+        prefix="{{ $state."
+        suffix="}}"
+        placeholder="请输入表达式"
+        class="mt-4"
+      />
+    </template>
   </AFormItem>
   <AFormItem label="允许多选" class="boolean-field">
     <ASwitch v-model:checked="model.multiple" />
