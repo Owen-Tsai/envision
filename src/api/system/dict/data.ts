@@ -27,6 +27,8 @@ export type ListQueryParams = CommonQueryParams & {
   status?: number
 }
 
+const prefix = '/system/dict-data'
+
 /**
  * This method is used for `useDict` hooks and related components/utilities,
  * thus does not accept arguments.
@@ -35,39 +37,39 @@ export type ListQueryParams = CommonQueryParams & {
  */
 export const getDictData = (dictType: string) => {
   return request.get<DictDataVO>({
-    url: `/system/dict-data/dict-list?type=${dictType}`
+    url: `${prefix}/dict-list?type=${dictType}`
   })
 }
 
 export const getDictDataList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<DictDataItemVO>>({
-    url: '/system/dict-data/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export const getDictDataDetail = (id: number) => {
   return request.get<DictDataItemVO>({
-    url: `/system/dict-data/get?id=${id}`
+    url: `${prefix}/get?id=${id}`
   })
 }
 
 export const addDictData = (data: Partial<DictDataItemVO>) => {
   return request.post({
-    url: '/system/dict-data/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateDictData = (data: Partial<DictDataItemVO>) => {
   return request.put({
-    url: '/system/dict-data/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deleteDictData = (id: number) => {
   return request.delete({
-    url: `/system/dict-data/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`
   })
 }

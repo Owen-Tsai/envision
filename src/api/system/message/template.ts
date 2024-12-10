@@ -20,35 +20,37 @@ export type ListQueryParams = CommonQueryParams & {
   type?: number
 }
 
+const prefix = '/system/notify-template'
+
 export const getTemplateList = (params: ListQueryParams) => {
   return request.get<PaginatedList<TemplateVO>>({
-    url: '/system/notify-template/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export const getTemplateDetail = (id: number) => {
   return request.get<TemplateVO>({
-    url: `/system/notify-template/get?id=${id}`
+    url: `${prefix}/get?id=${id}`
   })
 }
 
 export const addTemplate = (data: TemplateVO) => {
   return request.post({
-    url: '/system/notify-template/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateTemplate = (data: TemplateVO) => {
   return request.put({
-    url: '/system/notify-template/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deleteTemplate = (id: number) => {
   return request.delete<TemplateVO>({
-    url: `/system/notify-template/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`
   })
 }

@@ -16,41 +16,43 @@ export type DictTypeVO = {
   useString?: boolean
 }
 
+const prefix = '/system/dict-type'
+
 export const getDictTypeList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<DictTypeVO>>({
-    url: '/system/dict-type/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export const getPlainDictTypeList = () => {
   return request.get<DictTypeVO[]>({
-    url: '/system/dict-type/list-all-simple'
+    url: `${prefix}/list-all-simple`
   })
 }
 
 export const getDictTypeDetail = (id: number) => {
   return request.get<DictTypeVO>({
-    url: `/system/dict-type/get?id=${id}`
+    url: `${prefix}/get?id=${id}`
   })
 }
 
 export const addDictType = (data: DictTypeVO) => {
   return request.post({
-    url: '/system/dict-type/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateDictType = (data: DictTypeVO) => {
   return request.put({
-    url: '/system/dict-type/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const deleteDictType = (id: number) => {
   return request.delete({
-    url: `/system/dict-type/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`
   })
 }

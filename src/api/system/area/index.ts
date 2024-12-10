@@ -18,16 +18,18 @@ export type AddAreaVO = {
   pid: string
 }
 
+const prefix = '/system/area/'
+
 export const getAreaTree = () => {
   return request.get<AreaTreeVO>({
-    url: '/system/area/area-list_all_by_pid',
+    url: `${prefix}/area-list_all_by_pid`,
     params: {}
   })
 }
 
 export const getAreaInfo = (id: string) => {
   return request.get({
-    url: '/system/area/get',
+    url: `${prefix}/get`,
     params: {
       id: id
     }
@@ -36,14 +38,14 @@ export const getAreaInfo = (id: string) => {
 
 export const addAreaInfo = (data: AddAreaVO) => {
   return request.post({
-    url: '/system/area/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const deleteAreaInfo = (id: string) => {
   return request.delete({
-    url: '/system/area/delete',
+    url: `${prefix}/delete`,
     params: {
       id
     }
@@ -52,7 +54,7 @@ export const deleteAreaInfo = (id: string) => {
 
 export const modifyAreaInfo = (id: string, name: string) => {
   return request.put({
-    url: '/system/area/update',
+    url: `${prefix}/update`,
     data: {
       id,
       name

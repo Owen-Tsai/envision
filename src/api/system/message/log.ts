@@ -24,7 +24,7 @@ export type ListQueryParams = CommonQueryParams & {
 
 export const getList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<LogVO>>({
-    url: '/system/notify-template/page',
+    url: '/admin-api/system/notify-template/page',
     params
   })
 }

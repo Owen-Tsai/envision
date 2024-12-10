@@ -26,41 +26,43 @@ export type TreeQueryParams = {
   leaderUserId?: number
 }
 
+const prefix = '/system/dept'
+
 export const getDeptTree = (params?: TreeQueryParams) => {
   return request.get<DeptTreeVO>({
-    url: '/system/dept/tree-list',
+    url: `${prefix}/tree-list`,
     params
   })
 }
 
 export const getDeptDetail = (id: number) => {
   return request.get<DeptVO>({
-    url: `/system/dept/get?id=${id}`
+    url: `${prefix}/get?id=${id}`
   })
 }
 
 export const createDept = (data: DeptVO) => {
   return request.post({
-    url: '/system/dept/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateDept = (data: DeptVO) => {
   return request.put({
-    url: '/system/dept/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deleteDept = (id: number) => {
   return request.delete({
-    url: `/system/dept/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`
   })
 }
 
 export const getDeptSimpleList = () => {
   return request.get<Array<{ id: number; name: string }>>({
-    url: '/system/dept/simple-list'
+    url: `${prefix}/simple-list`
   })
 }

@@ -15,35 +15,37 @@ export type ListQueryParams = CommonQueryParams & {
   type?: number
 }
 
+const prefix = '/system/notice'
+
 export const getNotificationList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<NotificationVO>>({
-    url: '/system/notice/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export const getNotificationDetail = (id: number) => {
   return request.get<NotificationVO>({
-    url: `/system/notice/get?id=${id}`
+    url: `${prefix}/get?id=${id}`
   })
 }
 
 export const addNotification = (data: NotificationVO) => {
   return request.post({
-    url: '/system/notice/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateNotification = (data: NotificationVO) => {
   return request.put({
-    url: '/system/notice/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deleteNotification = (id: number) => {
   return request.delete({
-    url: `/system/notice/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`
   })
 }

@@ -9,7 +9,7 @@ export type OperateLogVO = {
   name?: string
   type?: number
   content?: string
-  exts?: Map<String, Object>
+  exts?: Map<string, object>
   requestMethod?: string
   requestUrl?: string
   userIp?: string
@@ -33,7 +33,7 @@ export type ListQueryParams = CommonQueryParams & {
 
 export function getOperateLogPage(params?: ListQueryParams) {
   return request.get<PaginatedList<OperateLogVO>>({
-    url: '/system/operate-log/page',
+    url: '/admin-api/system/operate-log/page',
     params
   })
 }

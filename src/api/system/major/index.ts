@@ -18,16 +18,18 @@ export type AddMajorVO = {
   pid: string
 }
 
+const prefix = '/system/major'
+
 export const getMajorTree = () => {
   return request.get<MajorTreeVO>({
-    url: '/system/major/major-list_all',
+    url: `${prefix}/major-list_all`,
     params: {}
   })
 }
 
 export const getMajorInfo = (id: string) => {
   return request.get({
-    url: '/system/major/get',
+    url: `${prefix}/get`,
     params: {
       id: id
     }
@@ -36,14 +38,14 @@ export const getMajorInfo = (id: string) => {
 
 export const addMajorInfo = (data: AddMajorVO) => {
   return request.post({
-    url: '/system/major/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const deleteMajorInfo = (id: string) => {
   return request.delete({
-    url: '/system/major/delete',
+    url: `${prefix}/delete`,
     params: {
       id
     }
@@ -52,7 +54,7 @@ export const deleteMajorInfo = (id: string) => {
 
 export const modifyMajorInfo = (id: string, name: string) => {
   return request.put({
-    url: '/system/major/update',
+    url: `${prefix}/update`,
     data: {
       id,
       name
