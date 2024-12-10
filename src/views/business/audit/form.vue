@@ -194,6 +194,10 @@ const auditProcessDetailsList = ref<AuditProcessDetailsListType>([])
 
 // 退回到发起人方法
 const backStartUser = async () => {
+  if (idea.value == '') {
+    message.warning('请填写审核意见！')
+    return
+  }
   const backVo = {
     id: applyId,
     reason: idea.value,
@@ -223,6 +227,10 @@ const backStartUser = async () => {
 }
 
 const operation = async (flag: number) => {
+  if (idea.value == '') {
+    message.warning('请填写审核意见！')
+    return
+  }
   const data = {
     id: taskId,
     reason: idea.value,
