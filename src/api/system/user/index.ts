@@ -31,53 +31,55 @@ export type SimpleUserVO = Array<{
   nickname: string
 }>
 
+const prefix = '/admin-api/system/user'
+
 export function getUsers(params?: ListQueryParams) {
   return request.get<PaginatedList<UserVO>>({
-    url: '/system/user/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export function getUserDetail(id: number) {
   return request.get<UserVO>({
-    url: `/system/user/get?id=${id}`
+    url: `${prefix}/get?id=${id}`
   })
 }
 
 export const createUser = (data: UserVO) => {
   return request.post({
-    url: '/system/user/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateUser = (data: UserVO) => {
   return request.put({
-    url: '/system/user/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deleteUser = (id: number) => {
   return request.delete({
-    url: `/system/user/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`
   })
 }
 
 // 导出用户
 // export const exportUser = (params) => {
-//   return request.download({ url: '/system/user/export', params })
+//   return request.download({ url: `${prefix}/export', params `)
 // }
 
 // 下载用户导入模板
 // export const importUserTemplate = () => {
-//   return request.download({ url: '/system/user/get-import-template' })
+//   return request.download({ url: `${prefix}/get-import-template' `)
 // }
 
 // 用户密码重置
 export const resetUserPwd = (id: number, password: string) => {
   return request.put({
-    url: '/system/user/update-password',
+    url: `${prefix}/update-password`,
     data: { id, password }
   })
 }
@@ -85,12 +87,12 @@ export const resetUserPwd = (id: number, password: string) => {
 // 用户状态修改
 export const updateUserStatus = (id: number, status: number) => {
   return request.put({
-    url: '/system/user/update-status',
+    url: `${prefix}/update-status`,
     data: { id, status }
   })
 }
 
 // 获取用户精简信息列表
 export const getSimpleUserList = () => {
-  return request.get<SimpleUserVO>({ url: '/system/user/simple-list' })
+  return request.get<SimpleUserVO>({ url: `${prefix}/simple-list` })
 }

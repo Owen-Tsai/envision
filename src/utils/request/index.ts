@@ -1,8 +1,5 @@
-import { message } from 'ant-design-vue'
-import qs from 'qs'
 import { saveAs } from 'file-saver'
 import buildService from './service'
-import errorCode from './error-code'
 import { createLoader, destroyLoader } from '@/components/loading'
 import { serializerGETReq } from './serializer'
 import type { AxiosInstance, AxiosRequestConfig } from 'axios'
@@ -16,11 +13,6 @@ const commonSerializer = {
 }
 
 const service = buildService({
-  ...commonSerializer,
-  baseURL: import.meta.env.VITE_API_URL + '/admin-api'
-})
-
-const serviceLite = buildService({
   ...commonSerializer,
   baseURL: import.meta.env.VITE_API_URL
 })
@@ -39,7 +31,6 @@ const buildHandler = <T>(options: AxiosRequestConfig, instance: AxiosInstance) =
 }
 
 const handler = <T>(options: AxiosRequestConfig) => buildHandler<T>(options, service)
-const liteHandler = <T>(options: AxiosRequestConfig) => buildHandler<T>(options, serviceLite)
 
 export default {
   get: async <T = any>(options: AxiosRequestConfig) => {
@@ -83,16 +74,5 @@ export default {
       ...options
     })
     return res as unknown as Promise<{ code: number; data: T; msg?: string }>
-  }
-}
-
-export const requestLite = {
-  get: async <T = any>(options: AxiosRequestConfig) => {
-    const res = await liteHandler({ method: 'get', ...options })
-    return res.data as T
-  },
-  getRaw: async <T = any>(options: AxiosRequestConfig) => {
-    const res = await liteHandler({ method: 'get', ...options })
-    return res as T
   }
 }

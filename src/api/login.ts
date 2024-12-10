@@ -57,9 +57,12 @@ export type PermissionInfoVO = {
   permissions: string[]
 }
 
+const prefixCaptcha = '/admin-api/system/captcha'
+const prefixAuth = '/admin-api/system/auth'
+
 export function getCaptcha() {
   return request.postRaw<CaptchaVO>({
-    url: '/system/captcha/get',
+    url: `${prefixCaptcha}/get`,
     data: {
       captchaType: 'blockPuzzle'
     },
@@ -71,7 +74,7 @@ export function getCaptcha() {
 
 export function checkCaptcha(params: CaptchaValidationDTO) {
   return request.postRaw<CaptchaValidationVO>({
-    url: '/system/captcha/check',
+    url: `${prefixCaptcha}/check`,
     data: {
       ...params,
       captchaType: 'blockPuzzle'
@@ -81,7 +84,7 @@ export function checkCaptcha(params: CaptchaValidationDTO) {
 
 export function login(data: LoginDTO) {
   return request.post<LoginVO>({
-    url: '/system/auth/login',
+    url: `${prefixAuth}/login`,
     headers: {
       requireToken: false
     },
@@ -91,12 +94,12 @@ export function login(data: LoginDTO) {
 
 export function logout() {
   return request.postRaw({
-    url: '/system/auth/logout'
+    url: `${prefixAuth}/logout`
   })
 }
 
 export function getPermissionInfo() {
   return request.get<PermissionInfoVO>({
-    url: '/system/auth/get-permission-info'
+    url: `${prefixAuth}/get-permission-info`
   })
 }

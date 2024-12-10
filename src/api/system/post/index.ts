@@ -15,35 +15,37 @@ export type ListQueryParams = CommonQueryParams & {
   code?: string
 }
 
+const prefix = '/system/post'
+
 export function getPostPage(params?: ListQueryParams) {
   return request.get<PaginatedList<PostVO>>({
-    url: '/system/post/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export const getPostDetail = (id: number) => {
   return request.get<PostVO>({
-    url: `/system/post/get?id=${id}`
+    url: `${prefix}/get?id=${id}`
   })
 }
 
 export const createPost = (data: PostVO) => {
   return request.post({
-    url: '/system/post/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updatePost = (data: PostVO) => {
   return request.put({
-    url: '/system/post/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deletePost = (id: number) => {
   return request.delete({
-    url: `/system/post/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`
   })
 }

@@ -20,29 +20,31 @@ export type ProfileVO = {
   username?: string
 }
 
+const prefix = '/admin-api/system/user/profile'
+
 export const getProfile = () => {
   return request.get<ProfileVO>({
-    url: '/system/user/profile/get'
+    url: `${prefix}/get`
   })
 }
 
 export const updateProfile = (data: ProfileVO) => {
   return request.put({
-    url: '/system/user/profile/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const updatePassword = (data: { oldPassword: string; newPassword: string }) => {
   return request.put({
-    url: '/system/user/profile/update-password',
+    url: `${prefix}/update-password`,
     data
   })
 }
 
 export const updateAvatar = (file: File) => {
   return request.upload({
-    url: '/system/user/profile/update-avatar',
+    url: `${prefix}/update-avatar`,
     data: {
       avatarFile: file
     }

@@ -17,37 +17,39 @@ export type ListQueryParams = CommonQueryParams & {
   signature?: string
 }
 
+const prefix = '/admin-api/system/sms-channel'
+
 export type ChannelListLiteVO = Array<Pick<ChannelVO, 'id' | 'code' | 'signature'>>
 
 export const getChannelList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<ChannelVO>>({
-    url: '/system/sms-channel/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export const getSimpleChannelList = () => {
-  return request.get<ChannelListLiteVO>({ url: '/system/sms-channel/list-all-simple' })
+  return request.get<ChannelListLiteVO>({ url: `${prefix}/list-all-simple` })
 }
 
 export const getChannelDetail = (id: number) => {
-  return request.get({ url: `/system/sms-channel/get?id=${id}` })
+  return request.get({ url: `${prefix}/get?id=${id}` })
 }
 
 export const addChannel = (data: ChannelVO) => {
   return request.post({
-    url: '/system/sms-channel/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateChannel = (data: ChannelVO) => {
   return request.put({
-    url: '/system/sms-channel/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deleteChannel = (id: number) => {
-  return request.delete({ url: `/system/sms-channel/get?id=${id}` })
+  return request.delete({ url: `${prefix}/get?id=${id}` })
 }

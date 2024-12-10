@@ -40,11 +40,11 @@ export type ListQueryParams = CommonQueryParams & {
 
 export const getList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<LogVO>>({
-    url: '/system/sms-log/page',
+    url: '/admin-api/system/sms-log/page',
     params
   })
 }
 
 export const getDetail = (id: number) => {
-  return request.get({ url: `/system/sms-log/get?id=${id}` })
+  return request.get({ url: `/admin-api/system/sms-log/get?id=${id}` })
 }

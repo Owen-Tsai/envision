@@ -19,53 +19,55 @@ export type ListQueryParams = CommonQueryParams & {
   status?: number
 }
 
+const prefix = '/admin-api/system/role'
+
 export const getSimpleList = () => {
   return request.get<RoleVO[]>({
-    url: '/system/role/simple-list'
+    url: `${prefix}/simple-list`
   })
 }
 
 export const getSimpleAuditList = () => {
   return request.get<RoleVO[]>({
-    url: '/system/role/list-all-simple-audit'
+    url: `${prefix}/list-all-simple-audit`
   })
 }
 
 export const getRolesList = (params?: CommonQueryParams) => {
   return request.get<PaginatedList<RoleVO>>({
-    url: '/system/role/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export const getRoleDetail = (id: number) => {
   return request.get<RoleVO>({
-    url: `/system/role/get?id=${id}`
+    url: `${prefix}/get?id=${id}`
   })
 }
 
 export const addRole = (data: RoleVO) => {
   return request.post({
-    url: '/system/role/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateRole = (data: RoleVO) => {
   return request.put({
-    url: '/system/role/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deleteRole = (id: number) => {
   return request.delete({
-    url: `/system/role/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`
   })
 }
 
 export const getRoleSimpleList = () => {
   return request.get<Pick<RoleVO, 'id' | 'name'>[]>({
-    url: '/system/role/simple-list'
+    url: `${prefix}/simple-list`
   })
 }

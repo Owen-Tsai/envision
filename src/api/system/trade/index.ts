@@ -18,16 +18,18 @@ export type AddTradeVO = {
   pid: string
 }
 
+const prefix = '/admin-api/system/trade'
+
 export const getTradeTree = () => {
   return request.get<TradeTreeVO>({
-    url: '/system/trade/trade-list_all',
+    url: `${prefix}/trade-list_all`,
     params: {}
   })
 }
 
 export const getTradeInfo = (id: string) => {
   return request.get({
-    url: '/system/trade/get',
+    url: `${prefix}/get`,
     params: {
       id: id
     }
@@ -36,14 +38,14 @@ export const getTradeInfo = (id: string) => {
 
 export const addTradeInfo = (data: AddTradeVO) => {
   return request.post({
-    url: '/system/trade/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const deleteTradeInfo = (id: string) => {
   return request.delete({
-    url: '/system/trade/delete',
+    url: `${prefix}/delete`,
     params: {
       id
     }
@@ -52,7 +54,7 @@ export const deleteTradeInfo = (id: string) => {
 
 export const modifyTradeInfo = (id: string, name: string) => {
   return request.put({
-    url: '/system/trade/update',
+    url: `${prefix}/update`,
     data: {
       id,
       name

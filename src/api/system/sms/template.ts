@@ -24,35 +24,37 @@ export type ListQueryParams = CommonQueryParams & {
   channelId?: number
 }
 
+const prefix = '/admin-api/system/sms-template'
+
 export const getTemplateList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<TemplateVO>>({
-    url: '/system/sms-template/page',
+    url: `${prefix}/page`,
     params
   })
 }
 
 export const getSimpleTemplateList = () => {
-  return request.get({ url: '/system/sms-template/simple-list' })
+  return request.get({ url: `${prefix}/simple-list` })
 }
 
 export const getTemplateDetail = (id: number) => {
-  return request.get({ url: `/system/sms-template/get?id=${id}` })
+  return request.get({ url: `${prefix}/get?id=${id}` })
 }
 
 export const addTemplate = (data: TemplateVO) => {
   return request.post({
-    url: '/system/sms-template/create',
+    url: `${prefix}/create`,
     data
   })
 }
 
 export const updateTemplate = (data: TemplateVO) => {
   return request.put({
-    url: '/system/sms-template/update',
+    url: `${prefix}/update`,
     data
   })
 }
 
 export const deleteTemplate = (id: number) => {
-  return request.delete({ url: `/system/sms-template/get?id=${id}` })
+  return request.delete({ url: `${prefix}/get?id=${id}` })
 }
