@@ -48,7 +48,7 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { injectLocal } from '@vueuse/core'
 import { EyeOutlined } from '@ant-design/icons-vue'
-import { requestLite } from '@/utils/request'
+import request from '@/utils/request'
 import { useModelProvider, useRendererInjection } from '../../_hooks'
 import evalExpression from '../../_utils/expression'
 import useDict from '@/hooks/use-dict'
@@ -125,7 +125,7 @@ const loadData = async () => {
   loading.value = true
   console.log(urlPrefix)
   const api = `${urlPrefix}/page`
-  const res = await requestLite.get({
+  const res = await request.get({
     url: api,
     params: {
       declareId: appParams?.value.applyId || '',
@@ -139,7 +139,7 @@ const loadData = async () => {
 
 const get = async (id: string) => {
   const api = `${urlPrefix}/get-table-name?id=${id}`
-  return await requestLite.get({ url: api })
+  return await request.get({ url: api })
 }
 
 onMounted(() => {
