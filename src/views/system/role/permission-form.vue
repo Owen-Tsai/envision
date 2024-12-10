@@ -16,15 +16,20 @@
         </template>
       </AAlert>
       <AForm ref="formRef" :label-col="{ span: 5 }" :model="formData" class="mt-4">
-        <AFormItem v-if="mode === 'menu'" label="菜单权限" name="menuIds">
+        <AFormItem
+          v-if="mode === 'menu'"
+          label="菜单权限"
+          extra="必须勾选所有可被访问的菜单，即便改菜单为父级"
+        >
           <ATreeSelect
-            v-model:value="formData.menuIds"
+            v-model:value="tempMenuIds"
             :key="`data-${loading}`"
             :tree-data="menuTree"
             :field-names="{ label: 'name', value: 'id' }"
             allow-clear
             tree-checkable
             tree-default-expand-all
+            tree-check-strictly
           />
         </AFormItem>
         <AFormItem v-if="mode === 'data'" label="数据权限范围" name="dataScope">
@@ -91,6 +96,8 @@ const formData = ref<RolePermissionVO>({
 
 const menuTree = ref<MenuVO[]>([])
 const deptTree = ref<DeptTreeVO>([])
+
+const tempMenuIds = ref<number[]>([])
 
 const submit = async () => {
   try {

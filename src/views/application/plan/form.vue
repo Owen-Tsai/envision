@@ -43,7 +43,7 @@
         <AFormItem label="常态化" name="daily">
           <ASwitch v-model:checked="formData.daily" @change="(v) => onDailyChange(v as boolean)" />
         </AFormItem>
-        <template v-if="!formData.daily">
+        <template>
           <AFormItem label="开始时间" name="startTime">
             <ADatePicker v-model:value="formData.startTime" value-format="x" />
           </AFormItem>
@@ -65,8 +65,7 @@ import useRequest from '@/hooks/use-request'
 import { getApplicationSimpleList } from '@/api/application'
 import { getAttachTypeSimpleList } from '@/api/application/plan'
 import { createPlan, updatePlan, getPlanDetail, type PlanVO } from '@/api/application/plan'
-import { message, type FormInstance, type FormProps } from 'ant-design-vue'
-import type { Dayjs } from 'dayjs'
+import { message, type FormInstance, type FormProps, type SelectProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
   item: [{ required: true, message: '请填写申报计划名称' }],
@@ -123,16 +122,17 @@ const resetFields = () => {
 }
 
 const onDailyChange = (checked: boolean) => {
-  if (checked) {
-    formData.value.startTime = undefined
-    formData.value.endTime = undefined
-  }
+  // we do nothing for now
+  // if (checked) {
+  //   formData.value.startTime = undefined
+  //   formData.value.endTime = undefined
+  // }
 }
 
 const setFlowId = () => {
   formData.value.flow = appOpts.value?.find((v) => v.id === formData.value.appId)?.processIds
 }
-const setFjflIds = (value: string[]) => {
+const setFjflIds: SelectProps['onChange'] = (value) => {
   console.log(`selected ${value}`)
 }
 

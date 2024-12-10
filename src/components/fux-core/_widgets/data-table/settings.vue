@@ -50,7 +50,9 @@
           :key="item.idx"
           class="flex items-center gap-4 mb-4"
         >
-          <div class="handle">111</div>
+          <div class="handle cursor-move">
+            <MenuOutlined />
+          </div>
           <AFormItem label="列名称" :name="['columns', index, 'title']" class="flex-1">
             <AInput v-model:value="item.title" />
           </AFormItem>
