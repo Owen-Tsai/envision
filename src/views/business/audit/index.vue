@@ -47,7 +47,7 @@
     </AForm>
     <!--    </ACard>-->
 
-    <ACard title="申报列表">
+    <ACard :title="taskDefKey == 'All' ? '信息库' : '申报列表'">
       <template #extra>
         <AFlex :gap="8">
           <!--          <ATooltip title="导出">-->

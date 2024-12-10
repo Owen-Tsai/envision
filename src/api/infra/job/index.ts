@@ -19,42 +19,44 @@ export type ListQueryParams = CommonQueryParams & {
   status?: number
 }
 
+const url = '/admin-api/infra/job'
+
 export const getJobList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<JobVO>>({
-    url: '/infra/job/page',
+    url: `${url}/page`,
     params
   })
 }
 
 export const getJobDetail = (id: number) => {
   return request.get<JobVO>({
-    url: `/infra/job/get?id=${id}`
+    url: `${url}/get?id=${id}`
   })
 }
 
 export const createJob = (data: JobVO) => {
   return request.post({
-    url: `/infra/job/create`,
+    url: `${url}/create`,
     data
   })
 }
 
 export const updateJob = (data: JobVO) => {
   return request.put({
-    url: `/infra/job/update`,
+    url: `${url}/update`,
     data
   })
 }
 
 export const deleteJob = (id: number) => {
   return request.delete({
-    url: `/infra/job/delete?id=${id}`
+    url: `${url}/delete?id=${id}`
   })
 }
 
 export const exportJobList = (params: ListQueryParams) => {
   return request.download({
-    url: '/infra/job/export-excel',
+    url: `${url}/export-excel`,
     params,
     filename: '定时任务.xlsx'
   })
@@ -62,7 +64,7 @@ export const exportJobList = (params: ListQueryParams) => {
 
 export const updateJobStatus = (id: number, status: number) => {
   return request.put({
-    url: '/infra/job/update-status',
+    url: `${url}/update-status`,
     params: {
       id,
       status
@@ -72,12 +74,12 @@ export const updateJobStatus = (id: number, status: number) => {
 
 export const runJob = (id: number) => {
   return request.put({
-    url: `/infra/job/trigger?id=${id}`
+    url: `${url}/trigger?id=${id}`
   })
 }
 
 export const getJobScheduledTimes = (id: number) => {
   return request.get<number[]>({
-    url: `/infra/job/get_next_times?id=${id}`
+    url: `${url}/get_next_times?id=${id}`
   })
 }

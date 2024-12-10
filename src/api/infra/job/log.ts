@@ -21,16 +21,18 @@ export type ListQueryParams = CommonQueryParams & {
   status?: number
 }
 
+const url = '/admin-api/infra/job-log'
+
 export const getList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<JobLogVO>>({
-    url: '/infra/job-log/page',
+    url: `${url}/page`,
     params
   })
 }
 
 export const exportLog = (params?: ListQueryParams) => {
   return request.download({
-    url: '/system/job-log/export-excel',
+    url: '/admin-api/system/job-log/export-excel',
     params,
     filename: '定时任务执行日志.xlsx'
   })

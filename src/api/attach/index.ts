@@ -11,7 +11,7 @@ export type UploadListType = Array<{
 
 export const getUploadList = (planId: string, applyId: string, appId: string) => {
   return request.get<UploadListType>({
-    url: '/attach/type/get_attach_type_list_by_planId',
+    url: '/admin-api/attach/type/get_attach_type_list_by_planId',
     params: {
       planId: planId,
       applyId: applyId,
@@ -22,7 +22,7 @@ export const getUploadList = (planId: string, applyId: string, appId: string) =>
 
 export const getAttachView = (attachId: string, modeName: string) => {
   return request.getRaw({
-    url: `/common/attach/get?attachId=${attachId}&modeName=${modeName}&islib=0`,
+    url: `/admin-api/common/attach/get?attachId=${attachId}&modeName=${modeName}&islib=0`,
     responseType: 'blob'
   })
 }

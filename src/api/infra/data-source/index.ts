@@ -9,34 +9,36 @@ export type DataSourceVO = {
   createTime?: Date
 }
 
+const url = '/admin-api/infra/data-source-config'
+
 export const getDataSourceList = () => {
   return request.get<DataSourceVO[]>({
-    url: '/infra/data-source-config/list'
+    url: `${url}/list`
   })
 }
 
 export const addDataSource = (data: DataSourceVO) => {
   return request.post({
-    url: '/infra/data-source-config/create',
+    url: `${url}/create`,
     data
   })
 }
 
 export const getDataSourceDetail = (id: number) => {
   return request.get<DataSourceVO>({
-    url: `/infra/data-source-config/get?id=${id}`
+    url: `${url}/get?id=${id}`
   })
 }
 
 export const updateDataSource = (data: DataSourceVO) => {
   return request.put({
-    url: '/infra/data-source-config/create',
+    url: `${url}/create`,
     data
   })
 }
 
 export const deleteDataSourceDetail = (id: number) => {
   return request.delete({
-    url: `/infra/data-source-config/get?id=${id}`
+    url: `${url}/get?id=${id}`
   })
 }

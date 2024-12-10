@@ -28,11 +28,11 @@ export type XMLUpdateVO = {
   bpmnXml: string // generated xml
 }
 
-const prefix = `/workflow/app-schema`
+const prefix = `/admin-api/workflow/app-schema`
 
 export const getTableDefList = () => {
   return request.get<ConfigVO[]>({
-    url: '/infra/codegen/table/list-all'
+    url: '/admin-api/infra/codegen/table/list-all'
   })
 }
 
@@ -84,14 +84,14 @@ export const updateMenuById = (id: string, map: Array<{ uid: string; name: strin
 
 export const getProcessXML = (data: XMLGenerateVO) => {
   return request.post<XMLRespVO>({
-    url: '/fusionx/framework/xml-by-json',
+    url: '/admin-api/fusionx/framework/xml-by-json',
     data
   })
 }
 
 export const updateProcessXML = (data: XMLUpdateVO) => {
   return request.put({
-    url: '/bpm/model/update',
+    url: '/admin-api/bpm/model/update',
     data
   })
 }

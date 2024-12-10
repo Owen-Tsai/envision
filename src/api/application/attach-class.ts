@@ -16,7 +16,7 @@ export type ListQueryParams = {
   modeName?: string
 } & CommonQueryParams
 
-const url = '/attach/type'
+const url = '/admin-api/attach/type'
 
 export const getAttachClassList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<AttachClassVO>>({

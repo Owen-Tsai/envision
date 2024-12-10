@@ -30,41 +30,43 @@ export type FileConfigVO = {
   createTime?: string
 }
 
+const url = '/admin-api/infra/file-config'
+
 export const getConfigList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<FileConfigVO>>({
-    url: '/infra/file-config/page',
+    url: `${url}/page`,
     params
   })
 }
 
 export const getDetail = (id: number) => {
   return request.get<FileConfigVO>({
-    url: `/infra/file-config/get?id=${id}`
+    url: `${url}/get?id=${id}`
   })
 }
 
 export const addConfig = (data: FileConfigVO) => {
   return request.post({
-    url: '/infra/file-config/create',
+    url: `${url}/create`,
     data
   })
 }
 
 export const updateConfig = (data: FileConfigVO) => {
   return request.put({
-    url: '/infra/file-config/update',
+    url: `${url}/update`,
     data
   })
 }
 
 export const deleteConfig = (id: number) => {
   return request.delete({
-    url: `/infra/file-config/delete?id=${id}`
+    url: `${url}/delete?id=${id}`
   })
 }
 
 export const testConfig = (id: number) => {
   return request.get<string>({
-    url: `/infra/file-config/test?id=${id}`
+    url: `${url}/test?id=${id}`
   })
 }

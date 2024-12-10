@@ -30,14 +30,14 @@ export type ListQueryParams = CommonQueryParams & {
 
 export const getList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<AccessLogVO>>({
-    url: '/infra/api-access-log/page',
+    url: '/admin-api/infra/api-access-log/page',
     params
   })
 }
 
 export const exportLog = (params?: ListQueryParams) => {
   return request.download({
-    url: '/infra/api-access-log/export-excel',
+    url: '/admin-api/infra/api-access-log/export-excel',
     params,
     filename: 'API访问日志.xlsx'
   })

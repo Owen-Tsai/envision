@@ -81,9 +81,10 @@ export type CodePreviewVO = Array<{
   code: string
 }>
 
+const url = '/admin-api/infra/codegen'
 export const getTableDefList = (params: TableQueryParams) => {
   return request.get<TableDefListVO>({
-    url: '/infra/codegen/db/table/list',
+    url: `${url}/db/table/list`,
     params
   })
 }
@@ -91,7 +92,7 @@ export const getTableDefList = (params: TableQueryParams) => {
 // get paginated list of code generation config entries
 export const getCodeGenConfigList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<ConfigVO>>({
-    url: '/infra/codegen/table/page',
+    url: `${url}/table/page`,
     params
   })
 }
@@ -99,7 +100,7 @@ export const getCodeGenConfigList = (params?: ListQueryParams) => {
 // get plain list of code generation config entries
 export const getPlainCodeGenConfigList = (dataSourceConfigId: number) => {
   return request.get<ConfigVO[]>({
-    url: '/infra/codegen/table/list',
+    url: `${url}/table/list`,
     params: {
       dataSourceConfigId
     }
@@ -108,48 +109,48 @@ export const getPlainCodeGenConfigList = (dataSourceConfigId: number) => {
 
 export const getCodeGenConfigDetail = (id: number) => {
   return request.get<ConfigDetailVO>({
-    url: `/infra/codegen/detail?tableId=${id}`
+    url: `${url}/detail?tableId=${id}`
   })
 }
 
 export const createCodeGenConfig = (data: CodeGenCreateReqVO) => {
   return request.post({
-    url: '/infra/codegen/create-list',
+    url: `${url}/create-list`,
     data
   })
 }
 
 export const updateCodeGenConfig = (data: ConfigDetailVO) => {
   return request.put({
-    url: '/infra/codegen/update',
+    url: `${url}/update`,
     data
   })
 }
 
 export const deleteCodeGenConfig = (id: number) => {
   return request.delete({
-    url: `/infra/codegen/table/delete?id=${id}`
+    url: `${url}/delete?id=${id}`
   })
 }
 
 // sync table from database
 export const syncTable = (id: number) => {
   return request.put({
-    url: `/infra/codegen/sync-from-db?tableId=${id}`
+    url: `${url}/sync-from-db?tableId=${id}`
   })
 }
 
 // preview code
 export const previewCode = (id: number) => {
   return request.get<CodePreviewVO>({
-    url: `/infra/codegen/preview?tableId=${id}`
+    url: `${url}/preview?tableId=${id}`
   })
 }
 
 // download generated code
 export const downloadCode = (id: number) => {
   return request.download({
-    url: '/infra/codegen/download',
+    url: '${url}/download',
     params: {
       tableId: id
     },

@@ -18,35 +18,37 @@ export type ListQueryParams = CommonQueryParams & {
   type?: number
 }
 
+const url = '/admin-api/infra/config'
+
 export const getConfigList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<SysConfigVO>>({
-    url: '/infra/config/page',
+    url: `${url}/page`,
     params
   })
 }
 
 export const getDetail = (id: number) => {
   return request.get<SysConfigVO>({
-    url: `/infra/config/get?id=${id}`
+    url: `${url}/get?id=${id}`
   })
 }
 
 export const addConfig = (data: SysConfigVO) => {
   return request.post({
-    url: '/infra/config/create',
+    url: `${url}/create`,
     data
   })
 }
 
 export const updateConfig = (data: SysConfigVO) => {
   return request.put({
-    url: '/infra/config/update',
+    url: `${url}/update`,
     data
   })
 }
 
 export const deleteConfig = (id: number) => {
   return request.delete({
-    url: `/infra/config/delete?id=${id}`
+    url: `${url}/delete?id=${id}`
   })
 }

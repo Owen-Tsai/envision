@@ -21,7 +21,7 @@ export type ListQueryParams = {
   daily?: boolean
 } & CommonQueryParams
 
-const url = '/system/apply-plan'
+const url = '/admin-api/system/apply-plan'
 
 export const getPlanList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<PlanVO>>({
@@ -58,6 +58,6 @@ export const getPlanDetail = (id: string) => {
 
 export const getAttachTypeSimpleList = () => {
   return request.get({
-    url: `/attach/type/get_attach_type_simple_list`
+    url: `/admin-api/attach/type/get_attach_type_simple_list`
   })
 }

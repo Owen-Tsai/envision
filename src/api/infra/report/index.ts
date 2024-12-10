@@ -18,7 +18,7 @@ export type ListQueryParams = {
   updateTime?: string
 } & CommonQueryParams
 
-const url = '/infra/report'
+const url = '/admin-api/infra/report'
 
 export const getReportList = (params: ListQueryParams) => {
   return request.get<PaginatedList<ReportVO>>({

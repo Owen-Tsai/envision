@@ -37,7 +37,7 @@ export type TableColumnsVO = {
   columns: ColumnVO[]
 }
 
-const url = '/system/application'
+const url = '/admin-api/system/application'
 
 export const getApplicationList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<ApplicationVO>>({
