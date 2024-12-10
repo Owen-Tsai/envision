@@ -6,6 +6,13 @@ export type TreeQueryParams = {
   type?: string
 }
 
+export type MenuLiteVO = {
+  id: number
+  name: string
+  parentId: number
+  type?: string
+}
+
 export type MenuVO = {
   id?: number
   name?: string
@@ -63,5 +70,11 @@ export const deleteMenu = (id: number) => {
 export const deleteMenuWithChildren = (id: number) => {
   return request.delete({
     url: `/system/menu/delete-batch?id=${id}`
+  })
+}
+
+export const getMenuPlainList = () => {
+  return request.get<MenuLiteVO[]>({
+    url: '/system/menu/list-all-simple'
   })
 }

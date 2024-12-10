@@ -30,6 +30,7 @@
             tree-checkable
             tree-default-expand-all
             tree-check-strictly
+            tree-data-simple-mode
             @change="onMenuSelected"
           />
         </AFormItem>
@@ -65,7 +66,7 @@ import {
   setRoleDataScope,
   type RolePermissionVO
 } from '@/api/system/permission'
-import { getMenuTree, type MenuVO } from '@/api/system/menu'
+import { getMenuPlainList, type MenuLiteVO } from '@/api/system/menu'
 import { getDeptTree, type DeptTreeVO } from '@/api/system/dept'
 import useDict from '@/hooks/use-dict'
 import { DICT_SYSTEM_DATA_SCOPE } from '@/utils/constants'
@@ -95,7 +96,7 @@ const formData = ref<RolePermissionVO>({
   roleId
 })
 
-const menuTree = ref<MenuVO[]>([])
+const menuTree = ref<MenuLiteVO[]>([])
 const deptTree = ref<DeptTreeVO>([])
 
 const tempMenuIds = ref<{ label: string; value: number }[]>([])
@@ -128,11 +129,17 @@ const resetFields = () => {
 }
 
 if (props.mode === 'menu') {
-  getRoleMenuList(roleId).then((data) => {
-    formData.value.menuIds = data
+  getRoleMenuList(roleId).then((rdata) => {
+    formData.value.menuIds = rdata
 
-    getMenuTree().then((data) => {
-      menuTree.value = data
+    getMenuPlainList().then((data) => {
+      menuTree.value = data.map((e) => ({
+        ...e,
+        pId: e.parentId
+      }))
+      tempMenuIds.value = data
+        .filter((e) => rdata.includes(e.id))
+        .map((e) => ({ label: e.name, value: e.id }))
       loading.value = false
     })
   })
