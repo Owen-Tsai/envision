@@ -22,8 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { useModel } from '../../_hooks'
+import { useModel, useTreeStructureOptions } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
 import request from '@/utils/request'
 import type { TreeSelectProps } from 'ant-design-vue'
@@ -36,15 +35,7 @@ const { config } = defineProps<{
 const { model } = useModel(config)
 const fieldNames = computed(() => tryParse(config.props.fieldNames))
 const defaultValue = computed(() => tryParse(config.props.defaultValue))
-const options = ref<TreeSelectProps['treeData']>([])
-
-const settings = config.props.options
-if (settings?.type === 'static') {
-  options.value =
-    (typeof settings.value === 'string' ? tryParse(settings.value) : settings.value) || []
-} else {
-  // todo: fill data from $state[settings.value]
-}
+const { options } = useTreeStructureOptions(config)
 
 const loadData: TreeSelectProps['loadData'] = (node) => {
   return new Promise(async (resolve, reject) => {

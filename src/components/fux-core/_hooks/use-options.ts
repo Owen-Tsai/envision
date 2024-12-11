@@ -1,8 +1,14 @@
 import { ref, watch, computed, type Ref, type WritableComputedRef } from 'vue'
 import { useRendererInjection } from './use-context'
-import { emitter } from '@fusionx/utils'
+import { emitter, tryParse } from '@fusionx/utils'
 import useDict from '@/hooks/use-dict'
-import type { SelectProps, CheckboxGroupProps, RadioGroupProps } from 'ant-design-vue'
+import type {
+  SelectProps,
+  CheckboxGroupProps,
+  RadioGroupProps,
+  CascaderProps,
+  TreeSelectProps
+} from 'ant-design-vue'
 import type { WidgetMap, WidgetPropsMap } from '@/types/fux-core/form'
 import type { DictDataEntry } from '@/api/system/dict/data'
 
@@ -30,6 +36,9 @@ export const useOptions = <
   const rendererCtx = useRendererInjection()
 
   if (optionAttr?.type === 'static') {
+    if (typeof optionAttr.value === 'string') {
+      options.value = JSON.parse(optionAttr.value)
+    }
     options.value = optionAttr.value || []
   } else if (optionAttr?.type === 'dict') {
     if (optionAttr.value && rendererCtx && rendererCtx.prod) {
@@ -64,8 +73,46 @@ export const useOptions = <
   }
 }
 
+export const useTreeStructureOptions = <T extends WidgetMap['treeSelect'] | WidgetMap['cascader']>(
+  config: T
+): { options: Ref<any> } => {
+  const optionAttr = config.props.options
+  const options =
+    ref<
+      T extends WidgetMap['treeSelect'] ? TreeSelectProps['treeData'] : CascaderProps['options']
+    >()
+  const rendererCtx = useRendererInjection()
+
+  if (optionAttr?.type === 'static') {
+    if (optionAttr.value) {
+      options.value = JSON.parse(optionAttr.value)
+    }
+  } else if (optionAttr?.type === 'expression') {
+    if (optionAttr.value && rendererCtx && rendererCtx.prod) {
+      options.value = rendererCtx.$state.value[optionAttr.value]
+    }
+  }
+
+  emitter.on('update:state', () => {
+    nextTick(() => {
+      if (optionAttr.type === 'expression' && optionAttr.value && rendererCtx) {
+        options.value = rendererCtx.$state.value[optionAttr.value]
+      }
+    })
+  })
+
+  return {
+    options
+  }
+}
+
 export const useOptionInfo = <
-  T extends WidgetMap['select'] | WidgetMap['checkbox'] | WidgetMap['radio']
+  T extends
+    | WidgetMap['select']
+    | WidgetMap['checkbox']
+    | WidgetMap['radio']
+    | WidgetMap['cascader']
+    | WidgetMap['treeSelect']
 >(
   config: T
 ) => {
@@ -81,7 +128,7 @@ export const useOptionInfo = <
       return '数据由表达式设置'
     }
 
-    return ''
+    return false
   })
 
   return {

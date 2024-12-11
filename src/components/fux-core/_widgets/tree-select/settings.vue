@@ -68,6 +68,15 @@
         </div>
       </AFormItemRest>
     </template>
+    <template v-if="model.options.type === 'expression'">
+      <AInput
+        v-model:value="model.options.value"
+        prefix="{{ $state."
+        suffix="}}"
+        placeholder="请输入表达式"
+        class="mt-4"
+      />
+    </template>
   </AFormItem>
   <AFormItem label="选项菜单位置" name="placement">
     <ASelect
@@ -104,7 +113,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
 import { Codemirror } from 'vue-codemirror'
 import extensions from '@/utils/codemirror'
 import { TreeSelect } from 'ant-design-vue'
@@ -123,6 +131,8 @@ const { attrs } = defineProps<{
 
 const emit = defineEmits(['update:attrs'])
 
+const cachedMap = ref<Record<string, any>>({})
+
 const multiple = ref(false)
 
 const model = computed({
@@ -131,4 +141,17 @@ const model = computed({
     emit('update:attrs', val)
   }
 })
+
+watch(
+  () => model.value.options.type,
+  (newVal, oldVal) => {
+    const value = model.value.options.value
+    cachedMap.value[oldVal!] = value
+    if (cachedMap.value[newVal!]) {
+      model.value.options.value = cachedMap.value[newVal!]
+    } else {
+      model.value.options.value = undefined
+    }
+  }
+)
 </script>

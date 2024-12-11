@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useModel, useOptions } from '../../_hooks'
+import { useModel, useTreeStructureOptions } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
 import request from '@/utils/request'
 import type { CascaderProps } from 'ant-design-vue'
@@ -29,7 +29,7 @@ const { config } = defineProps<{
 const { model } = useModel(config)
 const fieldNames = computed(() => tryParse(config.props.fieldNames))
 const defaultValue = computed(() => tryParse(config.props.defaultValue))
-const { options } = useOptions(config)
+const { options } = useTreeStructureOptions(config)
 
 const loadData: CascaderProps['loadData'] = (selectedOpts) => {
   const url = config.props.lazyLoadUrl
