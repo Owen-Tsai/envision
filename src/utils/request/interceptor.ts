@@ -23,7 +23,7 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 const refreshToken = async () => {
   axios.defaults.headers['tenant-id'] = getTenantId()
   return await axios.post(
-    `${import.meta.env.VITE_API_URL}/system/auth/refresh-token?refreshToken=${getRefreshToken()}`
+    `${import.meta.env.VITE_API_URL}/admin-api/system/auth/refresh-token?refreshToken=${getRefreshToken()}`
   )
 }
 
