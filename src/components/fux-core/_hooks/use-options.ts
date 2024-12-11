@@ -32,7 +32,7 @@ export const useOptions = <
 ): { options: Ref<any> } => {
   const optionAttr = config.props.options
   const options = ref<OptionType<T> | []>([])
-  const dictData = ref<Ref<DictDataEntry[]>[]>()
+  const dictData = ref<Ref<DictDataEntry[]>>()
   const rendererCtx = useRendererInjection()
 
   if (optionAttr?.type === 'static') {
@@ -42,7 +42,7 @@ export const useOptions = <
     options.value = optionAttr.value || []
   } else if (optionAttr?.type === 'dict') {
     if (optionAttr.value && rendererCtx && rendererCtx.prod) {
-      dictData.value = useDict(optionAttr.value)
+      dictData.value = useDict(optionAttr.value)[0]
     }
   } else if (optionAttr?.type === 'expression') {
     if (optionAttr.value && rendererCtx && rendererCtx.prod) {
@@ -51,13 +51,15 @@ export const useOptions = <
   }
 
   watch(
-    () => dictData.value,
+    dictData,
     (val) => {
       if (optionAttr?.type === 'dict' && val) {
-        options.value = val[0]
+        nextTick(() => {
+          options.value = val.value
+        })
       }
     },
-    { immediate: true }
+    { immediate: true, deep: true }
   )
 
   emitter.on('update:state', () => {
