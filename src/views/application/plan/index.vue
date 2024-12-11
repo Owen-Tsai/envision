@@ -89,7 +89,11 @@
               {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm') }}
             </template>
             <template v-if="scope?.column.key === 'endTime'">
-              {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm') }}
+              {{
+                scope.text == 4070908800000
+                  ? '常态化'
+                  : dayjs(scope.text).format('YYYY-MM-DD HH:mm')
+              }}
             </template>
             <template v-if="scope?.column.title === '操作'">
               <AFlex :gap="16">

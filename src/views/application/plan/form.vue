@@ -43,7 +43,7 @@
         <AFormItem label="常态化" name="daily">
           <ASwitch v-model:checked="formData.daily" @change="(v) => onDailyChange(v as boolean)" />
         </AFormItem>
-        <template>
+        <template v-if="!formData.daily">
           <AFormItem label="开始时间" name="startTime">
             <ADatePicker v-model:value="formData.startTime" value-format="x" />
           </AFormItem>
@@ -123,10 +123,10 @@ const resetFields = () => {
 
 const onDailyChange = (checked: boolean) => {
   // we do nothing for now
-  // if (checked) {
-  //   formData.value.startTime = undefined
-  //   formData.value.endTime = undefined
-  // }
+  if (checked) {
+    formData.value.startTime = String(new Date().getTime())
+    formData.value.endTime = String(new Date('2099').getTime())
+  }
 }
 
 const setFlowId = () => {
