@@ -1,4 +1,4 @@
-# FusionX
+# FusionX 管理后台
 
 以 Vue3 和 TypeScript 为核心技术，正确、简单、流畅的前端开发框架。
 
