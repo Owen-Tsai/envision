@@ -36,7 +36,7 @@ export interface WPropsTabs extends WPropsCommon {
   stepsMode?: boolean
   state: {
     current: number
-    showActions: boolean
+    showActions?: boolean
   }
   children: WPropsTabsPane[]
 }
@@ -53,7 +53,7 @@ export interface WPropsSteps extends WPropsCommon {
   children: WPropsStep[]
   state: {
     current: number
-    showActions: boolean
+    showActions?: boolean
   }
 }
 

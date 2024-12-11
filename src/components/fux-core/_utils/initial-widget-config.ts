@@ -123,7 +123,9 @@ const initWidgetConfig: Partial<WidgetMap> = {
     uid: '',
     name: '评分',
     props: {
-      field: {}
+      field: {
+        label: '评分'
+      }
     },
     icon: getIcon('rate')
   },
@@ -133,7 +135,9 @@ const initWidgetConfig: Partial<WidgetMap> = {
     uid: '',
     name: '滑动输入条',
     props: {
-      field: {}
+      field: {
+        label: '滑动输入条'
+      }
     },
     icon: getIcon('slider')
   },
@@ -143,7 +147,9 @@ const initWidgetConfig: Partial<WidgetMap> = {
     uid: '',
     name: '开关',
     props: {
-      field: {}
+      field: {
+        label: '开关'
+      }
     },
     icon: getIcon('switch')
   },
@@ -169,7 +175,9 @@ const initWidgetConfig: Partial<WidgetMap> = {
     uid: '',
     name: '树形选择器',
     props: {
-      field: {},
+      field: {
+        label: '树形选择器'
+      },
       options: {
         type: 'static',
         value: `[{"label":"山东省","value":"37","children":[{"label":"济南市","value":"3701","children":[{"label":"市中区","value":"370101"},{"label":"历下区","value":"370102"}]},{"label":"青岛市","value":"3702","children":[{"label":"市北区","value":"370203"},{"label":"市南区","value":"370202"}]}]},{"label":"北京市","value":"11","children":[{"label":"东城区","value":"110101"},{"label":"西城区","value":"110102"}]}]`
@@ -316,7 +324,9 @@ const initWidgetConfig: Partial<WidgetMap> = {
     uid: '',
     name: '文件上传',
     props: {
-      field: {}
+      field: {
+        label: '文件上传'
+      }
     },
     icon: getIcon('upload')
   }
