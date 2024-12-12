@@ -90,14 +90,6 @@ export const fixedRoutes: RouteRecordRaw[] = [
         meta: {
           title: '应用审核'
         }
-      },
-      {
-        path: '/_demo',
-        name: 'DEMO',
-        component: () => import('@/views/_demo/index.vue'),
-        meta: {
-          title: '测试页面'
-        }
       }
     ]
   }
