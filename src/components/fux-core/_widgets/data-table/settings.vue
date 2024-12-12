@@ -210,7 +210,7 @@ const formatterConfig = reactive<{
 
 const saveColumnsConfig = () => {
   model.value.columns = columnConfigModal.columns
-  columnConfigModal.visible = false
+  formatterConfig.visible = false
 }
 
 const addColumn = () => {
