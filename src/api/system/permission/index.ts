@@ -7,7 +7,7 @@ export type RolePermissionVO = {
   dataScopeDeptIds?: number[]
 }
 
-const prefix = '/admin-api/system/permission/'
+const prefix = '/admin-api/system/permission'
 
 export const setUserRole = (uid: number, rid: number[]) => {
   return request.post({
