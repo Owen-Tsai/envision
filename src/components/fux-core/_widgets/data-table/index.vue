@@ -7,11 +7,11 @@
       @change="onPageChange"
     >
       <template #bodyCell="scope: TableScope<any>">
-        <template v-if="getFormatter(scope?.column.idx)?.type === 'dict'">
-          <EDictTag :dict-object="getDictData(scope?.column.idx)" :value="scope.text" />
+        <template v-if="getFormatter((scope?.column as any).idx)?.type === 'dict'">
+          <EDictTag :dict-object="getDictData((scope?.column as any).idx)" :value="scope.text" />
         </template>
-        <template v-if="getFormatter(scope?.column.idx)?.type === 'custom'">
-          {{ renderColumn(getFormatter(scope?.column.idx)?.value, scope.record) }}
+        <template v-if="getFormatter((scope?.column as any).idx)?.type === 'custom'">
+          {{ renderColumn(getFormatter((scope?.column as any).idx)?.value!, scope.record) }}
         </template>
         <template v-if="scope?.column.key === 'actions'">
           <AFlex :gap="16">
@@ -25,7 +25,7 @@
         </template>
       </template>
     </ATable>
-    <AModal v-model:open="visible" title="查看" :width="config.props.formWidth">
+    <AModal v-model:open="visible" :title="modalTitle" :width="config.props.formWidth">
       <AForm :model="modalFormData">
         <WidgetRenderer
           v-for="child in config.props.widgets"
@@ -45,18 +45,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
-import { injectLocal } from '@vueuse/core'
-import { EyeOutlined } from '@ant-design/icons-vue'
 import request from '@/utils/request'
 import { useModelProvider, useRendererInjection } from '../../_hooks'
-import evalExpression from '../../_utils/expression'
 import useDict from '@/hooks/use-dict'
 import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
 import type { WidgetMap } from '@/types/fux-core/form'
-import { set } from 'lodash-es'
 import dayjs from 'dayjs'
 import safeEval from 'safer-eval'
 
@@ -131,6 +126,7 @@ const urlPrefix = config.props.url
 const visible = ref(false)
 const modalFormData = ref<Record<string, any>>({})
 const modalEditMode = ref<'create' | 'update'>('create')
+
 const modalTitle = computed(() => {
   const label = config.props.field.label
   return modalEditMode.value === 'update' ? `编辑${label || ''}` : `新增${label || ''}`
@@ -164,10 +160,6 @@ onMounted(() => {
 
 const onPageChange = () => {
   loadData()
-}
-
-const cancel = () => {
-  visible.value = false
 }
 
 const toView = async (record: any) => {

@@ -41,6 +41,7 @@
           :field-names="{ label: 'name', value: 'type' }"
           placeholder="请选择字典类型"
           :loading="pending"
+          show-search
           class="mt-4"
         />
       </AFormItemRest>
