@@ -1,24 +1,32 @@
 <template>
   <div v-if="isProd || config.props.state.mode === 'table'">
-    <AFlex justify="end" class="mb-4">
-      <AButton :icon="h(PlusOutlined)" @click="visible = true" :disabled="!isProd">新增</AButton>
-    </AFlex>
     <ATable
       :columns="config.props.columns"
       :data-source="tableData.list"
       :pagination="pagination"
-    />
-    <!-- 此处删除，因为设计模式下需要展示。不要从 fe 复制到 uc！ -->
-    <AModal v-model:open="visible" :title="modalTitle" :width="config.props.formWidth">
-      <AForm
-        :model="modalFormData"
-        :colon="config.props.form.colon"
-        :label-align="config.props.form.labelAlign"
-        :label-col="labelCol"
-        label-wrap
-        :layout="config.props.form.layout"
-        :wrapper-col="wrapperCol"
-      >
+      @change="onPageChange"
+    >
+      <template #bodyCell="scope: TableScope<any>">
+        <template v-if="getFormatter(scope?.column.idx)?.type === 'dict'">
+          <EDictTag :dict-object="getDictData(scope?.column.idx)" :value="scope.text" />
+        </template>
+        <template v-if="getFormatter(scope?.column.idx)?.type === 'custom'">
+          {{ renderColumn(getFormatter(scope?.column.idx)?.value, scope.record) }}
+        </template>
+        <template v-if="scope?.column.key === 'actions'">
+          <AFlex :gap="16">
+            <ATypographyLink>
+              <div @click="toView(scope.record)">
+                <EyeOutlined />
+                查看
+              </div>
+            </ATypographyLink>
+          </AFlex>
+        </template>
+      </template>
+    </ATable>
+    <AModal v-model:open="visible" title="查看" :width="config.props.formWidth">
+      <AForm :model="modalFormData">
         <WidgetRenderer
           v-for="child in config.props.widgets"
           :key="child.uid"
@@ -37,14 +45,20 @@
 </template>
 
 <script setup lang="ts">
-import { h } from 'vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
-import { tryParse } from '@fusionx/utils'
+import { computed, onMounted, reactive, ref } from 'vue'
+import { injectLocal } from '@vueuse/core'
+import { EyeOutlined } from '@ant-design/icons-vue'
+import request from '@/utils/request'
 import { useModelProvider, useRendererInjection } from '../../_hooks'
+import evalExpression from '../../_utils/expression'
+import useDict from '@/hooks/use-dict'
 import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
 import type { WidgetMap } from '@/types/fux-core/form'
+import { set } from 'lodash-es'
+import dayjs from 'dayjs'
+import safeEval from 'safer-eval'
 
 const { config, fields } = defineProps<{
   config: WidgetMap['dataTable']
@@ -52,6 +66,9 @@ const { config, fields } = defineProps<{
 }>()
 
 const rendererCtx = useRendererInjection()
+const appParams = injectLocal<Record<string, any>>('appParamsCtx')
+const disabledForm = ref(false)
+const loading = ref(false)
 
 const tableData = reactive<{
   total: number
@@ -80,6 +97,36 @@ const pagination = computed<TableProps['pagination']>(() => {
   return false
 })
 
+const getFormatter = (colIdx: number) => {
+  const targetColumn = config.props.columns?.find((col) => (col as any).idx === colIdx)
+  // console.log(targetColumn)
+  return targetColumn ? targetColumn.formatter : null
+}
+
+const getDictData = (colIdx: number) => {
+  // console.log(dicts)
+  const dictType = getFormatter(colIdx)?.value
+  const idx = dictType ? dictTypes.value?.findIndex((e) => e === dictType) : -1
+  // console.log(dictType, idx, idx !== undefined && dicts[idx])
+  return idx !== undefined && idx >= 0 ? dicts[idx].value : []
+}
+
+// dict
+const dictTypes = ref(
+  config.props.columns
+    ?.filter((item) => item.formatter?.type === 'dict')
+    .map((item) => item.formatter!.value)
+)
+// console.log(dictTypes.value)
+const dicts = useDict(...(dictTypes.value || []))
+
+// custom
+const renderColumn = (expression: string, record: any) => {
+  return safeEval(expression, { ...record, Date: Date, dayjs: dayjs })
+}
+
+const urlPrefix = config.props.url
+
 // modal form
 const visible = ref(false)
 const modalFormData = ref<Record<string, any>>({})
@@ -89,14 +136,45 @@ const modalTitle = computed(() => {
   return modalEditMode.value === 'update' ? `编辑${label || ''}` : `新增${label || ''}`
 })
 
-const labelCol = computed(() => {
-  const width = config.props.form.labelWidth
-  return width ? { style: { width } } : tryParse(config.props.form.labelCol)
+const loadData = async () => {
+  if (!isProd.value) return
+  loading.value = true
+  console.log(urlPrefix)
+  const api = `${urlPrefix}/page`
+  const res = await request.get({
+    url: api,
+    params: {
+      declareId: appParams?.value.applyId || '',
+      current: tableData.current
+    }
+  })
+  tableData.list = res.list
+  tableData.total = res.total
+  loading.value = false
+}
+
+const get = async (id: string) => {
+  const api = `${urlPrefix}/get-table-name?id=${id}`
+  return await request.get({ url: api })
+}
+
+onMounted(() => {
+  loadData()
 })
 
-const wrapperCol = computed(() => {
-  return tryParse(config.props.form.wrapperCol)
-})
+const onPageChange = () => {
+  loadData()
+}
+
+const cancel = () => {
+  visible.value = false
+}
+
+const toView = async (record: any) => {
+  disabledForm.value = true
+  modalFormData.value = await get(record.id)
+  visible.value = true
+}
 
 useModelProvider(modalFormData)
 </script>
