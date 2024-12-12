@@ -34,18 +34,18 @@
         <AFormItem label="最大文件大小" name="maxFileSize">
           <AInput type="number" v-model:value="formData.maxFileSize" placeholder="如：1024" />
         </AFormItem>
-        <AFormItem label="是否单个附件" name="isone">
-          <ASwitch v-model:checked="formData.isone" checked-value="1" un-checked-value="0" />
-        </AFormItem>
-        <template v-if="formData.isone == '0'">
-          <AFormItem label="附件个数" name="num">
-            <AInput type="number" v-model:value="formData.num" placeholder="如：3" />
-          </AFormItem>
-        </template>
+        <!--        <AFormItem label="是否单个附件" name="isone">-->
+        <!--          <ASwitch v-model:checked="formData.isone" checked-value="1" un-checked-value="0" />-->
+        <!--        </AFormItem>-->
+        <!--        <template v-if="formData.isone == '0'">-->
+        <!--          <AFormItem label="附件个数" name="num">-->
+        <!--            <AInput type="number" v-model:value="formData.num" placeholder="如：3" />-->
+        <!--          </AFormItem>-->
+        <!--        </template>-->
         <AFormItem label="是否必传" name="ismust">
           <ASwitch v-model:checked="formData.ismust" :checked-value="1" :un-checked-value="0" />
         </AFormItem>
-        <AFormItem label="是否从附件选择" name="isLib">
+        <AFormItem label="是否从附件库选择" name="isLib">
           <ASwitch v-model:checked="formData.isLib" checked-value="1" un-checked-value="0" />
         </AFormItem>
       </AForm>
