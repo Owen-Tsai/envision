@@ -3,11 +3,15 @@
     <div class="header flex-shrink-0 flex justify-end">
       <div class="extra"></div>
     </div>
-    <div class="main flex-1"></div>
+    <div class="main flex-1">
+      <ChartContainer title=""></ChartContainer>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ChartContainer from '@/components/_internal/chart-s-stripe.vue'
+</script>
 
 <style lang="scss" scoped>
 .page {

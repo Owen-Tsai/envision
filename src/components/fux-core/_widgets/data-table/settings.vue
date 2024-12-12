@@ -34,6 +34,28 @@
     >
       <AInput v-model:value="model.formWidth" />
     </AFormItem>
+    <AFormItem label="布局类型">
+      <ASelect v-model:value="model.form.layout" :options="labelLayoutOpts" />
+    </AFormItem>
+    <AFormItem v-if="model.form.layout !== 'vertical'" label="标签对齐方式">
+      <ASelect v-model:value="model.form.labelAlign" :options="labelAlignOpts" />
+    </AFormItem>
+    <AFormItem label="标签列属性" extra="输入合法的 JSON">
+      <AInput v-model:value="model.form.labelCol" />
+    </AFormItem>
+    <AFormItem label="标签列宽度" extra="输入含单位的值(px/%)">
+      <AInput v-model:value="model.form.labelWidth" />
+    </AFormItem>
+    <AFormItem label="组件列属性" extra="输入合法的 JSON">
+      <AInput v-model:value="model.form.wrapperCol" />
+    </AFormItem>
+    <AFormItem
+      v-if="model.form.layout !== 'vertical'"
+      label="显示标签后的冒号"
+      class="boolean-field"
+    >
+      <ASwitch v-model:checked="model.form.colon" />
+    </AFormItem>
   </div>
 
   <AModal
@@ -114,13 +136,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRef, h, reactive, computed, nextTick, useTemplateRef } from 'vue'
+import { h } from 'vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import useRequest from '@/hooks/use-request'
 import { getPlainDictTypeList } from '@/api/system/dict/type'
 import extensions from '@/utils/codemirror'
 import { Codemirror } from 'vue-codemirror'
 import { useSortable } from '@vueuse/integrations/useSortable'
+import { labelAlignOpts, labelLayoutOpts } from '../../_utils/const'
 import type { WPropsDataTable, WPropsTableColumn } from '@/types/fux-core/form'
 
 const { data, pending } = useRequest(getPlainDictTypeList, { immediate: true })

@@ -312,6 +312,8 @@ const initWidgetConfig: Partial<WidgetMap> = {
       },
       widgets: [],
       pagination: {},
+      form: {},
+      formWidth: '440px',
       state: {
         mode: 'table'
       }

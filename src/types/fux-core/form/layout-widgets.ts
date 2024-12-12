@@ -1,4 +1,5 @@
 import type { Widget } from './index'
+import type { FormProps } from './misc'
 
 interface FieldProps {
   label?: string
@@ -85,6 +86,7 @@ export interface WPropsDataTable extends WPropsCommon {
   columns?: WPropsTableColumn[]
   pagination: WPropsTablePagination
   formWidth?: string
+  form: Omit<FormProps, 'disabled'>
   widgets: Widget[]
   state: {
     mode: 'table' | 'form'
