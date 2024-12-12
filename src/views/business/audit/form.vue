@@ -50,7 +50,7 @@
           <a-space wrap>
             <a-button type="primary" block @click="operation(1)">通过</a-button>
             <a-button block @click="backModalShow = true">退回到审核人</a-button>
-            <a-button block @click="backStartUser()">退回到发起人</a-button>
+            <a-button block @click="backStartUser()">退回到申请人</a-button>
             <a-button danger block @click="operation(2)">不通过</a-button>
           </a-space>
         </a-form-item>

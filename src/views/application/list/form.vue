@@ -24,7 +24,7 @@
         <AFormItem label="业务类别" name="type">
           <ASelect v-model:value="formData.type" :options="appTypeOpts" />
         </AFormItem>
-        <AFormItem label="用户类别" name="userType">
+        <AFormItem label="申报主体" name="userType">
           <ASelect v-model:value="formData.userType">
             <a-select-option value="3">个人用户</a-select-option>
             <a-select-option value="4">单位用户</a-select-option>
