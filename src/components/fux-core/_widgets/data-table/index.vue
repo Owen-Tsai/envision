@@ -7,11 +7,11 @@
       @change="onPageChange"
     >
       <template #bodyCell="scope: TableScope<any>">
-        <template v-if="getFormatter(scope.index)?.type === 'dict'">
-          <EDictTag :dict-object="dicts[scope.index].value" :value="scope.text" />
+        <template v-if="getFormatter(scope?.column.idx)?.type === 'dict'">
+          <EDictTag :dict-object="getDictData(scope?.column.idx)" :value="scope.text" />
         </template>
-        <template v-if="getFormatter(scope.index)?.type === 'custom'">
-          {{ renderColumn(getFormatter(scope.index)!.value, scope.record) }}
+        <template v-if="getFormatter(scope?.column.idx)?.type === 'custom'">
+          {{ renderColumn(getFormatter(scope?.column.idx)?.value, scope.record) }}
         </template>
         <template v-if="scope?.column.key === 'actions'">
           <AFlex :gap="16">
@@ -56,6 +56,9 @@ import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
 import type { WidgetMap } from '@/types/fux-core/form'
+import { set } from 'lodash-es'
+import dayjs from 'dayjs'
+import safeEval from 'safer-eval'
 
 const { config, fields } = defineProps<{
   config: WidgetMap['dataTable']
@@ -94,19 +97,32 @@ const pagination = computed<TableProps['pagination']>(() => {
   return false
 })
 
-const getFormatter = (index: number) => {
-  return config.props.columns?.[index]?.formatter
+const getFormatter = (colIdx: number) => {
+  const targetColumn = config.props.columns?.find((col) => (col as any).idx === colIdx)
+  // console.log(targetColumn)
+  return targetColumn ? targetColumn.formatter : null
+}
+
+const getDictData = (colIdx: number) => {
+  // console.log(dicts)
+  const dictType = getFormatter(colIdx)?.value
+  const idx = dictType ? dictTypes.value?.findIndex((e) => e === dictType) : -1
+  // console.log(dictType, idx, idx !== undefined && dicts[idx])
+  return idx !== undefined && idx >= 0 ? dicts[idx].value : []
 }
 
 // dict
-const dictTypes = config.props.columns
-  ?.filter((item) => item.formatter?.type === 'dict')
-  .map((item) => item.formatter!.value)
-const dicts = useDict(...(dictTypes || []))
+const dictTypes = ref(
+  config.props.columns
+    ?.filter((item) => item.formatter?.type === 'dict')
+    .map((item) => item.formatter!.value)
+)
+// console.log(dictTypes.value)
+const dicts = useDict(...(dictTypes.value || []))
 
 // custom
 const renderColumn = (expression: string, record: any) => {
-  return evalExpression(expression, record)
+  return safeEval(expression, { ...record, Date: Date, dayjs: dayjs })
 }
 
 const urlPrefix = config.props.url

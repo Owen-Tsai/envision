@@ -95,7 +95,7 @@
           v-model:value="columnConfigModal.columns[formatterConfig.index]!.formatter!.value"
           :options="data"
           :loading="pending"
-          :field-names="{ label: 'name', value: 'id' }"
+          :field-names="{ label: 'name', value: 'type' }"
         />
       </AFormItem>
       <AFormItem
