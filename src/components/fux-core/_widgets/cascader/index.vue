@@ -1,5 +1,5 @@
 <template>
-  <ACascader
+  <Cascader
     v-model:value="model"
     :allow-clear="config.props.allowClear"
     :change-on-select="config.props.allowParentNode"
@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts" setup>
+import Cascader from '@/components/cascader/index.vue'
 import { useModel, useTreeStructureOptions } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
 import request from '@/utils/request'
