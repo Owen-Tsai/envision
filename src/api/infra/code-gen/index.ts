@@ -150,7 +150,7 @@ export const previewCode = (id: number) => {
 // download generated code
 export const downloadCode = (id: number) => {
   return request.download({
-    url: '${url}/download',
+    url: `${url}/download`,
     params: {
       tableId: id
     },
