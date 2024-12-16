@@ -27,7 +27,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import LoginForm from './login-form.vue'
 import logo from '~img/logo-simple.svg'
 
@@ -39,7 +38,7 @@ const title = import.meta.env.VITE_APP_SHORT_TITLE
 <style lang="scss" scoped>
 @use '@/styles/mixins.scss' as *;
 .page {
-  background: url('~img/bg-login.png') top center no-repeat;
+  background: url('~img/login-bg.png') top center no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;

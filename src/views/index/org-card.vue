@@ -47,9 +47,7 @@
 import { Grid } from 'ant-design-vue'
 import { storeToRefs } from 'pinia'
 import useRequest from '@/hooks/use-request'
-import { EditOutlined } from '@ant-design/icons-vue'
 import useUserStore from '@/stores/user'
-import { desensitizePhoneNumber } from '@/utils/fusion'
 import { getDeptSimpleList } from '@/api/system/dept'
 import iGroup from '~img/icon-ugroup.svg'
 import iDept from '~img/icon-dept.svg'
@@ -72,7 +70,7 @@ const stats = [
 ]
 
 const { user } = storeToRefs(useUserStore())
-const { data: depts, pending: deptPending } = useRequest(getDeptSimpleList, {
+const { data: depts } = useRequest(getDeptSimpleList, {
   immediate: true,
 })
 

@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { createI18n } from 'vue-i18n'
 import Antd from 'ant-design-vue'
 import Scrollbar from 'custom-vue-scrollbar'
 import DictTag from '@/components/dict-tag/index.vue'
@@ -24,7 +23,6 @@ import './router/guard'
 
 const app = createApp(App)
 
-app.use(createI18n({}))
 app.use(createPinia())
 app.use(Antd)
 app.use(router)

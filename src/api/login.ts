@@ -51,6 +51,7 @@ export type PermissionInfoVO = {
     nickname: string
     avatar?: string
     deptId?: number
+    mobile?: string
   }
   menus: MenuVO[]
   roles: string[]

@@ -7,9 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { storeToRefs } from 'pinia'
-import { App, theme as antTheme } from 'ant-design-vue'
+import { theme as antTheme } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import useAppStore from '@/stores/app'
 

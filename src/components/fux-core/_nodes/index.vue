@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
 import { cloneDeep } from 'lodash-es'
-import { generateID } from '@/utils/fusion'
+import { generateId } from '@fusionx/utils'
 import StartNode from './start/index.vue'
 import AuditNode from './audit/index.vue'
 import nodeConfigMap from '../_utils/initial-node-config'
@@ -46,7 +46,7 @@ const addNode = (type: keyof NodeConfigMap, index: number) => {
 
   computedNodes.value.splice(index + 1, 0, {
     ...nodeToInsert,
-    uid: generateID(),
+    uid: generateId(),
   })
 }
 

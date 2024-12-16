@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { h, ref, watch, type PropType } from 'vue'
-import { generateID } from '@/utils/fusion'
+import { generateId } from '@fusionx/utils'
 import { UploadOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Upload, message, type UploadProps, type UploadFile } from 'ant-design-vue'
 import useUpload from '@/hooks/use-upload'
@@ -159,14 +159,14 @@ watch(
     if (typeof val === 'string') {
       const items = val.split(',').map<UploadFile>((url) => ({
         name: url.split('/').pop() || '',
-        uid: generateID(),
+        uid: generateId(),
         url,
       }))
       fileList.value.push(...items)
     } else {
       const items = val.map<UploadFile>((url) => ({
         name: url.split('/').pop() || '',
-        uid: generateID(),
+        uid: generateId(),
         url,
       }))
       fileList.value.push(...items)
