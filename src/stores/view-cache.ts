@@ -17,6 +17,6 @@ export default defineStore('viewCache', () => {
     cached,
     keepsList,
     addCache,
-    removeCache
+    removeCache,
   }
 })

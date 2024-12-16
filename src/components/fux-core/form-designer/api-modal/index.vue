@@ -14,8 +14,8 @@
           :class="[
             'item',
             {
-              active: selectedUid === uid
-            }
+              active: selectedUid === uid,
+            },
           ]"
           @click="onSelect(uid)"
         >
@@ -88,7 +88,7 @@ const reqTypeOpts = [
   { label: 'GET', value: 'get' },
   { label: 'POST', value: 'post' },
   { label: 'PUT', value: 'put' },
-  { label: 'DELETE', value: 'delete' }
+  { label: 'DELETE', value: 'delete' },
 ]
 
 const { open } = defineProps<{
@@ -102,7 +102,7 @@ const emit = defineEmits<{
 const rules = ref<FormProps['rules']>({
   name: [{ required: true, message: '请输入名称' }],
   url: [{ required: true, message: '请输入URL' }],
-  method: [{}]
+  method: [{}],
 })
 
 const isOpen = computed({
@@ -111,7 +111,7 @@ const isOpen = computed({
   },
   set(val) {
     emit('update:open', val)
-  }
+  },
 })
 
 const selectedUid = ref<string | undefined>()
@@ -119,7 +119,7 @@ const selectedItem = ref<APIConfig>({
   method: 'get',
   name: '',
   url: '',
-  dataIndex: ''
+  dataIndex: '',
 })
 const methodValidationStatus = computed<'success' | 'warning' | undefined>(() => {
   if (selectedItem.value.method === 'get') {
@@ -139,10 +139,10 @@ const addApi = () => {
     method: 'get',
     name: id,
     url: '',
-    dataIndex: id
+    dataIndex: id,
   }
   schema.value.form.api[id] = {
-    ...selectedItem.value
+    ...selectedItem.value,
   }
   selectedUid.value = id
 }
@@ -163,7 +163,7 @@ const onItemSave = () => {
     schema.value.form.api = {}
   }
   schema.value.form.api[selectedUid.value!] = {
-    ...selectedItem.value
+    ...selectedItem.value,
   }
   message.success('修改成功')
 }
@@ -172,16 +172,16 @@ const onItemSave = () => {
 <style lang="scss" scoped>
 .item {
   @apply cursor-pointer flex-center;
-  border: 1px solid var(--colorBorder);
-  border-radius: var(--borderRadius);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
   padding: 4px 0;
   &:hover {
-    border-color: var(--colorPrimary);
-    color: var(--colorPrimary);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
   &.active {
-    border-color: var(--colorPrimary);
-    color: var(--colorPrimary);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
   & {
     margin-bottom: 8px;

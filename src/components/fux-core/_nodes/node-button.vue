@@ -49,7 +49,7 @@ const onClick = (type: 'audit' | 'group') => {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  border-radius: var(--borderRadius);
+  border-radius: var(--border-radius);
   align-items: center;
   justify-content: center;
   width: 72px;
@@ -57,19 +57,19 @@ const onClick = (type: 'audit' | 'group') => {
   padding: 8px;
 
   .icon {
-    font-size: var(--fontSizeXL);
-    background-color: var(--colorFillSecondary);
+    font-size: var(--font-size-xl);
+    background-color: var(--color-fill-secondary);
     height: 32px;
     width: 32px;
-    border-radius: var(--borderRadius);
+    border-radius: var(--border-radius);
     @apply flex-center;
   }
 
   &:not(.disabled):hover {
-    background-color: var(--colorFillSecondary);
+    background-color: var(--color-fill-secondary);
     .icon {
-      background-color: var(--colorPrimary);
-      color: var(--colorWhite);
+      background-color: var(--color-primary);
+      color: var(--color-white);
     }
   }
 }

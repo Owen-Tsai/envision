@@ -49,18 +49,18 @@ import type { ChannelListLiteVO } from '@/api/system/sms/channel'
 defineProps({
   entry: {
     type: Object as PropType<LogVO>,
-    required: true
+    required: true,
   },
   channelList: {
     type: Array as PropType<ChannelListLiteVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const [systemSmsReceiveStatus, systemSmsSendStatus, systemSmsTemplateType] = useDict(
   'system_sms_receive_status',
   'system_sms_send_status',
   'system_sms_channel_code',
-  'system_sms_template_type'
+  'system_sms_template_type',
 )
 </script>

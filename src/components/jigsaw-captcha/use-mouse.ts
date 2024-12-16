@@ -5,7 +5,7 @@ export const SIZE_OFFSET = 32
 
 const useMouseDrag = (
   dragHandleEl: Ref<HTMLDivElement | undefined>,
-  dragTrackEl: Ref<HTMLDivElement | undefined>
+  dragTrackEl: Ref<HTMLDivElement | undefined>,
 ) => {
   const allowDrag = ref(true)
 
@@ -14,7 +14,7 @@ const useMouseDrag = (
 
   const ghostPosLeft = ref<number | string | undefined>()
   const posLeft = computed(() =>
-    allowDrag.value && pressed.value && dragTrackEl.value ? `${x.value - SIZE_OFFSET}px` : 0
+    allowDrag.value && pressed.value && dragTrackEl.value ? `${x.value - SIZE_OFFSET}px` : 0,
   )
 
   return {
@@ -22,7 +22,7 @@ const useMouseDrag = (
     allowDrag,
     x,
     ghostPosLeft,
-    posLeft
+    posLeft,
   }
 }
 

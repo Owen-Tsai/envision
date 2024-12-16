@@ -47,10 +47,10 @@ const screen = Grid.useBreakpoint()
 
 <style lang="scss" scoped>
 .info {
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
   @apply flex items-center gap-1;
 }
 .profile-btn {
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
 }
 </style>

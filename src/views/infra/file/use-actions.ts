@@ -10,7 +10,7 @@ const useActions = (requestData: () => void) => {
   }
 
   return {
-    onDelete
+    onDelete,
   }
 }
 

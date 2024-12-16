@@ -59,19 +59,19 @@ import {
   getTableDefList,
   createCodeGenConfig,
   type TableDefListVO,
-  type TableQueryParams
+  type TableQueryParams,
 } from '@/api/infra/code-gen'
 import type { DataSourceVO } from '@/api/infra/data-source'
 
 const columns: TableProps['columns'] = [
   { dataIndex: 'name', title: '表名称' },
-  { dataIndex: 'comment', title: '表描述' }
+  { dataIndex: 'comment', title: '表描述' },
 ]
 
 const props = defineProps({
   dataSources: {
-    type: Array as PropType<DataSourceVO[]>
-  }
+    type: Array as PropType<DataSourceVO[]>,
+  },
 })
 
 const loading = ref(false)
@@ -81,7 +81,7 @@ const selectedKeys = ref<string[]>([])
 const selection: TableProps['rowSelection'] = {
   onChange(keys, rows: TableDefListVO) {
     selectedKeys.value = rows.map((e) => e.name)
-  }
+  },
 }
 
 const tableDefList = ref<TableDefListVO>([])
@@ -103,7 +103,7 @@ const submit = async () => {
     loading.value = true
     await createCodeGenConfig({
       dataSourceConfigId: queryParams.value.dataSourceConfigId || 0,
-      tableNames: selectedKeys.value
+      tableNames: selectedKeys.value,
     })
 
     open.value = false
@@ -135,7 +135,7 @@ watch(
   () => props.dataSources,
   () => {
     onLoad()
-  }
+  },
 )
 
 const onLoad = () => {

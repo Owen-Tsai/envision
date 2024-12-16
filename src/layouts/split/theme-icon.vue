@@ -49,8 +49,8 @@ import Icon from '@ant-design/icons-vue'
 defineProps({
   theme: {
     type: String as PropType<'dark' | 'light'>,
-    default: 'light'
-  }
+    default: 'light',
+  },
 })
 </script>
 

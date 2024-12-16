@@ -12,7 +12,7 @@ import type { PropType, FunctionalComponent } from 'vue'
 defineProps({
   title: String,
   icon: Function as PropType<FunctionalComponent>,
-  active: Boolean
+  active: Boolean,
 })
 </script>
 
@@ -20,16 +20,16 @@ defineProps({
 .action {
   cursor: pointer;
   font-size: 18px;
-  border-radius: var(--borderRadius);
+  border-radius: var(--border-radius);
   @apply flex-center size-40px;
 
   &:hover {
-    background-color: var(--colorFillSecondary);
+    background-color: var(--color-fill-secondary);
   }
 
   &.active {
-    background-color: var(--colorPrimaryBg);
-    color: var(--colorPrimary);
+    background-color: var(--color-primary-bg);
+    color: var(--color-primary);
   }
 }
 </style>

@@ -44,20 +44,20 @@ const title = import.meta.env.VITE_APP_SHORT_TITLE
   min-height: 100vh;
   overflow-x: hidden;
   background-size: 100%;
-  background-color: var(--colorBgContainer);
+  background-color: var(--color-bg-container);
 }
 
 h1 {
-  color: var(--colorText);
+  color: var(--color-text);
   @apply text-4xl font-bold;
   @include title-font;
 }
 .subtext {
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
   text-align: center;
 }
 .credit {
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
 }
 .icon {
   @apply mx-1;
@@ -65,6 +65,6 @@ h1 {
 }
 footer {
   @apply mb-4 text-center;
-  color: var(--colorTextTertiary);
+  color: var(--color-text-tertiary);
 }
 </style>

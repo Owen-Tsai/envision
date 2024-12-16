@@ -53,19 +53,19 @@ const cloneWidget = (widget: Widget) => {
 
 <style lang="scss" scoped>
 .close {
-  font-size: var(--fontSizeSM);
+  font-size: var(--font-size-sm);
   position: absolute;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--colorTextTertiary);
+  color: var(--color-text-tertiary);
   cursor: pointer;
 }
 .input {
   border: none;
   outline: none;
   height: 40px;
-  border-bottom: 1px solid var(--colorBorderSecondary);
+  border-bottom: 1px solid var(--color-border-secondary);
   width: 100%;
   padding: 0 32px;
 }
@@ -74,7 +74,7 @@ const cloneWidget = (widget: Widget) => {
   left: 8px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--colorText);
+  color: var(--color-text);
 }
 .list-wrapper {
   padding: 16px;

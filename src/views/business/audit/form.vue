@@ -82,7 +82,7 @@ import {
   getBackOptions,
   getEchoData,
   getProcessInstance,
-  rejectTask
+  rejectTask,
 } from '@/api/business/audit'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import type { SelectProps } from 'ant-design-vue'
@@ -139,7 +139,7 @@ onMounted(() => {
 })
 const basicInfo = ref({
   title: '',
-  name: ''
+  name: '',
 })
 const idea = ref('')
 const getProcessInstanceMethod = async (parentProcessInstanceId: string) => {
@@ -201,7 +201,7 @@ const backStartUser = async () => {
   const backVo = {
     id: applyId,
     reason: idea.value,
-    fields: getFields()
+    fields: getFields(),
   }
   const modal = Modal.confirm({
     title: '确定退回到发起人吗?',
@@ -222,7 +222,7 @@ const backStartUser = async () => {
     onCancel() {
       console.log('Cancel')
     },
-    class: 'test'
+    class: 'test',
   })
 }
 
@@ -234,7 +234,7 @@ const operation = async (flag: number) => {
   const data = {
     id: taskId,
     reason: idea.value,
-    fields: getFields()
+    fields: getFields(),
   }
   if (flag == 1) {
     const modal = Modal.confirm({
@@ -261,7 +261,7 @@ const operation = async (flag: number) => {
       onCancel() {
         console.log('Cancel')
       },
-      class: 'test'
+      class: 'test',
     })
   } else if (flag == 2) {
     const modal = Modal.confirm({
@@ -288,14 +288,14 @@ const operation = async (flag: number) => {
       onCancel() {
         console.log('Cancel')
       },
-      class: 'test'
+      class: 'test',
     })
   } else if (flag == 3) {
     const backTaskData = {
       id: taskId,
       targetTaskDefinitionKey: backValue.value,
       reason: idea.value,
-      fields: getFields()
+      fields: getFields(),
     }
     const modal = Modal.confirm({
       title: '确定退回吗?',
@@ -321,7 +321,7 @@ const operation = async (flag: number) => {
       onCancel() {
         console.log('Cancel')
       },
-      class: 'test'
+      class: 'test',
     })
   }
 }

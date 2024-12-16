@@ -73,19 +73,19 @@ const loading = ref(false)
 const [commonStatus] = useDict('common_status')
 
 const rules = ref<FormProps['rules']>({
-  name: [{ required: true, message: '请输入部门名称' }]
+  name: [{ required: true, message: '请输入部门名称' }],
 })
 
 const props = defineProps({
   treeData: {
-    type: Object as PropType<TreeSelectProps['treeData']>
+    type: Object as PropType<TreeSelectProps['treeData']>,
   },
   userData: {
-    type: Array as PropType<SimpleUserVO>
+    type: Array as PropType<SimpleUserVO>,
   },
   record: {
-    type: Object as PropType<DeptVO>
-  }
+    type: Object as PropType<DeptVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])

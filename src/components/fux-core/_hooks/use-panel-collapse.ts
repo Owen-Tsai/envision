@@ -13,6 +13,6 @@ export const useCollapse = (target: Ref<HTMLElement | undefined>, edge = 100, of
   return {
     collapsed,
     setCollapsed,
-    top
+    top,
   }
 }

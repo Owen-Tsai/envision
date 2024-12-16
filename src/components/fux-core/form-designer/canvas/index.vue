@@ -64,7 +64,7 @@ const wrapperCol = computed(() => {
 
 <style lang="scss" scoped>
 #canvas {
-  background-color: var(--colorBgContainer);
+  background-color: var(--color-bg-container);
   height: auto;
   min-height: 100%;
   padding: 16px;

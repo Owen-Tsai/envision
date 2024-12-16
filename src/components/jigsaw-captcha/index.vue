@@ -55,7 +55,7 @@ import useRequest from '@/hooks/use-request'
 const {
   open,
   width = 400,
-  height = 200
+  height = 200,
 } = defineProps<{
   open: boolean
   width?: number
@@ -76,11 +76,11 @@ const visible = computed({
   get: () => open,
   set: (val) => {
     emit('update:open', val)
-  }
+  },
 })
 
 const { data, execute, pending } = useRequest(getCaptcha, {
-  immediate: true
+  immediate: true,
 })
 
 const { allowDrag, ghostPosLeft, posLeft, pressed, x } = useMouseDrag(dragHandleEl, dragTrackEl)
@@ -91,7 +91,7 @@ const { validate, validationInfo } = useValidation({
   },
   onError: () => {
     reLoad()
-  }
+  },
 })
 
 const reLoad = () => {
@@ -118,7 +118,7 @@ watch(visible, (val) => {
 })
 
 defineExpose({
-  refetch: execute
+  refetch: execute,
 })
 </script>
 
@@ -141,13 +141,13 @@ defineExpose({
   width: 100%;
   height: 8px;
   border-radius: 18px;
-  background-color: var(--colorFill);
+  background-color: var(--color-fill);
 }
 .drag-progress {
   width: 0;
   height: 8px;
   border-radius: 18px;
-  background-color: var(--colorSuccess);
+  background-color: var(--color-success);
   position: relative;
 }
 
@@ -157,15 +157,15 @@ defineExpose({
   position: absolute;
   top: -12px;
   left: 0;
-  border: 1px solid var(--colorBorder);
+  border: 1px solid var(--color-border);
   border-radius: 64px;
-  background-color: var(--colorBgContainer);
-  color: var(--colorText);
+  background-color: var(--color-bg-container);
+  color: var(--color-text);
   @apply flex-center shadow-lg transition-colors duration-200 cursor-move;
 
   &:hover,
   &.pressed {
-    background-color: var(--colorPrimary);
+    background-color: var(--color-primary);
     color: #fff;
   }
 }
@@ -177,12 +177,12 @@ defineExpose({
   padding: 4px 8px;
 
   &.success {
-    background-color: var(--colorSuccessBg);
-    color: var(--colorSuccess);
+    background-color: var(--color-success-bg);
+    color: var(--color-success);
   }
   &.error {
-    background-color: var(--colorErrorBg);
-    color: var(--colorError);
+    background-color: var(--color-error-bg);
+    color: var(--color-error);
   }
 }
 * {

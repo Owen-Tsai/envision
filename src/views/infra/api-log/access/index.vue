@@ -132,7 +132,7 @@ import {
   DownOutlined,
   ReloadOutlined,
   ExportOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
@@ -146,7 +146,7 @@ const requestMethodsOptions = [
   { value: 'GET' },
   { value: 'POST' },
   { value: 'PUT' },
-  { value: 'DELETE' }
+  { value: 'DELETE' },
 ]
 
 const filterForm = ref<FormInstance>()

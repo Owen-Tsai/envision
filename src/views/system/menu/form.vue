@@ -134,7 +134,7 @@ const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写菜单名称' }],
   type: [{ required: true, message: '请选择菜单类型' }],
   path: [{ required: true, message: '请填写路由地址' }],
-  component: [{ required: true, message: '请填写组件文件路径' }]
+  component: [{ required: true, message: '请填写组件文件路径' }],
 }
 
 const loading = ref(false)
@@ -142,14 +142,14 @@ const loading = ref(false)
 const props = defineProps({
   mode: {
     type: String as PropType<'add' | 'edit'>,
-    default: 'add'
+    default: 'add',
   },
   treeData: {
-    type: Object as PropType<TreeSelectProps['treeData']>
+    type: Object as PropType<TreeSelectProps['treeData']>,
   },
   record: {
-    type: Object as PropType<MenuVO>
-  }
+    type: Object as PropType<MenuVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -165,7 +165,7 @@ const formData = ref<MenuVO>({
   status: 0,
   sort: 1,
   keepAlive: true,
-  visible: true
+  visible: true,
 })
 const open = ref(true)
 

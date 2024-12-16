@@ -34,17 +34,17 @@ html {
 }
 
 #nprogress .bar {
-  background: var(--colorPrimary);
+  background: var(--color-primary);
 }
 
 .scrollbar__thumb {
-  background-color: var(--colorFill);
+  background-color: var(--color-fill);
 }
 
 .echart-tooltip {
-  background-color: rgba(#{var(--colorBgContainer)}, 0.8) !important;
+  background-color: rgba(#{var(--color-bg-container)}, 0.8) !important;
   backdrop-filter: blur(8px);
-  border-color: var(--colorBorder) !important;
+  border-color: var(--color-border) !important;
 }
 
 .view {
@@ -85,7 +85,7 @@ html {
 
 .field-help {
   font-size: 16px;
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
 }
 
 // html.dark .shiki,
@@ -101,25 +101,25 @@ html {
 .audit-view {
   .ant-select-disabled .ant-select-selector {
     background-color: transparent !important;
-    color: var(--colorText) !important;
+    color: var(--color-text) !important;
     border: none !important;
-    border-bottom: 1px solid var(--colorBorder) !important;
+    border-bottom: 1px solid var(--color-border) !important;
     border-radius: 0 !important;
   }
   .ant-input-affix-wrapper-disabled {
     background-color: transparent !important;
     border: none !important;
-    border-bottom: 1px solid var(--colorBorder) !important;
+    border-bottom: 1px solid var(--color-border) !important;
     border-radius: 0 !important;
     input {
-      color: var(--colorText) !important;
+      color: var(--color-text) !important;
     }
   }
   .ant-picker-disabled {
     background-color: transparent !important;
     border: none !important;
-    border-bottom: 1px solid var(--colorBorder) !important;
+    border-bottom: 1px solid var(--color-border) !important;
     border-radius: 0 !important;
-    color: var(--colorText) !important;
+    color: var(--color-text) !important;
   }
 }

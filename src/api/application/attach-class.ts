@@ -21,32 +21,32 @@ const url = '/admin-api/attach/type'
 export const getAttachClassList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<AttachClassVO>>({
     url: `${url}/page`,
-    params
+    params,
   })
 }
 
 export const createAttachClass = (data: AttachClassVO) => {
   return request.post({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const updateAttachClass = (data: AttachClassVO) => {
   return request.put({
     url: `${url}/update`,
-    data
+    data,
   })
 }
 
 export const deleteAttachClass = (id: string) => {
   return request.delete({
-    url: `${url}/delete?id=${id}`
+    url: `${url}/delete?id=${id}`,
   })
 }
 
 export const getAttachClassDetail = (id: string) => {
   return request.get<AttachClassVO>({
-    url: `${url}/get?id=${id}`
+    url: `${url}/get?id=${id}`,
   })
 }

@@ -9,7 +9,7 @@ import {
   getPermissionInfo,
   type LoginDTO,
   type LoginVO,
-  type PermissionInfoVO
+  type PermissionInfoVO,
 } from '@/api/login'
 import type { RouteRecordRaw } from 'vue-router'
 
@@ -35,7 +35,7 @@ export default defineStore('user', () => {
         username: username.trim(),
         password,
         tenantName,
-        captchaVerification
+        captchaVerification,
       })
         .then((data) => {
           const { accessToken, refreshToken, userId } = data
@@ -62,7 +62,7 @@ export default defineStore('user', () => {
       routerMap.value = menus
       user.value = {
         ...u,
-        avatar: u.avatar || defaultAvatar
+        avatar: u.avatar || defaultAvatar,
       }
       id.value = user.value.id as number
 
@@ -119,6 +119,6 @@ export default defineStore('user', () => {
     login,
     logout,
     getUserInfo,
-    user
+    user,
   }
 })

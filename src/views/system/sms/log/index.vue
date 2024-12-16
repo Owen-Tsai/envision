@@ -127,7 +127,7 @@ import {
   DownOutlined,
   ReloadOutlined,
   ExportOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
@@ -146,7 +146,7 @@ const [systemSmsReceiveStatus, systemSmsSendStatus, systemSmsChannelCode, system
     'system_sms_receive_status',
     'system_sms_send_status',
     'system_sms_channel_code',
-    'system_sms_template_type'
+    'system_sms_template_type',
   )
 
 const visible = ref(false)

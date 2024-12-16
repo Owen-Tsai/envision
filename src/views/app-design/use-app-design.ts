@@ -12,7 +12,7 @@ import {
   addMenuById,
   updateMenuById,
   type AppSchemaVO,
-  createAppSchema
+  createAppSchema,
 } from '@/api/fux'
 import nodes from '@/components/fux-core/_utils/initial-node-config'
 import type { StepsProps } from 'ant-design-vue'
@@ -29,21 +29,21 @@ const _defaultAppSchema: AppSchema = {
   form: {
     widgets: [],
     labelWidth: '88px',
-    labelAlign: 'right'
+    labelAlign: 'right',
   },
   flow: {
     nodes: [
       {
-        ...nodes['start']
-      }
-    ]
+        ...nodes['start'],
+      },
+    ],
   },
   info: {
     tables: [],
     gridColumns: false,
-    paginated: false
+    paginated: false,
   },
-  version: '1.0'
+  version: '1.0',
 }
 
 export const useSteps = () => {
@@ -52,12 +52,12 @@ export const useSteps = () => {
   const steps: StepsProps['items'] = [
     { title: '数据源配置' },
     { title: '表单设计' },
-    { title: '流程编排' }
+    { title: '流程编排' },
   ]
 
   return {
     step,
-    steps
+    steps,
   }
 }
 
@@ -101,14 +101,14 @@ export const useAppDesigner = () => {
     const xml = await getProcessXML({
       id: params.appId as string,
       name: appDetail.value?.name || 'unnamed',
-      data: appSchema.value!.flow.nodes
+      data: appSchema.value!.flow.nodes,
     })
 
     await updateProcessXML({
       id: appDetail.value!.processIds!,
       name: appDetail.value?.name || 'unnamed',
       bpmnXml: xml.data,
-      category: appDetail.value?.type || 'unknown'
+      category: appDetail.value?.type || 'unknown',
     })
   }
 
@@ -120,7 +120,7 @@ export const useAppDesigner = () => {
           if (node.props.actor?.value[0] != 'org') {
             return {
               uid: node.uid,
-              name: node.name
+              name: node.name,
             }
           }
         })
@@ -143,7 +143,7 @@ export const useAppDesigner = () => {
       name: `${params.appId}-${dayjs().format('YYYYMMDDHHmmss')}`,
       conf: `{}`,
       appId: params.appId as string,
-      id: schemaId.value
+      id: schemaId.value,
     })
 
     //在这里检查一下流程中有没有未选择审核人的节点
@@ -163,7 +163,7 @@ export const useAppDesigner = () => {
           await genAuditMenu()
           loading.value = false
           message.success('保存成功')
-        }
+        },
       })
     } else {
       message.error('流程编排中包含未选择审核人的节点！')
@@ -176,7 +176,7 @@ export const useAppDesigner = () => {
 
   provide<AppDesignerCtx>(APP_DESIGN_CTX, {
     appSchema,
-    appEditMode
+    appEditMode,
   })
 
   return {
@@ -185,7 +185,7 @@ export const useAppDesigner = () => {
     appEditMode,
     appSchema,
     loading,
-    saveAppDesign
+    saveAppDesign,
   }
 }
 

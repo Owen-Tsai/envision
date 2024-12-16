@@ -36,7 +36,7 @@ const columns: TableProps['columns'] = [
   { title: '名称', dataIndex: 'title', key: 'title', minWidth: 200 },
   { title: '创建时间', dataIndex: 'time', key: 'time', width: 200 },
   { title: '办结期限', dataIndex: 'deadline', key: 'deadline', width: 120 },
-  { title: '操作', key: 'actions', width: 140 }
+  { title: '操作', key: 'actions', width: 140 },
 ]
 
 const data: Record[] = [
@@ -46,24 +46,24 @@ const data: Record[] = [
     deadline: dayjs().add(4, 'days').toString(),
     history: [
       { desc: '申请人提交', time: '2023-12-20 08:52' },
-      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' }
-    ]
+      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' },
+    ],
   },
   {
     title: '高层次人才分类认定',
     time: '2024-02-13 14:32',
     history: [
       { desc: '申请人提交', time: '2023-12-20 08:52' },
-      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' }
-    ]
+      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' },
+    ],
   },
   {
     title: '高层次人才分类认定',
     time: '2024-02-13 14:32',
     history: [
       { desc: '申请人提交', time: '2023-12-20 08:52' },
-      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' }
-    ]
+      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' },
+    ],
   },
   {
     title: '高层次人才分类认定',
@@ -71,8 +71,8 @@ const data: Record[] = [
     deadline: dayjs().add(2, 'days').toString(),
     history: [
       { desc: '申请人提交', time: '2023-12-20 08:52' },
-      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' }
-    ]
+      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' },
+    ],
   },
   {
     title: '高层次人才分类认定',
@@ -80,9 +80,9 @@ const data: Record[] = [
     deadline: dayjs().add(1, 'month').toString(),
     history: [
       { desc: '申请人提交', time: '2023-12-20 08:52' },
-      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' }
-    ]
-  }
+      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' },
+    ],
+  },
 ]
 </script>
 

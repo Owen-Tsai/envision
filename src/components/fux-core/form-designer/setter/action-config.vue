@@ -65,8 +65,8 @@ const eventOpts = ['input', 'change', 'focus', 'blur', 'click']
 const props = defineProps({
   widget: {
     type: Object as PropType<FormWidget | SpecialWidget>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['update:widget'])
@@ -76,18 +76,18 @@ const selectedWidget = computed({
   get: () => props.widget,
   set: (val) => {
     emit('update:widget', val)
-  }
+  },
 })
 
 const { schema } = useDesignerInjection()
 
 const functions = computed(() =>
-  schema.value.form.function ? Object.values(schema.value.form.function) : null
+  schema.value.form.function ? Object.values(schema.value.form.function) : null,
 )
 
 const onFunctionSelected = (func: SelectValue, evtName: string) => {
   const id = Object.keys(schema.value.form.function!).find(
-    (key) => schema.value.form.function![key].name === func.option.name
+    (key) => schema.value.form.function![key].name === func.option.name,
   ) as string
   if (selectedWidget.value.props.event === undefined) {
     selectedWidget.value.props.event = {}
@@ -104,7 +104,7 @@ const setAction = (evt: string) => {
   }
   schema.value.form.function[id] = {
     name: `${evt}_${id}`,
-    body: `console.log(this)`
+    body: `console.log(this)`,
   }
   if (selectedWidget.value.props.event === undefined) {
     selectedWidget.value.props.event = {}
@@ -127,9 +127,9 @@ const toEdit = () => {
 
 <style lang="scss" scoped>
 .action-entry {
-  border: 1px solid var(--colorBorder);
+  border: 1px solid var(--color-border);
   padding: 4px 8px;
-  border-radius: var(--borderRadius);
+  border-radius: var(--border-radius);
   .header {
     @apply flex-between;
   }

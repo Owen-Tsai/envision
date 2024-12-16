@@ -49,11 +49,11 @@ const form = ref<FormInstance>()
 const emit = defineEmits(['update:schema', 'update:state'])
 const computedSchema = computed({
   get: () => schema,
-  set: (val) => emit('update:schema', val)
+  set: (val) => emit('update:schema', val),
 })
 const computedState = computed({
   get: () => state || {},
-  set: (val) => emit('update:state', val)
+  set: (val) => emit('update:state', val),
 })
 const computedAuditMode = computed(() => {
   return auditMode
@@ -110,13 +110,13 @@ const validate = (namePaths?: string[]) => {
 
 defineExpose({
   ...methods,
-  validate
+  validate,
 })
 </script>
 
 <style lang="scss" scoped>
 .data {
-  background-color: var(--colorBgContainer);
+  background-color: var(--color-bg-container);
   padding: 16px;
   flex-shrink: 0;
   width: 25%;

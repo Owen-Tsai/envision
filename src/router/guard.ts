@@ -12,7 +12,9 @@ router.beforeEach((to, from, next) => {
   const { setTitle } = useAppStore()
   const userStore = useUserStore()
   nProgress.start()
-  to.meta.title && setTitle(to.meta.title)
+  if (to.meta.title) {
+    setTitle(to.meta.title)
+  }
   if (getToken()) {
     if (to.path === '/login') {
       next({ path: '/' })

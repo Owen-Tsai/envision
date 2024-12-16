@@ -124,7 +124,7 @@ import {
   DownOutlined,
   ReloadOutlined,
   ExportOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
@@ -141,7 +141,7 @@ const [filterExpanded, toggle] = useToggle()
 const { infraBooleanString, systemUserType, systemNotifyTemplateType } = useDict(
   'infra_boolean_string',
   'system_user_type',
-  'system_notify_template_type'
+  'system_notify_template_type',
 )
 
 const visible = ref(false)

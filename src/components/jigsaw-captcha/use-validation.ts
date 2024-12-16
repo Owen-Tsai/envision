@@ -10,7 +10,7 @@ const useValidation = (cbk: { onSuccess: (v: string) => void; onError: () => voi
   const validationInfo = ref({
     visible: false,
     msg: '',
-    success: false
+    success: false,
   })
 
   const validate = async (mouseX: number, captcha?: CaptchaVO) => {
@@ -21,7 +21,7 @@ const useValidation = (cbk: { onSuccess: (v: string) => void; onError: () => voi
     const pointJson = JSON.stringify(pos)
     const vo: CaptchaValidationDTO = {
       pointJson: secretKey ? aesEncrypt(pointJson, secretKey) : pointJson,
-      token: token || ''
+      token: token || '',
     }
 
     try {
@@ -33,7 +33,7 @@ const useValidation = (cbk: { onSuccess: (v: string) => void; onError: () => voi
         validationInfo.value = {
           visible: true,
           msg: '验证通过',
-          success: true
+          success: true,
         }
         message.success('验证成功')
         onSuccess(captchaVerification)
@@ -41,7 +41,7 @@ const useValidation = (cbk: { onSuccess: (v: string) => void; onError: () => voi
         validationInfo.value = {
           visible: true,
           msg: '验证失败',
-          success: false
+          success: false,
         }
 
         message.error('验证失败')
@@ -58,7 +58,7 @@ const useValidation = (cbk: { onSuccess: (v: string) => void; onError: () => voi
 
   return {
     validationInfo,
-    validate
+    validate,
   }
 }
 

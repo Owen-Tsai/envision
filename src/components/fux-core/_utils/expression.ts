@@ -14,7 +14,7 @@ function evalExpression(expression: string, context: Record<string, any>): any {
       (match) => {
         const value = get(context, match)
         return value !== undefined ? JSON.stringify(value) : match
-      }
+      },
     )
 
     // 使用 Function 执行表达式并返回值

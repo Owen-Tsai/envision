@@ -30,7 +30,7 @@ const useActions = (requestData: () => void) => {
     visible,
     onEdit,
     onDelete,
-    onShowData
+    onShowData,
   }
 }
 

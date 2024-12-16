@@ -35,13 +35,13 @@ const computedSchema = computed({
   get: () => schema,
   set: (val) => {
     emit('update:schema', val)
-  }
+  },
 })
 
 const zoomPercentage = ref(100)
 const visible = reactive({
   setting: false,
-  schema: false
+  schema: false,
 })
 
 const { selectedNode } = useWorkflowCtxProvider(computedSchema)
@@ -52,7 +52,7 @@ watch(
     if (val) {
       visible.setting = true
     }
-  }
+  },
 )
 </script>
 

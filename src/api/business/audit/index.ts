@@ -25,7 +25,7 @@ export const getList = (taskDefKey: string, appId: string) => {
     url += `/admin-api/fux-bpm/get-my-task?actId=${taskDefKey}`
   }
   return request.get({
-    url: url
+    url: url,
   })
 }
 
@@ -51,7 +51,7 @@ export const rejectTask = async (data: TaskVO) => {
 export const backStartUserTask = async (data: TaskVO) => {
   return await request.put({
     url: '/admin-api/fusionx/framework/return-to-initiator',
-    data
+    data,
   })
 }
 
@@ -61,18 +61,18 @@ export const backTask = async (data) => {
 
 export const getEchoData = (appId: string, applyId: string) => {
   return request.get<EchoDataVO>({
-    url: `/admin-api/fusionx/framework/data-echo?appId=${appId}&targetId=${applyId}`
+    url: `/admin-api/fusionx/framework/data-echo?appId=${appId}&targetId=${applyId}`,
   })
 }
 
 export const getBackOptions = (parentProcessInstanceId?: string) => {
   return request.get({
-    url: `/admin-api/bpm/task/list-by-return?id=${parentProcessInstanceId}`
+    url: `/admin-api/bpm/task/list-by-return?id=${parentProcessInstanceId}`,
   })
 }
 
 export const getAuditProcessDetail = (processInstanceId: string) => {
   return request.get({
-    url: `/admin-api/fux-bpm/get-process-log?processInstanceId=${processInstanceId}`
+    url: `/admin-api/fux-bpm/get-process-log?processInstanceId=${processInstanceId}`,
   })
 }

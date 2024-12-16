@@ -34,7 +34,7 @@ export const aesEncrypt = (str: string, keyWord = 'XwKsGlMcdPMEhR1B') => {
   const srcs = crypto.enc.Utf8.parse(str)
   const encrypted = crypto.AES.encrypt(srcs, key, {
     mode: crypto.mode.ECB,
-    padding: crypto.pad.Pkcs7
+    padding: crypto.pad.Pkcs7,
   })
   return encrypted.toString()
 }

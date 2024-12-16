@@ -23,7 +23,7 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 const refreshToken = async () => {
   axios.defaults.headers['tenant-id'] = getTenantId()
   return await axios.post(
-    `${import.meta.env.VITE_API_URL}/admin-api/system/auth/refresh-token?refreshToken=${getRefreshToken()}`
+    `${import.meta.env.VITE_API_URL}/admin-api/system/auth/refresh-token?refreshToken=${getRefreshToken()}`,
   )
 }
 
@@ -44,7 +44,7 @@ const redirectForAuth = () => {
       },
       onCancel() {
         reloginHint.show = false
-      }
+      },
     })
   }
   return Promise.reject('登录超时')
@@ -91,7 +91,7 @@ export const buildReqInterceptors = (service?: AxiosInstance): ReqInterceptors =
     (err) => {
       console.error('request error:', err)
       return Promise.reject(err)
-    }
+    },
   ]
 }
 
@@ -185,6 +185,6 @@ export const buildRespInterceptors = (service?: AxiosInstance): RespInterceptors
 
       message.error(msg)
       return Promise.reject(msg)
-    }
+    },
   ]
 }

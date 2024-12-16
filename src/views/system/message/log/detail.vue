@@ -43,13 +43,13 @@ import type { LogVO } from '@/api/system/message/log'
 defineProps({
   entry: {
     type: Object as PropType<LogVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { infraBooleanString, systemUserType, systemNotifyTemplateType } = useDict(
   'infra_boolean_string',
   'system_user_type',
-  'system_notify_template_type'
+  'system_notify_template_type',
 )
 </script>

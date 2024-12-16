@@ -7,7 +7,7 @@ const useHighlighter = (code: string, lang: BundledLanguage): string => {
 
   const ret = highlighter.codeToHtml(code, {
     lang,
-    theme: theme === 'dark' ? 'vitesse-dark' : 'vitesse-light'
+    theme: theme === 'dark' ? 'vitesse-dark' : 'vitesse-light',
   })
 
   return ret

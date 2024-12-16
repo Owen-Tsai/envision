@@ -12,7 +12,7 @@ export const columns: TableProps['columns'] = [
   // { key: 'membertype', title: '申请人类型', dataIndex: 'membertype' },
   // { key: 'workunit', title: '单位名称', dataIndex: 'workunit' },
   { key: 'startTime', title: '提交时间', dataIndex: 'startTime' },
-  { key: 'actions', title: '操作', dataIndex: 'actions', width: 240 }
+  { key: 'actions', title: '操作', dataIndex: 'actions', width: 240 },
 ]
 
 export const useTable = (filterFormRef: Ref<FormInstance | undefined>) => {
@@ -22,8 +22,8 @@ export const useTable = (filterFormRef: Ref<FormInstance | undefined>) => {
   const { data, pending, execute } = useRequest(
     () => getList(route.query.taskDefKey as any, route.params.appId as string),
     {
-      immediate: true
-    }
+      immediate: true,
+    },
   )
 
   const pagination = computed<TablePaginationConfig>(() => ({
@@ -34,7 +34,7 @@ export const useTable = (filterFormRef: Ref<FormInstance | undefined>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onChange = ({ current, pageSize }: TablePaginationConfig) => {
@@ -63,6 +63,6 @@ export const useTable = (filterFormRef: Ref<FormInstance | undefined>) => {
     queryParams,
     onFilter,
     onFilterReset,
-    onChange
+    onChange,
   }
 }

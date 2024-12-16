@@ -22,7 +22,7 @@ const useActions = (requestData: () => void) => {
     testConfig(record.id!).then((res) => {
       Modal.success({
         title: '测试通过',
-        content: `文件上传测试成功，预览地址 ${res}`
+        content: `文件上传测试成功，预览地址 ${res}`,
       })
     })
   }
@@ -32,7 +32,7 @@ const useActions = (requestData: () => void) => {
     visible,
     onEdit,
     onDelete,
-    onTest
+    onTest,
   }
 }
 

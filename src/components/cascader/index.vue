@@ -45,7 +45,7 @@ const onChange: CascaderProps['onChange'] = (newValue, paths) => {
 
 const findNodePaths = (
   options: CascaderOptionType[],
-  values: (string | number)[] | string | number
+  values: (string | number)[] | string | number,
 ) => {
   const targetSet = Array.isArray(values) ? new Set(values) : new Set([values])
   console.log('targetSet is', targetSet)
@@ -89,12 +89,12 @@ watch(
 
     const path = findNodePaths(
       options as CascaderOptionType[],
-      value as string | number | (string | number)[]
+      value as string | number | (string | number)[],
     )
 
     console.log(path)
 
     model.value = path
-  }
+  },
 )
 </script>

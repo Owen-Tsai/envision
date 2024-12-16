@@ -14,7 +14,7 @@ const useApi = (schema: Ref<AppSchema>, state: Ref<Record<string, any>>) => {
       request
         .get({
           url,
-          params
+          params,
         })
         .then((res) => {
           set(state.value, dataIndex, res)

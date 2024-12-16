@@ -12,7 +12,7 @@ export const columns: TableProps['columns'] = [
   { key: 'permission', title: '权限标识', dataIndex: 'permission' },
   { key: 'component', title: '组件路径', dataIndex: 'component' },
   { key: 'componentName', title: '组件名称', dataIndex: 'componentName' },
-  { key: 'actions', title: '操作', fixed: 'right', width: 220 }
+  { key: 'actions', title: '操作', fixed: 'right', width: 220 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance>) => {
@@ -35,6 +35,6 @@ export const useTable = (formRef: Ref<FormInstance>) => {
     execute,
     queryParams,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

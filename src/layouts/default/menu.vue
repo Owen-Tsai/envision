@@ -38,7 +38,7 @@ menuItems.value = generateMenu(userStore.routerMap!)
 menuItems.value.unshift({
   label: '首页',
   key: '/index',
-  icon: h(AppstoreOutlined)
+  icon: h(AppstoreOutlined),
 })
 
 loading.value = false

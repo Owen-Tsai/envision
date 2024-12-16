@@ -12,7 +12,7 @@ export const columns: TableProps['columns'] = [
   { key: 'mobile', title: '已绑定手机', dataIndex: 'mobile' },
   { key: 'status', title: '状态' },
   { key: 'createTime', title: '注册时间', dataIndex: 'createTime' },
-  { key: 'actions', title: '操作' }
+  { key: 'actions', title: '操作' },
 ]
 
 export const useUserTable = (formRef: Ref<FormInstance>) => {
@@ -26,7 +26,7 @@ export const useUserTable = (formRef: Ref<FormInstance>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onChange = ({ current, pageSize }: TablePaginationConfig) => {
@@ -48,7 +48,7 @@ export const useUserTable = (formRef: Ref<FormInstance>) => {
   }
 
   const { data, pending, execute } = useRequest(() => getUsers(queryParams.value), {
-    immediate: true
+    immediate: true,
   })
 
   return {
@@ -59,6 +59,6 @@ export const useUserTable = (formRef: Ref<FormInstance>) => {
     pagination,
     onChange,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

@@ -29,7 +29,7 @@ const computedOpen = computed({
   get: () => open,
   set: (val) => {
     emit('update:open', val)
-  }
+  },
 })
 
 const title = computed(() => {
@@ -49,7 +49,7 @@ const onAnimationChange = (open: boolean) => {
 
 <style lang="scss" scoped>
 .debug-container {
-  background-color: var(--colorBgLayout);
+  background-color: var(--color-bg-layout);
   padding: 16px;
 }
 </style>

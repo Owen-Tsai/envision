@@ -58,7 +58,7 @@ const model = computed({
   get: () => config,
   set: (val) => {
     emit('update:config', val)
-  }
+  },
 })
 
 const ctx = useRendererInjection()

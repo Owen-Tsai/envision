@@ -114,7 +114,7 @@ export default defineStore('tabs', () => {
       addTab(
         fullPath.value,
         meta.value.title || (name.value as string),
-        meta.value.keepAlive && name.value ? (name.value as string) : undefined
+        meta.value.keepAlive && name.value ? (name.value as string) : undefined,
       )
     }
   })
@@ -126,6 +126,6 @@ export default defineStore('tabs', () => {
     removeTab,
     removeAndOpenTab,
     removeTabsAfter,
-    removeOtherTabs
+    removeOtherTabs,
   }
 })

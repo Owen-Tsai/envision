@@ -131,7 +131,7 @@ import {
   ReloadOutlined,
   PlusOutlined,
   EditOutlined,
-  DeleteOutlined
+  DeleteOutlined,
 } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
@@ -148,7 +148,7 @@ const [filterExpanded, toggle] = useToggle()
 
 const { commonStatus, systemNotifyTemplateType } = useDict(
   'common_status',
-  'system_notify_template_type'
+  'system_notify_template_type',
 )
 
 const { data, execute, onChange, onFilter, onFilterReset, pagination, pending, queryParams } =

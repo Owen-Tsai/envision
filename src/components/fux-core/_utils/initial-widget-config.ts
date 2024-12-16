@@ -5,7 +5,7 @@ import type { WidgetMap, WidgetType } from '@/types/fux-core/form'
 
 const icons = import.meta.glob('@/components/fux-core/_icons/*.vue', {
   eager: true,
-  import: 'default'
+  import: 'default',
 })
 
 const getIcon = (widgetType: WidgetType) => {
@@ -22,16 +22,16 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '输入框',
     props: {
       field: {
-        label: '输入框'
+        label: '输入框',
       },
       prefix: {
-        type: 'text'
+        type: 'text',
       },
       suffix: {
-        type: 'text'
-      }
+        type: 'text',
+      },
     },
-    icon: getIcon('input')
+    icon: getIcon('input'),
   },
   inputNumber: {
     class: 'form',
@@ -40,13 +40,13 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '数字输入框',
     props: {
       field: {
-        label: '数字输入框'
+        label: '数字输入框',
       },
       prefix: {
-        type: 'text'
-      }
+        type: 'text',
+      },
     },
-    icon: getIcon('inputNumber')
+    icon: getIcon('inputNumber'),
   },
   textarea: {
     class: 'form',
@@ -55,10 +55,10 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '文本域',
     props: {
       field: {
-        label: '文本域'
-      }
+        label: '文本域',
+      },
     },
-    icon: getIcon('textarea')
+    icon: getIcon('textarea'),
   },
   select: {
     class: 'form',
@@ -67,17 +67,17 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '选择框',
     props: {
       field: {
-        label: '选择框'
+        label: '选择框',
       },
       options: {
         type: 'static',
         value: [
           { label: '选项1', value: '1' },
-          { label: '选项2', value: '2' }
-        ]
-      }
+          { label: '选项2', value: '2' },
+        ],
+      },
     },
-    icon: getIcon('select')
+    icon: getIcon('select'),
   },
   checkbox: {
     class: 'form',
@@ -86,17 +86,17 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '多选框',
     props: {
       field: {
-        label: '多选框'
+        label: '多选框',
       },
       options: {
         type: 'static',
         value: [
           { label: '选项1', value: '1' },
-          { label: '选项2', value: '2' }
-        ]
-      }
+          { label: '选项2', value: '2' },
+        ],
+      },
     },
-    icon: getIcon('checkbox')
+    icon: getIcon('checkbox'),
   },
   radio: {
     class: 'form',
@@ -105,17 +105,17 @@ const initWidgetConfig: Partial<WidgetMap> = {
     uid: '',
     props: {
       field: {
-        label: '单选框'
+        label: '单选框',
       },
       options: {
         type: 'static',
         value: [
           { label: '选项1', value: '1' },
-          { label: '选项2', value: '2' }
-        ]
-      }
+          { label: '选项2', value: '2' },
+        ],
+      },
     },
-    icon: getIcon('radio')
+    icon: getIcon('radio'),
   },
   rate: {
     class: 'form',
@@ -124,10 +124,10 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '评分',
     props: {
       field: {
-        label: '评分'
-      }
+        label: '评分',
+      },
     },
-    icon: getIcon('rate')
+    icon: getIcon('rate'),
   },
   slider: {
     class: 'form',
@@ -136,10 +136,10 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '滑动输入条',
     props: {
       field: {
-        label: '滑动输入条'
-      }
+        label: '滑动输入条',
+      },
     },
-    icon: getIcon('slider')
+    icon: getIcon('slider'),
   },
   switch: {
     class: 'form',
@@ -148,10 +148,10 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '开关',
     props: {
       field: {
-        label: '开关'
-      }
+        label: '开关',
+      },
     },
-    icon: getIcon('switch')
+    icon: getIcon('switch'),
   },
   cascader: {
     class: 'form',
@@ -160,14 +160,14 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '级联选择器',
     props: {
       field: {
-        label: '级联选择器'
+        label: '级联选择器',
       },
       options: {
         type: 'static',
-        value: `[{"label":"山东省","value":"37","children":[{"label":"济南市","value":"3701","children":[{"label":"市中区","value":"370101"},{"label":"历下区","value":"370102"}]},{"label":"青岛市","value":"3702","children":[{"label":"市北区","value":"370203"},{"label":"市南区","value":"370202"}]}]},{"label":"北京市","value":"11","children":[{"label":"东城区","value":"110101"},{"label":"西城区","value":"110102"}]}]`
-      }
+        value: `[{"label":"山东省","value":"37","children":[{"label":"济南市","value":"3701","children":[{"label":"市中区","value":"370101"},{"label":"历下区","value":"370102"}]},{"label":"青岛市","value":"3702","children":[{"label":"市北区","value":"370203"},{"label":"市南区","value":"370202"}]}]},{"label":"北京市","value":"11","children":[{"label":"东城区","value":"110101"},{"label":"西城区","value":"110102"}]}]`,
+      },
     },
-    icon: getIcon('cascader')
+    icon: getIcon('cascader'),
   },
   treeSelect: {
     class: 'form',
@@ -176,14 +176,14 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '树形选择器',
     props: {
       field: {
-        label: '树形选择器'
+        label: '树形选择器',
       },
       options: {
         type: 'static',
-        value: `[{"label":"山东省","value":"37","children":[{"label":"济南市","value":"3701","children":[{"label":"市中区","value":"370101"},{"label":"历下区","value":"370102"}]},{"label":"青岛市","value":"3702","children":[{"label":"市北区","value":"370203"},{"label":"市南区","value":"370202"}]}]},{"label":"北京市","value":"11","children":[{"label":"东城区","value":"110101"},{"label":"西城区","value":"110102"}]}]`
-      }
+        value: `[{"label":"山东省","value":"37","children":[{"label":"济南市","value":"3701","children":[{"label":"市中区","value":"370101"},{"label":"历下区","value":"370102"}]},{"label":"青岛市","value":"3702","children":[{"label":"市北区","value":"370203"},{"label":"市南区","value":"370202"}]}]},{"label":"北京市","value":"11","children":[{"label":"东城区","value":"110101"},{"label":"西城区","value":"110102"}]}]`,
+      },
     },
-    icon: getIcon('treeSelect')
+    icon: getIcon('treeSelect'),
   },
   datePicker: {
     class: 'form',
@@ -192,11 +192,11 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '日期选择器',
     props: {
       field: {
-        label: '日期选择器'
+        label: '日期选择器',
       },
-      picker: 'date'
+      picker: 'date',
     },
-    icon: getIcon('datePicker')
+    icon: getIcon('datePicker'),
   },
   timePicker: {
     class: 'form',
@@ -205,10 +205,10 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '时间选择器',
     props: {
       field: {
-        label: '时间选择器'
-      }
+        label: '时间选择器',
+      },
     },
-    icon: getIcon('timePicker')
+    icon: getIcon('timePicker'),
   },
   dateRangePicker: {
     class: 'form',
@@ -217,13 +217,13 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '日期范围选择器',
     props: {
       field: {
-        label: '日期范围'
+        label: '日期范围',
       },
       picker: 'date',
       defaultValue: [dayjs(), dayjs().add(1, 'day')],
-      placeholder: ['开始日期', '结束日期']
+      placeholder: ['开始日期', '结束日期'],
     },
-    icon: getIcon('datePicker')
+    icon: getIcon('datePicker'),
   },
   timeRangePicker: {
     class: 'form',
@@ -232,12 +232,12 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '时间范围选择器',
     props: {
       field: {
-        label: '时间范围'
+        label: '时间范围',
       },
       defaultValue: [dayjs(), dayjs().add(1, 'hour')],
-      placeholder: ['开始时间', '结束时间']
+      placeholder: ['开始时间', '结束时间'],
     },
-    icon: getIcon('timePicker')
+    icon: getIcon('timePicker'),
   },
   grid: {
     class: 'layout',
@@ -248,11 +248,11 @@ const initWidgetConfig: Partial<WidgetMap> = {
       field: {},
       children: [
         { widgets: [], span: 12 },
-        { widgets: [], span: 12 }
+        { widgets: [], span: 12 },
       ],
-      gutter: 24
+      gutter: 24,
     },
-    icon: getIcon('grid')
+    icon: getIcon('grid'),
   },
   tabs: {
     class: 'layout',
@@ -263,13 +263,13 @@ const initWidgetConfig: Partial<WidgetMap> = {
       field: {},
       children: [
         { widgets: [], title: '标签页1' },
-        { widgets: [], title: '标签页2' }
+        { widgets: [], title: '标签页2' },
       ],
       state: {
-        current: 0
-      }
+        current: 0,
+      },
     },
-    icon: getIcon('tabs')
+    icon: getIcon('tabs'),
   },
   steps: {
     class: 'layout',
@@ -280,13 +280,13 @@ const initWidgetConfig: Partial<WidgetMap> = {
       field: {},
       children: [
         { widgets: [], title: '步骤1' },
-        { widgets: [], title: '步骤2' }
+        { widgets: [], title: '步骤2' },
       ],
       state: {
-        current: 0
-      }
+        current: 0,
+      },
     },
-    icon: getIcon('steps')
+    icon: getIcon('steps'),
   },
   subForm: {
     class: 'layout',
@@ -295,11 +295,11 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '子表单',
     props: {
       field: {
-        label: '子表单'
+        label: '子表单',
       },
-      children: []
+      children: [],
     },
-    icon: getIcon('subForm')
+    icon: getIcon('subForm'),
   },
   dataTable: {
     class: 'layout',
@@ -308,17 +308,17 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '数据表格',
     props: {
       field: {
-        label: '数据表格'
+        label: '数据表格',
       },
       widgets: [],
       pagination: {},
       form: {},
       formWidth: '440px',
       state: {
-        mode: 'table'
-      }
+        mode: 'table',
+      },
     },
-    icon: getIcon('dataTable')
+    icon: getIcon('dataTable'),
   },
   upload: {
     class: 'form',
@@ -327,11 +327,11 @@ const initWidgetConfig: Partial<WidgetMap> = {
     name: '文件上传',
     props: {
       field: {
-        label: '文件上传'
-      }
+        label: '文件上传',
+      },
     },
-    icon: getIcon('upload')
-  }
+    icon: getIcon('upload'),
+  },
 }
 
 export default initWidgetConfig

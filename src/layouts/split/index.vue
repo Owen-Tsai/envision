@@ -127,7 +127,7 @@ const title = import.meta.env.VITE_APP_TITLE
   h1 {
     @apply mb-0 font-bold;
     @inlclude titleFont;
-    font-size: var(--fontSizeLG);
+    font-size: var(--font-sizelg);
     color: rgba(255, 255, 255, 0.85); //!override text color in darkened sider
   }
 }

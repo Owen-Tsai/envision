@@ -37,39 +37,39 @@ const prefix = '/admin-api/system/dict-data'
  */
 export const getDictData = (dictType: string) => {
   return request.get<DictDataVO>({
-    url: `${prefix}/dict-list?type=${dictType}`
+    url: `${prefix}/dict-list?type=${dictType}`,
   })
 }
 
 export const getDictDataList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<DictDataItemVO>>({
     url: `${prefix}/page`,
-    params
+    params,
   })
 }
 
 export const getDictDataDetail = (id: number) => {
   return request.get<DictDataItemVO>({
-    url: `${prefix}/get?id=${id}`
+    url: `${prefix}/get?id=${id}`,
   })
 }
 
 export const addDictData = (data: Partial<DictDataItemVO>) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updateDictData = (data: Partial<DictDataItemVO>) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 
 export const deleteDictData = (id: number) => {
   return request.delete({
-    url: `${prefix}/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`,
   })
 }

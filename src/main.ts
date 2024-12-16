@@ -35,7 +35,7 @@ app.component('EUpload', Upload)
 app.component('ECounter', Counter)
 
 app.use(iconPlugin, {
-  icons: antIcons
+  icons: antIcons,
 })
 
 app.mount('#app')

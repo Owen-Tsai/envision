@@ -13,32 +13,32 @@ const url = '/admin-api/infra/data-source-config'
 
 export const getDataSourceList = () => {
   return request.get<DataSourceVO[]>({
-    url: `${url}/list`
+    url: `${url}/list`,
   })
 }
 
 export const addDataSource = (data: DataSourceVO) => {
   return request.post({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const getDataSourceDetail = (id: number) => {
   return request.get<DataSourceVO>({
-    url: `${url}/get?id=${id}`
+    url: `${url}/get?id=${id}`,
   })
 }
 
 export const updateDataSource = (data: DataSourceVO) => {
   return request.put({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const deleteDataSourceDetail = (id: number) => {
   return request.delete({
-    url: `${url}/get?id=${id}`
+    url: `${url}/get?id=${id}`,
   })
 }

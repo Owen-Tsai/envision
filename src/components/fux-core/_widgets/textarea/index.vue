@@ -28,7 +28,7 @@ const autosize = computed(() => {
   if (config.props.minRows || config.props.maxRows) {
     return {
       minrows: config.props.minRows,
-      maxRows: config.props.maxRows
+      maxRows: config.props.maxRows,
     }
   } else {
     return config.props.autoResize

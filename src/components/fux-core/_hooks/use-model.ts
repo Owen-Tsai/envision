@@ -18,7 +18,7 @@ export const useModel = (widget: Widget) => {
       if (requireTransform(widget)) {
         return toWidgetValue(
           get(formData.value, key),
-          (widget as WidgetMap['datePicker']).props.valueFormat
+          (widget as WidgetMap['datePicker']).props.valueFormat,
         )
       } else {
         return get(formData.value, key)
@@ -31,13 +31,13 @@ export const useModel = (widget: Widget) => {
           set(
             formData.value,
             key,
-            toSubmitValue(val, (widget as WidgetMap['datePicker']).props.submitFormat)
+            toSubmitValue(val, (widget as WidgetMap['datePicker']).props.submitFormat),
           )
         } else {
           set(formData.value, key, val)
         }
       }
-    }
+    },
   })
 
   watch(
@@ -48,7 +48,7 @@ export const useModel = (widget: Widget) => {
         // re-call the setter to update format
         model.value = newVal
       }
-    }
+    },
   )
 
   return { model }

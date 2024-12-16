@@ -39,7 +39,7 @@ export type ListQueryParams = CommonQueryParams & {
 export const getList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<ErrorLogVO>>({
     url: '/admin-api/infra/api-error-log/page',
-    params
+    params,
   })
 }
 
@@ -47,7 +47,7 @@ export const exportLog = (params?: ListQueryParams) => {
   return request.download({
     url: '/admin-api/infra/api-error-log/export-excel',
     params,
-    filename: 'API错误日志.xlsx'
+    filename: 'API错误日志.xlsx',
   })
 }
 
@@ -56,7 +56,7 @@ export const setProcessStatus = (id: number, status: number) => {
     url: '/admin-api/infra/api-error-log/update-status',
     params: {
       id,
-      processStatus: status
-    }
+      processStatus: status,
+    },
   })
 }

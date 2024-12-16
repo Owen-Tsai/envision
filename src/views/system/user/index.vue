@@ -156,7 +156,7 @@
                           'system:user:update',
                           'system:user:update-password',
                           'system:user:delete',
-                          'system:permission:assign-user-role'
+                          'system:permission:assign-user-role',
                         )
                       "
                     >
@@ -230,7 +230,7 @@ import {
   DownOutlined,
   PlusOutlined,
   ExportOutlined,
-  ReloadOutlined
+  ReloadOutlined,
 } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import type { UserVO } from '@/api/system/user'
@@ -247,7 +247,7 @@ import useActions from './use-actions'
 const layout = import.meta.env.VITE_DEFAULT_LAYOUT
 const style = ref<{ minHeight: string; top: string }>({
   minHeight: 'calc(100vh - 130px)',
-  top: '110px'
+  top: '110px',
 })
 
 if (layout === 'split') {
@@ -270,7 +270,7 @@ const {
   filteredTreeData,
   searchText,
   selectedKeys,
-  onTreeNodeSelect
+  onTreeNodeSelect,
 } = useDeptTree(queryParams, execute)
 
 const { entry, visible, onDelete, onEdit, onSetPassword, onSetRole, onSetStatus } =

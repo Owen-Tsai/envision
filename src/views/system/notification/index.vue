@@ -133,7 +133,7 @@ import {
   ReloadOutlined,
   EditOutlined,
   DeleteOutlined,
-  PlusOutlined
+  PlusOutlined,
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'

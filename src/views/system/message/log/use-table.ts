@@ -13,14 +13,14 @@ export const columns: TableProps['columns'] = [
   { key: 'readStatus', title: '是否已读', dataIndex: 'readStatus' },
   { key: 'sendTime', title: '发送时间', dataIndex: 'sendTime' },
   { key: 'readTime', title: '阅读时间', dataIndex: 'readTime' },
-  { key: 'actions', title: '操作', fixed: 'right', width: 60 }
+  { key: 'actions', title: '操作', fixed: 'right', width: 60 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance>) => {
   const queryParams = ref<ListQueryParams>({})
 
   const { data, pending, execute } = useRequest(() => getList(queryParams.value), {
-    immediate: true
+    immediate: true,
   })
 
   const onFilter = () => {
@@ -42,7 +42,7 @@ export const useTable = (formRef: Ref<FormInstance>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onChange = ({ current, pageSize }: TablePaginationConfig) => {
@@ -60,6 +60,6 @@ export const useTable = (formRef: Ref<FormInstance>) => {
     queryParams,
     onChange,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

@@ -62,7 +62,7 @@ import {
   getTemplateDetail,
   addTemplate,
   updateTemplate,
-  type TemplateVO
+  type TemplateVO,
 } from '@/api/system/sms/template'
 import useDict from '@/hooks/use-dict'
 import type { ChannelListLiteVO } from '@/api/system/sms/channel'
@@ -75,23 +75,23 @@ const rules = ref<FormProps['rules']>({
   channelId: [{ required: true, message: '请选择短信渠道' }],
   name: [{ required: true, message: '请输入模板名称' }],
   code: [{ required: true, message: '请输入模板编码' }],
-  content: [{ required: true, message: '请输入模板内容' }]
+  content: [{ required: true, message: '请输入模板内容' }],
 })
 
 const props = defineProps({
   record: {
-    type: Object as PropType<TemplateVO>
+    type: Object as PropType<TemplateVO>,
   },
   channelData: {
     type: Array as PropType<ChannelListLiteVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
 
 const formData = ref<TemplateVO>({
-  status: 0
+  status: 0,
 })
 const formRef = ref<FormInstance>()
 

@@ -31,66 +31,66 @@ const url = `/workflow/app-schema`
 
 export const getAppDesignSchema = (id: string) => {
   return request.get<AppDesignSchemaVO>({
-    url: `${url}/get?id=${id}`
+    url: `${url}/get?id=${id}`,
   })
 }
 
 export const getSchemaByAppId = (appId: string) => {
   return request.get<AppDesignSchemaVO>({
-    url: `${url}/get-by-app-id?appId=${appId}`
+    url: `${url}/get-by-app-id?appId=${appId}`,
   })
 }
 
 export const updateAppDesignSchema = (data: AppDesignSchemaVO) => {
   return request.put<string>({
     url: `${url}/update`,
-    data
+    data,
   })
 }
 
 export const deleteAppDesignSchema = (id: string) => {
   return request.delete({
-    url: `${url}/delete?id=${id}`
+    url: `${url}/delete?id=${id}`,
   })
 }
 
 export const listAppDesignSchema = () => {
   return request.get<AppDesignSchemaVO[]>({
-    url: `${url}/list`
+    url: `${url}/list`,
   })
 }
 
 export const createAppDesignSchema = (data: AppDesignSchemaVO) => {
   return request.post<string>({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const getProcessXML = (data: XMLGenerateVO) => {
   return request.post<XMLRespVO>({
     url: '/fusionx/framework/xml-by-json',
-    data
+    data,
   })
 }
 
 export const updateProcessXML = (data: XMLUpdateVO) => {
   return request.put({
     url: '/bpm/model/update',
-    data
+    data,
   })
 }
 
 export const addMenuById = (id: string, map: Array<{ uid: string; name: string }>) => {
   return request.post({
     url: `${url}/add-menu-by-id`,
-    data: { id, map }
+    data: { id, map },
   })
 }
 
 export const updateMenuById = (id: string, map: Array<{ uid: string; name: string }>) => {
   return request.post({
     url: `${url}/update-menu-by-id`,
-    data: { id, map }
+    data: { id, map },
   })
 }

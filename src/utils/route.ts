@@ -39,13 +39,13 @@ export const generateRoutes = (menuVO: MenuVO[]): RouteRecordRaw[] => {
           customLayout: rawEntry.customLayout,
           keepAlive: !!rawEntry.keepAlive,
           title: rawEntry.name || rawEntry.componentName || '',
-          visible: rawEntry.visible
+          visible: rawEntry.visible,
         }
 
         const entry: any = {
           name: rawEntry.componentName,
           path: rawEntry.path,
-          meta
+          meta,
         }
 
         if (rawEntry.customLayout) {
@@ -62,9 +62,9 @@ export const generateRoutes = (menuVO: MenuVO[]): RouteRecordRaw[] => {
                   path: '',
                   name: rawEntry.componentName + 'Child',
                   component: loadComponentFrom(rawEntry.component!, 'views'),
-                  meta
-                }
-              ]
+                  meta,
+                },
+              ],
             }
 
             ret.push(parentRecord as RouteRecordRaw)
@@ -93,7 +93,7 @@ export const generateRoutes = (menuVO: MenuVO[]): RouteRecordRaw[] => {
           // do not process menu entries that already been marked as processed
           entry.children = traverse(
             rawEntry.children!.filter((e) => e.skipProcess !== true),
-            rawEntry.path
+            rawEntry.path,
           )
         }
 

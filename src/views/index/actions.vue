@@ -26,7 +26,7 @@ const actions = ref([
   { label: '生活补贴审核', icon },
   { label: '测试应用10001审核', icon },
   { label: '测试应用10002审核', icon },
-  { label: '测试应用10003审核', icon }
+  { label: '测试应用10003审核', icon },
 ])
 
 const getShortName = (name: string) => {
@@ -37,18 +37,18 @@ const getShortName = (name: string) => {
 <style lang="scss" scoped>
 .action-item {
   @apply flex p-2 cursor-pointer gap-2;
-  background-color: var(--colorFillTertiary);
-  border-radius: var(--borderRadius);
+  background-color: var(--color-fill-tertiary);
+  border-radius: var(--border-radius);
 
   .icon-plus {
     background-color: transparent !important;
-    border: 1px dashed var(--colorBorder);
-    color: var(--colorTextSecondary);
+    border: 1px dashed var(--color-border);
+    color: var(--color-text-secondary);
   }
 
   .icon-div {
     @apply h-12 w-12 rounded inline-flex items-center justify-center flex-shrink-0;
-    background-color: var(--colorFillTertiary);
+    background-color: var(--color-fill-tertiary);
   }
   .icon-img {
     @apply h-12 w-12;
@@ -56,13 +56,13 @@ const getShortName = (name: string) => {
   .label {
   }
   &:hover {
-    color: var(--colorPrimaryText);
+    color: var(--color-primary-text);
     .icon {
-      background-color: var(--colorPrimaryBg);
+      background-color: var(--color-primary-bg);
     }
     .icon-plus {
-      border-color: var(--colorPrimaryText);
-      color: var(--colorPrimaryText);
+      border-color: var(--color-primary-text);
+      color: var(--color-primary-text);
     }
   }
 }

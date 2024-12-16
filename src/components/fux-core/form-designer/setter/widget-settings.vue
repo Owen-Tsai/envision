@@ -87,7 +87,7 @@ import initWidgetConfig from '../../_utils/initial-widget-config'
 
 const components = import.meta.glob('../../_widgets/**/settings.vue', {
   eager: true,
-  import: 'default'
+  import: 'default',
 })
 
 const { schema, selectedWidget } = useDesignerInjection()
@@ -110,8 +110,8 @@ const onWdigetTypeChange = (v: SelectValue) => {
     ...newOpts.props,
     field: {
       name: selectedWidget.value?.props.field.name,
-      label: selectedWidget.value?.props.field.label
-    }
+      label: selectedWidget.value?.props.field.label,
+    },
   }
 }
 </script>

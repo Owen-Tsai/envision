@@ -36,8 +36,8 @@ import useDict from '@/hooks/use-dict'
 const props = defineProps({
   profile: {
     type: Object as PropType<ProfileVO | undefined>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['success'])

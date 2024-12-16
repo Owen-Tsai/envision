@@ -156,7 +156,7 @@ import {
   DownOutlined,
   ReloadOutlined,
   ExportOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
@@ -170,7 +170,7 @@ const requestMethodsOptions = [
   { value: 'GET' },
   { value: 'POST' },
   { value: 'PUT' },
-  { value: 'DELETE' }
+  { value: 'DELETE' },
 ]
 
 const filterForm = ref<FormInstance>()
@@ -179,7 +179,7 @@ const [filterExpanded, toggle] = useToggle(false)
 
 const [userType, infraApiErrorLogProcessStatus] = useDict(
   'user_type',
-  'infra_api_error_log_process_status'
+  'infra_api_error_log_process_status',
 )
 
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =

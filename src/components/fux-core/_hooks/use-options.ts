@@ -7,7 +7,7 @@ import type {
   CheckboxGroupProps,
   RadioGroupProps,
   CascaderProps,
-  TreeSelectProps
+  TreeSelectProps,
 } from 'ant-design-vue'
 import type { WidgetMap, WidgetPropsMap } from '@/types/fux-core/form'
 import type { DictDataEntry } from '@/api/system/dict/data'
@@ -26,9 +26,9 @@ type Options = CheckboxGroupProps['options'] | SelectProps['options'] | RadioGro
  * used in select, checkbox, radio components
  */
 export const useOptions = <
-  T extends WidgetMap['select'] | WidgetMap['checkbox'] | WidgetMap['radio']
+  T extends WidgetMap['select'] | WidgetMap['checkbox'] | WidgetMap['radio'],
 >(
-  config: T
+  config: T,
 ): { options: Ref<any> } => {
   const optionAttr = config.props.options
   const options = ref<OptionType<T> | []>([])
@@ -59,7 +59,7 @@ export const useOptions = <
         })
       }
     },
-    { immediate: true, deep: true }
+    { immediate: true, deep: true },
   )
 
   emitter.on('update:state', () => {
@@ -71,12 +71,12 @@ export const useOptions = <
   })
 
   return {
-    options
+    options,
   }
 }
 
 export const useTreeStructureOptions = <T extends WidgetMap['treeSelect'] | WidgetMap['cascader']>(
-  config: T
+  config: T,
 ): { options: Ref<any> } => {
   const optionAttr = config.props.options
   const options =
@@ -104,7 +104,7 @@ export const useTreeStructureOptions = <T extends WidgetMap['treeSelect'] | Widg
   })
 
   return {
-    options
+    options,
   }
 }
 
@@ -114,9 +114,9 @@ export const useOptionInfo = <
     | WidgetMap['checkbox']
     | WidgetMap['radio']
     | WidgetMap['cascader']
-    | WidgetMap['treeSelect']
+    | WidgetMap['treeSelect'],
 >(
-  config: T
+  config: T,
 ) => {
   const rendererCtx = useRendererInjection()
 
@@ -134,21 +134,21 @@ export const useOptionInfo = <
   })
 
   return {
-    optionSetInfo
+    optionSetInfo,
   }
 }
 
 export const useOptionSettings = (
   model: WritableComputedRef<
     WidgetPropsMap['select'] | WidgetPropsMap['checkbox'] | WidgetPropsMap['radio']
-  >
+  >,
 ) => {
   const cachedMap = ref<Record<string, any>>({})
 
   const addOption = () => {
     ;(model.value.options.value as Options)?.push({
       label: undefined,
-      value: ''
+      value: '',
     })
   }
 
@@ -166,12 +166,12 @@ export const useOptionSettings = (
       } else {
         model.value.options.value = undefined
       }
-    }
+    },
   )
 
   return {
     cachedMap,
     addOption,
-    removeOption
+    removeOption,
   }
 }

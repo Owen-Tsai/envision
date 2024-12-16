@@ -46,13 +46,13 @@ import type { WPropsTabs } from '@/types/fux-core/form'
 
 const typeOpts = [
   { label: '线性', value: 'line' },
-  { label: '卡片型', value: 'card' }
+  { label: '卡片型', value: 'card' },
 ]
 
 const sizeOpts = [
   { label: '默认', value: 'middle' },
   { label: '小', value: 'small' },
-  { label: '大', value: 'large' }
+  { label: '大', value: 'large' },
 ]
 
 const { attrs } = defineProps<{
@@ -65,13 +65,13 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 const addPane = () => {
   model.value.children.push({
     title: '新标签页',
-    widgets: []
+    widgets: [],
   })
 }
 

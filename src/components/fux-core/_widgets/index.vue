@@ -124,6 +124,6 @@ watch(
       setPropWhenApplicable('disabled', false)
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>

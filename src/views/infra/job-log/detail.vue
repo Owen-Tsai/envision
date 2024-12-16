@@ -36,7 +36,7 @@ const [infraJobLogStatus] = useDict('infra_job_log_status')
 defineProps({
   entry: {
     type: Object as PropType<JobLogVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>

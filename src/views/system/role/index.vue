@@ -106,7 +106,7 @@
                   v-if="
                     permission.hasOne(
                       'system:permission:assign-role-menu',
-                      'system:permission:assign-role-data-scope'
+                      'system:permission:assign-role-data-scope',
                     )
                   "
                 >
@@ -177,7 +177,7 @@ import {
   ExportOutlined,
   EditOutlined,
   DeleteOutlined,
-  PlusOutlined
+  PlusOutlined,
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'

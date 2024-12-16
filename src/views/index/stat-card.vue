@@ -26,15 +26,15 @@ const data = [
   { title: '数据目录', value: 7, suffix: '个' },
   { title: '数据总量', value: 16, suffix: '条' },
   { title: '信息项', value: 68, suffix: '个' },
-  { title: '数据更新率', value: 13, suffix: '次（昨日）' }
+  { title: '数据更新率', value: 13, suffix: '次（昨日）' },
 ]
 </script>
 
 <style lang="scss" scoped>
 .fux-card {
   background: linear-gradient(-45deg, rgb(35 93 197), rgb(26 55 245));
-  border-radius: var(--borderRadius);
-  color: var(--colorWhite);
+  border-radius: var(--border-radius);
+  color: var(--color-white);
   position: relative;
   overflow: hidden;
   .fux-card-body {

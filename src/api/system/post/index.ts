@@ -20,32 +20,32 @@ const prefix = '/admin-api/system/post'
 export function getPostPage(params?: ListQueryParams) {
   return request.get<PaginatedList<PostVO>>({
     url: `${prefix}/page`,
-    params
+    params,
   })
 }
 
 export const getPostDetail = (id: number) => {
   return request.get<PostVO>({
-    url: `${prefix}/get?id=${id}`
+    url: `${prefix}/get?id=${id}`,
   })
 }
 
 export const createPost = (data: PostVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updatePost = (data: PostVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 
 export const deletePost = (id: number) => {
   return request.delete({
-    url: `${prefix}/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`,
   })
 }

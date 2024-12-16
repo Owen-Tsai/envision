@@ -23,12 +23,12 @@ const url = '/admin-api/infra/report'
 export const getReportList = (params: ListQueryParams) => {
   return request.get<PaginatedList<ReportVO>>({
     url: `${url}/page`,
-    params
+    params,
   })
 }
 
 export const deleteReport = (id: string) => {
   return request.delete({
-    url: `${url}?id=${id}`
+    url: `${url}?id=${id}`,
   })
 }

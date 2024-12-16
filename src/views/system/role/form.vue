@@ -50,13 +50,13 @@ import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写角色名称' }],
-  code: [{ required: true, message: '请填写角色标识' }]
+  code: [{ required: true, message: '请填写角色标识' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<RoleVO>
-  }
+    type: Object as PropType<RoleVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -66,7 +66,7 @@ const loading = ref(false)
 const open = ref(true)
 const formData = ref<RoleVO>({
   sort: 0,
-  status: 0
+  status: 0,
 })
 
 const [commonStatus] = useDict('common_status')

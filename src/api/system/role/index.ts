@@ -23,51 +23,51 @@ const prefix = '/admin-api/system/role'
 
 export const getSimpleList = () => {
   return request.get<RoleVO[]>({
-    url: `${prefix}/simple-list`
+    url: `${prefix}/simple-list`,
   })
 }
 
 export const getSimpleAuditList = () => {
   return request.get<RoleVO[]>({
-    url: `${prefix}/list-all-simple-audit`
+    url: `${prefix}/list-all-simple-audit`,
   })
 }
 
 export const getRolesList = (params?: CommonQueryParams) => {
   return request.get<PaginatedList<RoleVO>>({
     url: `${prefix}/page`,
-    params
+    params,
   })
 }
 
 export const getRoleDetail = (id: number) => {
   return request.get<RoleVO>({
-    url: `${prefix}/get?id=${id}`
+    url: `${prefix}/get?id=${id}`,
   })
 }
 
 export const addRole = (data: RoleVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updateRole = (data: RoleVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 
 export const deleteRole = (id: number) => {
   return request.delete({
-    url: `${prefix}/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`,
   })
 }
 
 export const getRoleSimpleList = () => {
   return request.get<Pick<RoleVO, 'id' | 'name'>[]>({
-    url: `${prefix}/simple-list`
+    url: `${prefix}/simple-list`,
   })
 }

@@ -60,7 +60,7 @@ const links = [
   { name: '用户管理', icon: iGroup, path: '/system/user' },
   { name: '部门管理', icon: iDept, path: '/system/dept' },
   { name: '角色设置', icon: iAccount, path: '/system/role' },
-  { name: '个人设置', icon: iProfile, path: '/me' }
+  { name: '个人设置', icon: iProfile, path: '/me' },
 ]
 
 const stats = [
@@ -68,12 +68,12 @@ const stats = [
   { name: '上架应用数', value: 2 },
   { name: '计划启用数', value: 7 },
   { name: '业务办理量', value: 8, suffix: '人次' },
-  { name: '办理通过率', value: 90.65, suffix: '%', decimal: 2 }
+  { name: '办理通过率', value: 90.65, suffix: '%', decimal: 2 },
 ]
 
 const { user } = storeToRefs(useUserStore())
 const { data: depts, pending: deptPending } = useRequest(getDeptSimpleList, {
-  immediate: true
+  immediate: true,
 })
 
 const screen = Grid.useBreakpoint()
@@ -81,13 +81,13 @@ const screen = Grid.useBreakpoint()
 
 <style lang="scss" scoped>
 .user {
-  border-right: 1px solid var(--colorBorder);
+  border-right: 1px solid var(--color-border);
   padding-right: 24px;
 }
 .link {
-  color: var(--colorText);
-  background-color: var(--colorFillSecondary);
-  border-radius: var(--borderRadius);
+  color: var(--color-text);
+  background-color: var(--color-fill-secondary);
+  border-radius: var(--border-radius);
   padding: 4px 8px;
 
   img {
@@ -95,7 +95,7 @@ const screen = Grid.useBreakpoint()
   }
 
   &:hover {
-    background-color: var(--colorFill);
+    background-color: var(--color-fill);
   }
 }
 .stats {

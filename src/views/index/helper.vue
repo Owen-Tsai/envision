@@ -14,9 +14,9 @@
 
 <style lang="scss" scoped>
 a {
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
   &:hover {
-    color: var(--colorTextBase);
+    color: var(--color-text-base);
   }
 }
 </style>

@@ -58,14 +58,14 @@ const capcthaVisible = ref(false)
 const rules: Rules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-  code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+  code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
 }
 
 const formState = ref({
   username: 'admin',
   password: 'admin123',
   captchaVerification: '',
-  remember: false
+  remember: false,
 })
 
 const { error, pending, execute } = useRequest(() => login(formState.value), {
@@ -81,7 +81,7 @@ const { error, pending, execute } = useRequest(() => login(formState.value), {
     if (captchaEnabled) {
       captcha.value?.refetch()
     }
-  }
+  },
 })
 
 const getRememberedForm = () => {

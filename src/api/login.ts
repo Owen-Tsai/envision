@@ -64,11 +64,11 @@ export function getCaptcha() {
   return request.postRaw<CaptchaVO>({
     url: `${prefixCaptcha}/get`,
     data: {
-      captchaType: 'blockPuzzle'
+      captchaType: 'blockPuzzle',
     },
     headers: {
-      requireToken: false
-    }
+      requireToken: false,
+    },
   })
 }
 
@@ -77,8 +77,8 @@ export function checkCaptcha(params: CaptchaValidationDTO) {
     url: `${prefixCaptcha}/check`,
     data: {
       ...params,
-      captchaType: 'blockPuzzle'
-    }
+      captchaType: 'blockPuzzle',
+    },
   })
 }
 
@@ -86,20 +86,20 @@ export function login(data: LoginDTO) {
   return request.post<LoginVO>({
     url: `${prefixAuth}/login`,
     headers: {
-      requireToken: false
+      requireToken: false,
     },
-    data
+    data,
   })
 }
 
 export function logout() {
   return request.postRaw({
-    url: `${prefixAuth}/logout`
+    url: `${prefixAuth}/logout`,
   })
 }
 
 export function getPermissionInfo() {
   return request.get<PermissionInfoVO>({
-    url: `${prefixAuth}/get-permission-info`
+    url: `${prefixAuth}/get-permission-info`,
   })
 }

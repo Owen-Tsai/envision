@@ -47,15 +47,15 @@ const ctx = Form.useInjectFormItemContext()
 
 const props = defineProps({
   value: {
-    type: String
+    type: String,
   },
   showPreview: {
     type: Boolean,
-    default: true
+    default: true,
   },
   placement: {
-    type: String as PropType<PopoverProps['placement']>
-  }
+    type: String as PropType<PopoverProps['placement']>,
+  },
 })
 
 const emit = defineEmits(['update:value'])
@@ -69,7 +69,7 @@ const iconsMap = getCurrentInstance()?.proxy?.$icons
 const total = Object.keys(iconsMap!).length
 
 const filteredIcons = computed(() =>
-  Object.keys(iconsMap!).filter((e) => e.toLowerCase().includes(keyword.value.toLowerCase()))
+  Object.keys(iconsMap!).filter((e) => e.toLowerCase().includes(keyword.value.toLowerCase())),
 )
 
 const icons = computed(() =>
@@ -77,15 +77,15 @@ const icons = computed(() =>
     filteredIcons.value.map((k) => {
       return { [k]: iconsMap?.[k] }
     }),
-    50
-  )
+    50,
+  ),
 )
 
 const icon = computed({
   get: () => props.value,
   set: (val) => {
     emit('update:value', val)
-  }
+  },
 })
 
 const onSelect = (entry: any) => {
@@ -99,7 +99,7 @@ const onSelect = (entry: any) => {
 .entry {
   @apply flex items-center justify-center cursor-pointer;
   &:hover {
-    color: var(--colorPrimary);
+    color: var(--color-primary);
   }
 }
 </style>

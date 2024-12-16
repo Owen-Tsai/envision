@@ -67,19 +67,19 @@ import {
   addDictData,
   updateDictData,
   getDictDataDetail,
-  type DictDataItemVO
+  type DictDataItemVO,
 } from '@/api/system/dict/data'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
   label: [{ required: true, message: '请填写字典标签' }],
-  value: [{ required: true, message: '请填写字典键值' }]
+  value: [{ required: true, message: '请填写字典键值' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<DictDataItemVO>
-  }
+    type: Object as PropType<DictDataItemVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -90,7 +90,7 @@ const open = ref(true)
 const formData = ref<Partial<DictDataItemVO>>({
   status: 0,
   sort: 0,
-  value: ''
+  value: '',
 })
 
 const { params } = useRoute()

@@ -31,20 +31,20 @@ import { getAttachView, getUploadList, type UploadListType } from '@/api/attach'
 const props = defineProps({
   planId: {
     type: String,
-    required: true
+    required: true,
   },
   applyId: {
     type: String,
-    required: true
+    required: true,
   },
   appId: {
     type: String,
-    required: true
+    required: true,
   },
   currentAuditProcess: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 //查看或下载附件方法
@@ -67,33 +67,33 @@ const columns = [
     title: '附件名称',
     dataIndex: 'name',
     key: 'name',
-    width: 300
+    width: 300,
   },
   {
     title: '限制文件类型',
     dataIndex: 'allowFileType',
-    key: 'allowFileType'
+    key: 'allowFileType',
   },
   {
     title: '限制文件大小',
     dataIndex: 'maxFileSize',
-    key: 'maxFileSize'
+    key: 'maxFileSize',
   },
   {
     title: '是否必传',
     dataIndex: 'ismust',
-    key: 'ismust'
+    key: 'ismust',
   },
   {
     title: '已上传附件',
     dataIndex: 'uploadedFile',
-    key: 'uploadedFile'
+    key: 'uploadedFile',
   },
   {
     title: '操作',
     key: 'action',
-    width: 400
-  }
+    width: 400,
+  },
 ]
 
 //需要上传的列表
@@ -101,7 +101,7 @@ const uploadList = ref<UploadListType>([])
 
 // 对外暴露方法
 defineExpose({
-  refreshList
+  refreshList,
 })
 </script>
 

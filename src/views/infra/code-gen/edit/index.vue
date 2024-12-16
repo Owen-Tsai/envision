@@ -66,7 +66,7 @@ const { data, execute, pending } = useRequest(() => getCodeGenConfigDetail(id), 
   immediate: true,
   onSuccess() {
     pageTitle.value = `${data.value?.table.tableName} ${data.value?.table.tableComment}`
-  }
+  },
 })
 
 const onReturn = () => {

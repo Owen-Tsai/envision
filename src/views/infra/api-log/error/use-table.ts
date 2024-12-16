@@ -12,7 +12,7 @@ export const columns: TableProps['columns'] = [
   { title: '异常名', width: 300, dataIndex: 'exceptionName', ellipsis: true },
   { key: 'exceptionTime', title: '异常时间', dataIndex: 'exceptionTime', width: 180 },
   { key: 'processStatus', title: '状态', dataIndex: 'processStatus', fixed: 'right', width: 100 },
-  { key: 'actions', title: '操作', width: 180, fixed: 'right' }
+  { key: 'actions', title: '操作', width: 180, fixed: 'right' },
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
@@ -26,7 +26,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onChange = ({ current, pageSize }: TablePaginationConfig) => {
@@ -37,7 +37,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   }
 
   const { data, pending, execute } = useRequest(() => getList(queryParams.value), {
-    immediate: true
+    immediate: true,
   })
 
   const onFilter = () => {
@@ -59,6 +59,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     onFilter,
     onFilterReset,
     pagination,
-    onChange
+    onChange,
   }
 }

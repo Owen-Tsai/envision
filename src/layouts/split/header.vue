@@ -55,7 +55,7 @@ import {
   BellOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  MenuOutlined
+  MenuOutlined,
 } from '@ant-design/icons-vue'
 import { storeToRefs } from 'pinia'
 import useAppStore from '@/stores/app'
@@ -66,8 +66,8 @@ import ThemeIcon from './theme-icon.vue'
 const props = defineProps({
   menuCollapsed: {
     type: Boolean,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['update:menuCollapsed', 'showDrawer'])
@@ -95,7 +95,7 @@ const onClickLogout = () => {
       userStore.logout().then(() => {
         location.reload()
       })
-    }
+    },
   })
 }
 

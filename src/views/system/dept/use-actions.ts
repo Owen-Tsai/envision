@@ -22,7 +22,7 @@ const useActions = (requestData: () => void) => {
     entry,
     visible,
     onEdit,
-    onDelete
+    onDelete,
   }
 }
 

@@ -145,7 +145,7 @@ import {
   EditOutlined,
   DeleteOutlined,
   PlusOutlined,
-  CodeOutlined
+  CodeOutlined,
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'

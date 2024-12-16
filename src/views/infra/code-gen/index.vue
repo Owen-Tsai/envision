@@ -167,7 +167,7 @@ import {
   ExportOutlined,
   EditOutlined,
   DeleteOutlined,
-  PlusOutlined
+  PlusOutlined,
 } from '@ant-design/icons-vue'
 import { permission } from '@/hooks/use-permission'
 import { type ConfigVO } from '@/api/infra/code-gen'

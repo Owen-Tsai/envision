@@ -35,7 +35,7 @@ const useActions = (requestData: () => void) => {
     mode,
     onEdit,
     onDelete,
-    onClearCache
+    onClearCache,
   }
 }
 

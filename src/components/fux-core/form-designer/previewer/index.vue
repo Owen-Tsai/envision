@@ -34,6 +34,6 @@ const isOpen = computed({
   },
   set(val) {
     emit('update:open', val)
-  }
+  },
 })
 </script>

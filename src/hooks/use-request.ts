@@ -26,7 +26,6 @@ const useRequest = <T>(service: () => Promise<T>, options?: UseRequestOptions<T>
   const data = ref<T | undefined>(undefined) as Ref<T | undefined>
   const error = ref<unknown | null>(null) as Ref<unknown | null>
 
-  // eslint-disable-next-line no-param-reassign
   options = options || {}
 
   const { debounceTime, immediate, transformer, onError, onFinish, onSuccess } = options
@@ -68,7 +67,7 @@ const useRequest = <T>(service: () => Promise<T>, options?: UseRequestOptions<T>
     execute: debounceTime ? debouncedExecute : execute,
     pending,
     data,
-    error
+    error,
   }
 }
 

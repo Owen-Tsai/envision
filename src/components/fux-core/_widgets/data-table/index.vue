@@ -72,7 +72,7 @@ const tableData = reactive<{
 }>({
   total: 0,
   list: [],
-  current: 1
+  current: 1,
 })
 
 const isProd = computed(() => rendererCtx?.prod)
@@ -85,7 +85,7 @@ const pagination = computed<TableProps['pagination']>(() => {
       mini: !!small,
       showLessItems: !!lite,
       current: tableData.current,
-      total: tableData.total
+      total: tableData.total,
     }
   }
 
@@ -110,7 +110,7 @@ const getDictData = (colIdx: number) => {
 const dictTypes = ref(
   config.props.columns
     ?.filter((item) => item.formatter?.type === 'dict')
-    .map((item) => item.formatter!.value)
+    .map((item) => item.formatter!.value),
 )
 // console.log(dictTypes.value)
 const dicts = useDict(...(dictTypes.value || []))
@@ -141,8 +141,8 @@ const loadData = async () => {
     url: api,
     params: {
       declareId: appParams?.value.applyId || '',
-      current: tableData.current
-    }
+      current: tableData.current,
+    },
   })
   tableData.list = res.list
   tableData.total = res.total

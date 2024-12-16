@@ -21,8 +21,8 @@
   },
   "lint-staged": {
     "*.{js,ts,jsx,tsx,vue}": [
-      "pnpm lint:eslint",
-      "prettier --write src/"
+      "eslint --fix",
+      "prettier --write"
     ]
   },
   "dependencies": {

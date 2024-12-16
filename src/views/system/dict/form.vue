@@ -42,19 +42,19 @@ import {
   addDictType,
   updateDictType,
   getDictTypeDetail,
-  type DictTypeVO
+  type DictTypeVO,
 } from '@/api/system/dict/type'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写字典名称' }],
-  type: [{ required: true, message: '请填写字典类型' }]
+  type: [{ required: true, message: '请填写字典类型' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<DictTypeVO>
-  }
+    type: Object as PropType<DictTypeVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -65,7 +65,7 @@ const open = ref(true)
 const formData = ref<Partial<DictTypeVO>>({
   name: '',
   type: '',
-  status: 0
+  status: 0,
 })
 
 const [commonStatus] = useDict('common_status')

@@ -10,7 +10,7 @@ export const columns: TableProps['columns'] = [
   { key: 'sort', title: '排序', dataIndex: 'sort' },
   { key: 'status', title: '状态', dataIndex: 'status' },
   { key: 'createTime', title: '创建时间', dataIndex: 'createTime' },
-  { key: 'actions', title: '操作' }
+  { key: 'actions', title: '操作' },
 ]
 
 export const useTable = (formRef: Ref<FormInstance>) => {
@@ -18,7 +18,7 @@ export const useTable = (formRef: Ref<FormInstance>) => {
   const userList = ref<SimpleUserVO>()
 
   const { data, pending, execute } = useRequest(() => getDeptTree(queryParams.value), {
-    immediate: true
+    immediate: true,
   })
 
   getSimpleUserList().then((users) => {
@@ -41,6 +41,6 @@ export const useTable = (formRef: Ref<FormInstance>) => {
     execute,
     queryParams,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

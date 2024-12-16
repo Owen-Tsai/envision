@@ -125,11 +125,11 @@ import { getPlainCodeGenConfigList, type ConfigDetailVO, type ConfigVO } from '@
 
 const props = defineProps({
   model: {
-    type: Object as PropType<ConfigDetailVO['table']>
+    type: Object as PropType<ConfigDetailVO['table']>,
   },
   columns: {
-    type: Array as PropType<ConfigDetailVO['columns']>
-  }
+    type: Array as PropType<ConfigDetailVO['columns']>,
+  },
 })
 
 const emit = defineEmits(['update:model'])
@@ -140,13 +140,13 @@ const templateTypeEnums: Readonly<Record<string, number>> = {
   masterStandard: 10,
   masterERP: 11,
   masterNested: 12,
-  child: 15
+  child: 15,
 }
 
 const [infraCodegenFrontType, infraCodegenScene, infraCodegenTemplateType] = useDict(
   'infra_codegen_front_type',
   'infra_codegen_scene',
-  'infra_codegen_template_type'
+  'infra_codegen_template_type',
 )
 
 const loading = ref(true)
@@ -158,7 +158,7 @@ const formData = computed({
   get: () => props.model || {},
   set: (val) => {
     emit('update:model', val)
-  }
+  },
 })
 
 const rules: FormProps['rules'] = {
@@ -168,7 +168,7 @@ const rules: FormProps['rules'] = {
   moduleName: [{ required: true, message: '请输入模块名称' }],
   businessName: [{ required: true, message: '请输入业务名称' }],
   className: [{ required: true, message: '请输入类名称' }],
-  classComment: [{ required: true, message: '请输入类描述' }]
+  classComment: [{ required: true, message: '请输入类描述' }],
 }
 
 getMenuTree().then((res) => {
@@ -180,6 +180,6 @@ getMenuTree().then((res) => {
 })
 
 defineExpose({
-  formRef
+  formRef,
 })
 </script>

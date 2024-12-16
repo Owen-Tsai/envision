@@ -23,7 +23,7 @@ const useActions = (requestData: () => void) => {
     visible,
     onCheckDetail,
     onSetStatus,
-    onExport
+    onExport,
   }
 }
 

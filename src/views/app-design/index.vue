@@ -71,12 +71,12 @@ header {
   height: $header-height;
   background: unset;
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--colorBorderSecondary);
+  border-bottom: 1px solid var(--color-border-secondary);
   position: sticky;
   top: 0;
   left: 0;
   z-index: 20;
-  background-color: var(--colorBgAlt);
+  background-color: var(--color-bg-alt);
 
   & > div {
     width: 33.3333%;

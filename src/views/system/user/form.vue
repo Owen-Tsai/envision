@@ -94,13 +94,13 @@ const formRef = ref<FormInstance>()
 const rules: FormProps['rules'] = {
   username: [{ required: true, message: '请填写用户账号' }],
   password: [{ required: true, message: '请填写初始密码' }],
-  nickname: [{ required: true, message: '请填写用户名称' }]
+  nickname: [{ required: true, message: '请填写用户名称' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<UserVO>
-  }
+    type: Object as PropType<UserVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])

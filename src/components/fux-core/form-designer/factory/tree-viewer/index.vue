@@ -37,7 +37,7 @@ const widgetTree = computed(() => schemaToTree(schema.value.form))
     white-space: nowrap;
   }
   .name {
-    color: var(--colorTextSecondary);
+    color: var(--color-text-secondary);
     font-style: italic;
     white-space: nowrap;
   }

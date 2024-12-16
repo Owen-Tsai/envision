@@ -5,8 +5,8 @@
       'h-full',
       'overflow-y-auto',
       {
-        'document-mode': props.type === 'document'
-      }
+        'document-mode': props.type === 'document',
+      },
     ]"
   >
     <Toolbar :editor="editorRef" :default-config="toolbarConfig" class="toolbar" mode="default" />
@@ -37,11 +37,11 @@ const toolbar = ref()
 const props = defineProps({
   type: {
     type: String as PropType<'document' | 'normal'>,
-    default: 'normal'
+    default: 'normal',
   },
   value: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 const emit = defineEmits(['update:value'])
@@ -50,11 +50,11 @@ const content = computed({
   get: () => props.value,
   set: (val) => {
     emit('update:value', val)
-  }
+  },
 })
 
 const toolbarConfig: Partial<IToolbarConfig> = {
-  excludeKeys: ['emotion', 'fullScreen']
+  excludeKeys: ['emotion', 'fullScreen'],
 }
 const editorConfig = computed<Partial<IEditorConfig>>(() => {
   return {
@@ -93,7 +93,7 @@ const editorConfig = computed<Partial<IEditorConfig>>(() => {
         headers: {
           Accept: '*',
           Authorization: getFormattedToken(),
-          'tenant-id': getTenantId()
+          'tenant-id': getTenantId(),
         },
         // 跨域是否传递 cookie ，默认为 false
         withCredentials: true,
@@ -112,10 +112,10 @@ const editorConfig = computed<Partial<IEditorConfig>>(() => {
         // 自定义插入图片
         customInsert(res: any, insertFn: InsertFnType) {
           insertFn(res.data, 'image', res.data)
-        }
-      }
+        },
+      },
     },
-    uploadImgShowBase64: true
+    uploadImgShowBase64: true,
   }
 })
 
@@ -138,12 +138,12 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .editor-wrapper {
-  --w-e-toolbar-border-color: var(--colorBorder);
-  border: 1px solid var(--colorBorder);
+  --w-e-toolbar-border-color: var(--color-border);
+  border: 1px solid var(--color-border);
   @apply relative;
   .toolbar {
     @apply sticky top-0 z-999;
-    border-bottom: 1px solid var(--colorBorder);
+    border-bottom: 1px solid var(--color-border);
   }
 
   &.document-mode {
@@ -151,7 +151,7 @@ onMounted(() => {
       width: 850px;
       padding: 24px 32px;
       margin: 32px auto;
-      background-color: var(--colorBgContainer);
+      background-color: var(--color-bg-container);
     }
   }
 }

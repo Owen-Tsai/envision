@@ -151,19 +151,19 @@ const { data, pending } = useRequest(getPlainDictTypeList, { immediate: true })
 
 const modeOpts = [
   { label: '配置表格', value: 'table' },
-  { label: '配置表单', value: 'form' }
+  { label: '配置表单', value: 'form' },
 ]
 
 const colAlignOpts = [
   { label: '左对齐', value: 'left' },
   { label: '居中', value: 'center' },
-  { label: '右对齐', value: 'right' }
+  { label: '右对齐', value: 'right' },
 ]
 
 const colFormatterOpts = [
   { label: '不设置', value: null },
   { label: '字典', value: 'dict' },
-  { label: '自定义', value: 'custom' }
+  { label: '自定义', value: 'custom' },
 ]
 
 const { attrs } = defineProps<{
@@ -176,7 +176,7 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 const usePagination = ref(false)
@@ -185,19 +185,19 @@ const columnConfigModal = reactive<{
   visible: boolean
 }>({
   columns: attrs.columns || [],
-  visible: false
+  visible: false,
 })
 
 columnConfigModal.columns = columnConfigModal.columns.map((e, i) => ({
   ...e,
-  idx: i
+  idx: i,
 }))
 
 const dragWrapperEl = useTemplateRef('dragWrapperEl')
 
 useSortable(dragWrapperEl, columnConfigModal.columns, {
   animation: 200,
-  handle: '.handle'
+  handle: '.handle',
 })
 
 const formatterConfig = reactive<{
@@ -205,7 +205,7 @@ const formatterConfig = reactive<{
   visible: boolean
 }>({
   index: 0,
-  visible: false
+  visible: false,
 })
 
 const saveColumnsConfig = () => {
@@ -217,8 +217,8 @@ const addColumn = () => {
   columnConfigModal.columns.push({
     formatter: {
       type: null,
-      value: ''
-    }
+      value: '',
+    },
   })
 }
 
@@ -230,7 +230,7 @@ const configFormatter = (index: number) => {
   if (!columnConfigModal.columns[index].formatter) {
     columnConfigModal.columns[index].formatter = {
       type: null,
-      value: ''
+      value: '',
     }
   }
 

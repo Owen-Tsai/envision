@@ -8,13 +8,13 @@ const commonSerializer = {
   timeout: 30000,
   paramsSerializer: {
     indexes: null,
-    serialize: serializerGETReq
-  }
+    serialize: serializerGETReq,
+  },
 }
 
 const service = buildService({
   ...commonSerializer,
-  baseURL: import.meta.env.VITE_API_URL
+  baseURL: import.meta.env.VITE_API_URL,
 })
 
 const buildHandler = <T>(options: AxiosRequestConfig, instance: AxiosInstance) => {
@@ -26,7 +26,7 @@ const buildHandler = <T>(options: AxiosRequestConfig, instance: AxiosInstance) =
     params,
     data,
     responseType,
-    ...config
+    ...config,
   })
 }
 
@@ -69,10 +69,10 @@ export default {
     const res = await handler<{ code: number; data: T; msg?: string }>({
       method: 'post',
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
       },
-      ...options
+      ...options,
     })
     return res as unknown as Promise<{ code: number; data: T; msg?: string }>
-  }
+  },
 }

@@ -147,7 +147,7 @@ import {
   FlagOutlined,
   DeleteOutlined,
   PlusOutlined,
-  PlayCircleOutlined
+  PlayCircleOutlined,
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'

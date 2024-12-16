@@ -44,7 +44,7 @@ import type { OperateLogVO } from '@/api/system/operate-log'
 defineProps({
   entry: {
     type: Object as PropType<OperateLogVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>

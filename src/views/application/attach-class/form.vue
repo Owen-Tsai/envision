@@ -59,7 +59,7 @@ import {
   createAttachClass,
   updateAttachClass,
   getAttachClassDetail,
-  type AttachClassVO
+  type AttachClassVO,
 } from '@/api/application/attach-class'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
@@ -70,13 +70,13 @@ const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写附件分类名称' }],
   modeName: [{ required: true, message: '请填写附件分类代码' }],
   allowFileType: [{ required: true, message: '请选择允许上传类型' }],
-  maxFileSize: [{ required: true, message: '请填写最大文件大小' }]
+  maxFileSize: [{ required: true, message: '请填写最大文件大小' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<AttachClassVO>
-  }
+    type: Object as PropType<AttachClassVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -87,7 +87,7 @@ const open = ref(true)
 const formData = ref<Partial<AttachClassVO>>({
   isone: '1',
   ismust: '0',
-  isLib: '0'
+  isLib: '0',
 })
 const isAdd = computed(() => props.record === undefined)
 const submit = async () => {

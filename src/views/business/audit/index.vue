@@ -142,7 +142,7 @@ const onAudit = (record: any) => {
       '&processInstanceId=' +
       record.processInstanceId +
       '&taskDefKey=' +
-      taskDefKey
+      taskDefKey,
   )
 }
 

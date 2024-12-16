@@ -25,6 +25,6 @@ export default defineStore('app', () => {
     theme,
     device,
     setTheme,
-    setTitle
+    setTitle,
   }
 })

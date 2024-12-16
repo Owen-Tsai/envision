@@ -118,13 +118,13 @@ const {
   initTableSelection,
   onTableSelectChange,
   selectedValues,
-  filterOption
+  filterOption,
 } = useTableSelect(appSchema)
 
 initTableSelection()
 
 useSortable(dragWrapperEl, tableSortList, {
-  animation: 200
+  animation: 200,
 })
 
 const generateInitialSchema = async () => {
@@ -145,7 +145,7 @@ const generateInitialSchema = async () => {
       },
       async onOk() {
         await doGenerate()
-      }
+      },
     })
   } else {
     await doGenerate()
@@ -167,7 +167,7 @@ watch(
       hasModified.value = true
     }
   },
-  { deep: true }
+  { deep: true },
 )
 </script>
 
@@ -178,9 +178,9 @@ watch(
   margin: 0 auto;
 }
 .item {
-  background-color: var(--colorFillTertiary);
+  background-color: var(--color-fill-tertiary);
   padding: 8px;
-  border-radius: var(--borderRadius);
+  border-radius: var(--border-radius);
   margin-bottom: 8px;
 }
 </style>

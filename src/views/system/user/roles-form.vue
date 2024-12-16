@@ -41,8 +41,8 @@ import type { UserVO } from '@/api/system/user'
 const props = defineProps({
   record: {
     type: Object as PropType<UserVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -51,7 +51,7 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
 const formData = ref<{ roleIds: number[] }>({
-  roleIds: []
+  roleIds: [],
 })
 
 const submit = async () => {
@@ -79,6 +79,6 @@ const { data, pending } = useRequest(getSimpleList, {
     const data = await getUserRoles(props.record.id!)
     formData.value.roleIds = data
     loading.value = false
-  }
+  },
 })
 </script>

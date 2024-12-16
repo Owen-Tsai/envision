@@ -34,6 +34,6 @@ export type ListQueryParams = CommonQueryParams & {
 export function getOperateLogPage(params?: ListQueryParams) {
   return request.get<PaginatedList<OperateLogVO>>({
     url: '/admin-api/system/operate-log/page',
-    params
+    params,
   })
 }

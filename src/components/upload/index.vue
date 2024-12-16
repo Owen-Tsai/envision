@@ -47,25 +47,25 @@ const props = defineProps({
   action: String,
   accept: {
     type: Array as PropType<string[]>,
-    default: () => ['pdf, png, svg, jpg, doc, docx']
+    default: () => ['pdf, png, svg, jpg, doc, docx'],
   },
   value: {
-    type: [String, Array] as PropType<string | string[]>
+    type: [String, Array] as PropType<string | string[]>,
   },
   listType: {
     type: String as PropType<UploadProps['listType']>,
-    default: 'text'
+    default: 'text',
   },
   multiple: Boolean, // whether user can hold ctrl/shift to select multiple files at once
   sizeLimit: {
     type: Number,
-    default: 5 * 1024 // in KB
+    default: 5 * 1024, // in KB
   },
   autoUpload: Boolean,
   drag: Boolean,
   limit: Number,
   disabled: Boolean,
-  loading: Boolean
+  loading: Boolean,
 })
 
 const emit = defineEmits(['update:value', 'start', 'success', 'error', 'finished'])
@@ -160,18 +160,18 @@ watch(
       const items = val.split(',').map<UploadFile>((url) => ({
         name: url.split('/').pop() || '',
         uid: generateID(),
-        url
+        url,
       }))
       fileList.value.push(...items)
     } else {
       const items = val.map<UploadFile>((url) => ({
         name: url.split('/').pop() || '',
         uid: generateID(),
-        url
+        url,
       }))
       fileList.value.push(...items)
     }
   },
-  { immediate: true, deep: true }
+  { immediate: true, deep: true },
 )
 </script>

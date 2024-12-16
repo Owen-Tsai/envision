@@ -50,22 +50,22 @@ const refresh = inject('layoutContext')
 const formRef = ref<FormInstance>()
 
 const rules: FormProps['rules'] = {
-  name: [{ required: true, message: '请填写行业名称' }]
+  name: [{ required: true, message: '请填写行业名称' }],
 }
 
 const props = defineProps({
   open: {
     type: Boolean,
-    required: true
+    required: true,
   },
   pid: {
     type: String,
-    required: true
+    required: true,
   },
   pname: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 })
 
 console.log(props)
@@ -76,7 +76,7 @@ const ModalOpen = computed({
   get: () => props.open,
   set: (val) => {
     emit('update:open', val)
-  }
+  },
 })
 
 const loading = ref(false)
@@ -84,7 +84,7 @@ const formData = ref({
   pid: props.pid,
   pname: props.pname,
   name: '',
-  code: ''
+  code: '',
 })
 
 watch(
@@ -94,7 +94,7 @@ watch(
     formData.value.pid = newValue.pid
     formData.value.pname = newValue.pname
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 )
 
 const submit = async () => {

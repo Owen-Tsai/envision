@@ -51,17 +51,17 @@ const { token } = theme.useToken()
 const props = defineProps({
   value: {
     type: Array as PropType<string[]>,
-    default: () => []
+    default: () => [],
   },
   maxTagCount: {
-    type: Number
+    type: Number,
   },
   maxTagTextLength: {
-    type: Number
+    type: Number,
   },
   placeholder: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 const emit = defineEmits(['update:value'])
@@ -76,16 +76,16 @@ const computedValue = computed({
   },
   set: (val) => {
     emit('update:value', val)
-  }
+  },
 })
 
 const computedStyle = computed<CSSProperties>(() =>
   focused.value
     ? {
         boxShadow: `0 0 0 ${token.value.controlOutlineWidth}px ${token.value.controlOutline}`,
-        borderColor: 'var(--colorPrimaryHover)'
+        borderColor: 'var(--color-primary-hover)',
       }
-    : {}
+    : {},
 )
 
 const focused = ref(false)
@@ -143,7 +143,7 @@ watch(
   () => inputModel.value,
   () => {
     setWidth()
-  }
+  },
 )
 </script>
 
@@ -159,17 +159,17 @@ watch(
   display: inline-block;
   width: 100%;
   min-width: 0;
-  background-color: var(--colorBgContainer);
+  background-color: var(--color-bg-container);
   background-image: none;
   border-width: 1px;
   border-style: solid;
-  border-color: var(--colorBorder);
+  border-color: var(--color-border);
   border-radius: 6px;
   transition: all 0.2s;
   cursor: text;
 
   &:hover {
-    border-color: var(--colorPrimaryHover);
+    border-color: var(--color-primary-hover);
     border-inline-end-width: 1px;
   }
 
@@ -182,7 +182,7 @@ watch(
     appearance: none;
 
     &::placeholder {
-      color: var(--colorTextQuaternary);
+      color: var(--color-text-quaternary);
     }
   }
 }

@@ -28,8 +28,8 @@ import type { Node, NodeConfigMap } from '@/types/fux-core/flow'
 const props = defineProps({
   nodes: {
     type: Array as PropType<Node[]>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['update:nodes', 'update:parentNodes', 'update:group'])
@@ -38,7 +38,7 @@ const computedNodes = computed({
   get: () => props.nodes,
   set: (val) => {
     emit('update:nodes', val)
-  }
+  },
 })
 
 const addNode = (type: keyof NodeConfigMap, index: number) => {
@@ -46,7 +46,7 @@ const addNode = (type: keyof NodeConfigMap, index: number) => {
 
   computedNodes.value.splice(index + 1, 0, {
     ...nodeToInsert,
-    uid: generateID()
+    uid: generateID(),
   })
 }
 
@@ -55,6 +55,6 @@ const removeNode = (index: number) => {
 }
 
 defineOptions({
-  name: 'NodeRenderer'
+  name: 'NodeRenderer',
 })
 </script>

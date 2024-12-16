@@ -24,27 +24,27 @@ const { widget } = defineProps<{
 <style lang="scss" scoped>
 .item {
   user-select: none;
-  background-color: var(--colorBgContainer);
+  background-color: var(--color-bg-container);
   transition: all 0.3s;
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: move;
-  font-size: var(--fontSizeSM);
+  font-size: var(--font-size-sm);
 
   span {
-    color: var(--colorTextSecondary);
+    color: var(--color-text-secondary);
   }
 
   .icon-wrapper {
-    background-color: var(--colorBgLayout);
-    border-radius: var(--borderRadius);
+    background-color: var(--color-bg-layout);
+    border-radius: var(--border-radius);
     padding: 16px;
     @apply flex-center;
   }
 
   &:hover {
-    color: var(--colorPrimary);
+    color: var(--color-primary);
     span {
-      color: var(--colorPrimary);
+      color: var(--color-primary);
     }
   }
 }
@@ -56,7 +56,7 @@ const { widget } = defineProps<{
   position: relative;
 
   &::before {
-    background-color: var(--colorPrimary);
+    background-color: var(--color-primary);
     height: 4px;
     position: absolute;
     content: '';
@@ -68,11 +68,11 @@ const { widget } = defineProps<{
   }
 
   .caption {
-    background-color: var(--colorPrimary);
+    background-color: var(--color-primary);
     color: #fff;
     border-radius: 999px;
     padding: 4px 8px;
-    font-size: var(--fontSizeSM);
+    font-size: var(--font-size-sm);
     position: relative;
     z-index: 1;
   }

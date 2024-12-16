@@ -23,7 +23,7 @@ const prefix = '/admin-api/system/area'
 export const getAreaTree = () => {
   return request.get<AreaTreeVO>({
     url: `${prefix}/area-list_all_by_pid`,
-    params: {}
+    params: {},
   })
 }
 
@@ -31,15 +31,15 @@ export const getAreaInfo = (id: string) => {
   return request.get({
     url: `${prefix}/get`,
     params: {
-      id: id
-    }
+      id: id,
+    },
   })
 }
 
 export const addAreaInfo = (data: AddAreaVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
@@ -47,8 +47,8 @@ export const deleteAreaInfo = (id: string) => {
   return request.delete({
     url: `${prefix}/delete`,
     params: {
-      id
-    }
+      id,
+    },
   })
 }
 
@@ -57,7 +57,7 @@ export const modifyAreaInfo = (id: string, name: string) => {
     url: `${prefix}/update`,
     data: {
       id,
-      name
-    }
+      name,
+    },
   })
 }

@@ -64,7 +64,7 @@ import {
   getRoleMenuList,
   setRoleMenuList,
   setRoleDataScope,
-  type RolePermissionVO
+  type RolePermissionVO,
 } from '@/api/system/permission'
 import { getMenuPlainList, type MenuLiteVO } from '@/api/system/menu'
 import { getDeptTree, type DeptTreeVO } from '@/api/system/dept'
@@ -77,12 +77,12 @@ const [systemDataScope] = useDict('system_data_scope')
 const props = defineProps({
   record: {
     type: Object as PropType<RoleVO>,
-    required: true
+    required: true,
   },
   mode: {
     type: String as PropType<'menu' | 'data'>,
-    default: 'menu'
-  }
+    default: 'menu',
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -93,7 +93,7 @@ const open = ref(true)
 
 const roleId = props.record.id as number
 const formData = ref<RolePermissionVO>({
-  roleId
+  roleId,
 })
 
 const menuTree = ref<MenuLiteVO[]>([])
@@ -135,7 +135,7 @@ if (props.mode === 'menu') {
     getMenuPlainList().then((data) => {
       menuTree.value = data.map((e) => ({
         ...e,
-        pId: e.parentId
+        pId: e.parentId,
       }))
       tempMenuIds.value = data
         .filter((e) => rdata.includes(e.id))

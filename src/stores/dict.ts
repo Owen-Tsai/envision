@@ -26,6 +26,6 @@ export default defineStore('dict', () => {
     getDict,
     setDict,
     deleteDict,
-    clearDict
+    clearDict,
   }
 })

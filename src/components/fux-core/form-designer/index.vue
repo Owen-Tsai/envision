@@ -27,7 +27,7 @@ const emit = defineEmits<{
 
 const schema = computed({
   get: () => propsSchema,
-  set: (val) => emit('update:schema', val)
+  set: (val) => emit('update:schema', val),
 })
 
 useDesignerProvider(schema)

@@ -29,7 +29,7 @@ const prefix = '/admin-api/system/sms-template'
 export const getTemplateList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<TemplateVO>>({
     url: `${prefix}/page`,
-    params
+    params,
   })
 }
 
@@ -44,14 +44,14 @@ export const getTemplateDetail = (id: number) => {
 export const addTemplate = (data: TemplateVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updateTemplate = (data: TemplateVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 

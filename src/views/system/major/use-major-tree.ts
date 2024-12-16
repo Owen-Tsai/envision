@@ -16,7 +16,7 @@ const useMajorTree = () => {
     onSuccess(data) {
       // console.log(data)
       filteredTreeData.value = data
-    }
+    },
   })
 
   watch(searchText, () => {
@@ -47,7 +47,7 @@ const useMajorTree = () => {
     filteredTreeData,
     selectedKeys,
     searchText,
-    onTreeNodeSelect
+    onTreeNodeSelect,
   }
 }
 

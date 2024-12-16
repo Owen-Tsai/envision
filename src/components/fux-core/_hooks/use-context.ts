@@ -36,11 +36,11 @@ export const useDesignerProvider = (schema: Ref<AppSchema>) => {
     schema,
     deleteWidget,
     copyWidget,
-    selectedWidget
+    selectedWidget,
   })
 
   return {
-    schema
+    schema,
   }
 }
 
@@ -51,13 +51,13 @@ export const useDesignerInjection = () => {
 export const useRendererProvider = (
   appSchema: Ref<AppSchema>,
   state: Ref<Record<string, any>>,
-  auditMode: Ref<boolean>
+  auditMode: Ref<boolean>,
 ) => {
   provideLocal<FormRendererCtx>(RENDERER_KEY, {
     prod: true,
     $state: state,
     appSchema,
-    auditMode
+    auditMode,
   })
 }
 
@@ -82,11 +82,11 @@ export const useWorkflowCtxProvider = (schema: Ref<FlowSchema>) => {
   provide<WorkflowDesignerCtx>(WORKFLOW_KEY, {
     schema,
     selectedNode,
-    deleteNode
+    deleteNode,
   })
 
   return {
-    selectedNode
+    selectedNode,
   }
 }
 
@@ -96,7 +96,7 @@ export const useWorkflowCtxInjection = () => {
 
 export const useModelProvider = (model: Ref<Record<string, any>>) => {
   provide(MODEL_KEY, {
-    formData: model
+    formData: model,
   })
 }
 

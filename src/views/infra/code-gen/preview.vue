@@ -65,8 +65,8 @@ type FileNode = {
 const props = defineProps({
   id: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const emit = defineEmits(['close'])
@@ -117,7 +117,7 @@ const filePathTree = computed<FileNode[]>(() => {
               'service',
               'vo',
               'mysql',
-              'dataobject'
+              'dataobject',
             ].includes(p)
           ) {
             break
@@ -146,7 +146,7 @@ const filePathTree = computed<FileNode[]>(() => {
       files.push({
         key: fullPath,
         title: pathFrags[i],
-        pKey: oldFullPath || '/' // `/` -> root node
+        pKey: oldFullPath || '/', // `/` -> root node
       })
     }
   }

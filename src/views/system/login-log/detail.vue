@@ -26,8 +26,8 @@ import type { LoginLogVO } from '@/api/system/login-log'
 defineProps({
   entry: {
     type: Object as PropType<LoginLogVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const { systemLoginType } = useDict('system_login_type')

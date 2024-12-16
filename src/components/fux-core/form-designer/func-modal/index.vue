@@ -79,7 +79,7 @@ const isOpen = computed({
   },
   set(val) {
     emit('update:open', val)
-  }
+  },
 })
 
 const { schema } = useDesignerInjection()
@@ -88,7 +88,7 @@ const functionsCount = computed(() => Object.keys(schema.value.form.function || 
 const activeFid = ref<string>()
 const data = reactive({
   name: '',
-  body: ''
+  body: '',
 })
 
 const addFunc = () => {
@@ -100,7 +100,7 @@ const addFunc = () => {
   }
   schema.value.form.function[id] = {
     name: data.name,
-    body: data.body
+    body: data.body,
   }
   onItemSelected(id)
 }
@@ -118,7 +118,7 @@ const onItemSave = () => {
   }
   schema.value.form.function[activeFid.value!] = {
     name: data.name,
-    body: data.body
+    body: data.body,
   }
   message.success('修改成功')
 }
@@ -138,16 +138,16 @@ const onItemDelete = () => {
   max-height: 360px;
 
   .item {
-    border: 1px solid var(--colorBorder);
+    border: 1px solid var(--color-border);
     padding: 4px 0;
-    border-radius: var(--borderRadius);
+    border-radius: var(--border-radius);
     cursor: pointer;
     @apply flex-center gap-1 mb-2;
 
     &.active {
-      border-color: var(--colorPrimaryBorder);
-      background-color: var(--colorPrimaryBg);
-      color: var(--colorPrimary);
+      border-color: var(--color-primary-border);
+      background-color: var(--color-primary-bg);
+      color: var(--color-primary);
     }
   }
 }
@@ -160,6 +160,6 @@ const onItemDelete = () => {
   justify-content: flex-end;
   margin-top: 16px;
   gap: 8px;
-  border-radius: var(--borderRadius);
+  border-radius: var(--border-radius);
 }
 </style>

@@ -18,9 +18,9 @@ export const columns: TableProps['columns'] = [
     sortDirections: ['ascend', 'descend'],
     sorter: (a: ReportVO, b: ReportVO) => {
       return dayjs(a.updateTime).isSameOrBefore(b.updateTime) ? 1 : -1
-    }
+    },
   },
-  { title: '操作', width: 220 }
+  { title: '操作', width: 220 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
@@ -29,11 +29,11 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const { data, execute, pending } = useRequest(
     () =>
       getReportList({
-        ...queryParams.value
+        ...queryParams.value,
       }),
     {
-      immediate: true
-    }
+      immediate: true,
+    },
   )
 
   const pagination = computed<TablePaginationConfig>(() => ({
@@ -44,7 +44,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onFilter = () => {
@@ -73,6 +73,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     onChange,
     pagination,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

@@ -85,8 +85,8 @@ const { visible } = useToolbar()
   width: 48px;
   padding: 8px 4px;
   height: 100%;
-  background-color: var(--colorBgContainer);
-  border-right: 1px solid var(--colorBorder);
+  background-color: var(--color-bg-container);
+  border-right: 1px solid var(--color-border);
 }
 .trigger-handle {
   @include panel-collapse-handle(left);

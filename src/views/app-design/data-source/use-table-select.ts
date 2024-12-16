@@ -33,7 +33,7 @@ export const useTableSelect = (appSchema: Ref<AppSchema>) => {
         id: e.option.id,
         name: e.option.tableName,
         comment: e.option.tableComment,
-        subTable: e.subTable
+        subTable: e.subTable,
       }
     })
   }
@@ -48,7 +48,7 @@ export const useTableSelect = (appSchema: Ref<AppSchema>) => {
         label: e.name,
         value: e.id,
         option: tables.value?.find((t) => t.id === e.id) as TableModel,
-        subTable: e.subTable
+        subTable: e.subTable,
       })) || []
 
     onTableSelectChange()
@@ -66,6 +66,6 @@ export const useTableSelect = (appSchema: Ref<AppSchema>) => {
     selectedValues,
     onTableSelectChange,
     initTableSelection,
-    filterOption
+    filterOption,
   }
 }

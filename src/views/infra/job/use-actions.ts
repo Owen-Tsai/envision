@@ -5,14 +5,14 @@ import { deleteJob, runJob, updateJobStatus, type JobVO } from '@/api/infra/job'
 const jobStatusEnums = {
   init: 0,
   normal: 1,
-  stop: 2
+  stop: 2,
 }
 
 const useActions = (requestData: () => void) => {
   const entry = ref<JobVO | undefined>()
   const visible = reactive({
     form: false,
-    detail: false
+    detail: false,
   })
 
   const onEdit = (record?: JobVO) => {
@@ -35,7 +35,7 @@ const useActions = (requestData: () => void) => {
         runJob(record.id!).then(() => {
           message.success('执行成功')
         })
-      }
+      },
     })
   }
 
@@ -63,7 +63,7 @@ const useActions = (requestData: () => void) => {
     onShowDetail,
     onShowLog,
     onStatusChange,
-    onTriggerJob
+    onTriggerJob,
   }
 }
 

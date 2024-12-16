@@ -23,7 +23,7 @@ export const useEvents = (eventMap?: Record<string, string>) => {
     setWidgetAttrs,
     show,
     toNextStep,
-    toPrevStep
+    toPrevStep,
   } = useInstanceMethods()
 
   const context: Record<string, any> = {
@@ -40,10 +40,10 @@ export const useEvents = (eventMap?: Record<string, string>) => {
       setWidgetAttrs,
       show,
       toNextStep,
-      toPrevStep
+      toPrevStep,
     },
     $values: formData.value,
-    $schema: appSchema.value
+    $schema: appSchema.value,
   }
 
   const handler = (event: string) => {
@@ -59,6 +59,6 @@ export const useEvents = (eventMap?: Record<string, string>) => {
   }
 
   return {
-    handler
+    handler,
   }
 }

@@ -56,7 +56,7 @@ import {
   addNotification,
   updateNotification,
   getNotificationDetail,
-  type NotificationVO
+  type NotificationVO,
 } from '@/api/system/notification'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import EEditor from '@/components/editor/index.vue'
@@ -64,13 +64,13 @@ import EEditor from '@/components/editor/index.vue'
 const rules: FormProps['rules'] = {
   title: [{ required: true, message: '请填写标题' }],
   type: [{ required: true, message: '请选择通知公告类别' }],
-  content: [{ required: true, message: '请填写通知公告内容' }]
+  content: [{ required: true, message: '请填写通知公告内容' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<NotificationVO>
-  }
+    type: Object as PropType<NotificationVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -80,7 +80,7 @@ const loading = ref(false)
 const open = ref(true)
 const formData = ref<NotificationVO>({
   status: 0,
-  content: ''
+  content: '',
 })
 
 const [commonStatus, systemNoticeType] = useDict('common_status', 'system_notice_type')
@@ -128,7 +128,7 @@ if (props.record?.id) {
   @apply flex flex-col;
 }
 .document-wrapper {
-  background-color: var(--colorBgLayout);
+  background-color: var(--color-bg-layout);
   height: calc(100% - 72px);
 }
 </style>

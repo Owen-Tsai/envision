@@ -103,7 +103,7 @@ const storageType = {
   disk: 10,
   ftp: 11,
   sftp: 12,
-  oss: 20
+  oss: 20,
 }
 
 const rules: FormProps['rules'] = {
@@ -119,13 +119,13 @@ const rules: FormProps['rules'] = {
   bucket: [{ required: true, message: '请填写存储桶' }],
   accessKey: [{ required: true, message: '请填写 Access Key' }],
   accessSecret: [{ required: true, message: '请填写 Access Secret' }],
-  domain: [{ required: true, message: '请填写自定义域名' }]
+  domain: [{ required: true, message: '请填写自定义域名' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<FileConfigVO>
-  }
+    type: Object as PropType<FileConfigVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -134,7 +134,7 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
 const formData = ref<FileConfigVO>({
-  config: {}
+  config: {},
 })
 
 const [infraFileStorage] = useDict('infra_file_storage')

@@ -85,12 +85,12 @@ import { PlusSquareOutlined, MinusSquareOutlined } from '@ant-design/icons-vue'
 
 const options: SegmentedProps['options'] = [
   { label: '审核人设置', value: 1 },
-  { label: '表单设置', value: 2 }
+  { label: '表单设置', value: 2 },
 ]
 
 const auditActorStrategyOpts = [
   { label: '指定角色', value: NodeTaskStrategy.ROLE },
-  { label: '所属单位', value: NodeTaskStrategy.ORG }
+  { label: '所属单位', value: NodeTaskStrategy.ORG },
 ]
 
 const { data: rolesList, pending } = useRequest(getSimpleAuditList, { immediate: true })
@@ -105,7 +105,7 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 const active = ref(1)
@@ -124,14 +124,14 @@ watch(
       model.value.actor.value = undefined
     }
     model.value.actor.text = val === NodeTaskStrategy.ORG ? '发起人所属单位' : undefined
-  }
+  },
 )
 
 const fieldConfigOpts = [
   { label: '可见', value: 'show' },
   { label: '隐藏', value: 'hide' },
   { label: '只读', value: 'readonly' },
-  { label: '可编辑', value: 'edit' }
+  { label: '可编辑', value: 'edit' },
 ]
 type FieldConfigType = {
   name: string
@@ -146,7 +146,7 @@ const removeFieldConfig = (item: FieldConfigType) => {
 const addFieldConfig = () => {
   model.value.fields.push({
     name: '',
-    config: ''
+    config: '',
   })
 }
 </script>

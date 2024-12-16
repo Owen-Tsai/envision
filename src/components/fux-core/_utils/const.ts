@@ -5,39 +5,39 @@ import initWidgetConfig from './initial-widget-config'
 
 export const addonOpts = [
   { label: '文本', value: 'text' },
-  { label: '图标', value: 'icon' }
+  { label: '图标', value: 'icon' },
 ]
 export const optionSourceOpts = [
   { label: '静态', value: 'static' },
   { label: '字典', value: 'dict' },
-  { label: '表达式', value: 'expression' }
+  { label: '表达式', value: 'expression' },
 ]
 export const popoverPlacementOpts = [
   { label: '从左上弹出', value: 'topLeft' },
   { label: '从右上弹出', value: 'topRight' },
   { label: '从左下弹出', value: 'bottomLeft' },
-  { label: '从右下弹出', value: 'bottomRight' }
+  { label: '从右下弹出', value: 'bottomRight' },
 ]
 export const labelLayoutOpts = [
   { label: '标签与组件水平布局', value: 'horizontal' },
-  { label: '标签与组件上下布局', value: 'vertical' }
+  { label: '标签与组件上下布局', value: 'vertical' },
 ]
 export const labelAlignOpts = [
   { label: '居左', value: 'left' },
-  { label: '居右', value: 'right' }
+  { label: '居右', value: 'right' },
 ]
 export const validationTriggerOpts = [
   { value: 'blur' },
   { value: 'focus' },
   { value: 'change' },
-  { value: 'input' }
+  { value: 'input' },
 ]
 export const datePickerModeOpts = [
   { label: '日期选择', value: 'date' },
   { label: '周选择', value: 'week' },
   { label: '月选择', value: 'month' },
   { label: '季度选择', value: 'quarter' },
-  { label: '年选择', value: 'year' }
+  { label: '年选择', value: 'year' },
 ]
 
 export const widgetTypeOpts = Object.keys(initWidgetConfig)
@@ -45,7 +45,7 @@ export const widgetTypeOpts = Object.keys(initWidgetConfig)
     return {
       label: initWidgetConfig[key].name,
       value: key,
-      class: initWidgetConfig[key].class
+      class: initWidgetConfig[key].class,
     }
   })
   .filter((item) => item.class === 'form')
@@ -83,6 +83,6 @@ export const MODEL_KEY = Symbol('model')
 // #region enums
 export enum NodeTaskStrategy {
   ROLE = 10,
-  ORG = 30
+  ORG = 30,
 }
 // #endregion

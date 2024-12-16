@@ -16,8 +16,8 @@ const props = withDefaults(
     }
   }>(),
   {
-    addon: () => ({ type: 'text' })
-  }
+    addon: () => ({ type: 'text' }),
+  },
 )
 
 const { addon } = props

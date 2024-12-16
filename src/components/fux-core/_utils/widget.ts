@@ -20,7 +20,7 @@ export const schemaToTree = (schema: FormSchema) => {
       const treeNode: Tree = {
         label: w.props.field?.label || w.name,
         name: w.props.field?.name,
-        key: w.uid
+        key: w.uid,
       }
 
       if (w.class === 'layout') {
@@ -50,8 +50,8 @@ export const schemaToTree = (schema: FormSchema) => {
       label: '组件树',
       name: '',
       children: tree,
-      key: 'root'
-    }
+      key: 'root',
+    },
   ]
 }
 

@@ -16,7 +16,7 @@ const useDeptTree = (queryParams: Ref<ListQueryParams>, requestData: () => void)
     immediate: true,
     onSuccess(data) {
       filteredTreeData.value = data
-    }
+    },
   })
 
   watch(searchText, () => {
@@ -50,7 +50,7 @@ const useDeptTree = (queryParams: Ref<ListQueryParams>, requestData: () => void)
     selectedKeys,
     currentDeptName,
     searchText,
-    onTreeNodeSelect
+    onTreeNodeSelect,
   }
 }
 

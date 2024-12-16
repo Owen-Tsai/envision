@@ -37,9 +37,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useRendererInjection, useFormDataInjection } from '../../_hooks'
 import request from '@/utils/request'
+import { emitter } from '@fusionx/utils'
 import Nested from '../../form-designer/canvas/nested.vue'
 import WidgetRenderer from '../index.vue'
 import { kebabCase } from 'lodash-es'
@@ -56,7 +56,7 @@ const model = computed({
   get: () => config,
   set: (val) => {
     emit('update:config', val)
-  }
+  },
 })
 
 const ctx = useRendererInjection()
@@ -79,4 +79,8 @@ const saveStep = async () => {
     model.value.props.state.current++
   }
 }
+
+emitter.on('widget:attrs', (e) => {
+  console.log(e)
+})
 </script>

@@ -24,21 +24,21 @@ const prefix = '/admin-api/system/user/profile'
 
 export const getProfile = () => {
   return request.get<ProfileVO>({
-    url: `${prefix}/get`
+    url: `${prefix}/get`,
   })
 }
 
 export const updateProfile = (data: ProfileVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 
 export const updatePassword = (data: { oldPassword: string; newPassword: string }) => {
   return request.put({
     url: `${prefix}/update-password`,
-    data
+    data,
   })
 }
 
@@ -46,7 +46,7 @@ export const updateAvatar = (file: File) => {
   return request.upload({
     url: `${prefix}/update-avatar`,
     data: {
-      avatarFile: file
-    }
+      avatarFile: file,
+    },
   })
 }

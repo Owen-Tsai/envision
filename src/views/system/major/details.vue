@@ -40,8 +40,8 @@ const refresh = inject('layoutContext')
 
 const props = defineProps({
   id: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 const editMode = ref<boolean>(false)
@@ -51,7 +51,7 @@ const info = ref({
   pid: '',
   pname: '',
   id: '',
-  name: ''
+  name: '',
 })
 
 const nullInfo = ref({
@@ -59,7 +59,7 @@ const nullInfo = ref({
   pname: '',
   id: '',
   name: '',
-  level: ''
+  level: '',
 })
 
 watch(
@@ -73,7 +73,7 @@ watch(
       info.value = nullInfo.value
     }
   },
-  { deep: true, immediate: true }
+  { deep: true, immediate: true },
 )
 
 const AddFormShow = ref<boolean>(false)
@@ -97,7 +97,7 @@ const deleteMethod = (id: string) => {
     },
     onCancel() {
       console.log('Cancel')
-    }
+    },
   })
 }
 

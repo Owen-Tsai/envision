@@ -90,7 +90,7 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 const { addOption, removeOption } = useOptionSettings(model)

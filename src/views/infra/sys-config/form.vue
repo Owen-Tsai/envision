@@ -49,13 +49,13 @@ const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写参数名称' }],
   key: [{ required: true, message: '请填写参数键名' }],
   value: [{ required: true, message: '请填写参数键值' }],
-  visible: [{ required: true, message: '请选择参数可见性' }]
+  visible: [{ required: true, message: '请选择参数可见性' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<SysConfigVO>
-  }
+    type: Object as PropType<SysConfigVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])

@@ -6,17 +6,17 @@ const initialNodeConfig: NodeConfigMap = {
     name: '审核人',
     props: {
       actor: {},
-      fields: []
+      fields: [],
     },
     type: 'audit',
-    uid: ''
+    uid: '',
   },
   start: {
     name: '发起人',
     props: {},
     type: 'start',
-    uid: generateId()
-  }
+    uid: generateId(),
+  },
 }
 
 export default initialNodeConfig

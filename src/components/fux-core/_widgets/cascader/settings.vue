@@ -112,7 +112,7 @@ import type { WPropsCascader } from '@/types/fux-core/form'
 
 const showCheckedStrategyOpts = [
   { label: '仅显示叶子节点', value: Cascader.SHOW_CHILD },
-  { label: '可显示父节点', value: Cascader.SHOW_PARENT }
+  { label: '可显示父节点', value: Cascader.SHOW_PARENT },
 ]
 
 const cachedMap = ref<Record<string, any>>({})
@@ -127,7 +127,7 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 watch(
@@ -140,6 +140,6 @@ watch(
     } else {
       model.value.options.value = undefined
     }
-  }
+  },
 )
 </script>

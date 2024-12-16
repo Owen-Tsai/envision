@@ -16,7 +16,7 @@ const useAreaTree = () => {
     onSuccess(data) {
       // console.log(data)
       filteredTreeData.value = data
-    }
+    },
   })
 
   watch(searchText, () => {
@@ -47,7 +47,7 @@ const useAreaTree = () => {
     filteredTreeData,
     selectedKeys,
     searchText,
-    onTreeNodeSelect
+    onTreeNodeSelect,
   }
 }
 
