@@ -9,28 +9,20 @@ body {
 }
 
 html {
-  --colorBorderAlt: rgba(5, 5, 5, 0.06);
-  --colorBgAlt: rgba(255, 255, 255, 0.6);
-  --colorBgLayoutAlpha: rgba(245, 245, 245, 0.6);
+  --color-border-alt: rgba(5, 5, 5, 0.06);
+  --color-bg-alt: rgba(255, 255, 255, 0.6);
+  --color-bg-layout-alpha: rgba(245, 245, 245, 0.6);
 
   &.dark {
-    --colorBorderAlt: rgba(255, 255, 255, 0.2);
-    --colorBgAlt: rgba(31, 31, 31, 0.66);
-    --colorBgLayoutAlpha: rgba(0, 0, 0, 0.2);
+    --color-border-alt: rgba(255, 255, 255, 0.2);
+    --color-bg-alt: rgba(31, 31, 31, 0.66);
+    --color-bg-layout-alpha: rgba(0, 0, 0, 0.2);
   }
 }
 
 .ant-app,
 #app {
   height: 100%;
-}
-
-// Alibaba PuHuiTi
-@font-face {
-  font-family: 'TitleFont';
-  font-weight: bold;
-  src: url('./HARMONYOS_SANS_BOLD.woff2') format('woff2');
-  font-display: swap;
 }
 
 #nprogress .bar {

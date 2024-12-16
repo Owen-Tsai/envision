@@ -35,7 +35,7 @@ const useValidation = (cbk: { onSuccess: (v: string) => void; onError: () => voi
           msg: '验证通过',
           success: true,
         }
-        message.success('验证成功')
+
         onSuccess(captchaVerification)
       } else {
         validationInfo.value = {

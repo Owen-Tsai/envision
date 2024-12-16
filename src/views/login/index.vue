@@ -7,21 +7,16 @@
 
       <div class="subtext mt-4">正确、简洁并易于扩展的低代码开发平台</div>
 
-      <ATabs
-        v-model:active-key="activeTab"
-        class="mt-6"
-        centered
-        style="width: 328px; min-width: 280px"
-      >
-        <ATabPane :key="0" tab="账号密码登录">
-          <LoginForm />
-        </ATabPane>
-        <ATabPane :key="1" tab="钉钉扫码登录"></ATabPane>
-      </ATabs>
+      <div class="wrapper mt-8 px-4">
+        <div class="flex-center header">
+          <div class="title px-2 py-1 flex-center rounded-full">管理后台登录</div>
+        </div>
+        <LoginForm />
+      </div>
     </div>
 
     <footer>
-      <div>FuxionX 开发团队 &copy; 2024. All Rights Reserved</div>
+      <div>{{ footer }}</div>
     </footer>
   </div>
 </template>
@@ -30,9 +25,7 @@
 import LoginForm from './login-form.vue'
 import logo from '~img/logo-simple.svg'
 
-const activeTab = ref(0)
-
-const title = import.meta.env.VITE_APP_SHORT_TITLE
+const footer = import.meta.env.VITE_APP_FOOTER
 </script>
 
 <style lang="scss" scoped>
@@ -46,11 +39,6 @@ const title = import.meta.env.VITE_APP_SHORT_TITLE
   background-color: var(--color-bg-container);
 }
 
-h1 {
-  color: var(--color-text);
-  @apply text-4xl font-bold;
-  @include title-font;
-}
 .subtext {
   color: var(--color-text-secondary);
   text-align: center;
@@ -65,5 +53,27 @@ h1 {
 footer {
   @apply mb-4 text-center;
   color: var(--color-text-tertiary);
+}
+.wrapper {
+  position: relative;
+  .header {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 2px;
+      background: radial-gradient(50% 50% at 50% 50%, var(--color-primary), transparent);
+    }
+  }
+  .title {
+    background-color: var(--color-primary-bg);
+    color: var(--color-primary-text);
+    border: 1px solid var(--color-primary);
+    z-index: 0;
+  }
 }
 </style>

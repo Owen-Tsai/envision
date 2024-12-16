@@ -9,12 +9,14 @@
             :src="`data:image/png;base64,${data?.repData.originalImageBase64}`"
             class="puzzle-image"
           />
-          <div
-            class="absolute top-0 right-0 p-2 inline-flex items-center justify-center cursor-pointer"
-            @click="execute"
-          >
-            <ReloadOutlined />
-          </div>
+          <ATooltip title="刷新图片">
+            <div
+              class="absolute top-0 right-0 p-2 inline-flex items-center justify-center cursor-pointer"
+              @click="execute"
+            >
+              <ReloadOutlined />
+            </div>
+          </ATooltip>
           <Transition name="slide-up">
             <div
               v-show="validationInfo.visible"
@@ -116,6 +118,19 @@ watch(visible, (val) => {
     reLoad()
   }
 })
+
+watch(
+  () => x.value,
+  (val) => {
+    const clampLimit = width - SIZE_OFFSET
+    if (val > clampLimit) {
+      x.value = clampLimit
+    }
+    if (val < SIZE_OFFSET) {
+      x.value = SIZE_OFFSET
+    }
+  },
+)
 
 defineExpose({
   refetch: execute,

@@ -1,9 +1,9 @@
 <template>
-  <App>
+  <AApp>
     <AConfigProvider dropdown-match-select-width :locale="zhCN" :theme="{ algorithm }">
       <RouterView />
     </AConfigProvider>
-  </App>
+  </AApp>
 </template>
 
 <script setup lang="ts">

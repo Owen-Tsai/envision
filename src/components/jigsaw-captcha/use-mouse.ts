@@ -1,6 +1,3 @@
-import { ref, computed, type Ref } from 'vue'
-import { useMouseInElement, useMousePressed } from '@vueuse/core'
-
 export const SIZE_OFFSET = 32
 
 const useMouseDrag = (
