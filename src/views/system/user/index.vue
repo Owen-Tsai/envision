@@ -125,6 +125,7 @@
               :data-source="data?.list"
               :loading="pending"
               :pagination="pagination"
+              :scroll="{ x: 1100 }"
               @change="onChange"
             >
               <template #bodyCell="scope: TableScope<UserVO>">
@@ -223,19 +224,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import {
-  SearchOutlined,
-  EditOutlined,
-  DownOutlined,
-  PlusOutlined,
-  ExportOutlined,
-  ReloadOutlined,
-} from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
-import type { UserVO } from '@/api/system/user'
 import useDict from '@/hooks/use-dict'
-import { useToggle } from '@vueuse/core'
 import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'
 import PasswordFormModal from './password-form.vue'
@@ -243,8 +233,11 @@ import RoleFormModal from './roles-form.vue'
 import useDeptTree from './use-dept-tree'
 import { columns, useUserTable } from './use-user-table'
 import useActions from './use-actions'
+import type { UserVO } from '@/api/system/user'
+import type { FormInstance } from 'ant-design-vue'
+
 // layout specific
-const layout = import.meta.env.VITE_DEFAULT_LAYOUT
+const layout = import.meta.env.VITE_APP_LAYOUT
 const style = ref<{ minHeight: string; top: string }>({
   minHeight: 'calc(100vh - 130px)',
   top: '110px',
@@ -255,7 +248,7 @@ if (layout === 'split') {
   style.value.top = '52px'
 }
 
-const filterForm = ref()
+const filterForm = useTemplateRef<FormInstance>('filterForm')
 
 const [filterExpanded, toggle] = useToggle(false)
 

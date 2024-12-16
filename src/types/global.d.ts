@@ -7,6 +7,13 @@ declare module 'vue' {
     EUpload: typeof import('@/components/upload/index.vue').default
     ECounter: typeof import('vue-countup-v3').default
 
+    STable: (typeof import('@surely-vue/table'))['STable']
+    STableColumn: (typeof import('@surely-vue/table'))['STableColumn']
+    STableColumnGroup: (typeof import('@surely-vue/table'))['STableColumnGroup']
+    STableSummary: (typeof import('@surely-vue/table'))['STableSummary']
+    STableSummaryRow: (typeof import('@surely-vue/table'))['STableSummaryRow']
+    STableSummaryCell: (typeof import('@surely-vue/table'))['STableSummaryCell']
+
     AccountBookFilled: (typeof import('@ant-design/icons-vue'))['AccountBookFilled']
     AccountBookOutlined: (typeof import('@ant-design/icons-vue'))['AccountBookOutlined']
     AccountBookTwoTone: (typeof import('@ant-design/icons-vue'))['AccountBookTwoTone']

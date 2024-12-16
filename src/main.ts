@@ -5,6 +5,7 @@ import Scrollbar from 'custom-vue-scrollbar'
 import DictTag from '@/components/dict-tag/index.vue'
 import Upload from '@/components/upload/index.vue'
 import Counter from 'vue-countup-v3'
+import STable from '@surely-vue/table'
 import { iconPlugin } from '@fusionx/utils'
 import '@/utils/dayjs'
 // use all the icons
@@ -26,6 +27,7 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(Antd)
 app.use(router)
+app.use(STable)
 
 app.component('Scrollbar', Scrollbar)
 app.component('EDictTag', DictTag)

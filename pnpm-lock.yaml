@@ -20,6 +20,9 @@ importers:
       '@fusionx/utils':
         specifier: ^1.3.2
         version: 1.3.2(@ant-design/icons-vue@7.0.1(vue@3.5.13(typescript@5.3.3)))(vue@3.5.13(typescript@5.3.3))
+      '@surely-vue/table':
+        specifier: ^4.3.15
+        version: 4.3.15(vue@3.5.13(typescript@5.3.3))
       '@vueuse/core':
         specifier: ^10.11.1
         version: 10.11.1(vue@3.5.13(typescript@5.3.3))
@@ -199,8 +202,16 @@ packages:
   '@ant-design/colors@6.0.0':
     resolution: {integrity: sha512-qAZRvPzfdWHtfameEGP2Qvuf838NhergR35o+EuVyB5XvSA98xod5r4utvi4TJ3ywmevm290g9nsCG5MryrdWQ==}
 
+  '@ant-design/colors@7.1.0':
+    resolution: {integrity: sha512-MMoDGWn1y9LdQJQSHiCC20x3uZ3CwQnv9QMz6pCmJOrqdgM9YxsoVVY0wtrdXbmfSgnV0KNk6zi09NAhMR2jvg==}
+
   '@ant-design/icons-svg@4.4.2':
     resolution: {integrity: sha512-vHbT+zJEVzllwP+CM+ul7reTEfBR0vgxFe7+lREAsAA7YGsYpboiq2sQNeQeRvh09GfQgs/GyFEvZpJ9cLXpXA==}
+
+  '@ant-design/icons-vue@6.1.0':
+    resolution: {integrity: sha512-EX6bYm56V+ZrKN7+3MT/ubDkvJ5rK/O2t380WFRflDcVFgsvl3NLH7Wxeau6R8DbrO5jWR6DSTC3B6gYFp77AA==}
+    peerDependencies:
+      vue: '>=3.0.3'
 
   '@ant-design/icons-vue@7.0.1':
     resolution: {integrity: sha512-eCqY2unfZK6Fe02AwFlDHLfoyEFreP6rBwAZMIJ1LugmfMiVgwWDYlp1YsRugaPtICYOabV1iWxXdP12u9U43Q==}
@@ -1062,6 +1073,12 @@ packages:
   '@sindresorhus/merge-streams@4.0.0':
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
+
+  '@surely-vue/table@4.3.15':
+    resolution: {integrity: sha512-W5bVKbrd6hyOrYndIVijgkf1G5+cwQmSBATWcB1cxWG+eD2w1S8VXi6/Xz5E7M5oRSminCwBeOInnjgH2uuDEw==}
+    engines: {node: '>=12.0.0'}
+    peerDependencies:
+      vue: ^3.2.34
 
   '@transloadit/prettier-bytes@0.0.7':
     resolution: {integrity: sha512-VeJbUb0wEKbcwaSlj5n+LscBl9IPgLPkHVGBkh00cztv6X4L/TJXK58LzFuBKX7/GAfiGhIwH67YTLTlzvIzBA==}
@@ -3285,7 +3302,17 @@ snapshots:
     dependencies:
       '@ctrl/tinycolor': 3.6.1
 
+  '@ant-design/colors@7.1.0':
+    dependencies:
+      '@ctrl/tinycolor': 3.6.1
+
   '@ant-design/icons-svg@4.4.2': {}
+
+  '@ant-design/icons-vue@6.1.0(vue@3.5.13(typescript@5.3.3))':
+    dependencies:
+      '@ant-design/colors': 6.0.0
+      '@ant-design/icons-svg': 4.4.2
+      vue: 3.5.13(typescript@5.3.3)
 
   '@ant-design/icons-vue@7.0.1(vue@3.5.13(typescript@5.3.3))':
     dependencies:
@@ -4007,6 +4034,15 @@ snapshots:
       nanopop: 2.4.2
 
   '@sindresorhus/merge-streams@4.0.0': {}
+
+  '@surely-vue/table@4.3.15(vue@3.5.13(typescript@5.3.3))':
+    dependencies:
+      '@ant-design/colors': 7.1.0
+      '@ant-design/icons-vue': 6.1.0(vue@3.5.13(typescript@5.3.3))
+      ant-design-vue: 4.2.6(vue@3.5.13(typescript@5.3.3))
+      lodash-es: 4.17.21
+      resize-observer-polyfill: 1.5.1
+      vue: 3.5.13(typescript@5.3.3)
 
   '@transloadit/prettier-bytes@0.0.7': {}
 
