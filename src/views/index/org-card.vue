@@ -2,12 +2,12 @@
   <ACard>
     <ARow>
       <ACol :span="11" class="user">
-        <div class="flex items-center gap-2 lg:gap-4">
-          <AAvatar :src="user?.avatar" :size="screen.lg ? 64 : 48" />
-          <div>
-            <div class="text-xl lg:text-2xl">欢迎回来，{{ user?.nickname }}</div>
+        <div class="flex items-center gap-2 lg:gap-4 overflow-hidden">
+          <AAvatar :src="user?.avatar" :size="screen.lg ? 64 : 48" class="flex-shrink-0" />
+          <div class="text-truncate">
+            <div class="text-xl lg:text-2xl text-truncate">你好，{{ user?.nickname }}</div>
             <div class="info">
-              <span>{{ depts?.find((d) => d.id === user?.deptId)?.name }}</span>
+              <span>{{ depts?.find((d) => d.id === user?.deptId)?.name || '未分配部门' }}</span>
               <ADivider type="vertical" />
               <span>未绑定手机</span>
             </div>
@@ -45,7 +45,6 @@
 
 <script setup lang="ts">
 import { Grid } from 'ant-design-vue'
-import { storeToRefs } from 'pinia'
 import useRequest from '@/hooks/use-request'
 import useUserStore from '@/stores/user'
 import { getDeptSimpleList } from '@/api/system/dept'
