@@ -101,7 +101,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['success', 'update:open'])
 
-const isOpen = useModalOpen(props, emit)
+const isOpen = useModalOpen(props, emit, formRef)
 
 const loading = ref(false)
 const formData = ref<UserVO>({})
@@ -136,8 +136,6 @@ const submit = async () => {
 watch(
   () => props.record?.id,
   (val) => {
-    formRef.value?.clearValidate()
-    formRef.value?.resetFields()
     if (val) {
       loading.value = true
       getUserDetail(val).then((data) => {

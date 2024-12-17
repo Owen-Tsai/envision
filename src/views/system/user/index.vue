@@ -202,19 +202,9 @@
     <!-- add/edit user -->
     <FormModal v-model:open="visible.edit" :record="entry" @success="execute" />
     <!-- change password -->
-    <PasswordFormModal
-      v-if="visible.passwordReset"
-      :record="entry!"
-      @success="execute"
-      @close="visible.passwordReset = false"
-    />
+    <PasswordFormModal v-model:open="visible.passwordReset" :record="entry!" @success="execute" />
     <!-- assign roles -->
-    <RoleFormModal
-      v-if="visible.roleConfig"
-      :record="entry!"
-      @success="execute"
-      @close="visible.roleConfig = false"
-    />
+    <RoleFormModal v-model:open="visible.roleConfig" :record="entry!" @success="execute" />
   </div>
 </template>
 
