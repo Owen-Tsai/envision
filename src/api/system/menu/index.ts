@@ -75,7 +75,7 @@ export const deleteMenuWithChildren = (id: number) => {
   })
 }
 
-export const getMenuPlainList = () => {
+export const getSimpleMenuList = () => {
   return request.get<MenuLiteVO[]>({
     url: `${prefix}/list-all-simple`,
   })

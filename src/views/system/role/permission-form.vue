@@ -1,10 +1,8 @@
 <template>
   <AModal
-    v-model:open="open"
+    v-model:open="isOpen"
     :title="mode === 'data' ? '数据权限' : '菜单权限'"
-    destroy-on-close
     :confirm-loading="loading"
-    :after-close="resetFields"
     @ok="submit"
   >
     <ASpin :spinning="loading">
@@ -58,7 +56,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance } from 'ant-design-vue'
 import {
   getRoleMenuList,
@@ -66,34 +63,37 @@ import {
   setRoleDataScope,
   type RolePermissionVO,
 } from '@/api/system/permission'
-import { getMenuPlainList, type MenuLiteVO } from '@/api/system/menu'
+import { getSimpleMenuList, type MenuLiteVO } from '@/api/system/menu'
 import { getDeptTree, type DeptTreeVO } from '@/api/system/dept'
 import useDict from '@/hooks/use-dict'
+import useModalOpen from '@/hooks/use-modal'
 import { DICT_SYSTEM_DATA_SCOPE } from '@/utils/constants'
 import type { RoleVO } from '@/api/system/role'
 
 const [systemDataScope] = useDict('system_data_scope')
 
-const props = defineProps({
-  record: {
-    type: Object as PropType<RoleVO>,
-    required: true,
+const props = withDefaults(
+  defineProps<{
+    record?: RoleVO
+    mode: 'menu' | 'data'
+    open?: boolean
+  }>(),
+  {
+    mode: 'menu',
+    record: () => ({}),
   },
-  mode: {
-    type: String as PropType<'menu' | 'data'>,
-    default: 'menu',
-  },
-})
+)
 
-const emit = defineEmits(['success', 'close'])
-
+const emit = defineEmits(['success', 'update:open'])
 const formRef = ref<FormInstance>()
-const loading = ref(true)
-const open = ref(true)
 
-const roleId = props.record.id as number
+const isOpen = useModalOpen(props, emit, formRef)
+
+const loading = ref(true)
+
+const roleId = computed(() => props.record.id)
 const formData = ref<RolePermissionVO>({
-  roleId,
+  roleId: roleId.value,
 })
 
 const menuTree = ref<MenuLiteVO[]>([])
@@ -113,7 +113,7 @@ const submit = async () => {
 
     message.success('保存成功')
     emit('success')
-    open.value = false
+    isOpen.value = false
   } finally {
     loading.value = false
   }
@@ -123,27 +123,24 @@ const onMenuSelected = () => {
   formData.value.menuIds = tempMenuIds.value.map((e) => e.value)
 }
 
-const resetFields = () => {
-  formRef.value?.resetFields()
-  emit('close')
+const loadMenuData = async () => {
+  if (!roleId.value) return
+  const assignedMenuIds = await getRoleMenuList(roleId.value)
+  formData.value.menuIds = assignedMenuIds
+  const menuList = await getSimpleMenuList()
+  menuTree.value = menuList.map((e) => ({
+    ...e,
+    pId: e.parentId,
+  }))
+
+  tempMenuIds.value = menuList
+    .filter((e) => assignedMenuIds.includes(e.id))
+    .map((e) => ({ label: e.name, value: e.id }))
+
+  loading.value = false
 }
 
-if (props.mode === 'menu') {
-  getRoleMenuList(roleId).then((rdata) => {
-    formData.value.menuIds = rdata
-
-    getMenuPlainList().then((data) => {
-      menuTree.value = data.map((e) => ({
-        ...e,
-        pId: e.parentId,
-      }))
-      tempMenuIds.value = data
-        .filter((e) => rdata.includes(e.id))
-        .map((e) => ({ label: e.name, value: e.id }))
-      loading.value = false
-    })
-  })
-} else {
+const loadDeptData = () => {
   formData.value.dataScope = props.record.dataScope
   formData.value.dataScopeDeptIds = props.record.dataScopeDeptIds || []
 
@@ -152,4 +149,22 @@ if (props.mode === 'menu') {
     loading.value = false
   })
 }
+
+const loadData = async () => {
+  loading.value = true
+  if (props.mode === 'menu') {
+    loadMenuData()
+  } else {
+    loadDeptData()
+  }
+}
+
+watch(
+  () => props.record.id,
+  (val) => {
+    if (val) {
+      loadData()
+    }
+  },
+)
 </script>

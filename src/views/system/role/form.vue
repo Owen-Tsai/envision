@@ -1,10 +1,8 @@
 <template>
   <AModal
-    v-model:open="open"
+    v-model:open="isOpen"
     :title="isAdd ? '新增角色类型' : '编辑角色类型'"
-    destroy-on-close
     :confirm-loading="loading"
-    :after-close="resetFields"
     @ok="submit"
   >
     <ASpin :spinning="loading">
@@ -43,27 +41,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import { addRole, updateRole, getRoleDetail, type RoleVO } from '@/api/system/role'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
+import useModalOpen from '@/hooks/use-modal'
 
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写角色名称' }],
   code: [{ required: true, message: '请填写角色标识' }],
 }
 
-const props = defineProps({
-  record: {
-    type: Object as PropType<RoleVO>,
-  },
-})
+const props = defineProps<{
+  record?: RoleVO
+  open?: boolean
+}>()
 
-const emit = defineEmits(['success', 'close'])
-
+const emit = defineEmits(['success', 'update:open'])
 const formRef = ref<FormInstance>()
+
+const isOpen = useModalOpen(props, emit, formRef)
+
 const loading = ref(false)
-const open = ref(true)
+
 const formData = ref<RoleVO>({
   sort: 0,
   status: 0,
@@ -87,7 +86,7 @@ const submit = async () => {
     }
 
     emit('success')
-    open.value = false
+    isOpen.value = false
   } catch (e) {
     //
   } finally {
@@ -95,16 +94,16 @@ const submit = async () => {
   }
 }
 
-const resetFields = () => {
-  formRef.value?.resetFields()
-  emit('close')
-}
-
-if (props.record?.id) {
-  loading.value = true
-  getRoleDetail(props.record.id).then((res) => {
-    formData.value = res
-    loading.value = false
-  })
-}
+watch(
+  () => props.record?.id,
+  (val) => {
+    if (val) {
+      loading.value = true
+      getRoleDetail(val).then((res) => {
+        formData.value = res
+        loading.value = false
+      })
+    }
+  },
+)
 </script>
