@@ -200,12 +200,7 @@
     </ARow>
 
     <!-- add/edit user -->
-    <FormModal
-      v-if="visible.edit"
-      :record="entry"
-      @success="execute"
-      @close="visible.edit = false"
-    />
+    <FormModal v-model:open="visible.edit" :record="entry" @success="execute" />
     <!-- change password -->
     <PasswordFormModal
       v-if="visible.passwordReset"
