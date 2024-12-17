@@ -160,7 +160,7 @@ const loadData = async () => {
 }
 
 watch(
-  () => props.record.id,
+  () => props.open,
   (val) => {
     if (val) {
       loadData()

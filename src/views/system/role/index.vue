@@ -163,14 +163,6 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  ExportOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'
