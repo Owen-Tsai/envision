@@ -57,6 +57,7 @@ export const fixedRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/index/index.vue'),
         meta: {
           title: '首页',
+          keepAlive: true,
         },
       },
       {
@@ -65,6 +66,7 @@ export const fixedRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/system/dict/data/index.vue'),
         meta: {
           title: '字典数据',
+          activeMenuKey: '/system/dict',
         },
       },
       {
@@ -73,6 +75,7 @@ export const fixedRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/infra/code-gen/edit/index.vue'),
         meta: {
           title: '代码生成配置',
+          activeMenuKey: '/infra/code-gen',
         },
       },
       {

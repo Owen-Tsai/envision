@@ -34,5 +34,13 @@ declare module 'vue-router' {
      * 采用非默认布局时的布局组件路径。非默认布局模式下，将打开新窗口、在本字段指定的组件内渲染子组件
      */
     customLayout?: string | null
+    /**
+     * 当访问该路由时，应当激活的菜单项
+     */
+    activeMenuKey?: string
+    /**
+     * 当访问该路由时，跳过激活菜单项
+     */
+    ignoreActiveMenu?: boolean
   }
 }

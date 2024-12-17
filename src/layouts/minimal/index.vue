@@ -3,7 +3,7 @@
     <ALayoutContent>
       <RouterView v-if="routerAlive">
         <template #default="{ Component, route }">
-          <KeepAlive :include="[...viewCache.keepsList]">
+          <KeepAlive :include="[...keepsList]">
             <component :is="Component" :key="route.fullPath" />
           </KeepAlive>
         </template>
@@ -13,11 +13,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import useViewCache from '@/stores/view-cache'
-import { RouterView } from 'vue-router'
 
-const viewCache = useViewCache()
+const { keepsList } = storeToRefs(useViewCache())
 
 const routerAlive = ref(true)
 </script>

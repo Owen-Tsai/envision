@@ -57,18 +57,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, toRefs } from 'vue'
 import { Modal } from 'ant-design-vue'
-import { BellOutlined, MenuOutlined } from '@ant-design/icons-vue'
-import { storeToRefs } from 'pinia'
 import logo from '~img/logo-full.svg'
 import useAppStore from '@/stores/app'
 import useUserStore from '@/stores/user'
 import useBreakpoint from '@/hooks/use-breakpoint'
 import ThemeIcon from './theme-icon.vue'
 import Menu from './menu.vue'
-
-const title = import.meta.env.VITE_APP_TITLE
 
 const drawerVisible = ref(false)
 
@@ -106,7 +101,7 @@ const onClickLogout = () => {
 header {
   @apply flex-between px-4 lg:px-6;
   background: unset;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border-secondary);
   position: sticky;
   top: 0;

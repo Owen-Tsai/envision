@@ -33,10 +33,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, inject, toRefs } from 'vue'
-import { storeToRefs } from 'pinia'
-import { CloseOutlined } from '@ant-design/icons-vue'
-import { useRouter } from 'vue-router'
 import useTabsStore from '@/stores/tabs'
 
 const router = useRouter()
@@ -57,11 +53,7 @@ const reload = () => {
 }
 
 watch(router.currentRoute, (val) => {
-  tabsView.addTab(
-    val.fullPath,
-    val.meta.title || (val.name as string),
-    val.meta.keepAlive && val.name ? (val.name as string) : undefined,
-  )
+  tabsView.addTab(val.fullPath, val.meta.title || (val.name as string))
 })
 </script>
 
