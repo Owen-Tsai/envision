@@ -67,6 +67,7 @@ export const fixedRoutes: RouteRecordRaw[] = [
         meta: {
           title: '字典数据',
           activeMenuKey: '/system/dict',
+          keepAlive: true,
         },
       },
       {

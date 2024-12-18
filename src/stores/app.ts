@@ -21,6 +21,10 @@ export default defineStore('app', () => {
     title.value = `${val} | ${import.meta.env.VITE_APP_SHORT_TITLE}`
   }
 
+  onMounted(() => {
+    setTheme(theme.value)
+  })
+
   return {
     theme,
     device,

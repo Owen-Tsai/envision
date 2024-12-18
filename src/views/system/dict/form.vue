@@ -1,10 +1,8 @@
 <template>
   <AModal
-    v-model:open="open"
+    v-model:open="isOpen"
     :title="isAdd ? '新增字典类型' : '编辑字典类型'"
-    destroy-on-close
     :confirm-loading="loading"
-    :after-close="resetFields"
     @ok="submit"
   >
     <ASpin :spinning="loading">
@@ -36,7 +34,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import {
   addDictType,
@@ -44,6 +41,7 @@ import {
   getDictTypeDetail,
   type DictTypeVO,
 } from '@/api/system/dict/type'
+import useModalOpen from '@/hooks/use-modal'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
@@ -51,17 +49,17 @@ const rules: FormProps['rules'] = {
   type: [{ required: true, message: '请填写字典类型' }],
 }
 
-const props = defineProps({
-  record: {
-    type: Object as PropType<DictTypeVO>,
-  },
-})
+const props = defineProps<{
+  record?: DictTypeVO
+  open?: boolean
+}>()
 
-const emit = defineEmits(['success', 'close'])
-
+const emit = defineEmits(['success', 'update:open'])
 const formRef = ref<FormInstance>()
+
+const isOpen = useModalOpen(props, emit, formRef)
+
 const loading = ref(false)
-const open = ref(true)
 const formData = ref<Partial<DictTypeVO>>({
   name: '',
   type: '',
@@ -86,7 +84,7 @@ const submit = async () => {
     }
 
     emit('success')
-    open.value = false
+    isOpen.value = false
   } catch (e) {
     //
   } finally {
@@ -94,16 +92,16 @@ const submit = async () => {
   }
 }
 
-const resetFields = () => {
-  formRef.value?.resetFields()
-  emit('close')
-}
-
-if (props.record?.id) {
-  loading.value = true
-  getDictTypeDetail(props.record.id).then((res) => {
-    formData.value = res
-    loading.value = false
-  })
-}
+watch(
+  () => props.record?.id,
+  (val) => {
+    if (val) {
+      loading.value = true
+      getDictTypeDetail(val).then((res) => {
+        formData.value = res
+        loading.value = false
+      })
+    }
+  },
+)
 </script>
