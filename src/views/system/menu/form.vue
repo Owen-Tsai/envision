@@ -2,6 +2,7 @@
   <AModal
     v-model:open="isOpen"
     :title="mode === 'add' ? '新增菜单' : '编辑菜单'"
+    :confirm-loading="loading"
     @cancel="isOpen = false"
     @ok="submit"
   >
@@ -190,6 +191,7 @@ const loadData = async () => {
   if (props.mode === 'add') {
     formData.value.parentId = props.record!.id
   } else {
+    loading.value = true
     const data = await getMenuDetail(props.record!.id!)
     if (data.parentId === 0) {
       data.parentId = undefined

@@ -26,7 +26,7 @@ export type ListQueryParams = CommonQueryParams & {
   deptId?: string | number
 }
 
-export type SimpleUserVO = Array<{
+export type SimpleUserListVO = Array<{
   id: number
   nickname: string
 }>
@@ -94,5 +94,5 @@ export const updateUserStatus = (id: number, status: number) => {
 
 // 获取用户精简信息列表
 export const getSimpleUserList = () => {
-  return request.get<SimpleUserVO>({ url: `${prefix}/simple-list` })
+  return request.get<SimpleUserListVO>({ url: `${prefix}/simple-list` })
 }

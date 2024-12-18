@@ -2,7 +2,7 @@ import { ref, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import type { TableProps, FormInstance } from 'ant-design-vue'
 import { getDeptTree, type TreeQueryParams } from '@/api/system/dept'
-import { getSimpleUserList, type SimpleUserVO } from '@/api/system/user'
+import { getSimpleUserList, type SimpleUserListVO } from '@/api/system/user'
 
 export const columns: TableProps['columns'] = [
   { key: 'name', title: '部门名称', dataIndex: 'name' },
@@ -15,7 +15,7 @@ export const columns: TableProps['columns'] = [
 
 export const useTable = (formRef: Ref<FormInstance>) => {
   const queryParams = ref<TreeQueryParams>({})
-  const userList = ref<SimpleUserVO>()
+  const userList = ref<SimpleUserListVO>()
 
   const { data, pending, execute } = useRequest(() => getDeptTree(queryParams.value), {
     immediate: true,
