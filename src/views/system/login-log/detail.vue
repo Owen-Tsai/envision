@@ -30,5 +30,5 @@ defineProps({
   },
 })
 
-const { systemLoginType } = useDict('system_login_type')
+const [systemLoginType] = useDict('system_login_type')
 </script>
