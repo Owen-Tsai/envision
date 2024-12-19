@@ -1,10 +1,9 @@
 <template>
   <AModal
-    v-model:open="open"
+    v-model:open="isOpen"
     title="导入数据表"
-    :after-close="onClose"
-    destroy-on-close
     :width="720"
+    :confirm-loading="loading"
     @ok="submit"
   >
     <!-- filter form -->
@@ -53,14 +52,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, type PropType } from 'vue'
-import type { FormInstance, TableProps } from 'ant-design-vue'
+import useModalOpen from '@/hooks/use-modal'
 import {
   getTableDefList,
   createCodeGenConfig,
   type TableDefListVO,
   type TableQueryParams,
 } from '@/api/infra/code-gen'
+import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { DataSourceVO } from '@/api/infra/data-source'
 
 const columns: TableProps['columns'] = [
@@ -68,11 +67,10 @@ const columns: TableProps['columns'] = [
   { dataIndex: 'comment', title: '表描述' },
 ]
 
-const props = defineProps({
-  dataSources: {
-    type: Array as PropType<DataSourceVO[]>,
-  },
-})
+const props = defineProps<{
+  dataSources: DataSourceVO[]
+  open?: boolean
+}>()
 
 const loading = ref(false)
 
@@ -86,17 +84,11 @@ const selection: TableProps['rowSelection'] = {
 
 const tableDefList = ref<TableDefListVO>([])
 
-const emit = defineEmits(['success', 'close'])
+const emit = defineEmits(['success', 'update:open'])
+const formRef = ref<FormInstance>()
+const isOpen = useModalOpen(props, emit, formRef)
 
 const queryParams = ref<TableQueryParams>({})
-const formRef = ref<FormInstance>()
-
-const open = ref(true)
-
-const onClose = () => {
-  formRef.value?.resetFields()
-  emit('close')
-}
 
 const submit = async () => {
   try {
@@ -106,7 +98,7 @@ const submit = async () => {
       tableNames: selectedKeys.value,
     })
 
-    open.value = false
+    isOpen.value = false
     emit('success')
   } catch (e) {
     // do nothing at the moment
@@ -129,15 +121,6 @@ const onFilterReset = () => {
   getTables()
 }
 
-// created
-loading.value = true
-watch(
-  () => props.dataSources,
-  () => {
-    onLoad()
-  },
-)
-
 const onLoad = () => {
   if (props.dataSources) {
     queryParams.value.dataSourceConfigId = props.dataSources[0].id
@@ -146,5 +129,5 @@ const onLoad = () => {
   }
 }
 
-onLoad()
+watch(() => props.dataSources, onLoad)
 </script>

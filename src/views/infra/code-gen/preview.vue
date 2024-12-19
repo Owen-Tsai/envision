@@ -1,12 +1,5 @@
 <template>
-  <AModal
-    v-model:open="open"
-    title="代码预览"
-    destroy-on-close
-    wrap-class-name="fullscreen-modal"
-    width="100%"
-    :after-close="onClose"
-  >
+  <AModal v-model:open="isOpen" title="代码预览" wrap-class-name="fullscreen-modal" width="100%">
     <template #footer>
       <AButton type="primary">关闭</AButton>
     </template>
@@ -49,8 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
 import { last } from 'lodash-es'
+import useModalOpen from '@/hooks/use-modal'
 import { previewCode, type CodePreviewVO } from '@/api/infra/code-gen'
 import useHighlighter from '@/hooks/use-highlighter'
 import type { BundledLanguage } from 'shiki/langs'
@@ -62,16 +55,15 @@ type FileNode = {
   children?: FileNode[]
 }
 
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
-})
+const props = defineProps<{
+  id?: number
+  open?: boolean
+}>()
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['update:open'])
 
-const open = ref(true)
+const isOpen = useModalOpen(props, emit)
+
 const renderKey = ref(0)
 const data = ref<CodePreviewVO>()
 const selectedKeys = ref<string[]>([])
@@ -171,21 +163,21 @@ const constructTree = (files: FileNode[]) => {
   return treeData
 }
 
-const onClose = () => {
-  emit('close')
-}
-
 const onSelect = (keys: (string | number)[]) => {
   selectedKeys.value = keys as string[]
 }
 
-// get generated code
-previewCode(props.id).then((res) => {
-  data.value = res
-  renderKey.value++
-  selectedKeys.value[0] = data.value[0].filePath
-  loading.value = true
-})
+watch(
+  () => props.id,
+  (val) => {
+    previewCode(val!).then((res) => {
+      data.value = res
+      renderKey.value++
+      selectedKeys.value[0] = data.value[0].filePath
+      loading.value = false
+    })
+  },
+)
 </script>
 
 <style lang="scss">
