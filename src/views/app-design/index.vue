@@ -2,8 +2,7 @@
   <div class="flex flex-col h-screen">
     <header class="flex-shrink-0">
       <div class="title-wrapper">
-        <img class="logo" :src="logo" />
-        <h1 class="title mb-0">{{ title }}</h1>
+        <Logo class="logo" />
         <ADivider type="vertical" class="h-8" />
         <h1 class="title mb-0">应用设计</h1>
       </div>
@@ -46,7 +45,6 @@
 <script setup lang="ts">
 import { h, ref, computed } from 'vue'
 import { RollbackOutlined, CodeOutlined } from '@ant-design/icons-vue'
-import logo from '~img/company-logo.svg'
 import DataSourceConfig from './data-source/index.vue'
 import FormDesign from './form/index.vue'
 import WorkflowDesign from './workflow/index.vue'
@@ -88,7 +86,7 @@ header {
   gap: 8px;
   justify-self: flex-start;
   .logo {
-    @apply size-30px;
+    height: 30px;
     border-radius: 6px;
     user-select: none;
     -webkit-user-drag: none;

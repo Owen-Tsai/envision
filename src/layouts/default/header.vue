@@ -6,7 +6,7 @@
           <MenuOutlined />
         </template>
       </AButton>
-      <img class="logo" :src="logo" />
+      <Logo class="logo" type="full" />
     </div>
 
     <div class="actions">
@@ -58,7 +58,6 @@
 
 <script lang="ts" setup>
 import { Modal } from 'ant-design-vue'
-import logo from '~img/logo-full.svg'
 import useAppStore from '@/stores/app'
 import useUserStore from '@/stores/user'
 import useBreakpoint from '@/hooks/use-breakpoint'
