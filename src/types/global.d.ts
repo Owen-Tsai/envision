@@ -6,6 +6,7 @@ declare module 'vue' {
     EDictTag: typeof import('@/components/dict-tag/index.vue').default
     EUpload: typeof import('@/components/upload/index.vue').default
     ECounter: typeof import('vue-countup-v3').default
+    Logo: typeof import('@/components/_internal/logo.vue').defualt
 
     STable: (typeof import('@surely-vue/table'))['STable']
     STableColumn: (typeof import('@surely-vue/table'))['STableColumn']

@@ -4,6 +4,7 @@ import Antd from 'ant-design-vue'
 import Scrollbar from 'custom-vue-scrollbar'
 import DictTag from '@/components/dict-tag/index.vue'
 import Upload from '@/components/upload/index.vue'
+import Logo from '@/components/_internal/logo.vue'
 import Counter from 'vue-countup-v3'
 import STable from '@surely-vue/table'
 import { iconPlugin } from '@fusionx/utils'
@@ -33,6 +34,7 @@ app.component('Scrollbar', Scrollbar)
 app.component('EDictTag', DictTag)
 app.component('EUpload', Upload)
 app.component('ECounter', Counter)
+app.component('Logo', Logo)
 
 app.use(iconPlugin, {
   icons: antIcons,

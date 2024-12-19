@@ -1,8 +1,8 @@
 <template>
-  <div class="page flex flex-col items-center">
+  <div class="page flex flex-col items-center login-page">
     <div class="flex-1 py-10">
       <div class="flex items-center justify-center">
-        <img class="h-14 mx-auto" :src="logo" />
+        <Logo class="h-14 mx-auto" />
       </div>
 
       <div class="subtext mt-4">正确、简洁并易于扩展的低代码开发平台</div>
@@ -23,7 +23,6 @@
 
 <script setup lang="ts">
 import LoginForm from './login-form.vue'
-import logo from '~img/logo-simple.svg'
 
 const footer = import.meta.env.VITE_APP_FOOTER
 </script>
@@ -31,7 +30,7 @@ const footer = import.meta.env.VITE_APP_FOOTER
 <style lang="scss" scoped>
 @use '@/styles/mixins.scss' as *;
 .page {
-  background: url('~img/login-bg.png') top center no-repeat;
+  background: url('~img/login-bg-alt-l.png') top center no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
@@ -75,5 +74,11 @@ footer {
     border: 1px solid var(--color-primary);
     z-index: 0;
   }
+}
+</style>
+
+<style lang="scss">
+html.dark .page.login-page {
+  background: url('~img/login-bg-alt-d.png') top center no-repeat;
 }
 </style>
