@@ -32,7 +32,7 @@
           />
         </AFormItem>
         <AFormItem label="最大文件大小" name="maxFileSize">
-          <AInput type="number" v-model:value="formData.maxFileSize" placeholder="如：1024">
+          <AInput type="number" v-model:value="formData.maxFileSize" placeholder="如：3">
             <template #addonAfter>MB</template>
           </AInput>
         </AFormItem>
