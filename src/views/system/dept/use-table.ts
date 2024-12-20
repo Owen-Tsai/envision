@@ -1,4 +1,3 @@
-import { ref, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import type { TableProps, FormInstance } from 'ant-design-vue'
 import { getDeptTree, type TreeQueryParams } from '@/api/system/dept'

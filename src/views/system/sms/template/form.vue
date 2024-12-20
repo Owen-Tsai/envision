@@ -56,7 +56,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import {
   getTemplateDetail,

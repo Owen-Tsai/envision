@@ -45,7 +45,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import {
   getTemplateDetail,
@@ -57,7 +56,7 @@ import useDict from '@/hooks/use-dict'
 
 const loading = ref(false)
 
-const { commonStatus, systemNotifyTemplateType } = useDict(
+const [commonStatus, systemNotifyTemplateType] = useDict(
   'common_status',
   'system_notify_template_type',
 )

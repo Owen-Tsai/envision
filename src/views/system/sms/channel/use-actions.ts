@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { deleteChannel, type ChannelVO } from '@/api/system/sms/channel'
 

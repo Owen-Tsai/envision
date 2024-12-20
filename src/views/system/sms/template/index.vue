@@ -144,14 +144,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
 import useDict from '@/hooks/use-dict'

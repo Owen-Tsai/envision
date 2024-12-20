@@ -37,7 +37,6 @@
 </template>
 
 <script lang="ts" setup>
-import { type PropType } from 'vue'
 import dayjs from 'dayjs'
 import type { OperateLogVO } from '@/api/system/operate-log'
 

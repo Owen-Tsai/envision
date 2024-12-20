@@ -1,4 +1,3 @@
-import { ref, watch, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import { getDeptTree } from '@/api/system/dept'
 import type { ListQueryParams } from '@/api/system/user'

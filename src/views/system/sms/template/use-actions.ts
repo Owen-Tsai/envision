@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { deleteTemplate, type TemplateVO } from '@/api/system/sms/template'
 

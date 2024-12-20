@@ -35,7 +35,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import { getPostDetail, createPost, updatePost, type PostVO } from '@/api/system/post'
 import useDict from '@/hooks/use-dict'

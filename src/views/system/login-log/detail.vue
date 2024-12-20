@@ -18,7 +18,6 @@
 </template>
 
 <script lang="ts" setup>
-import { type PropType } from 'vue'
 import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import type { LoginLogVO } from '@/api/system/login-log'

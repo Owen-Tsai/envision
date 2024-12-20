@@ -29,13 +29,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, inject, h } from 'vue'
-import { EditOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons-vue'
 import { getTradeInfo, deleteTradeInfo, modifyTradeInfo } from '@/api/system/trade'
 import AddForm from '@/views/system/trade/add-form.vue'
 import { Modal } from 'ant-design-vue'
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
-import { createVNode } from 'vue'
+
 const refresh = inject('layoutContext')
 
 const props = defineProps({

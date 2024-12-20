@@ -1,6 +1,4 @@
-import { ref } from 'vue'
 import { message } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
 import { deleteDictType, type DictTypeVO } from '@/api/system/dict/type'
 
 const useActions = (requestData: () => void) => {

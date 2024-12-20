@@ -117,15 +117,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { useToggle } from '@vueuse/core'
-import {
-  DownOutlined,
-  ExportOutlined,
-  ReloadOutlined,
-  UnorderedListOutlined,
-} from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import { columns, useTable } from './use-table'

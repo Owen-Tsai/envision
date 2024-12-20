@@ -1,4 +1,3 @@
-import { ref, watch } from 'vue'
 import useRequest from '@/hooks/use-request'
 import { getMajorTree } from '@/api/system/major'
 import { filterTree, type Tree } from '@/utils/tree'
