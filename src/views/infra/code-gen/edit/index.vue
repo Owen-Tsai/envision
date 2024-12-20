@@ -83,6 +83,7 @@ const onSubmit = async () => {
     execute()
   } catch (err) {
     console.log(err)
+    message.error(err.errorFields[0].errors[0])
   }
 }
 </script>

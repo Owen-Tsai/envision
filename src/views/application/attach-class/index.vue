@@ -64,7 +64,7 @@
               <a-tag v-for="(item, index) in scope.text" :key="index">{{ item }}</a-tag>
             </template>
             <template v-if="scope?.column.key === 'maxFileSize'">
-              {{ scope.text / 1024 }}KB
+              {{ scope.text / 1024 / 1024 }}MB
             </template>
             <template v-if="scope?.column.key === 'ismust'">
               <a-tag color="red" v-if="scope.text === 1">必传</a-tag>

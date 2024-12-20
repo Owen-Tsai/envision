@@ -32,7 +32,9 @@
           />
         </AFormItem>
         <AFormItem label="最大文件大小" name="maxFileSize">
-          <AInput type="number" v-model:value="formData.maxFileSize" placeholder="如：1024" />
+          <AInput type="number" v-model:value="formData.maxFileSize" placeholder="如：3">
+            <template #addonAfter>MB</template>
+          </AInput>
         </AFormItem>
         <!--        <AFormItem label="是否单个附件" name="isone">-->
         <!--          <ASwitch v-model:checked="formData.isone" checked-value="1" un-checked-value="0" />-->
