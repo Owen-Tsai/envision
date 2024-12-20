@@ -25,13 +25,19 @@
     </header>
 
     <div class="flex-grow-0 h-full overflow-hidden">
-      <DataSourceConfig v-if="step === 0" @finish="step = 1" />
-      <FormDesign v-if="step === 1" />
-      <WorkflowDesign v-if="step === 2" />
+      <Loader v-if="!schemaLoaded" />
+      <DataSourceConfig v-if="step === 0 && schemaLoaded" @finish="step = 1" />
+      <!-- <FormDesign v-if="step === 1" /> -->
+      <!-- <WorkflowDesign v-if="step === 2" /> -->
     </div>
 
-    <AModal v-model:open="schemaVisible" title="应用 Schema">
-      <div v-html="highlighted" />
+    <AModal v-model:open="schemaVisible" title="应用 Schema" :width="480">
+      <div class="relative">
+        <div v-html="highlighted" />
+        <ATooltip :title="copied ? '已复制' : '复制 Schema'">
+          <AButton shape="circle" :icon="h(CopyOutlined)" ghost @click="copy()" />
+        </ATooltip>
+      </div>
 
       <template #footer>
         <div class="text-right">
@@ -43,19 +49,18 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, computed } from 'vue'
-import { RollbackOutlined, CodeOutlined } from '@ant-design/icons-vue'
+import { h } from 'vue'
+import Loader from '@/components/loading/index.vue'
+import { RollbackOutlined, CodeOutlined, CopyOutlined } from '@ant-design/icons-vue'
 import DataSourceConfig from './data-source/index.vue'
 import FormDesign from './form/index.vue'
 import WorkflowDesign from './workflow/index.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import { useSteps, useAppDesigner } from './use-app-design'
 
-const title = import.meta.env.VITE_APP_SHORT_TITLE
-
+const { appSchema, saveAppDesign, schemaLoaded } = useAppDesigner()
 const { step, steps } = useSteps()
-
-const { appSchema, saveAppDesign } = useAppDesigner()
+const { copy, copied } = useClipboard({ source: JSON.stringify(appSchema.value, null, 2) })
 
 const schemaVisible = ref(false)
 const highlighted = computed(() => useHighlighter(JSON.stringify(appSchema.value, null, 2), 'json'))

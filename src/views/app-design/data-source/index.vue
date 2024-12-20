@@ -3,10 +3,10 @@
     <ACard class="min-h-full">
       <AForm class="form" :label-col="{ style: { width: '100px' } }">
         <AAlert
-          v-if="hasModified"
+          v-if="appEditMode === 'update'"
           type="warning"
           show-icon
-          message="当前应用已经保存，如不需要重新生成 Schema，请直接点击页面上方步骤条中的对应步骤进行切换"
+          :message="`当前Schema版本${appSchemaInfo.version}。如不需要重新生成 Schema，请直接点击页面上方步骤条中的对应步骤进行切换`"
           class="mb-4"
         />
         <AFormItem label="数据表" extra="仅可选择导入至 基础设施/代码生成 中的数据表">
@@ -95,7 +95,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, useTemplateRef } from 'vue'
 import { Modal } from 'ant-design-vue'
 import { useAppDesignCtxInjection } from '../use-app-design'
 import { useTableSelect, type TableModel } from './use-table-select'
@@ -109,19 +108,16 @@ const generating = ref(false)
 const hasModified = ref(false)
 
 const dragWrapperEl = useTemplateRef('dragWrapperEl')
-const { appEditMode, appSchema } = useAppDesignCtxInjection()!
+const { appEditMode, appSchema, appSchemaInfo } = useAppDesignCtxInjection()!
 const {
   dataSources,
   loading,
   tables,
   tableSortList,
-  initTableSelection,
   onTableSelectChange,
   selectedValues,
   filterOption,
 } = useTableSelect(appSchema)
-
-initTableSelection()
 
 useSortable(dragWrapperEl, tableSortList, {
   animation: 200,
@@ -156,14 +152,10 @@ const toNextStep = () => {
   emit('finish')
 }
 
-const reload = () => {
-  location.reload()
-}
-
-watch(
+watchOnce(
   () => appSchema.value.info,
   () => {
-    if (appEditMode.value === 'update') {
+    if (!hasModified.value) {
       hasModified.value = true
     }
   },

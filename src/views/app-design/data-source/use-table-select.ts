@@ -58,6 +58,8 @@ export const useTableSelect = (appSchema: Ref<AppSchema>) => {
     return option?.tableComment.includes(inputValue) || option?.tableName.includes(inputValue)
   }
 
+  onMounted(initTableSelection)
+
   return {
     tables,
     tableSortList,

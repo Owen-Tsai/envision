@@ -9,6 +9,8 @@ export type AppSchemaVO = {
   conf?: string // left empty for now
   appSchema?: string
   remark?: string
+  version?: string
+  versionName?: string
 }
 
 export type XMLGenerateVO = {
@@ -62,7 +64,7 @@ export const getAppDesignSchema = (id: string) => {
   })
 }
 
-export const getAppDesignSchemaByAppId = (appId: string) => {
+export const getAppSchemaByAppId = (appId: string) => {
   return request.get<AppSchemaVO>({
     url: `${prefix}/get-by-app-id?appId=${appId}`,
   })

@@ -56,10 +56,6 @@ export const widgetTypeOpts = Object.keys(initWidgetConfig)
 // used as provide/inject keys
 
 /**
- * form data injection key, used in renderer
- */
-export const FORM_DATA_KEY = Symbol('formData')
-/**
  * form designer injection key
  */
 export const DESIGNER_KEY = Symbol('designer')
@@ -76,8 +72,7 @@ export const WORKFLOW_KEY = Symbol('workflow')
  * model injection key
  * used in widgets like dataTable, which has nested form element
  */
-export const MODEL_KEY = Symbol('model')
-
+export const NESTED_MODEL_KEY = Symbol('model')
 // #endregion
 
 // #region enums

@@ -1,68 +1,57 @@
-import { provide, inject, ref, type Ref } from 'vue'
-import { injectLocal, provideLocal } from '@vueuse/core'
-import { FORM_DATA_KEY, DESIGNER_KEY, RENDERER_KEY, WORKFLOW_KEY, MODEL_KEY } from '../_utils/const'
+import { DESIGNER_KEY, RENDERER_KEY, WORKFLOW_KEY, NESTED_MODEL_KEY } from '../_utils/const'
 import { deleteWidgetByUid, copyWidget as copy } from '../_utils/widget'
 import type { Widget } from '@/types/fux-core/form'
 import type { FlowSchema, Node } from '@/types/fux-core/flow'
-import type { FormDataCtx, FormDesignerCtx, FormRendererCtx } from '@/types/fux-core/form/context'
+import type { FuxDesignerCtx, FuxRendererCtx } from '@/types/fux-core/form/context'
 import type { WorkflowDesignerCtx } from '@/types/fux-core/flow/context'
 import type { AppSchema } from '@/types/fux-core'
 
-export const useFormDataProvider = (formData: Ref<Record<string, any>>) => {
-  provideLocal<FormDataCtx>(FORM_DATA_KEY, { formData })
-}
-
-export const useFormDataInjection = () => {
-  return injectLocal<FormDataCtx>(FORM_DATA_KEY)!
-}
-
-export const useDesignerProvider = (schema: Ref<AppSchema>) => {
+export const useDesignerProvider = (appSchema: Ref<AppSchema>) => {
   const selectedWidget = ref<Widget | undefined>()
+  const formData = ref<Record<string, any>>({})
 
   const deleteWidget = (uid: string) => {
-    if (schema.value.form.widgets) {
-      deleteWidgetByUid(schema.value.form.widgets, uid)
+    if (appSchema.value.form.widgets) {
+      deleteWidgetByUid(appSchema.value.form.widgets, uid)
       selectedWidget.value = undefined
     }
   }
 
   const copyWidget = (widget: Widget) => {
-    if (schema.value.form.widgets) {
-      copy(widget, schema.value.form.widgets)
+    if (appSchema.value.form.widgets) {
+      copy(widget, appSchema.value.form.widgets)
     }
   }
 
-  provide<FormDesignerCtx>(DESIGNER_KEY, {
-    schema,
+  provide<FuxDesignerCtx>(DESIGNER_KEY, {
+    appSchema,
     deleteWidget,
     copyWidget,
     selectedWidget,
+    formData,
   })
-
-  return {
-    schema,
-  }
 }
 
 export const useDesignerInjection = () => {
-  return inject<FormDesignerCtx>(DESIGNER_KEY)!
+  return inject<FuxDesignerCtx | null>(DESIGNER_KEY, null)
 }
 
 export const useRendererProvider = (
   appSchema: Ref<AppSchema>,
+  formData: Ref<Record<string, any>>,
   state: Ref<Record<string, any>>,
-  auditMode: Ref<boolean>,
+  auditMode?: boolean,
 ) => {
-  provideLocal<FormRendererCtx>(RENDERER_KEY, {
-    prod: true,
+  provideLocal<FuxRendererCtx>(RENDERER_KEY, {
     $state: state,
     appSchema,
-    auditMode,
+    mode: auditMode ? 'audit' : 'prod',
+    formData,
   })
 }
 
 export const useRendererInjection = () => {
-  return injectLocal<FormRendererCtx>(RENDERER_KEY)
+  return injectLocal<FuxRendererCtx | null>(RENDERER_KEY, null)
 }
 
 export const useWorkflowCtxProvider = (schema: Ref<FlowSchema>) => {
@@ -94,12 +83,12 @@ export const useWorkflowCtxInjection = () => {
   return inject<WorkflowDesignerCtx>(WORKFLOW_KEY)!
 }
 
-export const useModelProvider = (model: Ref<Record<string, any>>) => {
-  provide(MODEL_KEY, {
+export const useNestedModelProvider = (model: Ref<Record<string, any>>) => {
+  provide(NESTED_MODEL_KEY, {
     formData: model,
   })
 }
 
 export const useModelInjection = () => {
-  return inject<FormDataCtx>(MODEL_KEY)
+  return inject<{ formData: Ref<Record<string, any>> } | null>(NESTED_MODEL_KEY, null)
 }
