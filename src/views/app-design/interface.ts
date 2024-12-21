@@ -5,5 +5,5 @@ import type { Ref } from 'vue'
 export type AppDesignerCtx = {
   appEditMode: Ref<'create' | 'update' | null>
   appSchema: Ref<AppSchema>
-  appSchemaInfo: Ref<Partial<AppSchemaVO>>
+  appSchemaVer: Ref<string | undefined>
 }

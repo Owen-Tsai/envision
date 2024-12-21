@@ -68,10 +68,6 @@ export const useAppDesigner = () => {
 
   const schemaLoaded = ref(false)
 
-  const appSchemaInfo = computed<Partial<AppSchemaVO>>(() => ({
-    version: appSchemaVO.value.version,
-  }))
-
   const loadAppSchema = async () => {
     loading.value = true
     try {
@@ -189,7 +185,7 @@ export const useAppDesigner = () => {
   provide<AppDesignerCtx>(APP_DESIGN_CTX, {
     appSchema,
     appEditMode,
-    appSchemaInfo,
+    appSchemaVer: computed(() => appSchemaVO.value.version),
   })
 
   return {
