@@ -53,7 +53,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { toolbarItems, useToolbar } from './use-toolbar'
 import { ApiOutlined, CaretRightFilled, FunctionOutlined } from '@ant-design/icons-vue'
 import { useCollapse } from '../../_hooks'

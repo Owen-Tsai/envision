@@ -1,5 +1,3 @@
-import { ref } from 'vue'
-
 const useSettings = () => {
   const tabs = ref([
     { label: '表单配置', value: 1 },

@@ -19,14 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { schemaToTree } from '@/components/fux-core/_utils/widget'
 import simpleHash from '@/components/fux-core/_utils/hash'
 import { useDesignerInjection } from '@/components/fux-core/_hooks/use-context'
 
-const { schema } = useDesignerInjection()
+const { appSchema } = useDesignerInjection()!
 
-const widgetTree = computed(() => schemaToTree(schema.value.form))
+const widgetTree = computed(() => schemaToTree(appSchema.value.form))
 </script>
 
 <style lang="scss" scoped>

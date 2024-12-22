@@ -89,6 +89,6 @@ export const useNestedModelProvider = (model: Ref<Record<string, any>>) => {
   })
 }
 
-export const useModelInjection = () => {
+export const useNestedModelInjection = () => {
   return inject<{ formData: Ref<Record<string, any>> } | null>(NESTED_MODEL_KEY, null)
 }

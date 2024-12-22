@@ -11,7 +11,7 @@
       <div class="list">
         <Scrollbar wrapper-class="h-full" class="h-full">
           <div
-            v-for="(config, fid, i) in schema.form.function"
+            v-for="(config, fid, i) in appSchema.form.function"
             :key="i"
             class="item"
             :class="{ active: activeFid === fid }"
@@ -43,7 +43,10 @@
             <AButton type="primary" @click="onItemSave">保存</AButton>
           </div>
         </div>
-        <AEmpty v-show="!schema.form.function || functionsCount <= 0" description="当前没有函数" />
+        <AEmpty
+          v-show="!appSchema.form.function || functionsCount <= 0"
+          description="当前没有函数"
+        />
         <AEmpty
           v-show="functionsCount > 0 && activeFid === undefined"
           description="选取左侧函数进行编辑"
@@ -58,7 +61,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, inject } from 'vue'
 import { message, type FormProps } from 'ant-design-vue'
 import { Codemirror } from 'vue-codemirror'
 import { generateId } from '@fusionx/utils'
@@ -82,8 +84,8 @@ const isOpen = computed({
   },
 })
 
-const { schema } = useDesignerInjection()
-const functionsCount = computed(() => Object.keys(schema.value.form.function || {}).length)
+const { appSchema } = useDesignerInjection()!
+const functionsCount = computed(() => Object.keys(appSchema.value.form.function || {}).length)
 
 const activeFid = ref<string>()
 const data = reactive({
@@ -95,10 +97,10 @@ const addFunc = () => {
   const id = generateId()
   data.name = id
   data.body = ''
-  if (schema.value.form.function === undefined) {
-    schema.value.form.function = {}
+  if (appSchema.value.form.function === undefined) {
+    appSchema.value.form.function = {}
   }
-  schema.value.form.function[id] = {
+  appSchema.value.form.function[id] = {
     name: data.name,
     body: data.body,
   }
@@ -108,15 +110,15 @@ const addFunc = () => {
 const onItemSelected = (fid: string) => {
   if (fid === activeFid.value) return
   activeFid.value = fid
-  data.name = schema.value.form.function![fid].name
-  data.body = schema.value.form.function![fid].body || ''
+  data.name = appSchema.value.form.function![fid].name
+  data.body = appSchema.value.form.function![fid].body || ''
 }
 
 const onItemSave = () => {
-  if (schema.value.form.function === undefined) {
-    schema.value.form.function = {}
+  if (appSchema.value.form.function === undefined) {
+    appSchema.value.form.function = {}
   }
-  schema.value.form.function[activeFid.value!] = {
+  appSchema.value.form.function[activeFid.value!] = {
     name: data.name,
     body: data.body,
   }
@@ -124,8 +126,8 @@ const onItemSave = () => {
 }
 
 const onItemDelete = () => {
-  if (schema.value.form.function?.[activeFid.value!]) {
-    delete schema.value.form.function?.[activeFid.value!]
+  if (appSchema.value.form.function?.[activeFid.value!]) {
+    delete appSchema.value.form.function?.[activeFid.value!]
     activeFid.value = undefined
   }
 }

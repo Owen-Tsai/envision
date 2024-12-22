@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { DoubleLeftOutlined, DoubleRightOutlined } from '@ant-design/icons-vue'
 import { useCollapse } from '../../_hooks'
 import useSettings from './use-settings'
 import FormSettings from './form-settings.vue'

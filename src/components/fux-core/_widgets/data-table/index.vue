@@ -8,10 +8,10 @@
     >
       <template #bodyCell="scope: TableScope<any>">
         <template v-if="getFormatter((scope?.column as any).idx)?.type === 'dict'">
-          <EDictTag :dict-object="getDictData((scope?.column as any).idx)" :value="scope.text" />
+          <EDictTag :dict-object="getDictData((scope?.column as any).idx)" :value="scope?.text" />
         </template>
         <template v-if="getFormatter((scope?.column as any).idx)?.type === 'custom'">
-          {{ renderColumn(getFormatter((scope?.column as any).idx)?.value!, scope.record) }}
+          {{ renderColumn(getFormatter((scope?.column as any).idx)?.value!, scope?.record) }}
         </template>
         <template v-if="scope?.column.key === 'actions'">
           <AFlex :gap="16">
@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import request from '@/utils/request'
-import { useModelProvider, useRendererInjection } from '../../_hooks'
+import { useNestedModelProvider, useRendererInjection } from '../../_hooks'
 import useDict from '@/hooks/use-dict'
 import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
@@ -75,7 +75,7 @@ const tableData = reactive<{
   current: 1,
 })
 
-const isProd = computed(() => rendererCtx?.prod)
+const isProd = computed(() => rendererCtx && rendererCtx.mode !== 'dev')
 
 const pagination = computed<TableProps['pagination']>(() => {
   if (config.props.pagination) {
@@ -168,5 +168,5 @@ const toView = async (record: any) => {
   visible.value = true
 }
 
-useModelProvider(modalFormData)
+useNestedModelProvider(modalFormData)
 </script>

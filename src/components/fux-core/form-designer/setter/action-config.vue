@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, computed, type PropType } from 'vue'
+import { h } from 'vue'
 import { generateId } from '@fusionx/utils'
 import { CodeOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import { useDesignerInjection } from '../../_hooks'
@@ -79,15 +79,15 @@ const selectedWidget = computed({
   },
 })
 
-const { schema } = useDesignerInjection()
+const { appSchema } = useDesignerInjection()!
 
 const functions = computed(() =>
-  schema.value.form.function ? Object.values(schema.value.form.function) : null,
+  appSchema.value.form.function ? Object.values(appSchema.value.form.function) : null,
 )
 
 const onFunctionSelected = (func: SelectValue, evtName: string) => {
-  const id = Object.keys(schema.value.form.function!).find(
-    (key) => schema.value.form.function![key].name === func.option.name,
+  const id = Object.keys(appSchema.value.form.function!).find(
+    (key) => appSchema.value.form.function![key].name === func.option.name,
   ) as string
   if (selectedWidget.value.props.event === undefined) {
     selectedWidget.value.props.event = {}
@@ -99,10 +99,10 @@ const onFunctionSelected = (func: SelectValue, evtName: string) => {
 const setAction = (evt: string) => {
   // insert new function
   const id = generateId()
-  if (schema.value.form.function === undefined) {
-    schema.value.form.function = {}
+  if (appSchema.value.form.function === undefined) {
+    appSchema.value.form.function = {}
   }
-  schema.value.form.function[id] = {
+  appSchema.value.form.function[id] = {
     name: `${evt}_${id}`,
     body: `console.log(this)`,
   }

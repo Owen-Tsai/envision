@@ -1,11 +1,10 @@
-import { useFormDataInjection, useRendererInjection } from '../_hooks'
+import { useRendererInjection } from '../_hooks'
 import { kebabCase, merge, set } from 'lodash-es'
 import request from '@/utils/request'
 import { emitter } from '@fusionx/utils'
 
 const useInstanceMethods = () => {
-  const { formData } = useFormDataInjection()
-  const { appSchema, $state } = useRendererInjection()!
+  const { appSchema, $state, formData } = useRendererInjection()!
 
   const getFormData = () => {
     return formData.value

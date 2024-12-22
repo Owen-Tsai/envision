@@ -2,13 +2,13 @@ import { computed, watch } from 'vue'
 import { set, get } from 'lodash-es'
 import date from '../_transformers/date'
 import evalExpression from '../_utils/expression'
-import { useFormDataInjection, useRendererInjection, useModelInjection } from './use-context'
+import { useRendererInjection, useNestedModelInjection } from './use-context'
 import type { Widget, FormWidget, WidgetMap } from '@/types/fux-core/form'
 
 const { requireTransform, toSubmitValue, toWidgetValue } = date
 
 export const useModel = (widget: Widget) => {
-  const formDataCtx = useModelInjection() || useFormDataInjection()
+  const formDataCtx = useNestedModelInjection() || useRendererInjection()
   const key = widget.props.field?.name || widget.uid
 
   const model = computed({
@@ -25,7 +25,7 @@ export const useModel = (widget: Widget) => {
       }
     },
     set: (val) => {
-      if (formDataCtx !== undefined) {
+      if (formDataCtx !== null) {
         const { formData } = formDataCtx
         if (requireTransform(widget)) {
           set(
@@ -55,14 +55,15 @@ export const useModel = (widget: Widget) => {
 }
 
 export const useDefaultValue = (config: FormWidget) => {
-  const formCtx = useFormDataInjection()
   const rendererCtx = useRendererInjection()
 
-  if (rendererCtx?.auditMode.value == false && rendererCtx?.prod && formCtx) {
-    const { $state } = rendererCtx
-    if ((config.props as any).defaultValue) {
-      const value = evalExpression((config.props as any).defaultValue, $state)
-      formCtx.formData.value[config.props.field?.name || config.uid] = value
+  if (rendererCtx !== null) {
+    const { $state, formData, mode } = rendererCtx
+    if (mode === 'prod') {
+      if ((config.props as any).defaultValue) {
+        const value = evalExpression((config.props as any).defaultValue, $state)
+        formData.value[config.props.field?.name || config.uid] = value
+      }
     }
   }
 }

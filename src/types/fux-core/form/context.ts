@@ -16,5 +16,5 @@ export interface FuxDesignerCtx extends FuxCoreContext {
 
 export interface FuxRendererCtx extends FuxCoreContext {
   $state: Ref<Record<string, any>>
-  mode?: 'audit' | 'prod'
+  mode?: 'audit' | 'prod' | 'dev'
 }

@@ -28,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useDesignerInjection } from '../../_hooks'
 import type { Widget, FormWidget } from '@/types/fux-core/form'
 
@@ -36,7 +35,7 @@ const { widget } = defineProps<{
   widget: Widget
 }>()
 
-const { deleteWidget, selectedWidget, copyWidget } = useDesignerInjection()
+const { deleteWidget, selectedWidget, copyWidget } = useDesignerInjection()!
 
 const caption = computed(() => {
   return (widget as FormWidget).props.field?.name || widget.uid

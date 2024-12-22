@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType, FunctionalComponent } from 'vue'
+import type { FunctionalComponent } from 'vue'
 
 defineProps({
   title: String,

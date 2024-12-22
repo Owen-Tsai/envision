@@ -9,7 +9,7 @@
     <div class="flex gap-6">
       <div class="w-1/4">
         <div
-          v-for="(api, uid, i) in schema.form.api"
+          v-for="(api, uid, i) in appSchema.form.api"
           :key="i"
           :class="[
             'item',
@@ -25,7 +25,7 @@
       </div>
       <div class="w-3/4">
         <AForm
-          v-if="schema.form.api && Object.keys(schema.form.api).length > 0"
+          v-if="appSchema.form.api && Object.keys(appSchema.form.api).length > 0"
           :model="selectedItem"
           :label-col="{ span: 4 }"
           :rules="rules"
@@ -62,7 +62,7 @@
         <AEmpty
           v-else
           :description="
-            !schema.form.api || Object.keys(schema.form.api).length <= 0
+            !appSchema.form.api || Object.keys(appSchema.form.api).length <= 0
               ? '请先增加一个 API'
               : '请选中一个 API'
           "
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, computed } from 'vue'
+import { h } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { generateId } from '@fusionx/utils'
 import { useDesignerInjection } from '../../_hooks/use-context'
@@ -128,12 +128,12 @@ const methodValidationStatus = computed<'success' | 'warning' | undefined>(() =>
   return 'warning'
 })
 
-const { schema } = useDesignerInjection()
+const { appSchema } = useDesignerInjection()!
 
 const addApi = () => {
   const id = generateId()
-  if (!schema.value.form.api) {
-    schema.value.form.api = {}
+  if (!appSchema.value.form.api) {
+    appSchema.value.form.api = {}
   }
   selectedItem.value = {
     method: 'get',
@@ -141,7 +141,7 @@ const addApi = () => {
     url: '',
     dataIndex: id,
   }
-  schema.value.form.api[id] = {
+  appSchema.value.form.api[id] = {
     ...selectedItem.value,
   }
   selectedUid.value = id
@@ -149,20 +149,20 @@ const addApi = () => {
 
 const onSelect = (uid: string) => {
   selectedUid.value = uid
-  selectedItem.value = schema.value.form.api![uid]
+  selectedItem.value = appSchema.value.form.api![uid]
 }
 
 const onItemDelete = () => {
-  delete schema.value.form.api![selectedUid.value!]
+  delete appSchema.value.form.api![selectedUid.value!]
   selectedUid.value = undefined
   message.success('删除成功')
 }
 
 const onItemSave = () => {
-  if (!schema.value.form.api) {
-    schema.value.form.api = {}
+  if (!appSchema.value.form.api) {
+    appSchema.value.form.api = {}
   }
-  schema.value.form.api[selectedUid.value!] = {
+  appSchema.value.form.api[selectedUid.value!] = {
     ...selectedItem.value,
   }
   message.success('修改成功')

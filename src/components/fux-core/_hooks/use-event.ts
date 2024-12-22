@@ -1,14 +1,13 @@
 import safeEval from 'safer-eval'
 import useInstanceMethods from '../form-renderer/use-instance'
-import { useFormDataInjection, useRendererInjection } from '.'
+import { useRendererInjection } from '.'
 
 export const useEvents = (eventMap?: Record<string, string>) => {
   const rendererCtx = useRendererInjection()
 
   if (!rendererCtx) return
 
-  const { formData } = useFormDataInjection()
-  const { appSchema } = rendererCtx
+  const { appSchema, formData } = rendererCtx
 
   const {
     getFormData,

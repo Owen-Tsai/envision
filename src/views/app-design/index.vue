@@ -26,9 +26,11 @@
 
     <div class="flex-grow-0 h-full overflow-hidden">
       <Loader v-if="!schemaLoaded" />
-      <DataSourceConfig v-if="step === 0 && schemaLoaded" @finish="step = 1" />
-      <!-- <FormDesign v-if="step === 1" /> -->
-      <!-- <WorkflowDesign v-if="step === 2" /> -->
+      <template v-else>
+        <DataSourceConfig v-if="step === 0" @finish="step = 1" />
+        <FormDesign v-if="step === 1" />
+        <!-- <WorkflowDesign v-if="step === 2" /> -->
+      </template>
     </div>
 
     <AModal v-model:open="schemaVisible" title="应用 Schema" :width="480">

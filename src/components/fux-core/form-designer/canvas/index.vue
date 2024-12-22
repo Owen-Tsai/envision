@@ -3,12 +3,12 @@
     <Scrollbar wrapper-class="!h-full" class="h-full">
       <div class="canvas-wrapper dense">
         <AForm
-          :colon="schema.form.colon"
-          :disabled="schema.form.disabled"
-          :label-align="schema.form.labelAlign"
+          :colon="appSchema.form.colon"
+          :disabled="appSchema.form.disabled"
+          :label-align="appSchema.form.labelAlign"
           :label-col="labelCol"
           label-wrap
-          :layout="schema.form.layout"
+          :layout="appSchema.form.layout"
           :wrapper-col="wrapperCol"
           class="h-full"
         >
@@ -35,30 +35,28 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import Draggable from 'vuedraggable'
-import { useElementBounding } from '@vueuse/core'
 import { tryParse } from '@fusionx/utils'
 import { useDesignerInjection } from '../../_hooks'
 import WidgetRenderer from '../../_widgets/index.vue'
 import WidgetWrapper from './widget-wrapper.vue'
 import type { Widget } from '@/types/fux-core/form'
 
-const { schema } = useDesignerInjection()
+const { appSchema } = useDesignerInjection()!
 
-const widgets = ref(schema.value.form.widgets)
+const widgets = ref(appSchema.value.form.widgets)
 const wrapperEl = ref<HTMLElement>()
 
 const { height } = useElementBounding(wrapperEl)
 const heightValue = computed(() => height.value + 'px')
 
 const labelCol = computed(() => {
-  const width = schema.value.form.labelWidth
-  return width ? { style: { width } } : tryParse(schema.value.form.labelCol)
+  const width = appSchema.value.form.labelWidth
+  return width ? { style: { width } } : tryParse(appSchema.value.form.labelCol)
 })
 
 const wrapperCol = computed(() => {
-  return tryParse(schema.value.form.wrapperCol)
+  return tryParse(appSchema.value.form.wrapperCol)
 })
 </script>
 

@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, h } from 'vue'
 import Draggable from 'vuedraggable'
 import initWidgetConfig from '@/components/fux-core/_utils/initial-widget-config'
 import { cloneDeep } from 'lodash-es'
