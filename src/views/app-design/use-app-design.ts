@@ -132,6 +132,7 @@ export const useAppDesigner = () => {
     const id = await createAppSchema(appDesignForm.value)
     if (appEditMode.value === 'create') {
       await addMenuById(id, getSteps())
+      appEditMode.value = 'update'
     } else {
       await updateMenuById(id, getSteps())
     }
