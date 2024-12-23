@@ -3,6 +3,7 @@
     <ARow :gutter="24">
       <ACol :span="24" :lg="6">
         <ACard
+          ref="wrapper"
           :body-style="{
             padding: '16px',
             display: 'flex',
@@ -11,18 +12,24 @@
           }"
           class="tree-card"
         >
-          <AInput v-model:value="searchText" class="mb-4" placeholder="输入关键字过滤" allow-clear>
+          <AInput
+            ref="input"
+            v-model:value="searchText"
+            class="mb-4"
+            placeholder="输入关键字过滤"
+            allow-clear
+          >
             <template #suffix>
               <SearchOutlined />
             </template>
           </AInput>
-          <div class="flex-grow" ref="wrapper">
+          <div class="flex-grow">
             <a-spin :spinning="loading">
               <ATree
                 v-model:selected-keys="selectedKeys"
                 :tree-data="filteredTreeData"
                 :field-names="{ key: 'id', title: 'name' }"
-                :height="treeHeight"
+                :height="treeH"
                 @select="(key, { node }) => onTreeNodeSelect(node)"
               />
             </a-spin>
@@ -56,7 +63,10 @@ const style = ref<{ height: string; top: string }>(
 )
 
 const wrapper = useTemplateRef('wrapper')
-const { height: treeHeight } = useElementSize(wrapper)
+const input = useTemplateRef('input')
+const { height: wrapperH } = useElementSize(wrapper)
+const { height: inputH } = useElementSize(input)
+const treeH = computed(() => wrapperH.value - inputH.value - 56)
 
 const { loading, execute, filteredTreeData, searchText, selectedKeys, onTreeNodeSelect } =
   useAreaTree()
