@@ -2,7 +2,7 @@ import { DESIGNER_KEY, RENDERER_KEY, WORKFLOW_KEY, NESTED_MODEL_KEY } from '../_
 import { deleteWidgetByUid, copyWidget as copy } from '../_utils/widget'
 import type { Widget } from '@/types/fux-core/form'
 import type { FlowSchema, Node } from '@/types/fux-core/flow'
-import type { FuxDesignerCtx, FuxRendererCtx } from '@/types/fux-core/form/context'
+import type { FuxDesignerCtx, FuxRendererCtx, FuxRendererMode } from '@/types/fux-core/form/context'
 import type { WorkflowDesignerCtx } from '@/types/fux-core/flow/context'
 import type { AppSchema } from '@/types/fux-core'
 
@@ -40,12 +40,12 @@ export const useRendererProvider = (
   appSchema: Ref<AppSchema>,
   formData: Ref<Record<string, any>>,
   state: Ref<Record<string, any>>,
-  auditMode?: boolean,
+  mode: FuxRendererMode,
 ) => {
   provideLocal<FuxRendererCtx>(RENDERER_KEY, {
     $state: state,
     appSchema,
-    mode: auditMode ? 'audit' : 'prod',
+    mode,
     formData,
   })
 }

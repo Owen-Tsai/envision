@@ -10,7 +10,7 @@ import logofull from '~img/logo-full.svg'
 import logofullD from '~img/logo-full-d.svg'
 
 const { type = 'simple' } = defineProps<{
-  type: 'full' | 'simple'
+  type?: 'full' | 'simple'
 }>()
 
 const { theme } = storeToRefs(useAppStore())

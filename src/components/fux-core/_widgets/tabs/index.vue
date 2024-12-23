@@ -1,6 +1,8 @@
 <template>
   <ATabs
-    :active-key="config.props.stepsMode && ctx ? config.props.state?.current : undefined"
+    :active-key="
+      config.props.stepsMode && ctx?.mode === 'prod' ? config.props.state?.current : undefined
+    "
     :type="config.props.type"
     :centered="config.props.centered"
     :size="config.props.size"

@@ -33,6 +33,7 @@ import useInstanceMethods from './use-instance'
 import WidgetRenderer from '../_widgets/index.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import type { AppSchema } from '@/types/fux-core'
+import type { FuxRendererMode } from '@/types/fux-core/form/context'
 import type { FormInstance } from 'ant-design-vue'
 
 const {
@@ -40,14 +41,14 @@ const {
   showData,
   state,
   taskDefKey,
-  auditMode = false,
+  mode = 'prod',
 } = defineProps<{
   schema: AppSchema
   showData?: boolean
+  mode?: FuxRendererMode
   state?: Record<string, any>
   disabled?: boolean
   taskDefKey?: string
-  auditMode?: boolean
 }>()
 
 const form = ref<FormInstance>()
@@ -66,7 +67,7 @@ const formData = ref<Record<string, any>>({})
 
 useApi(computedSchema, computedState)
 
-useRendererProvider(computedSchema, formData, computedState, auditMode)
+useRendererProvider(computedSchema, formData, computedState, mode)
 
 const methods = useInstanceMethods()
 
