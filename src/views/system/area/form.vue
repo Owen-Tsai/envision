@@ -11,15 +11,14 @@
           <template v-if="mode === 'edit'" #icon><PlusOutlined /></template>
           {{ mode === 'edit' ? '新增下级' : '取消新增' }}
         </AButton>
-        <AButton
+        <APopconfirm
           v-show="mode === 'edit'"
-          :disabled="id === undefined"
-          danger
-          :loading="loading"
-          @click="onDelete"
+          :title="`确定要删除${formData.name}吗？该操作无法恢复`"
+          placement="bottomRight"
+          @confirm="onDelete"
         >
-          删除本级
-        </AButton>
+          <AButton :disabled="id === undefined" danger :loading="loading">删除本级</AButton>
+        </APopconfirm>
       </div>
     </template>
     <div>
@@ -100,8 +99,9 @@ const submit = async () => {
   try {
     await formRef.value?.validate()
     if (mode.value === 'add') {
-      await addArea(formData.value)
-      switchMode()
+      const id = await addArea(formData.value)
+      emit('update:id', id)
+      mode.value = 'edit'
     } else {
       await updateArea(formData.value)
     }

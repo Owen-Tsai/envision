@@ -31,7 +31,7 @@
       </ACol>
       <ACol :span="24" :lg="18">
         <!-- <Details :id="selectedKeys[0]" /> -->
-        <Form :id="selectedKeys[0]" @success="execute" />
+        <Form v-model:id="selectedKeys[0]" @success="execute" />
       </ACol>
     </ARow>
   </div>
