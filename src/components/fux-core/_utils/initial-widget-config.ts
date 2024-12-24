@@ -195,6 +195,7 @@ const initWidgetConfig: Partial<WidgetMap> = {
         label: '日期选择器',
       },
       picker: 'date',
+      valueFormat: 'x',
     },
     icon: getIcon('datePicker'),
   },

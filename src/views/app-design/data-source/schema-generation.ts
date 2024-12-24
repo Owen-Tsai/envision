@@ -99,6 +99,7 @@ const genWidgetSchema = (
               ? `${step}.${tableName}:${column.javaField}`
               : `${tableName}:${column.javaField}`,
         },
+        hide: `${column.javaField}` == 'id',
       },
     }
 
