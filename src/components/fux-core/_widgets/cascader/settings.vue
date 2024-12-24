@@ -13,6 +13,7 @@
       v-model:value="model.options.type"
       :options="[...optionSourceOpts].filter((e) => e.value !== 'dict')"
       class="width-expanded"
+      @change="onOptionsChange"
     />
     <template v-if="model.options.type === 'static'">
       <AFormItemRest>
@@ -142,4 +143,12 @@ watch(
     }
   },
 )
+
+const onOptionsChange = (value: any) => {
+  // console.log(value)
+  // console.log(model.value.options.value)
+  if (value == 'expression' && (model.value.fieldNames == null || model.value.fieldNames == '')) {
+    model.value.fieldNames = '{"label":"name","value":"id"}'
+  }
+}
 </script>
