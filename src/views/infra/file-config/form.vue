@@ -1,10 +1,8 @@
 <template>
   <AModal
-    v-model:open="open"
+    v-model:open="isOpen"
     :title="isAdd ? '新增文件配置' : '编辑文件配置'"
-    destroy-on-close
     :confirm-loading="loading"
-    :after-close="resetFields"
     @ok="submit"
   >
     <ASpin :spinning="loading">
@@ -35,28 +33,52 @@
             formData.storage !== storageType.oss
           "
         >
-          <AFormItem label="基础路径" name="basePath">
+          <AFormItem
+            label="基础路径"
+            :name="['config', 'basePath']"
+            :rules="[{ required: true, message: '请输入基础路径' }]"
+          >
             <AInput v-model:value="formData.config!.basePath" placeholder="请输入基础路径" />
           </AFormItem>
         </template>
         <template
           v-if="formData.storage === storageType.ftp || formData.storage === storageType.sftp"
         >
-          <AFormItem label="主机地址" name="host">
+          <AFormItem
+            label="主机地址"
+            :name="['config', 'host']"
+            :rules="[{ required: true, message: '请输入主机地址' }]"
+          >
             <AInput v-model:value="formData.config!.host" placeholder="请输入主机地址" />
           </AFormItem>
-          <AFormItem label="主机端口" name="port">
+          <AFormItem
+            label="主机端口"
+            :name="['config', 'port']"
+            :rules="[{ required: true, message: '请输入主机端口' }]"
+          >
             <AInputNumber v-model:value="formData.config!.port" placeholder="请输入主机端口" />
           </AFormItem>
-          <AFormItem label="用户名" name="username">
+          <AFormItem
+            label="用户名"
+            :name="['config', 'username']"
+            :rules="[{ required: true, message: '请输入用户名' }]"
+          >
             <AInput v-model:value="formData.config!.username" placeholder="请输入用户名" />
           </AFormItem>
-          <AFormItem label="密码" name="password">
+          <AFormItem
+            label="密码"
+            :name="['config', 'password']"
+            :rules="[{ required: true, message: '请输入密码' }]"
+          >
             <AInputPassword v-model:value="formData.config!.password" placeholder="请输入密码" />
           </AFormItem>
         </template>
         <template v-if="formData.storage === storageType.ftp">
-          <AFormItem label="连接模式" name="mode">
+          <AFormItem
+            label="连接模式"
+            :name="['config', 'mode']"
+            :rules="[{ required: true, message: '请选择连接模式' }]"
+          >
             <ARadioGroup v-model:value="formData.config!.mode">
               <ARadio value="Active">主动模式</ARadio>
               <ARadio value="Passive">被动模式</ARadio>
@@ -64,16 +86,32 @@
           </AFormItem>
         </template>
         <template v-if="formData.storage === storageType.oss">
-          <AFormItem label="节点地址" name="endpoint">
+          <AFormItem
+            label="节点地址"
+            :name="['config', 'endpoint']"
+            :rules="[{ required: true, message: '请输入节点地址' }]"
+          >
             <AInput v-model:value="formData.config!.endpoint" placeholder="请输入节点地址" />
           </AFormItem>
-          <AFormItem label="存储桶" name="bucket">
+          <AFormItem
+            label="存储桶"
+            :name="['config', 'bucket']"
+            :rules="[{ required: true, message: '请输入存储桶' }]"
+          >
             <AInput v-model:value="formData.config!.bucket" placeholder="请输入存储桶" />
           </AFormItem>
-          <AFormItem label="Access Key" name="accessKey">
+          <AFormItem
+            label="Access Key"
+            :name="['config', 'accessKey']"
+            :rules="[{ required: true, message: '请输入 Access Key' }]"
+          >
             <AInput v-model:value="formData.config!.accessKey" placeholder="请输入 Access Key" />
           </AFormItem>
-          <AFormItem label="Access Secret" name="accessSecret">
+          <AFormItem
+            label="Access Secret"
+            :name="['config', 'accessSecret']"
+            :rules="[{ required: true, message: '请输入 Access Secret' }]"
+          >
             <AInputPassword
               v-model:value="formData.config!.accessSecret"
               placeholder="请输入 Access Secret"
@@ -93,9 +131,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, type PropType } from 'vue'
 import useDict from '@/hooks/use-dict'
 import { addConfig, updateConfig, getDetail, type FileConfigVO } from '@/api/infra/file/config'
+import useModalOpen from '@/hooks/use-modal'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const storageType = {
@@ -109,30 +147,20 @@ const storageType = {
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写配置名称' }],
   storage: [{ required: true, message: '请选择存储器' }],
-  basePath: [{ required: true, message: '请选择基础路径' }],
-  host: [{ required: true, message: '请填写主机地址' }],
-  port: [{ required: true, message: '请填写主机端口' }],
-  username: [{ required: true, message: '请填写用户名' }],
-  password: [{ required: true, message: '请填写密码' }],
-  mode: [{ required: true, message: '请选择连接模式' }],
-  endpoint: [{ required: true, message: '请填写存储节点的地址' }],
-  bucket: [{ required: true, message: '请填写存储桶' }],
-  accessKey: [{ required: true, message: '请填写 Access Key' }],
-  accessSecret: [{ required: true, message: '请填写 Access Secret' }],
   domain: [{ required: true, message: '请填写自定义域名' }],
 }
 
-const props = defineProps({
-  record: {
-    type: Object as PropType<FileConfigVO>,
-  },
-})
+const props = defineProps<{
+  record?: FileConfigVO
+  open?: boolean
+}>()
 
-const emit = defineEmits(['success', 'close'])
+const emit = defineEmits(['success', 'update:open'])
 
 const formRef = ref<FormInstance>()
 const loading = ref(false)
-const open = ref(true)
+
+const isOpen = useModalOpen(props, emit, formRef)
 const formData = ref<FileConfigVO>({
   config: {},
 })
@@ -162,16 +190,16 @@ const submit = async () => {
   }
 }
 
-const resetFields = () => {
-  formRef.value?.resetFields()
-  emit('close')
-}
-
-if (props.record?.id) {
-  loading.value = true
-  getDetail(props.record.id).then((res) => {
-    formData.value = res
-    loading.value = false
-  })
-}
+watch(
+  () => props.record?.id,
+  (val) => {
+    if (val) {
+      loading.value = true
+      getDetail(val).then((res) => {
+        formData.value = res
+        loading.value = false
+      })
+    }
+  },
+)
 </script>
