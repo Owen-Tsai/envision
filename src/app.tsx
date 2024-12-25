@@ -17,17 +17,19 @@ export default defineComponent({
     const algorithm = computed(() => (theme.value === 'dark' ? darkAlgorithm : defaultAlgorithm))
 
     const watermarkContent = computed<string | string[]>(() => {
-      return user.value
+      return user.value?.nickname
         ? [import.meta.env.VITE_APP_TITLE, `${user.value.nickname} ${time}`]
         : [import.meta.env.VITE_APP_TITLE, time]
     })
 
-    const appMain = showWatermark ? (
-      <Watermark content={watermarkContent.value}>
+    const appMain = computed(() =>
+      showWatermark ? (
+        <Watermark content={watermarkContent.value}>
+          <RouterView />
+        </Watermark>
+      ) : (
         <RouterView />
-      </Watermark>
-    ) : (
-      <RouterView />
+      ),
     )
 
     return () => (
@@ -37,7 +39,7 @@ export default defineComponent({
           locale={zhCN}
           theme={{ algorithm: algorithm.value }}
         >
-          {appMain}
+          {appMain.value}
         </ConfigProvider>
       </AApp>
     )

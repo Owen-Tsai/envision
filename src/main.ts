@@ -9,6 +9,7 @@ import Counter from 'vue-countup-v3'
 import STable from '@surely-vue/table'
 import { iconPlugin } from '@fusionx/utils'
 import '@/utils/dayjs'
+import '@/utils/echarts'
 // use all the icons
 import * as antIcons from '@ant-design/icons-vue'
 import 'ant-design-vue/dist/reset.css'
