@@ -67,7 +67,7 @@ import useModalOpen from '@/hooks/use-modal'
 import useDict from '@/hooks/use-dict'
 import type { SimpleUserListVO } from '@/api/system/user'
 
-const loading = ref(true)
+const loading = ref(false)
 
 const [commonStatus] = useDict('common_status')
 

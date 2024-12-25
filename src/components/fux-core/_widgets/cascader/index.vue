@@ -1,5 +1,5 @@
 <template>
-  <ACascader
+  <Cascader
     v-model:value="model"
     :allow-clear="config.props.allowClear"
     :change-on-select="config.props.allowParentNode"

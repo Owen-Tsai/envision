@@ -32,13 +32,13 @@ export const getDataSourceDetail = (id: number) => {
 
 export const updateDataSource = (data: DataSourceVO) => {
   return request.put({
-    url: `${url}/create`,
+    url: `${url}/update`,
     data,
   })
 }
 
-export const deleteDataSourceDetail = (id: number) => {
+export const deleteDataSource = (id: number) => {
   return request.delete({
-    url: `${url}/get?id=${id}`,
+    url: `${url}/delete?id=${id}`,
   })
 }
