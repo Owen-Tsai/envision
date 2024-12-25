@@ -19,7 +19,7 @@ import '@wangeditor/editor/dist/css/style.css'
 
 import '@/styles/index.scss'
 
-import App from './App.vue'
+import App from './app'
 import router from './router'
 import './router/guard'
 
