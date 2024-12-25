@@ -6,9 +6,9 @@ import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
 
 export const columns: TableProps['columns'] = [
   { title: 'ID', dataIndex: 'id', key: 'id', width: 50 },
-  { title: '配置名称', dataIndex: 'name', key: 'name' },
+  { title: '配置名称', dataIndex: 'name', key: 'name', width: 180, ellipsis: true },
   { title: '存储器', width: 120, dataIndex: 'storage', key: 'storage' },
-  { title: '备注', dataIndex: 'remark', ellipsis: true, width: 400 },
+  { title: '备注', dataIndex: 'remark', ellipsis: true },
   {
     title: '创建时间',
     width: 160,
