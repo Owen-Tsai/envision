@@ -117,7 +117,12 @@ const dicts = useDict(...(dictTypes.value || []))
 
 // custom
 const renderColumn = (expression: string, record: any) => {
-  return safeEval(expression, { ...record, Date: Date, dayjs: dayjs })
+  return safeEval(expression, {
+    ...record,
+    Date: Date,
+    dayjs: dayjs,
+    $state: rendererCtx?.$state || {},
+  })
 }
 
 const urlPrefix = config.props.url
