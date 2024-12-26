@@ -2,9 +2,10 @@
   <AModal
     v-model:open="isOpen"
     title="API 数据源"
-    :width="680"
+    :width="700"
     :keyboard="false"
     :mask-closable="false"
+    :closable="false"
   >
     <div class="flex gap-6">
       <div class="w-1/4">
@@ -19,13 +20,14 @@
           ]"
           @click="onSelect(uid)"
         >
-          {{ api.name }}
+          <ATypographyText :content="api.name" class="px-4 text" ellipsis />
         </div>
         <AButton type="dashed" block :icon="h(PlusOutlined)" @click="addApi">新增 API</AButton>
       </div>
       <div class="w-3/4">
         <AForm
           v-if="appSchema.form.api && Object.keys(appSchema.form.api).length > 0"
+          ref="formRef"
           :model="selectedItem"
           :label-col="{ span: 4 }"
           :rules="rules"
@@ -56,7 +58,12 @@
           </AFormItem>
           <div class="text-right">
             <AButton danger @click="onItemDelete">删除此 API</AButton>
-            <AButton type="primary" class="ml-4" @click="onItemSave">保存</AButton>
+            <ADropdownButton class="ml-4" type="primary" @click="onItemSave">
+              保存
+              <template #overlay>
+                <AMenu :items="menuItems" @click="onMenuItemClick" />
+              </template>
+            </ADropdownButton>
           </div>
         </AForm>
         <AEmpty
@@ -70,7 +77,14 @@
       </div>
     </div>
 
-    <template #footer></template>
+    <template #footer>
+      <AButton
+        v-if="!appSchema.form.api || Object.keys(appSchema.form.api).length <= 0 || !selectedUid"
+        type="primary"
+        @click="isOpen = false"
+        >关闭</AButton
+      >
+    </template>
   </AModal>
 </template>
 
@@ -78,10 +92,11 @@
 import { h } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { generateId } from '@fusionx/utils'
+import useModalOpen from '@/hooks/use-modal'
 import { useDesignerInjection } from '../../_hooks/use-context'
 import { Codemirror } from 'vue-codemirror'
 import extensions from '@/utils/codemirror'
-import { message, type FormProps } from 'ant-design-vue'
+import { message, type FormProps, type FormInstance, type MenuProps } from 'ant-design-vue'
 import type { APIConfig } from '@/types/fux-core/form'
 
 const reqTypeOpts = [
@@ -91,7 +106,9 @@ const reqTypeOpts = [
   { label: 'DELETE', value: 'delete' },
 ]
 
-const { open } = defineProps<{
+const menuItems = [{ label: '保存并关闭', key: 'saveAndClose' }]
+
+const props = defineProps<{
   open: boolean
 }>()
 
@@ -99,19 +116,13 @@ const emit = defineEmits<{
   (e: 'update:open', open: boolean): void
 }>()
 
+const formRef = useTemplateRef<FormInstance>('formRef')
+const isOpen = useModalOpen(props, emit)
+
 const rules = ref<FormProps['rules']>({
   name: [{ required: true, message: '请输入名称' }],
   url: [{ required: true, message: '请输入URL' }],
-  method: [{}],
-})
-
-const isOpen = computed({
-  get() {
-    return open
-  },
-  set(val) {
-    emit('update:open', val)
-  },
+  method: [{ required: true, message: '请选择请求方法' }],
 })
 
 const selectedUid = ref<string | undefined>()
@@ -158,14 +169,26 @@ const onItemDelete = () => {
   message.success('删除成功')
 }
 
-const onItemSave = () => {
-  if (!appSchema.value.form.api) {
-    appSchema.value.form.api = {}
+const onItemSave = async () => {
+  try {
+    await formRef.value?.validate()
+    if (!appSchema.value.form.api) {
+      appSchema.value.form.api = {}
+    }
+    appSchema.value.form.api[selectedUid.value!] = {
+      ...selectedItem.value,
+    }
+    message.success('修改成功')
+  } catch (e) {
+    return Promise.reject(e)
   }
-  appSchema.value.form.api[selectedUid.value!] = {
-    ...selectedItem.value,
+}
+
+const onMenuItemClick: MenuProps['onClick'] = async ({ key }) => {
+  if (key === 'saveAndClose') {
+    await onItemSave()
+    isOpen.value = false
   }
-  message.success('修改成功')
 }
 </script>
 
@@ -177,11 +200,15 @@ const onItemSave = () => {
   padding: 4px 0;
   &:hover {
     border-color: var(--color-primary);
-    color: var(--color-primary);
+    .text {
+      color: var(--color-primary);
+    }
   }
   &.active {
     border-color: var(--color-primary);
-    color: var(--color-primary);
+    .text {
+      color: var(--color-primary);
+    }
   }
   & {
     margin-bottom: 8px;

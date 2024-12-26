@@ -1,12 +1,5 @@
 <template>
-  <AModal
-    v-model:open="isOpen"
-    title="函数"
-    :width="680"
-    :keyboard="false"
-    :mask-closable="false"
-    :closable="false"
-  >
+  <AModal v-model:open="isOpen" title="函数" :width="700" :keyboard="false" :mask-closable="false">
     <div class="mt-4 flex gap-4">
       <div class="list">
         <Scrollbar wrapper-class="h-full" class="h-full">
@@ -17,12 +10,9 @@
             :class="{ active: activeFid === fid }"
             @click="onItemSelected(fid)"
           >
-            {{ config.name }}
+            <ATypographyText :content="config.name" class="text" ellipsis />
           </div>
-          <div class="item" @click="addFunc">
-            <PlusOutlined />
-            新增函数
-          </div>
+          <AButton type="dashed" block :icon="h(PlusOutlined)" @click="addFunc">新增函数</AButton>
         </Scrollbar>
       </div>
       <div class="form">
@@ -40,7 +30,12 @@
           </AFormItem>
           <div class="actions">
             <AButton danger @click="onItemDelete">删除此函数</AButton>
-            <AButton type="primary" @click="onItemSave">保存</AButton>
+            <ADropdownButton class="ml-4" type="primary" @click="onItemSave">
+              保存
+              <template #overlay>
+                <AMenu :items="menuItems" @click="onMenuItemClick" />
+              </template>
+            </ADropdownButton>
           </div>
         </div>
         <AEmpty
@@ -55,19 +50,31 @@
     </div>
 
     <template #footer>
-      <AButton @click="isOpen = false">关闭</AButton>
+      <AButton
+        v-if="
+          !appSchema.form.function || Object.keys(appSchema.form.function).length <= 0 || !activeFid
+        "
+        type="primary"
+        @click="isOpen = false"
+        >关闭</AButton
+      >
     </template>
   </AModal>
 </template>
 
 <script setup lang="ts">
-import { message, type FormProps } from 'ant-design-vue'
+import { h } from 'vue'
+import { PlusOutlined } from '@ant-design/icons-vue'
+import { message, type MenuProps } from 'ant-design-vue'
 import { Codemirror } from 'vue-codemirror'
 import { generateId } from '@fusionx/utils'
 import { useDesignerInjection } from '../../_hooks'
 import extensions from '@/utils/codemirror'
+import useModalOpen from '@/hooks/use-modal'
 
-const { open } = defineProps<{
+const menuItems = [{ label: '保存并关闭', key: 'saveAndClose' }]
+
+const props = defineProps<{
   open: boolean
 }>()
 
@@ -75,14 +82,7 @@ const emit = defineEmits<{
   (e: 'update:open', open: boolean): void
 }>()
 
-const isOpen = computed({
-  get() {
-    return open
-  },
-  set(val) {
-    emit('update:open', val)
-  },
-})
+const isOpen = useModalOpen(props, emit)
 
 const { appSchema } = useDesignerInjection()!
 const functionsCount = computed(() => Object.keys(appSchema.value.form.function || {}).length)
@@ -131,11 +131,18 @@ const onItemDelete = () => {
     activeFid.value = undefined
   }
 }
+
+const onMenuItemClick: MenuProps['onClick'] = async ({ key }) => {
+  if (key === 'saveAndClose') {
+    onItemSave()
+    isOpen.value = false
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .list {
-  width: 120px;
+  width: 160px;
   flex-shrink: 0;
   max-height: 360px;
 
@@ -146,10 +153,17 @@ const onItemDelete = () => {
     cursor: pointer;
     @apply flex-center gap-1 mb-2;
 
+    &:hover {
+      border-color: var(--color-primary);
+      .text {
+        color: var(--color-primary);
+      }
+    }
     &.active {
-      border-color: var(--color-primary-border);
-      background-color: var(--color-primary-bg);
-      color: var(--color-primary);
+      border-color: var(--color-primary);
+      .text {
+        color: var(--color-primary);
+      }
     }
   }
 }
