@@ -134,6 +134,7 @@ export const useAppDesigner = () => {
 
     if (appEditMode.value === 'create') {
       await addMenuById(id, auditSteps)
+      appEditMode.value = 'update'
     } else {
       await updateMenuById(id, auditSteps)
     }
