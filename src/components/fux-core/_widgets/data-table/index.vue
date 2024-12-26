@@ -130,11 +130,19 @@ const urlPrefix = config.props.url
 // modal form
 const visible = ref(false)
 const modalFormData = ref<Record<string, any>>({})
-const modalEditMode = ref<'create' | 'update'>('create')
+const modalEditMode = ref<'create' | 'update' | 'view'>('create')
 
 const modalTitle = computed(() => {
   const label = config.props.field.label
-  return modalEditMode.value === 'update' ? `编辑${label || ''}` : `新增${label || ''}`
+  if (modalEditMode.value == 'update') {
+    return `编辑${label || ''}`
+  } else if (modalEditMode.value == 'create') {
+    return `新增${label || ''}`
+  } else if (modalEditMode.value == 'view') {
+    return `查看${label || ''}`
+  } else {
+    return `${label || ''}`
+  }
 })
 
 const loadData = async () => {
@@ -169,6 +177,7 @@ const onPageChange = () => {
 
 const toView = async (record: any) => {
   disabledForm.value = true
+  modalEditMode.value = 'view'
   modalFormData.value = await get(record.id)
   visible.value = true
 }
