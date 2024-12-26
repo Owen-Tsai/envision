@@ -12,6 +12,10 @@ const useThemeToggle = () => {
   onBeforeUnmount(() => {
     setTheme(cachedTheme)
   })
+
+  window.onbeforeunload = () => {
+    setTheme(cachedTheme)
+  }
 }
 
 export default useThemeToggle

@@ -75,6 +75,7 @@ const useChart = () => {
             color: '#BFEAFF',
             fontWeight: 'bold',
           },
+          silent: true,
         },
         series: [
           {
