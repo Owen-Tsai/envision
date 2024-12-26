@@ -53,7 +53,7 @@ import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
 import type { WidgetMap } from '@/types/fux-core/form'
 import dayjs from 'dayjs'
-import safeEval from 'safer-eval'
+import { safeEval } from '@/utils/eval'
 
 const { config, fields } = defineProps<{
   config: WidgetMap['dataTable']

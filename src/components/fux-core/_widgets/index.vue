@@ -40,7 +40,7 @@ const widgetConfig = ref(config)
 
 const components = import.meta.glob('./**/index.vue', { eager: true, import: 'default' })
 
-const visible = computed(() => !ctx?.prod || (!config.props.hide && ctx.prod))
+const visible = computed(() => (!ctx || ctx.mode === 'dev' ? true : !config.props.hide))
 
 const widgetToRenderer = computed(() => {
   const type = config.type
@@ -68,7 +68,7 @@ const fieldName = computed(() => {
 })
 
 const fieldConfig = computed(() => {
-  if (!ctx?.prod) {
+  if (!ctx || ctx.mode === 'dev') {
     return null
   }
   let config = ''

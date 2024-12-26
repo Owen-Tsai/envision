@@ -1,4 +1,4 @@
-import safeEval from 'safer-eval'
+import { safeEval } from '@/utils/eval'
 import useInstanceMethods from '../form-renderer/use-instance'
 import { useRendererInjection } from '.'
 
@@ -7,7 +7,7 @@ export const useEvents = (eventMap?: Record<string, string>) => {
 
   if (!rendererCtx) return
 
-  const { appSchema, formData } = rendererCtx
+  const { appSchema, formData, $state } = rendererCtx
 
   const {
     getFormData,
@@ -43,6 +43,7 @@ export const useEvents = (eventMap?: Record<string, string>) => {
     },
     $values: formData.value,
     $schema: appSchema.value,
+    $state: $state.value,
   }
 
   const handler = (event: string) => {

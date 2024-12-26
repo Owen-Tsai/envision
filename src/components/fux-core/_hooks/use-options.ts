@@ -40,11 +40,11 @@ export const useOptions = <
     }
     options.value = optionAttr.value || []
   } else if (optionAttr?.type === 'dict') {
-    if (optionAttr.value && rendererCtx && rendererCtx.mode === 'prod') {
+    if (optionAttr.value && rendererCtx && rendererCtx.mode !== 'dev') {
       dictData.value = useDict(optionAttr.value)[0]
     }
   } else if (optionAttr?.type === 'expression') {
-    if (optionAttr.value && rendererCtx && rendererCtx.mode === 'prod') {
+    if (optionAttr.value && rendererCtx && rendererCtx.mode !== 'dev') {
       options.value = rendererCtx.$state.value[optionAttr.value]
     }
   }
@@ -89,7 +89,7 @@ export const useTreeStructureOptions = <T extends WidgetMap['treeSelect'] | Widg
       options.value = JSON.parse(optionAttr.value)
     }
   } else if (optionAttr?.type === 'expression') {
-    if (optionAttr.value && rendererCtx && rendererCtx.mode === 'prod') {
+    if (optionAttr.value && rendererCtx && rendererCtx.mode !== 'dev') {
       options.value = rendererCtx.$state.value[optionAttr.value]
     }
   }
@@ -121,7 +121,7 @@ export const useOptionInfo = <
 
   const optionSetInfo = computed<false | string>(() => {
     // don't display optionSetInfo in prod
-    if (rendererCtx && rendererCtx.mode === 'prod') return false
+    if (rendererCtx && rendererCtx.mode !== 'dev') return false
     if (config.props.options.type === 'dict') {
       return '数据由字典设置'
     }
