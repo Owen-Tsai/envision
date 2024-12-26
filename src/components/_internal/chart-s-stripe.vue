@@ -20,7 +20,7 @@ const { title } = defineProps<{
 
 <style lang="scss" scoped>
 .header {
-  background: url('~vis/vis-chart-header.svg') center no-repeat;
+  background: url('~img/vis/vis-chart-header.svg') center no-repeat;
   background-size: 100%;
 
   .title {

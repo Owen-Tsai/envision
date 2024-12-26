@@ -26,7 +26,6 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
         '~img': fileURLToPath(new URL('./src/assets/img', import.meta.url)),
-        '~vis': fileURLToPath(new URL('./src/assets/vis', import.meta.url)),
       },
     },
     css: {
