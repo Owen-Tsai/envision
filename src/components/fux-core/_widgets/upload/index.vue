@@ -7,11 +7,12 @@
     :limit="config.props.limit"
     :size-limit="config.props.sizeLimit"
     :disabled="config.props.disabled"
+    @change="evt?.handler('change')"
   />
 </template>
 
 <script lang="ts" setup>
-import { useModel } from '../../_hooks'
+import { useModel, useEvents } from '../../_hooks'
 import Upload from '@/components/upload/index.vue'
 import type { WidgetMap } from '@/types/fux-core/form'
 
@@ -20,4 +21,5 @@ const { config } = defineProps<{
 }>()
 
 const { model } = useModel(config)
+const evt = useEvents(config.props.event)
 </script>

@@ -10,12 +10,15 @@
     :placeholder="config.props.placeholder"
     :show-count="config.props.showCount"
     :auto-size="autosize"
+    @blur="evt?.handler('blur')"
+    @change="evt?.handler('change')"
+    @focus="evt?.handler('focus')"
+    @input="evt?.handler('input')"
   />
 </template>
 
 <script lang="ts" setup>
-import { useModel } from '../../_hooks'
-import { inject, computed, type PropType } from 'vue'
+import { useModel, useEvents } from '../../_hooks'
 import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
@@ -23,6 +26,7 @@ const { config } = defineProps<{
 }>()
 
 const { model } = useModel(config)
+const evt = useEvents(config.props.event)
 
 const autosize = computed(() => {
   if (config.props.minRows || config.props.maxRows) {

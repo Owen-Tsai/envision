@@ -10,7 +10,7 @@
             :class="{ active: activeFid === fid }"
             @click="onItemSelected(fid)"
           >
-            <ATypographyText :content="config.name" class="text" ellipsis />
+            <ATypographyText :content="config.name" class="text px-4" ellipsis />
           </div>
           <AButton type="dashed" block :icon="h(PlusOutlined)" @click="addFunc">新增函数</AButton>
         </Scrollbar>
@@ -27,6 +27,15 @@
               :extensions="extensions"
               :style="{ height: '240px', width: '100%' }"
             />
+            <template #extra>
+              <ATypographyParagraph type="secondary" class="pt-1">
+                可以在函数体内通过
+                <ATypographyText code>$func</ATypographyText>,
+                <ATypographyText code>$values</ATypographyText>,
+                <ATypographyText code>$schema</ATypographyText>
+                属性分别访问渲染器实例方法、表单数据和应用 Schema。详情请<a href="#">参见文档</a>
+              </ATypographyParagraph>
+            </template>
           </AFormItem>
           <div class="actions">
             <AButton danger @click="onItemDelete">删除此函数</AButton>
@@ -129,6 +138,7 @@ const onItemDelete = () => {
   if (appSchema.value.form.function?.[activeFid.value!]) {
     delete appSchema.value.form.function?.[activeFid.value!]
     activeFid.value = undefined
+    message.success('删除成功')
   }
 }
 

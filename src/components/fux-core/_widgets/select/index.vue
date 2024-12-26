@@ -15,14 +15,16 @@
     :placement="config.props.placement"
     show-arrow
     :show-search="config.props.showSearch"
+    @blur="evt?.handler('blur')"
+    @change="evt?.handler('change')"
+    @focus="evt?.handler('focus')"
   />
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
 import { type SelectProps } from 'ant-design-vue'
 import { tryParse, filterOption } from '@fusionx/utils'
-import { useModel, useOptions } from '../../_hooks'
+import { useModel, useOptions, useEvents } from '../../_hooks'
 import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
@@ -33,6 +35,7 @@ const fieldNames = computed<SelectProps['fieldNames']>(() => tryParse(config.pro
 
 const { options } = useOptions(config)
 const { model } = useModel(config)
+const evt = useEvents(config.props.event)
 
 const filterFn = (input: string, option: any) => {
   const label = fieldNames.value?.label

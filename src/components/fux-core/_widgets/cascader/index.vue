@@ -12,12 +12,15 @@
     :max-tag-text-length="config.props.maxTagTextLength"
     :load-data="config.props.lazyLoad ? loadData : undefined"
     :options="options"
+    @blur="evt?.handler('blur')"
+    @change="evt?.handler('change')"
+    @focus="evt?.handler('focus')"
   />
 </template>
 
 <script lang="ts" setup>
 import Cascader from '@/components/cascader/index.vue'
-import { useModel, useTreeStructureOptions } from '../../_hooks'
+import { useModel, useTreeStructureOptions, useEvents } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
 import request from '@/utils/request'
 import type { CascaderProps } from 'ant-design-vue'
@@ -28,6 +31,7 @@ const { config } = defineProps<{
 }>()
 
 const { model } = useModel(config)
+const evt = useEvents(config.props.event)
 const fieldNames = computed(() => tryParse(config.props.fieldNames))
 const defaultValue = computed(() => tryParse(config.props.defaultValue))
 const { options } = useTreeStructureOptions(config)
