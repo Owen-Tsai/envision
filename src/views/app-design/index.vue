@@ -29,7 +29,7 @@
       <template v-else>
         <DataSourceConfig v-if="step === 0" @finish="step = 1" />
         <FormDesign v-if="step === 1" />
-        <!-- <WorkflowDesign v-if="step === 2" /> -->
+        <WorkflowDesign v-if="step === 2" />
       </template>
     </div>
 

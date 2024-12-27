@@ -72,20 +72,14 @@
         </AFormItem>
         <AFlex :gap="8" justify="end">
           <AButton
-            v-if="appEditMode === 'update' && !hasModified"
-            type="primary"
-            @click="toNextStep"
-          >
-            下一步
-          </AButton>
-          <AButton
-            v-else
+            v-if="appEditMode === 'create' || (appEditMode === 'update' && hasModified)"
             type="primary"
             :disabled="tableSortList.length <= 0"
             @click="generateInitialSchema"
           >
             生成 Schema
           </AButton>
+          <AButton v-else type="primary" @click="toNextStep">下一步</AButton>
         </AFlex>
       </AForm>
     </ACard>
@@ -166,7 +160,7 @@ const toNextStep = () => {
 }
 
 watchOnce(
-  () => dataSrcState.value,
+  () => [dataSrcState.value, tableSortList.value],
   () => {
     if (!hasModified.value) {
       hasModified.value = true

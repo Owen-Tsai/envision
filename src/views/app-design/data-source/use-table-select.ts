@@ -47,7 +47,7 @@ export const useTableSelect = (state: Ref<AppSchema['info']>) => {
       state.value.tables?.map((e) => ({
         label: e.name,
         value: e.id,
-        option: tables.value?.find((t) => t.id === e.id) as TableModel,
+        option: tables.value?.find((t) => t.id === e.id || t.tableName === e.name) as TableModel,
         subTable: e.subTable,
       })) || []
 
@@ -58,7 +58,8 @@ export const useTableSelect = (state: Ref<AppSchema['info']>) => {
     return option?.tableComment.includes(inputValue) || option?.tableName.includes(inputValue)
   }
 
-  onMounted(initTableSelection)
+  // created
+  initTableSelection()
 
   return {
     tables,
