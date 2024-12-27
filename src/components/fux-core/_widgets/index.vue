@@ -22,17 +22,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
 import { camelCase } from 'lodash-es'
 import { useRendererInjection } from '../_hooks'
 import { tryParse } from '@fusionx/utils'
 import type { FormWidget, Widget } from '@/types/fux-core/form'
+import type { NPropsFieldConfig } from '@/types/fux-core/flow'
 
 const ctx = useRendererInjection()
 
 const { config, fields, showAll } = defineProps<{
   config: Widget
-  fields?: any[]
+  fields?: NPropsFieldConfig[]
   showAll?: boolean
 }>()
 
@@ -67,14 +67,14 @@ const fieldName = computed(() => {
   return config.props.field?.name?.split('.')
 })
 
-const fieldConfig = computed(() => {
+const fieldConfig = computed<NPropsFieldConfig['config'] | null>(() => {
   if (!ctx || ctx.mode === 'dev') {
     return null
   }
-  let config = ''
-  if (fieldName.value) {
-    const res = fields?.find((fcfg) => fcfg.name == fieldName.value[fieldName.value.length - 1])
-    if (res) {
+  let config: NPropsFieldConfig['config']
+  if (fieldName.value !== undefined) {
+    const res = fields?.find((fcfg) => fcfg.name == fieldName.value![fieldName.value!.length - 1])
+    if (res && res.config) {
       config = res.config
     }
   }
@@ -86,7 +86,7 @@ const show = computed(() => {
   if (!visible.value && showAll) {
     return true
   } else {
-    if (fields !== null) {
+    if (fields) {
       // console.log('config', config)
       // console.log('fieldName', fieldName.value)
       // console.log('fieldConfig', fieldConfig.value)
