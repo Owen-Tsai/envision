@@ -1,11 +1,15 @@
+export interface NPropsFieldConfig {
+  name?: string
+  config?: 'show' | 'hide' | 'readonly' | 'edit'
+}
+
 export interface NPropsAudit {
   actor: {
     strategy?: number | string
     value?: (number | string)[]
     text?: string
   }
-  // todo: fields should be a map/array altering form widget attributes
-  fields: any[]
+  fields: Array<NPropsFieldConfig>
 }
 
 export type NPropsStart = any
