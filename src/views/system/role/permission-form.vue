@@ -152,6 +152,7 @@ const loadDeptData = () => {
 
 const loadData = async () => {
   loading.value = true
+  formData.value.roleId = roleId.value
   if (props.mode === 'menu') {
     loadMenuData()
   } else {

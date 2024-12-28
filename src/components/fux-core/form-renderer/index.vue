@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import { tryParse } from '@fusionx/utils'
 import { useRendererProvider } from '../_hooks'
 import useApi from './use-api'

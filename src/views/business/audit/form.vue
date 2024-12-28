@@ -76,10 +76,10 @@ import { useRoute } from 'vue-router'
 import {
   approveTask,
   type AuditProcessDetailsListType,
-  backStartUserTask,
-  backTask,
+  returnTaskToStart,
+  returnTask,
   getAuditProcessDetail,
-  getBackOptions,
+  getTaskReturnOptions,
   getEchoData,
   getProcessInstance,
   rejectTask,
@@ -134,7 +134,7 @@ onMounted(() => {
   getAuditProcessDetailMethod(processInstanceId)
   if (taskDefKey != 'All') {
     getProcessInstanceMethod(processInstanceId)
-    getBackOptionsMethod(taskId)
+    getTaskReturnOptionsMethod(taskId)
   }
 })
 const basicInfo = ref({
@@ -181,8 +181,8 @@ const getEchoDataMethod = async (appId: string, applyId: string) => {
   })
   formRendering.value = false
 }
-const getBackOptionsMethod = async (parentProcessInstanceId: string) => {
-  const data = await getBackOptions(parentProcessInstanceId)
+const getTaskReturnOptionsMethod = async (parentProcessInstanceId: string) => {
+  const data = await getTaskReturnOptions(parentProcessInstanceId)
   backModal.value = data
   console.log(backModal.value)
 }
@@ -209,7 +209,7 @@ const backStartUser = async () => {
     async onOk() {
       try {
         return await new Promise((resolve, reject) => {
-          backStartUserTask(backVo).then(() => {
+          returnTaskToStart(backVo).then(() => {
             modal.destroy()
             message.success('审批成功！')
             tabsView.removeAndOpenTab(`/business/${appId}/audit?taskDefKey=${taskDefKey}`)
@@ -291,7 +291,7 @@ const operation = async (flag: number) => {
       class: 'test',
     })
   } else if (flag == 3) {
-    const backTaskData = {
+    const returnTaskData = {
       id: taskId,
       targetTaskDefinitionKey: backValue.value,
       reason: idea.value,
@@ -304,7 +304,7 @@ const operation = async (flag: number) => {
       async onOk() {
         try {
           return await new Promise((resolve, reject) => {
-            backTask(backTaskData)
+            returnTask(returnTaskData)
               .then(() => {
                 message.success('审核成功！')
                 modal.destroy()
