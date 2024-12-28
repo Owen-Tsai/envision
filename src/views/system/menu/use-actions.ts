@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import useStorage from '@/hooks/use-storage'
 import { deleteMenu, type MenuVO } from '@/api/system/menu'
@@ -35,7 +34,7 @@ const useActions = (requestData: () => void) => {
     mode,
     onEdit,
     onDelete,
-    onClearCache
+    onClearCache,
   }
 }
 

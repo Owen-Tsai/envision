@@ -39,44 +39,44 @@ const prefix = '/admin-api/system/menu'
 export const getMenuTree = (params?: TreeQueryParams) => {
   return request.get<MenuVO[]>({
     url: `${prefix}/tree-list`,
-    params
+    params,
   })
 }
 
 export const getMenuDetail = (id: number) => {
   return request.get<MenuVO>({
-    url: `${prefix}/get?id=${id}`
+    url: `${prefix}/get?id=${id}`,
   })
 }
 
 export const createMenu = (data: MenuVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updateMenu = (data: MenuVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 
 export const deleteMenu = (id: number) => {
   return request.delete({
-    url: `${prefix}/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`,
   })
 }
 
 export const deleteMenuWithChildren = (id: number) => {
   return request.delete({
-    url: `${prefix}/delete-batch?id=${id}`
+    url: `${prefix}/delete-batch?id=${id}`,
   })
 }
 
-export const getMenuPlainList = () => {
+export const getSimpleMenuList = () => {
   return request.get<MenuLiteVO[]>({
-    url: `${prefix}/list-all-simple`
+    url: `${prefix}/list-all-simple`,
   })
 }

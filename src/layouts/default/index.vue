@@ -26,7 +26,7 @@
         <TagsContainer />
         <RouterView v-if="routerAlive">
           <template #default="{ Component, route }">
-            <KeepAlive :include="[...viewCache.keepsList]">
+            <KeepAlive :include="[...keepsList]">
               <component :is="Component" :key="route.fullPath" />
             </KeepAlive>
           </template>
@@ -37,22 +37,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick, provide } from 'vue'
-import { useToggle } from '@vueuse/core'
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import useBreakpoint from '@/hooks/use-breakpoint'
 import useViewCache from '@/stores/view-cache'
 import Header from './header.vue'
 import Menu from './menu.vue'
 import TagsContainer from './tabs-container.vue'
-import { RouterView } from 'vue-router'
+
+const headerHeight = import.meta.env.VITE_APP_HEADER_HEIGHT + 'px'
 
 const screen = useBreakpoint()
 
 const collapsed = ref(false)
 const toggle = useToggle(collapsed)
 
-const viewCache = useViewCache()
+const { keepsList } = storeToRefs(useViewCache())
 
 const routerAlive = ref(true)
 
@@ -70,16 +68,16 @@ provide('layoutContext', reload)
 @use '@/styles/mixins.scss' as *;
 
 .header {
-  height: $header-height;
+  height: v-bind(headerHeight);
 }
 .layout-sider {
   position: sticky !important;
   box-sizing: content-box !important;
-  height: calc(100vh - $header-height);
+  height: calc(100vh - v-bind(headerHeight));
   left: 0;
-  top: $header-height;
-  background-color: var(--colorBgAlt);
-  border-right: 1px solid var(--colorBorderAlt);
+  top: v-bind(headerHeight);
+  background-color: var(--color-bg-alt);
+  border-right: 1px solid var(--color-border-alt);
   &:deep(ul.ant-menu) {
     background-color: transparent !important;
     border-right: 0 !important;
@@ -90,7 +88,7 @@ provide('layoutContext', reload)
 }
 .menu-btn {
   @apply absolute right-2 bottom-4;
-  background-color: var(--colorFillSecondary);
-  color: var(--colorTextSecondary);
+  background-color: var(--color-fill-secondary);
+  color: var(--color-text-secondary);
 }
 </style>

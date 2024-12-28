@@ -4,25 +4,31 @@
       <div class="actions">
         <AFlex :gap="8" align="center" justify="space-between">
           <div class="flex gap-2 items-center">
-            <AButton :icon="h(MinusOutlined)" size="small" />
+            <AButton :icon="h(MinusOutlined)" size="small" @click="zoomOut" />
             <span>{{ zoomPercentage }}%</span>
-            <AButton :icon="h(PlusOutlined)" size="small" />
+            <AButton :icon="h(PlusOutlined)" size="small" @click="zoomIn" />
           </div>
         </AFlex>
       </div>
 
-      <FlowCanvas class="h-full" :schema="schema" />
+      <div class="h-full w-full">
+        <FlowCanvas
+          class="transform-origin-tl"
+          :style="{ transform: `scale(${zoomPercentage / 100})` }"
+        />
+      </div>
       <SettingPanel v-model:open="visible.setting" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { h, ref, reactive, computed, watch } from 'vue'
+import { h } from 'vue'
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { useWorkflowCtxProvider } from '../_hooks'
 import FlowCanvas from './canvas/index.vue'
 import SettingPanel from './setter/index.vue'
+import useZoom from './use-zoom'
 import type { FlowSchema } from '@/types/fux-core/flow'
 
 const { schema } = defineProps<{
@@ -35,14 +41,15 @@ const computedSchema = computed({
   get: () => schema,
   set: (val) => {
     emit('update:schema', val)
-  }
+  },
 })
 
-const zoomPercentage = ref(100)
 const visible = reactive({
   setting: false,
-  schema: false
+  schema: false,
 })
+
+const { zoomIn, zoomOut, zoomPercentage } = useZoom()
 
 const { selectedNode } = useWorkflowCtxProvider(computedSchema)
 
@@ -52,7 +59,7 @@ watch(
     if (val) {
       visible.setting = true
     }
-  }
+  },
 )
 </script>
 
@@ -68,6 +75,7 @@ watch(
     width: calc(100% - 48px);
     top: 80px;
     left: 24px;
+    z-index: 99;
   }
 }
 </style>

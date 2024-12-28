@@ -33,10 +33,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, inject, toRefs } from 'vue'
-import { storeToRefs } from 'pinia'
-import { CloseOutlined } from '@ant-design/icons-vue'
-import { useRouter } from 'vue-router'
 import useTabsStore from '@/stores/tabs'
 
 const router = useRouter()
@@ -57,47 +53,43 @@ const reload = () => {
 }
 
 watch(router.currentRoute, (val) => {
-  tabsView.addTab(
-    val.fullPath,
-    val.meta.title || (val.name as string),
-    val.meta.keepAlive && val.name ? (val.name as string) : undefined
-  )
+  tabsView.addTab(val.fullPath, val.meta.title || (val.name as string))
 })
 </script>
 
 <style lang="scss" scoped>
 .tabs-container {
   @apply w-full overflow-hidden flex whitespace-nowrap flex-nowrap px-4 py-1 gap-2;
-  font-size: var(--fontSizeSM);
-  background-color: var(--colorBgLayoutAlpha);
-  border-bottom: 1px solid var(--colorBorderAlt);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-bg-layout-alpha);
+  border-bottom: 1px solid var(--color-border-alt);
   backdrop-filter: blur(8px);
   z-index: 20;
 
   .tag {
-    background-color: var(--colorBgContainer);
-    color: var(--colorTextSecondary);
+    background-color: var(--color-bg-container);
+    color: var(--color-text-secondary);
     @apply px-2 py-1 inline-flex items-center gap-1 rounded relative cursor-pointer;
 
     .close-icon {
       font-size: 10px;
       @apply p-1 rounded;
       &:hover {
-        background-color: var(--colorFillSecondary);
+        background-color: var(--color-fill-secondary);
       }
       &:active {
-        background-color: var(--colorFill);
+        background-color: var(--color-fill);
       }
     }
     &.active {
-      background-color: var(--colorPrimaryBg);
-      color: var(--colorPrimaryText);
-      border: 1px solid var(--colorPrimaryBorder);
+      background-color: var(--color-primary-bg);
+      color: var(--color-primary-text);
+      border: 1px solid var(--color-primary-border);
       @apply pl-6;
     }
     .dot {
       @apply absolute w-2 h-2 top-1/2 left-2 -translate-y-1/2 rounded;
-      background-color: var(--colorPrimaryText);
+      background-color: var(--color-primary-text);
     }
   }
 }

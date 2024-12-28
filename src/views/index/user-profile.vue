@@ -35,22 +35,23 @@
 
 <script lang="ts" setup>
 import { Grid } from 'ant-design-vue'
-import { storeToRefs } from 'pinia'
-import { EditOutlined } from '@ant-design/icons-vue'
 import useUserStore from '@/stores/user'
-import { desensitizePhoneNumber } from '@/utils/fusion'
 
 const { user } = storeToRefs(useUserStore())
 
 const screen = Grid.useBreakpoint()
+
+const desensitizePhoneNumber = (str: string) => {
+  return str.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
+}
 </script>
 
 <style lang="scss" scoped>
 .info {
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
   @apply flex items-center gap-1;
 }
 .profile-btn {
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
 }
 </style>

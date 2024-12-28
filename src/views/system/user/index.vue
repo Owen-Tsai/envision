@@ -125,6 +125,7 @@
               :data-source="data?.list"
               :loading="pending"
               :pagination="pagination"
+              :scroll="{ x: 1100 }"
               @change="onChange"
             >
               <template #bodyCell="scope: TableScope<UserVO>">
@@ -156,7 +157,7 @@
                           'system:user:update',
                           'system:user:update-password',
                           'system:user:delete',
-                          'system:permission:assign-user-role'
+                          'system:permission:assign-user-role',
                         )
                       "
                     >
@@ -199,43 +200,17 @@
     </ARow>
 
     <!-- add/edit user -->
-    <FormModal
-      v-if="visible.edit"
-      :record="entry"
-      @success="execute"
-      @close="visible.edit = false"
-    />
+    <FormModal v-model:open="visible.edit" :record="entry" @success="execute" />
     <!-- change password -->
-    <PasswordFormModal
-      v-if="visible.passwordReset"
-      :record="entry!"
-      @success="execute"
-      @close="visible.passwordReset = false"
-    />
+    <PasswordFormModal v-model:open="visible.passwordReset" :record="entry!" @success="execute" />
     <!-- assign roles -->
-    <RoleFormModal
-      v-if="visible.roleConfig"
-      :record="entry!"
-      @success="execute"
-      @close="visible.roleConfig = false"
-    />
+    <RoleFormModal v-model:open="visible.roleConfig" :record="entry!" @success="execute" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import {
-  SearchOutlined,
-  EditOutlined,
-  DownOutlined,
-  PlusOutlined,
-  ExportOutlined,
-  ReloadOutlined
-} from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
-import type { UserVO } from '@/api/system/user'
 import useDict from '@/hooks/use-dict'
-import { useToggle } from '@vueuse/core'
 import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'
 import PasswordFormModal from './password-form.vue'
@@ -243,11 +218,14 @@ import RoleFormModal from './roles-form.vue'
 import useDeptTree from './use-dept-tree'
 import { columns, useUserTable } from './use-user-table'
 import useActions from './use-actions'
+import type { UserVO } from '@/api/system/user'
+import type { FormInstance } from 'ant-design-vue'
+
 // layout specific
-const layout = import.meta.env.VITE_DEFAULT_LAYOUT
+const layout = import.meta.env.VITE_APP_LAYOUT
 const style = ref<{ minHeight: string; top: string }>({
   minHeight: 'calc(100vh - 130px)',
-  top: '110px'
+  top: '110px',
 })
 
 if (layout === 'split') {
@@ -255,7 +233,7 @@ if (layout === 'split') {
   style.value.top = '52px'
 }
 
-const filterForm = ref()
+const filterForm = useTemplateRef<FormInstance>('filterForm')
 
 const [filterExpanded, toggle] = useToggle(false)
 
@@ -270,7 +248,7 @@ const {
   filteredTreeData,
   searchText,
   selectedKeys,
-  onTreeNodeSelect
+  onTreeNodeSelect,
 } = useDeptTree(queryParams, execute)
 
 const { entry, visible, onDelete, onEdit, onSetPassword, onSetRole, onSetStatus } =

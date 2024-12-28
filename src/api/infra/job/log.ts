@@ -26,7 +26,7 @@ const url = '/admin-api/infra/job-log'
 export const getList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<JobLogVO>>({
     url: `${url}/page`,
-    params
+    params,
   })
 }
 
@@ -34,6 +34,6 @@ export const exportLog = (params?: ListQueryParams) => {
   return request.download({
     url: '/admin-api/system/job-log/export-excel',
     params,
-    filename: '定时任务执行日志.xlsx'
+    filename: '定时任务执行日志.xlsx',
   })
 }

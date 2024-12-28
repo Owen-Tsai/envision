@@ -1,14 +1,13 @@
-import safeEval from 'safer-eval'
+import { safeEval } from '@/utils/eval'
 import useInstanceMethods from '../form-renderer/use-instance'
-import { useFormDataInjection, useRendererInjection } from '.'
+import { useRendererInjection } from '.'
 
 export const useEvents = (eventMap?: Record<string, string>) => {
   const rendererCtx = useRendererInjection()
 
   if (!rendererCtx) return
 
-  const { formData } = useFormDataInjection()
-  const { appSchema } = rendererCtx
+  const { appSchema, formData, $state } = rendererCtx
 
   const {
     getFormData,
@@ -23,7 +22,7 @@ export const useEvents = (eventMap?: Record<string, string>) => {
     setWidgetAttrs,
     show,
     toNextStep,
-    toPrevStep
+    toPrevStep,
   } = useInstanceMethods()
 
   const context: Record<string, any> = {
@@ -40,10 +39,11 @@ export const useEvents = (eventMap?: Record<string, string>) => {
       setWidgetAttrs,
       show,
       toNextStep,
-      toPrevStep
+      toPrevStep,
     },
     $values: formData.value,
-    $schema: appSchema.value
+    $schema: appSchema.value,
+    $state: $state.value,
   }
 
   const handler = (event: string) => {
@@ -59,6 +59,6 @@ export const useEvents = (eventMap?: Record<string, string>) => {
   }
 
   return {
-    handler
+    handler,
   }
 }

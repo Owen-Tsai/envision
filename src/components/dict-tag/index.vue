@@ -10,12 +10,12 @@ import type { DictDataEntry } from '@/api/system/dict/data'
 const props = defineProps({
   dictObject: {
     type: Object as PropType<DictDataEntry[]>,
-    required: true
+    required: true,
   },
   value: {
     type: [String, Number, Boolean],
-    required: true
-  }
+    required: true,
+  },
 })
 
 const dictEntry = computed(() => {

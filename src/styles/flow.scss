@@ -6,7 +6,7 @@
   bottom: 0;
   left: calc(50% - calc(var(--line-width) / 2));
   width: var(--line-width);
-  background-color: var(--colorBorder);
+  background-color: var(--color-border);
 }
 
 @mixin bg-audit {
@@ -18,7 +18,7 @@
 }
 
 @mixin bg-start {
-  background-color: var(--colorPrimary);
+  background-color: var(--color-primary);
 }
 
 .node-wrapper {
@@ -33,25 +33,25 @@
 
   .audit-node {
     .header {
-      color: var(--colorWhite);
+      color: var(--color-white);
       @include bg-audit();
     }
   }
   .cc-node {
     .header {
-      color: var(--colorWhite);
+      color: var(--color-white);
       @include bg-cc();
     }
   }
   .start-node {
     .header {
-      color: var(--colorWhite);
+      color: var(--color-white);
       @include bg-start();
     }
   }
   .condition-node {
     .header {
-      color: var(--colorPrimary);
+      color: var(--color-primary);
     }
   }
 
@@ -68,7 +68,7 @@
     width: var(--width);
     display: flex;
     flex-direction: column;
-    border-radius: var(--borderRadius);
+    border-radius: var(--border-radius);
     border-width: 1px;
     border-style: solid;
     border-color: transparent;
@@ -87,7 +87,7 @@
         cursor: pointer;
 
         &:hover {
-          color: var(--colorPrimary);
+          color: var(--color-primary);
         }
       }
 
@@ -97,7 +97,7 @@
     }
     .body {
       flex-grow: 1;
-      background-color: var(--colorBgContainer);
+      background-color: var(--color-bg-container);
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -127,13 +127,13 @@
         height: 4px;
         border-style: solid;
         border-width: 8px 6px 4px;
-        border-color: var(--colorBorder) transparent transparent;
-        background: var(--colorBgLayout);
+        border-color: var(--color-border) transparent transparent;
+        background: var(--color-bg-layout);
       }
     }
 
     &.condition-node {
-      background-color: var(--colorBgContainer);
+      background-color: var(--color-bg-container);
     }
   }
 
@@ -145,7 +145,7 @@
       content: '';
       height: 12px;
       width: 12px;
-      background-color: var(--colorBorder);
+      background-color: var(--color-border);
       position: absolute;
       top: 0;
       left: 50%;
@@ -159,10 +159,10 @@
   .branches {
     display: flex;
     position: relative;
-    border-top: var(--line-width) solid var(--colorBorder);
-    border-bottom: var(--line-width) solid var(--colorBorder);
+    border-top: var(--line-width) solid var(--color-border);
+    border-bottom: var(--line-width) solid var(--color-border);
     overflow: visible;
-    background-color: var(--colorBgLayout);
+    background-color: var(--color-bg-layout);
 
     .branch {
       position: relative;
@@ -175,7 +175,7 @@
 
     .edge-line {
       position: absolute;
-      background-color: var(--colorBgLayout);
+      background-color: var(--color-bg-layout);
       height: var(--line-width);
       width: 50%;
     }

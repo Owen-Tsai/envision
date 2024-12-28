@@ -48,13 +48,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import {
   getChannelDetail,
   addChannel,
   updateChannel,
-  type ChannelVO
+  type ChannelVO,
 } from '@/api/system/sms/channel'
 import useDict from '@/hooks/use-dict'
 
@@ -65,19 +64,19 @@ const [commonStatus, systemSmsChannelCode] = useDict('common_status', 'system_sm
 const rules = ref<FormProps['rules']>({
   signature: [{ required: true, message: '请输入渠道名称' }],
   code: [{ required: true, message: '请选择渠道编码' }],
-  apiKey: [{ required: true, message: '请输入短信渠道的 API Key' }]
+  apiKey: [{ required: true, message: '请输入短信渠道的 API Key' }],
 })
 
 const props = defineProps({
   record: {
-    type: Object as PropType<ChannelVO>
-  }
+    type: Object as PropType<ChannelVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
 
 const formData = ref<ChannelVO>({
-  status: 0
+  status: 0,
 })
 const formRef = ref<FormInstance>()
 

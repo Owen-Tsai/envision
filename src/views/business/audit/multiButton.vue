@@ -4,27 +4,27 @@ import {
   CheckCircleTwoTone,
   CloseCircleTwoTone,
   LeftOutlined,
-  RightOutlined
+  RightOutlined,
 } from '@ant-design/icons-vue'
 
 const formFooterCardBodyStyle = {
   display: 'flex',
-  justifyContent: 'center'
+  justifyContent: 'center',
 }
 
 const props = defineProps({
   currentStep: {
-    type: Number
+    type: Number,
   },
   isEnd: {
-    type: Boolean
+    type: Boolean,
   },
   prevStep: {
-    type: Function
+    type: Function,
   },
   nextStep: {
-    type: Function
-  }
+    type: Function,
+  },
 })
 </script>
 

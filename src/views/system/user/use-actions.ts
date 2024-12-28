@@ -1,4 +1,3 @@
-import { ref, reactive } from 'vue'
 import { Modal, message } from 'ant-design-vue'
 import { deleteUser, updateUserStatus, type UserVO } from '@/api/system/user'
 
@@ -7,7 +6,7 @@ const useActions = (requestData: () => void) => {
   const visible = reactive({
     edit: false,
     passwordReset: false,
-    roleConfig: false
+    roleConfig: false,
   })
 
   const onEdit = (record?: UserVO) => {
@@ -33,7 +32,7 @@ const useActions = (requestData: () => void) => {
         deleteUser(record.id!).then(() => {
           requestData()
         })
-      }
+      },
     })
   }
 
@@ -53,7 +52,7 @@ const useActions = (requestData: () => void) => {
     onEdit,
     onSetPassword,
     onSetRole,
-    onSetStatus
+    onSetStatus,
   }
 }
 

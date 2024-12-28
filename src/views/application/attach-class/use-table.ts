@@ -4,7 +4,7 @@ import useRequest from '@/hooks/use-request'
 import {
   getAttachClassList,
   type ListQueryParams,
-  type AttachClassVO
+  type AttachClassVO,
 } from '@/api/application/attach-class'
 import type { FormInstance, TableProps } from 'ant-design-vue'
 import type { TablePaginationConfig } from 'ant-design-vue/es/table/interface'
@@ -16,7 +16,7 @@ export const columns: TableProps['columns'] = [
   { title: '是否必传', dataIndex: 'ismust', key: 'ismust' },
   { title: '附件分类代码', dataIndex: 'modeName', key: 'modeName' },
   { title: '创建时间', dataIndex: 'createTime', key: 'createTime' },
-  { title: '操作', key: 'actions', width: 240 }
+  { title: '操作', key: 'actions', width: 240 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
@@ -25,11 +25,11 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const { data, execute, pending } = useRequest(
     () =>
       getAttachClassList({
-        ...queryParams.value
+        ...queryParams.value,
       }),
     {
-      immediate: true
-    }
+      immediate: true,
+    },
   )
 
   const pagination = computed<TablePaginationConfig>(() => ({
@@ -40,7 +40,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onFilter = () => {
@@ -69,6 +69,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     onChange,
     pagination,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

@@ -35,38 +35,38 @@ const url = '/admin-api/infra/file-config'
 export const getConfigList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<FileConfigVO>>({
     url: `${url}/page`,
-    params
+    params,
   })
 }
 
 export const getDetail = (id: number) => {
   return request.get<FileConfigVO>({
-    url: `${url}/get?id=${id}`
+    url: `${url}/get?id=${id}`,
   })
 }
 
 export const addConfig = (data: FileConfigVO) => {
   return request.post({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const updateConfig = (data: FileConfigVO) => {
   return request.put({
     url: `${url}/update`,
-    data
+    data,
   })
 }
 
 export const deleteConfig = (id: number) => {
   return request.delete({
-    url: `${url}/delete?id=${id}`
+    url: `${url}/delete?id=${id}`,
   })
 }
 
 export const testConfig = (id: number) => {
   return request.get<string>({
-    url: `${url}/test?id=${id}`
+    url: `${url}/test?id=${id}`,
   })
 }

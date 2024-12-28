@@ -141,7 +141,7 @@ import {
   EditOutlined,
   DeleteOutlined,
   PlusOutlined,
-  CodeOutlined
+  CodeOutlined,
 } from '@ant-design/icons-vue'
 import { permission } from '@/hooks/use-permission'
 import { useTable, columns } from './use-table'

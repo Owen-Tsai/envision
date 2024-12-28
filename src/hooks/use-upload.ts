@@ -29,7 +29,7 @@ const useUpload = () => {
 
   return {
     uploadUrl,
-    httpRequest
+    httpRequest,
   }
 }
 

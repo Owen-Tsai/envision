@@ -1,4 +1,3 @@
-import { reactive, ref, computed, type Ref } from 'vue'
 import dayjs from 'dayjs'
 import type { SelectProps, FormItemProps } from 'ant-design-vue'
 import type { FormWidget } from '@/types/fux-core/form'
@@ -11,26 +10,26 @@ const useValidator = (selectedWidet: Ref<FormWidget | undefined>) => {
         { label: '身份证号', value: 'idCard' },
         { label: '电子邮箱', value: 'email' },
         { label: '手机号', value: 'mobile' },
-        { label: '网址', value: 'url' }
-      ]
+        { label: '网址', value: 'url' },
+      ],
     },
     {
       label: '时间',
       options: [
         { label: '已满1年', value: 'year>1' },
         { label: '已满3年', value: 'year>3' },
-        { label: '已满5年', value: 'year>5' }
-      ]
+        { label: '已满5年', value: 'year>5' },
+      ],
     },
     {
       label: '自定义',
-      options: [{ label: '自定义', value: 'custom' }]
-    }
+      options: [{ label: '自定义', value: 'custom' }],
+    },
   ]
 
   const state = reactive({
     editorVisible: false,
-    validateType: ''
+    validateType: '',
   })
 
   const onTypeChange = (v?: string) => {
@@ -44,8 +43,8 @@ const useValidator = (selectedWidet: Ref<FormWidget | undefined>) => {
       selectedWidet.value!.props.field.rules = JSON.stringify([
         {
           type: v,
-          message: `请输入正确的${v === 'email' ? '电子邮箱' : '网址'}`
-        }
+          message: `请输入正确的${v === 'email' ? '电子邮箱' : '网址'}`,
+        },
       ])
     }
 
@@ -54,8 +53,8 @@ const useValidator = (selectedWidet: Ref<FormWidget | undefined>) => {
         {
           pattern:
             '^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$',
-          message: '请输入正确的身份证号'
-        }
+          message: '请输入正确的身份证号',
+        },
       ])
     }
 
@@ -63,8 +62,8 @@ const useValidator = (selectedWidet: Ref<FormWidget | undefined>) => {
       selectedWidet.value!.props.field.rules = JSON.stringify([
         {
           pattern: '^1[3456789]\\d{9}$',
-          message: '请输入正确的手机号'
-        }
+          message: '请输入正确的手机号',
+        },
       ])
     }
 
@@ -82,8 +81,8 @@ const useValidator = (selectedWidet: Ref<FormWidget | undefined>) => {
             } else {
               callback()
             }
-          }
-        }
+          },
+        },
       ] as FormItemProps['rules'])
     }
 
@@ -95,7 +94,7 @@ const useValidator = (selectedWidet: Ref<FormWidget | undefined>) => {
   return {
     validateTypeOpts,
     state,
-    onTypeChange
+    onTypeChange,
   }
 }
 

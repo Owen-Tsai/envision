@@ -33,7 +33,7 @@ import type { WPropsUpload } from '@/types/fux-core/form'
 const listTypeOpts = [
   { label: '普通列表', value: 'text' },
   { label: '图片列表', value: 'picture' },
-  { label: '图片宫格', value: 'picture-card' }
+  { label: '图片宫格', value: 'picture-card' },
 ]
 
 const { attrs } = defineProps<{
@@ -46,6 +46,6 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 </script>

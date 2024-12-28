@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { deletePost, type PostVO } from '@/api/system/post'
 
@@ -22,7 +21,7 @@ const useActions = (requestData: () => void) => {
     entry,
     visible,
     onEdit,
-    onDelete
+    onDelete,
   }
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <AEmpty v-if="schema.form.widgets.length <= 0" description="添加组件进行配置" />
+  <AEmpty v-if="appSchema.form.widgets.length <= 0" description="添加组件进行配置" />
   <AEmpty v-else-if="selectedWidget === undefined" description="选中组件进行配置" />
   <AForm v-else :model="selectedWidget" layout="vertical">
     <AFormItem label="字段标签" name="label">
@@ -73,7 +73,6 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, type Ref } from 'vue'
 import { kebabCase, cloneDeep } from 'lodash-es'
 import { useDesignerInjection } from '../../_hooks'
 import { labelAlignOpts, validationTriggerOpts, widgetTypeOpts } from '../../_utils/const'
@@ -87,10 +86,10 @@ import initWidgetConfig from '../../_utils/initial-widget-config'
 
 const components = import.meta.glob('../../_widgets/**/settings.vue', {
   eager: true,
-  import: 'default'
+  import: 'default',
 })
 
-const { schema, selectedWidget } = useDesignerInjection()
+const { appSchema, selectedWidget } = useDesignerInjection()!
 const { onTypeChange, state, validateTypeOpts } = useValidator(selectedWidget as Ref<FormWidget>)
 
 const fragToRender = computed(() => {
@@ -110,8 +109,8 @@ const onWdigetTypeChange = (v: SelectValue) => {
     ...newOpts.props,
     field: {
       name: selectedWidget.value?.props.field.name,
-      label: selectedWidget.value?.props.field.label
-    }
+      label: selectedWidget.value?.props.field.label,
+    },
   }
 }
 </script>

@@ -11,7 +11,7 @@ export const columns: TableProps['columns'] = [
   { title: '处理器名称', dataIndex: 'handlerName' },
   { title: '处理器参数', dataIndex: 'handlerParam' },
   { title: 'CRON表达式', dataIndex: 'cronExpression' },
-  { title: '操作', width: 220 }
+  { title: '操作', width: 220 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
@@ -20,11 +20,11 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const { data, execute, pending } = useRequest(
     () =>
       getJobList({
-        ...queryParams.value
+        ...queryParams.value,
       }),
     {
-      immediate: true
-    }
+      immediate: true,
+    },
   )
 
   const pagination = computed<TablePaginationConfig>(() => ({
@@ -35,7 +35,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onFilter = () => {
@@ -64,6 +64,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     onChange,
     pagination,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

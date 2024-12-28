@@ -112,7 +112,7 @@ import {
   DownOutlined,
   ReloadOutlined,
   ExportOutlined,
-  UnorderedListOutlined
+  UnorderedListOutlined,
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'

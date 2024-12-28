@@ -24,7 +24,7 @@ export type ChannelListLiteVO = Array<Pick<ChannelVO, 'id' | 'code' | 'signature
 export const getChannelList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<ChannelVO>>({
     url: `${prefix}/page`,
-    params
+    params,
   })
 }
 
@@ -39,14 +39,14 @@ export const getChannelDetail = (id: number) => {
 export const addChannel = (data: ChannelVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updateChannel = (data: ChannelVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 

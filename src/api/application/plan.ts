@@ -26,38 +26,38 @@ const url = '/admin-api/system/apply-plan'
 export const getPlanList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<PlanVO>>({
     url: `${url}/page`,
-    params
+    params,
   })
 }
 
 export const createPlan = (data: PlanVO) => {
   return request.post({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const updatePlan = (data: PlanVO) => {
   return request.put({
     url: `${url}/update`,
-    data
+    data,
   })
 }
 
 export const deletePlan = (id: string) => {
   return request.delete({
-    url: `${url}/delete?id=${id}`
+    url: `${url}/delete?id=${id}`,
   })
 }
 
 export const getPlanDetail = (id: string) => {
   return request.get<PlanVO>({
-    url: `${url}/get?id=${id}`
+    url: `${url}/get?id=${id}`,
   })
 }
 
 export const getAttachTypeSimpleList = () => {
   return request.get({
-    url: `/admin-api/attach/type/get_attach_type_simple_list`
+    url: `/admin-api/attach/type/get_attach_type_simple_list`,
   })
 }

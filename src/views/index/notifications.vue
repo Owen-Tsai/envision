@@ -32,7 +32,7 @@ const { push } = useRouter()
 const [systemNoticeType] = useDict('system_notice_type')
 
 const { data, pending } = useRequest(() => getNotificationList({ pageNo: 1, pageSize: 5 }), {
-  immediate: true
+  immediate: true,
 })
 
 const toNotificationList = () => {
@@ -43,10 +43,10 @@ const toNotificationList = () => {
 <style lang="scss" scoped>
 .item {
   @apply flex items-center gap-1 mt-2 first:mt-0;
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
 
   &:hover {
-    color: var(--colorText);
+    color: var(--color-text);
   }
 }
 </style>

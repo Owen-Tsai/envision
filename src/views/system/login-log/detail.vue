@@ -18,7 +18,6 @@
 </template>
 
 <script lang="ts" setup>
-import { type PropType } from 'vue'
 import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import type { LoginLogVO } from '@/api/system/login-log'
@@ -26,9 +25,9 @@ import type { LoginLogVO } from '@/api/system/login-log'
 defineProps({
   entry: {
     type: Object as PropType<LoginLogVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 
-const { systemLoginType } = useDict('system_login_type')
+const [systemLoginType] = useDict('system_login_type')
 </script>

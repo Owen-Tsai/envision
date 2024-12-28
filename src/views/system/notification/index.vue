@@ -125,16 +125,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { useToggle } from '@vueuse/core'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined
-} from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'

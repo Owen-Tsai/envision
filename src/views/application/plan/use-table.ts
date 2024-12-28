@@ -16,7 +16,7 @@ export const columns: TableProps['columns'] = [
     sortDirections: ['ascend', 'descend'],
     sorter: (a: PlanVO, b: PlanVO) => {
       return dayjs(a.startTime).isSameOrBefore(b.startTime) ? 1 : -1
-    }
+    },
   },
   {
     title: '截止时间',
@@ -26,9 +26,9 @@ export const columns: TableProps['columns'] = [
     sortDirections: ['ascend', 'descend'],
     sorter: (a: PlanVO, b: PlanVO) => {
       return dayjs(a.endTime).isSameOrBefore(b.endTime) ? 1 : -1
-    }
+    },
   },
-  { title: '操作', key: 'actions', width: 240 }
+  { title: '操作', key: 'actions', width: 240 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
@@ -37,11 +37,11 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   const { data, execute, pending } = useRequest(
     () =>
       getPlanList({
-        ...queryParams.value
+        ...queryParams.value,
       }),
     {
-      immediate: true
-    }
+      immediate: true,
+    },
   )
 
   const pagination = computed<TablePaginationConfig>(() => ({
@@ -52,7 +52,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onFilter = () => {
@@ -81,6 +81,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     onChange,
     pagination,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

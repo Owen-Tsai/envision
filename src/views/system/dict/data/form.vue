@@ -1,10 +1,8 @@
 <template>
   <AModal
-    v-model:open="open"
+    v-model:open="isOpen"
     :title="isAdd ? '新增字典数据' : '编辑字典数据'"
-    destroy-on-close
     :confirm-loading="loading"
-    :after-close="resetFields"
     @ok="submit"
   >
     <ASpin :spinning="loading">
@@ -16,7 +14,7 @@
         class="mt-4"
       >
         <AFormItem label="字典类型" name="dictType">
-          <AInput v-model:value="formData.dictType" readonly />
+          <AInput v-model:value="formData.dictType" disabled />
         </AFormItem>
         <AFormItem label="字典标签" name="label">
           <AInput v-model:value="formData.label" placeholder="请输入字典标签" />
@@ -59,38 +57,36 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, type PropType } from 'vue'
-import { useRoute } from 'vue-router'
-import { QuestionCircleFilled } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
+import useModalOpen from '@/hooks/use-modal'
 import {
   addDictData,
   updateDictData,
   getDictDataDetail,
-  type DictDataItemVO
+  type DictDataItemVO,
 } from '@/api/system/dict/data'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
   label: [{ required: true, message: '请填写字典标签' }],
-  value: [{ required: true, message: '请填写字典键值' }]
+  value: [{ required: true, message: '请填写字典键值' }],
 }
 
-const props = defineProps({
-  record: {
-    type: Object as PropType<DictDataItemVO>
-  }
-})
+const props = defineProps<{
+  record?: DictDataItemVO
+  open?: boolean
+}>()
 
-const emit = defineEmits(['success', 'close'])
-
+const emit = defineEmits(['success', 'update:open'])
 const formRef = ref<FormInstance>()
+
+const isOpen = useModalOpen(props, emit, formRef)
+
 const loading = ref(false)
-const open = ref(true)
 const formData = ref<Partial<DictDataItemVO>>({
   status: 0,
   sort: 0,
-  value: ''
+  value: '',
 })
 
 const { params } = useRoute()
@@ -111,7 +107,7 @@ const submit = async () => {
       message.success('保存成功')
     }
 
-    open.value = false
+    isOpen.value = false
     emit('success')
   } catch (e) {
     //
@@ -120,17 +116,17 @@ const submit = async () => {
   }
 }
 
-const resetFields = () => {
-  formRef.value?.resetFields()
-  emit('close')
-}
-
-formData.value.dictType = params.type as string
-if (props.record) {
-  loading.value = true
-  getDictDataDetail(props.record.id).then((res) => {
-    formData.value = res
-    loading.value = false
-  })
-}
+watch(
+  () => props.record?.id,
+  (val) => {
+    formData.value.dictType = params.type as string
+    if (val) {
+      loading.value = true
+      getDictDataDetail(val).then((res) => {
+        formData.value = res
+        loading.value = false
+      })
+    }
+  },
+)
 </script>

@@ -52,13 +52,13 @@ const computedProps = computed({
   get: () => config,
   set: (val) => {
     emit('update:config', val)
-  }
+  },
 })
 
 const inputEl = ref<HTMLInputElement>()
 
 const state = reactive({
-  nodeNameEditing: false
+  nodeNameEditing: false,
 })
 
 const enterNameEditing = () => {

@@ -18,6 +18,6 @@ export default defineStore('workflow', () => {
   return {
     saveDataSource,
     getDataSource,
-    dataSource
+    dataSource,
   }
 })

@@ -85,7 +85,7 @@ const url = '/admin-api/infra/codegen'
 export const getTableDefList = (params: TableQueryParams) => {
   return request.get<TableDefListVO>({
     url: `${url}/db/table/list`,
-    params
+    params,
   })
 }
 
@@ -93,7 +93,7 @@ export const getTableDefList = (params: TableQueryParams) => {
 export const getCodeGenConfigList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<ConfigVO>>({
     url: `${url}/table/page`,
-    params
+    params,
   })
 }
 
@@ -102,48 +102,48 @@ export const getPlainCodeGenConfigList = (dataSourceConfigId: number) => {
   return request.get<ConfigVO[]>({
     url: `${url}/table/list`,
     params: {
-      dataSourceConfigId
-    }
+      dataSourceConfigId,
+    },
   })
 }
 
 export const getCodeGenConfigDetail = (id: number) => {
   return request.get<ConfigDetailVO>({
-    url: `${url}/detail?tableId=${id}`
+    url: `${url}/detail?tableId=${id}`,
   })
 }
 
 export const createCodeGenConfig = (data: CodeGenCreateReqVO) => {
   return request.post({
     url: `${url}/create-list`,
-    data
+    data,
   })
 }
 
 export const updateCodeGenConfig = (data: ConfigDetailVO) => {
   return request.put({
     url: `${url}/update`,
-    data
+    data,
   })
 }
 
 export const deleteCodeGenConfig = (id: number) => {
   return request.delete({
-    url: `${url}/delete?id=${id}`
+    url: `${url}/delete?id=${id}`,
   })
 }
 
 // sync table from database
 export const syncTable = (id: number) => {
   return request.put({
-    url: `${url}/sync-from-db?tableId=${id}`
+    url: `${url}/sync-from-db?tableId=${id}`,
   })
 }
 
 // preview code
 export const previewCode = (id: number) => {
   return request.get<CodePreviewVO>({
-    url: `${url}/preview?tableId=${id}`
+    url: `${url}/preview?tableId=${id}`,
   })
 }
 
@@ -152,8 +152,8 @@ export const downloadCode = (id: number) => {
   return request.download({
     url: `${url}/download`,
     params: {
-      tableId: id
+      tableId: id,
     },
-    filename: 'generated-code.zip'
+    filename: 'generated-code.zip',
   })
 }

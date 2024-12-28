@@ -111,22 +111,12 @@
       </div>
     </ACard>
 
-    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
+    <FormModal v-model:open="visible" :record="entry" @success="execute" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { useToggle } from '@vueuse/core'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  ExportOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined
-} from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import FormModal from './form.vue'
 import { columns, useTable } from './use-table'

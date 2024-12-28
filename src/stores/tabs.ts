@@ -1,12 +1,11 @@
 /**
  * Horizontal navigation tabs in default layout
  */
-import { defineStore } from 'pinia'
-import { ref, toRefs, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { last } from 'lodash-es'
 import useViewCache from './view-cache'
 
 export default defineStore('tabs', () => {
+  // { fullPath: title } format
   const tabs = ref<Map<string, string>>(new Map())
   // stores full path in visit order
   const tabsHistory = ref<string[]>([])
@@ -21,12 +20,20 @@ export default defineStore('tabs', () => {
    * @param path fullpath of the route to bed added
    * @param title text that will be displayed on tab
    */
-  const addTab = (path: string, title: string, cacheName?: string): void => {
+  const addTab = (path: string, title: string): void => {
     tabs.value.set(path, title)
     tabsHistory.value.push(path)
-    if (cacheName) {
-      viewCache.addCache(path, cacheName)
+    if (meta.value.keepAlive && name.value) {
+      viewCache.addCache(path, name.value as string)
     }
+  }
+
+  /**
+   * Set custom title of the tab that is currently active
+   * @param title custom title to apply
+   */
+  const setTabTitle = (title: string) => {
+    tabs.value.set(fullPath.value, title)
   }
 
   /**
@@ -40,31 +47,22 @@ export default defineStore('tabs', () => {
     // if the current active tab is removed,
     // open the last viewed tab
     if (path === fullPath.value && redirect) {
-      router.replace(typeof redirect === 'string' ? redirect : getLatestVisitedTab())
+      const latest = getLatestVisitedTab()
+      router.replace(typeof redirect === 'string' ? redirect : latest)
     }
 
     viewCache.removeCache(path)
   }
 
   const removeTabsAfter = (idx: number) => {
-    const keys = tabs.value.keys()
-    let i = 0,
-      key = keys.next(),
-      requireRedirect = false
+    const keys = Array.from(tabs.value.keys())
+    const keysToRemove = keys.slice(idx + 1)
 
-    while (i <= idx) {
-      key = keys.next()
-      i++
-    }
-    while (!key.done) {
-      removeTab(key.value, false)
-      if (fullPath.value === key.value) {
-        requireRedirect = true
-      }
-      key = keys.next()
-    }
+    keysToRemove.forEach((key) => {
+      removeTab(key, false)
+    })
 
-    if (requireRedirect) {
+    if (keysToRemove.includes(fullPath.value)) {
       router.replace(getLatestVisitedTab())
     }
   }
@@ -90,12 +88,7 @@ export default defineStore('tabs', () => {
   }
 
   const getLatestVisitedTab = () => {
-    const len = tabsHistory.value.length
-    return tabsHistory.value[len - 1]
-  }
-
-  const setTabName = (key: string, name: string) => {
-    tabs.value.set(key, name)
+    return last(tabsHistory.value)!
   }
 
   /**
@@ -109,23 +102,19 @@ export default defineStore('tabs', () => {
   }
 
   onMounted(() => {
-    addTab('/index', '首页', 'index')
+    addTab('/index', '首页')
     if (fullPath.value !== '/index') {
-      addTab(
-        fullPath.value,
-        meta.value.title || (name.value as string),
-        meta.value.keepAlive && name.value ? (name.value as string) : undefined
-      )
+      addTab(fullPath.value, meta.value.title || (name.value as string))
     }
   })
 
   return {
     tabs,
     addTab,
-    setTabName,
+    setTabTitle,
     removeTab,
     removeAndOpenTab,
     removeTabsAfter,
-    removeOtherTabs
+    removeOtherTabs,
   }
 })

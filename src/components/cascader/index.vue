@@ -45,20 +45,16 @@ const onChange: CascaderProps['onChange'] = (newValue, paths) => {
 
 const findNodePaths = (
   options: CascaderOptionType[],
-  values: (string | number)[] | string | number
+  values: (string | number)[] | string | number,
 ) => {
   const targetSet = Array.isArray(values) ? new Set(values) : new Set([values])
-  console.log('targetSet is', targetSet)
   const result: (string | number)[][] = []
 
   const dfs = (option: CascaderOptionType, path: (string | number)[]) => {
     const currentPath = [...path, option[props.fieldNames?.value || 'value']]
-    console.log('currentPath is', currentPath)
 
     if (targetSet.has(option[props.fieldNames?.value || 'value'] as number | string)) {
       result.push(currentPath as (number | string)[])
-      console.log('found match', currentPath)
-      console.log('now result is', result)
     }
 
     if (option.children) {
@@ -89,12 +85,10 @@ watch(
 
     const path = findNodePaths(
       options as CascaderOptionType[],
-      value as string | number | (string | number)[]
+      value as string | number | (string | number)[],
     )
 
-    console.log(path)
-
     model.value = path
-  }
+  },
 )
 </script>

@@ -106,7 +106,7 @@
                   v-if="
                     permission.hasOne(
                       'system:permission:assign-role-menu',
-                      'system:permission:assign-role-data-scope'
+                      'system:permission:assign-role-data-scope',
                     )
                   "
                 >
@@ -150,35 +150,19 @@
     </ACard>
 
     <!-- 编辑角色 -->
-    <FormModal
-      v-if="visible.edit"
-      :record="entry"
-      @success="execute"
-      @close="visible.edit = false"
-    />
+    <FormModal v-model:open="visible.edit" :record="entry" @success="execute" />
     <!-- 编辑角色的菜单权限 -->
     <PermissionFormModal
-      v-if="visible.permissionConfig"
+      v-model:open="visible.permissionConfig"
       :record="entry!"
       :mode="permissionType"
       @success="execute"
-      @close="visible.permissionConfig = false"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { useToggle } from '@vueuse/core'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  ExportOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined
-} from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import FormModal from './form.vue'

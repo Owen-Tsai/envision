@@ -5,8 +5,8 @@
 }
 
 .draggable-area.empty-slot {
-  border-radius: var(--borderRadius);
-  background-color: var(--colorPrimaryBg);
+  border-radius: var(--border-radius);
+  background-color: var(--color-primary-bg);
   min-height: 40px;
   height: 100%;
 }
@@ -71,7 +71,7 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      color: var(--colorTextSecondary);
+      color: var(--color-text-secondary);
     }
   }
 }
@@ -82,23 +82,23 @@
 
 // codemirror
 .cm-editor {
-  border-radius: var(--borderRadius);
-  border: 1px solid var(--colorBorder);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
   transition: all 0.2s;
 
   &.cm-focused {
-    border-color: var(--colorPrimary);
+    border-color: var(--color-primary);
     // TODO: change this to CSS variable
     box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1);
     border-inline-end-width: 1px;
     outline: 0;
   }
   &:hover {
-    border-color: var(--colorPrimary);
+    border-color: var(--color-primary);
   }
   .cm-gutters {
-    border-top-left-radius: var(--borderRadius);
-    border-bottom-left-radius: var(--borderRadius);
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
   }
 }
 

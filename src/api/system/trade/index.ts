@@ -12,7 +12,7 @@ export type TradeTreeNode = {
 
 export type TradeTreeVO = TradeTreeNode[]
 
-export type AddTradeVO = {
+export type TradeInfoVO = {
   name: string
   code: string
   pid: string
@@ -23,7 +23,6 @@ const prefix = '/admin-api/system/trade'
 export const getTradeTree = () => {
   return request.get<TradeTreeVO>({
     url: `${prefix}/trade-list_all`,
-    params: {}
   })
 }
 
@@ -31,15 +30,15 @@ export const getTradeInfo = (id: string) => {
   return request.get({
     url: `${prefix}/get`,
     params: {
-      id: id
-    }
+      id: id,
+    },
   })
 }
 
-export const addTradeInfo = (data: AddTradeVO) => {
+export const addTradeInfo = (data: TradeInfoVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
@@ -47,17 +46,14 @@ export const deleteTradeInfo = (id: string) => {
   return request.delete({
     url: `${prefix}/delete`,
     params: {
-      id
-    }
+      id,
+    },
   })
 }
 
-export const modifyTradeInfo = (id: string, name: string) => {
+export const modifyTradeInfo = (data: TradeInfoVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data: {
-      id,
-      name
-    }
+    data,
   })
 }

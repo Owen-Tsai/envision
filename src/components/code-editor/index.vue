@@ -15,18 +15,18 @@ import type { BundledLanguage } from 'shiki'
 const props = defineProps({
   lang: {
     type: [String, Array] as PropType<BundledLanguage>,
-    default: 'txt'
+    default: 'txt',
   },
   tabSize: {
     type: Number,
-    default: 2
-  }
+    default: 2,
+  },
 })
 
 const wrapperEl = ref<HTMLDivElement>()
 
 const computedStyle = computed<CSSProperties>(() => ({
-  tabSize: props.tabSize
+  tabSize: props.tabSize,
 }))
 
 const highlightFn = (el: HTMLElement) => {
@@ -46,8 +46,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .code-editor {
-  border-radius: var(--borderRadius);
-  border: 1px solid var(--colorBorder);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
   padding: 8px;
 }
 </style>

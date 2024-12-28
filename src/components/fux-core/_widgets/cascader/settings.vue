@@ -13,6 +13,7 @@
       v-model:value="model.options.type"
       :options="[...optionSourceOpts].filter((e) => e.value !== 'dict')"
       class="width-expanded"
+      @change="onOptionsChange"
     />
     <template v-if="model.options.type === 'static'">
       <AFormItemRest>
@@ -112,7 +113,7 @@ import type { WPropsCascader } from '@/types/fux-core/form'
 
 const showCheckedStrategyOpts = [
   { label: '仅显示叶子节点', value: Cascader.SHOW_CHILD },
-  { label: '可显示父节点', value: Cascader.SHOW_PARENT }
+  { label: '可显示父节点', value: Cascader.SHOW_PARENT },
 ]
 
 const cachedMap = ref<Record<string, any>>({})
@@ -127,7 +128,7 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 watch(
@@ -140,6 +141,14 @@ watch(
     } else {
       model.value.options.value = undefined
     }
-  }
+  },
 )
+
+const onOptionsChange = (value: any) => {
+  // console.log(value)
+  // console.log(model.value.options.value)
+  if (value == 'expression' && (model.value.fieldNames == null || model.value.fieldNames == '')) {
+    model.value.fieldNames = '{"label":"name","value":"id"}'
+  }
+}
 </script>

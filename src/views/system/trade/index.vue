@@ -1,26 +1,43 @@
 <template>
   <div class="view">
     <ARow :gutter="24">
-      <ACol :span="24" :lg="5">
-        <ACard :body-style="{ padding: '16px' }" class="dept-card">
-          <AInput v-model:value="searchText" class="mb-4" placeholder="输入关键字过滤">
+      <ACol :span="24" :lg="6">
+        <ACard
+          ref="wrapper"
+          :body-style="{
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          }"
+          class="tree-card"
+        >
+          <AInput
+            ref="input"
+            v-model:value="searchText"
+            class="mb-4"
+            placeholder="输入关键字过滤"
+            allow-clear
+          >
             <template #suffix>
               <SearchOutlined />
             </template>
           </AInput>
-          <a-spin :spinning="Loading">
-            <ATree
-              v-model:selected-keys="selectedKeys"
-              :tree-data="filteredTreeData"
-              :field-names="{ key: 'id', title: 'name' }"
-              @select="(key, { node }) => onTreeNodeSelect(node)"
-              :height="650"
-            />
-          </a-spin>
+          <div class="flex-grow">
+            <a-spin :spinning="loading">
+              <ATree
+                v-model:selected-keys="selectedKeys"
+                :tree-data="filteredTreeData"
+                :field-names="{ key: 'id', title: 'name' }"
+                :height="treeH"
+                @select="(key, { node }) => onTreeNodeSelect(node)"
+              />
+            </a-spin>
+          </div>
         </ACard>
       </ACol>
-      <ACol :span="24" :lg="19">
-        <Details :id="selectedKeys[0]" />
+      <ACol :span="24" :lg="18">
+        <Form v-model:id="selectedKeys[0]" @success="execute" />
       </ACol>
     </ARow>
   </div>
@@ -28,13 +45,38 @@
 
 <script lang="ts" setup>
 import useTradeTree from './use-trade-tree'
+import Form from './form.vue'
 
-import { SearchOutlined } from '@ant-design/icons-vue'
-import Details from '@/views/system/trade/details.vue'
+// layout specific
+const layout = import.meta.env.VITE_APP_LAYOUT
+const style = ref<{ height: string; top: string }>(
+  layout === 'default'
+    ? {
+        height: 'calc(100vh - 130px)',
+        top: '110px',
+      }
+    : {
+        height: 'calc(100vh - 68px)',
+        top: '52px',
+      },
+)
 
-const { Loading, filteredTreeData, searchText, selectedKeys, onTreeNodeSelect } = useTradeTree()
+const wrapper = useTemplateRef('wrapper')
+const input = useTemplateRef('input')
+const { height: wrapperH } = useElementSize(wrapper)
+const { height: inputH } = useElementSize(input)
+const treeH = computed(() => wrapperH.value - inputH.value - 56)
+
+const { loading, execute, filteredTreeData, searchText, selectedKeys, onTreeNodeSelect } =
+  useTradeTree()
 
 defineOptions({ name: 'SystemTrade' })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tree-card {
+  @apply sticky;
+  top: v-bind('style.top');
+  height: v-bind('style.height');
+}
+</style>

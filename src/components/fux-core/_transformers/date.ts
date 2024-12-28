@@ -14,7 +14,7 @@ const dateTransformer = {
    */
   toSubmitValue: (
     rawValue: string | string[] | number | number[],
-    format = 'YYYY-MM-DD HH:mm:ss'
+    format = 'YYYY-MM-DD HH:mm:ss',
   ) => {
     if (!rawValue) return rawValue
     const normalize = (value: string | number): string | number => {
@@ -35,7 +35,7 @@ const dateTransformer = {
     }
 
     return Array.isArray(rawValue) ? rawValue.map(normalize) : normalize(rawValue)
-  }
+  },
 }
 
 export default dateTransformer

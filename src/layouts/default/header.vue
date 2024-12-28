@@ -6,7 +6,7 @@
           <MenuOutlined />
         </template>
       </AButton>
-      <img class="logo" :src="logo" />
+      <Logo class="logo" type="full" />
     </div>
 
     <div class="actions">
@@ -57,18 +57,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, toRefs } from 'vue'
 import { Modal } from 'ant-design-vue'
-import { BellOutlined, MenuOutlined } from '@ant-design/icons-vue'
-import { storeToRefs } from 'pinia'
-import logo from '~img/logo-full.svg'
 import useAppStore from '@/stores/app'
 import useUserStore from '@/stores/user'
 import useBreakpoint from '@/hooks/use-breakpoint'
 import ThemeIcon from './theme-icon.vue'
 import Menu from './menu.vue'
-
-const title = import.meta.env.VITE_APP_TITLE
 
 const drawerVisible = ref(false)
 
@@ -95,7 +89,7 @@ const onClickLogout = () => {
       userStore.logout().then(() => {
         location.reload()
       })
-    }
+    },
   })
 }
 </script>
@@ -106,13 +100,13 @@ const onClickLogout = () => {
 header {
   @apply flex-between px-4 lg:px-6;
   background: unset;
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--colorBorderSecondary);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border-secondary);
   position: sticky;
   top: 0;
   left: 0;
   z-index: 20;
-  background-color: var(--colorBgAlt);
+  background-color: var(--color-bg-alt);
 }
 
 .title-wrapper {

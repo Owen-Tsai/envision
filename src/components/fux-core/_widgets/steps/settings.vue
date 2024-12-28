@@ -44,12 +44,12 @@ import type { WPropsSteps } from '@/types/fux-core/form'
 const typeOpts = [
   { label: '默认', value: 'default' },
   { label: '导航型', value: 'navigation' },
-  { label: '圆点型', value: 'dot' }
+  { label: '圆点型', value: 'dot' },
 ]
 
 const sizeOpts = [
   { label: '默认', value: 'middle' },
-  { label: '小', value: 'small' }
+  { label: '小', value: 'small' },
 ]
 
 const { attrs } = defineProps<{
@@ -62,13 +62,13 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 const addStep = () => {
   model.value.children.push({
     title: '新步骤',
-    widgets: []
+    widgets: [],
   })
 }
 

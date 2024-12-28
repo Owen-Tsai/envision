@@ -2,20 +2,21 @@ import type { Ref } from 'vue'
 import type { Widget } from './index'
 import type { AppSchema } from '..'
 
-export interface FormDataCtx {
+// 无论 Designer 还是 Renderer 均需要提供的状态
+interface FuxCoreContext {
   formData: Ref<Record<string, any>>
+  appSchema: Ref<AppSchema>
 }
 
-export interface FormDesignerCtx {
-  schema: Ref<AppSchema>
+export interface FuxDesignerCtx extends FuxCoreContext {
   selectedWidget: Ref<Widget | undefined>
   deleteWidget: (uid: string) => void
   copyWidget: (widget: Widget) => void
 }
 
-export interface FormRendererCtx {
-  prod?: boolean
+export interface FuxRendererCtx extends FuxCoreContext {
   $state: Ref<Record<string, any>>
-  appSchema: Ref<AppSchema>
-  auditMode: Ref<boolean>
+  mode: FuxRendererMode
 }
+
+export type FuxRendererMode = 'dev' | 'prod' | 'audit' | 'preview'

@@ -112,8 +112,8 @@ type ModelKey = 'day' | 'hour' | 'minute' | 'month' | 'second' | 'week' | 'year'
 
 const props = defineProps({
   value: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 const emit = defineEmits(['update:value', 'close'])
@@ -121,7 +121,7 @@ const emit = defineEmits(['update:value', 'close'])
 const yearOpts: number[] = []
 
 const getYearOpts = () => {
-  let y = new Date().getFullYear()
+  const y = new Date().getFullYear()
   for (let i = 0; i < 11; i++) {
     yearOpts.push(y + i)
   }
@@ -134,45 +134,45 @@ const segmentData = reactive<Record<ModelKey, Model>>({
     type: 0,
     range: [1, 2],
     loop: [0, 1],
-    appoint: [] as string[]
+    appoint: [] as string[],
   },
   minute: {
     type: 0,
     range: [1, 2],
     loop: [0, 1],
-    appoint: [] as string[]
+    appoint: [] as string[],
   },
   hour: {
     type: 0,
     range: [1, 2],
     loop: [0, 1],
-    appoint: [] as string[]
+    appoint: [] as string[],
   },
   day: {
     type: 0,
     range: [1, 2],
     loop: [1, 1],
-    appoint: [] as string[]
+    appoint: [] as string[],
   },
   month: {
     type: 0,
     range: [1, 2],
     loop: [1, 1],
-    appoint: [] as string[]
+    appoint: [] as string[],
   },
   week: {
     type: 5,
     range: [2, 3],
     loop: [0, 2],
     last: 2,
-    appoint: [] as string[]
+    appoint: [] as string[],
   },
   year: {
     type: -1,
     range: [yearOpts[0], yearOpts[1]],
     loop: [yearOpts[0], 1],
-    appoint: [] as string[]
-  }
+    appoint: [] as string[],
+  },
 })
 
 const getModelValue = (key: ModelKey) => {
@@ -241,14 +241,14 @@ const labelMap: Record<ModelKey, string> = {
   day: '日',
   month: '月',
   week: '周',
-  year: '年'
+  year: '年',
 }
 
 const segmentOpts = Object.keys(labelMap).map((e) => ({
   value: e,
   payload: {
-    label: labelMap[e as ModelKey]
-  }
+    label: labelMap[e as ModelKey],
+  },
 }))
 
 const appointOptsMap = {
@@ -259,9 +259,9 @@ const appointOptsMap = {
   month: new Array(12).fill(0).map((_, idx) => idx + 1),
   week: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'].map((e, idx) => ({
     value: idx,
-    label: e
+    label: e,
   })),
-  year: yearOpts
+  year: yearOpts,
 }
 
 const valueSecond = computed(() => getModelValue('second'))
@@ -279,12 +279,12 @@ const modelMap: Record<ModelKey, ComputedRef<string>> = {
   day: valueDay,
   month: valueMonth,
   week: valueWeek,
-  year: valueYear
+  year: valueYear,
 }
 
 const modelValue = computed(
   () =>
-    `${valueSecond.value} ${valueMinute.value} ${valueHour.value} ${valueDay.value} ${valueMonth.value} ${valueWeek.value} ${valueYear.value}`
+    `${valueSecond.value} ${valueMinute.value} ${valueHour.value} ${valueDay.value} ${valueMonth.value} ${valueWeek.value} ${valueYear.value}`,
 )
 
 const open = ref(true)

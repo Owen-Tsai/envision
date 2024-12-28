@@ -18,7 +18,7 @@ const useActions = () => {
     entry,
     visible,
     onCheckDetail,
-    onExport
+    onExport,
   }
 }
 

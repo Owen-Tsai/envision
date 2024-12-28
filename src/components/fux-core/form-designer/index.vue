@@ -11,7 +11,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import FactoryPanel from './factory/index.vue'
 import SetterPanel from './setter/index.vue'
 import Canvas from './canvas/index.vue'
@@ -27,10 +26,8 @@ const emit = defineEmits<{
 
 const schema = computed({
   get: () => propsSchema,
-  set: (val) => emit('update:schema', val)
+  set: (val) => emit('update:schema', val),
 })
 
 useDesignerProvider(schema)
 </script>
-
-<style lang="scss" scoped></style>

@@ -116,25 +116,16 @@
     </ARow>
 
     <FormModal
-      v-if="visible"
+      v-model:open="visible"
       :mode="mode"
       :record="entry"
       :tree-data="data"
       @success="execute"
-      @close="visible = false"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import {
-  ReloadOutlined,
-  RetweetOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import { menuTypes } from '@/utils/constants'

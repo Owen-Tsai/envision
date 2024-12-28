@@ -23,7 +23,6 @@ const prefix = '/admin-api/system/major'
 export const getMajorTree = () => {
   return request.get<MajorTreeVO>({
     url: `${prefix}/major-list_all`,
-    params: {}
   })
 }
 
@@ -31,15 +30,15 @@ export const getMajorInfo = (id: string) => {
   return request.get({
     url: `${prefix}/get`,
     params: {
-      id: id
-    }
+      id: id,
+    },
   })
 }
 
 export const addMajorInfo = (data: AddMajorVO) => {
-  return request.post({
+  return request.post<string>({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
@@ -47,17 +46,14 @@ export const deleteMajorInfo = (id: string) => {
   return request.delete({
     url: `${prefix}/delete`,
     params: {
-      id
-    }
+      id,
+    },
   })
 }
 
-export const modifyMajorInfo = (id: string, name: string) => {
+export const modifyMajorInfo = (data: MajorTreeVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data: {
-      id,
-      name
-    }
+    data,
   })
 }

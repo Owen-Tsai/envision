@@ -12,16 +12,20 @@
     :show-time="config.props.showTime"
     show-now
     show-today
+    @blur="evt?.handler('blur')"
+    @change="evt?.handler('change')"
+    @focus="evt?.handler('focus')"
   />
 </template>
 
 <script lang="ts" setup>
 import type { WidgetMap } from '@/types/fux-core/form'
-import { useModel } from '../../_hooks'
+import { useModel, useEvents } from '../../_hooks'
 
 const { config } = defineProps<{
   config: WidgetMap['dateRangePicker']
 }>()
 
 const { model } = useModel(config)
+const evt = useEvents(config.props.event)
 </script>

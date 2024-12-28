@@ -27,7 +27,7 @@ const useActions = (requestData: () => void) => {
     visible,
     onEdit,
     onDelete,
-    toDesignPage
+    toDesignPage,
   }
 }
 

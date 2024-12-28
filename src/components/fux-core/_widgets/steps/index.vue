@@ -8,7 +8,7 @@
   />
   <div v-for="(step, i) in config.props.children" :key="i">
     <div v-if="i === config.props.state?.current" class="steps-container pt-4">
-      <template v-if="ctx?.prod">
+      <template v-if="ctx && ctx.mode && ctx.mode !== 'dev'">
         <WidgetRenderer
           v-for="widget in step.widgets"
           :key="widget.uid"
@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRendererInjection, useFormDataInjection } from '../../_hooks'
+import { useRendererInjection } from '../../_hooks'
 import { kebabCase } from 'lodash-es'
 import request from '@/utils/request'
 import Nested from '../../form-designer/canvas/nested.vue'
@@ -58,12 +58,10 @@ const model = computed({
   get: () => config,
   set: (val) => {
     emit('update:config', val)
-  }
+  },
 })
 
 const ctx = useRendererInjection()
-
-const formData = useFormDataInjection()
 
 const toPrevStep = () => {
   if (model.value.props.state.current <= 0) return
@@ -76,7 +74,7 @@ const saveStep = async () => {
   // 获取当前步骤的提交接口
   const api = `/application/${kebabCase(tables[step].name)}/create`
 
-  await request.post({ url: api, data: formData[step] })
+  await request.post({ url: api, data: ctx!.formData[step] })
 
   if (step < model.value.props.children.length - 1) {
     model.value.props.state.current++

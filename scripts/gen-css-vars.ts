@@ -1,6 +1,6 @@
 import { theme } from 'ant-design-vue'
-import type { MapToken } from 'ant-design-vue/es/theme/interface'
-import fs from 'fs'
+import { writeFile } from 'node:fs/promises'
+import { kebabCase } from 'lodash-es'
 import { fileURLToPath } from 'node:url'
 
 const { darkAlgorithm, defaultAlgorithm, defaultSeed } = theme
@@ -9,12 +9,9 @@ const lightTokensMap = defaultAlgorithm(defaultSeed)
 const darkTokenMap = darkAlgorithm(defaultSeed)
 
 const blackListKeys = [
-  'lineWidth',
   'lineType',
   'sizeUnit',
-  'sizeStep',
   'sizePopupArrow',
-  'controlHeight',
   'zIndexBase',
   'zIndexPopupBase',
   'opacityImage',
@@ -30,20 +27,20 @@ const blackListKeys = [
   'red',
   'green',
   'gold',
-  'orange'
+  'orange',
 ]
 
 const sizesKeys = ['fontSize', 'borderRadius']
 
 const isInBlackList = (key: string) => {
-  return blackListKeys.findIndex((e) => key.includes(e))
+  return blackListKeys.findIndex((e) => key.includes(e)) === -1
 }
 
-const generateStyleString = (map: MapToken) => {
+const generateStyleString = (map: Record<string, any>) => {
   let str = ''
   Object.keys(map).forEach((key) => {
-    if (isInBlackList(key) === -1) {
-      str += `--${key}: ${(map as any)[key]}`
+    if (isInBlackList(key)) {
+      str += `--${kebabCase(key)}: ${map[key]}`
       if (sizesKeys.some((sizeKey) => key.includes(sizeKey))) {
         str += 'px'
       }
@@ -58,8 +55,10 @@ const lightThemeStr = `html {${generateStyleString(lightTokensMap)}}`
 const darkThemeStr = `html.dark {${generateStyleString(darkTokenMap)}}`
 const comment = `/* This file was automatically generated, do not modify directly! */`
 
-fs.writeFileSync(
+await writeFile(
   fileURLToPath(new URL('../src/styles/var.scss', import.meta.url)),
   `${comment}\n${lightThemeStr}\n${darkThemeStr}`,
-  'utf-8'
+  'utf-8',
 )
+
+console.log('[fusionx/admin] var.scss generated successfully!')

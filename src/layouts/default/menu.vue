@@ -6,7 +6,7 @@
     class="bg-transparent"
     v-model:selected-keys="selectedKeys"
     v-model:open-keys="expandedKeys"
-    @select="({ key }) => onSelect(key as string)"
+    @click="({ key }) => onSelect(key as string)"
   />
   <AFlex v-show="loading" vertical :gap="8" class="w-full px-6 py-4">
     <ASkeletonButton active block />
@@ -18,9 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref, watchEffect } from 'vue'
 import { AppstoreOutlined } from '@ant-design/icons-vue'
-import { useRouter } from 'vue-router'
 import useUserStore from '@/stores/user'
 import { useMenuRenderer } from '@/hooks/use-menu'
 
@@ -38,13 +36,16 @@ menuItems.value = generateMenu(userStore.routerMap!)
 menuItems.value.unshift({
   label: '首页',
   key: '/index',
-  icon: h(AppstoreOutlined)
+  icon: h(AppstoreOutlined),
 })
 
 loading.value = false
 
 const onSelect = (key: string) => {
-  console.log(key)
+  // we use @click instead of @select, because:
+  // if the active menu key is not the current route path
+  // meaning that the active menu key was set by route.meta
+  // then we still need to change route
   if (key.includes('http')) {
     window.open(key)
     // when opening a new browser tab/window
@@ -52,7 +53,6 @@ const onSelect = (key: string) => {
     const { path } = currentRoute.value
     selectedKeys.value = [path]
   } else {
-    console.log(selectedKeys)
     push(key)
   }
 }
@@ -76,8 +76,15 @@ const setDefaultExpandedKeys = () => {
 }
 
 watchEffect(() => {
-  const { path, fullPath } = currentRoute.value
-  selectedKeys.value = [fullPath]
+  const { fullPath, meta } = currentRoute.value
+
+  if (meta.ignoreActiveMenu) return
+
+  if (meta.activeMenuKey) {
+    selectedKeys.value = [meta.activeMenuKey]
+  } else {
+    selectedKeys.value = [fullPath]
+  }
   setDefaultExpandedKeys()
 })
 

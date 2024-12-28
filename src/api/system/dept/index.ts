@@ -31,38 +31,38 @@ const prefix = '/admin-api/system/dept'
 export const getDeptTree = (params?: TreeQueryParams) => {
   return request.get<DeptTreeVO>({
     url: `${prefix}/tree-list`,
-    params
+    params,
   })
 }
 
 export const getDeptDetail = (id: number) => {
   return request.get<DeptVO>({
-    url: `${prefix}/get?id=${id}`
+    url: `${prefix}/get?id=${id}`,
   })
 }
 
 export const createDept = (data: DeptVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updateDept = (data: DeptVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 
 export const deleteDept = (id: number) => {
   return request.delete({
-    url: `${prefix}/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`,
   })
 }
 
 export const getDeptSimpleList = () => {
   return request.get<Array<{ id: number; name: string }>>({
-    url: `${prefix}/simple-list`
+    url: `${prefix}/simple-list`,
   })
 }

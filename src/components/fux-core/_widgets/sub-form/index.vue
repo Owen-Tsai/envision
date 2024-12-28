@@ -55,8 +55,8 @@ const rules = computed<FormItemProps['rules']>(() => {
           }
         }
         callback()
-      }
-    }
+      },
+    },
   ]
 })
 

@@ -7,7 +7,7 @@ const useActions = (requestData: () => void) => {
   const entry = ref<ConfigVO | undefined>()
   const visible = reactive({
     import: false,
-    preview: false
+    preview: false,
   })
 
   const { push } = useRouter()
@@ -52,7 +52,7 @@ const useActions = (requestData: () => void) => {
     onDownload,
     onImport,
     onPreview,
-    onSync
+    onSync,
   }
 }
 

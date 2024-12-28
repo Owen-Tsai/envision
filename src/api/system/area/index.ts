@@ -12,52 +12,53 @@ export type AreaTreeNode = {
 
 export type AreaTreeVO = AreaTreeNode[]
 
-export type AddAreaVO = {
-  name: string
-  code: string
-  pid: string
+export type AreaVO = {
+  name?: string
+  code?: string
+  id?: string
+  sort?: number
+  pid?: string
+  pname?: string
+}
+
+export type AreaInfoRespVO = AreaVO & {
+  pname: string
 }
 
 const prefix = '/admin-api/system/area'
 
+// 获取行政区划树（全部）
 export const getAreaTree = () => {
   return request.get<AreaTreeVO>({
-    url: `${prefix}/area-list_all_by_pid`,
-    params: {}
+    url: `${prefix}/tree-list-all`,
   })
 }
 
+// 获取某个行政区划的信息
 export const getAreaInfo = (id: string) => {
   return request.get({
     url: `${prefix}/get`,
-    params: {
-      id: id
-    }
+    params: { id },
   })
 }
 
-export const addAreaInfo = (data: AddAreaVO) => {
-  return request.post({
+export const addArea = (data: AreaVO) => {
+  return request.post<string>({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
-export const deleteAreaInfo = (id: string) => {
+export const deleteArea = (id: string) => {
   return request.delete({
     url: `${prefix}/delete`,
-    params: {
-      id
-    }
+    params: { id },
   })
 }
 
-export const modifyAreaInfo = (id: string, name: string) => {
+export const updateArea = (data: AreaVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data: {
-      id,
-      name
-    }
+    data,
   })
 }

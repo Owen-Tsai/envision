@@ -1,9 +1,8 @@
 <template>
   <AModal
-    v-model:open="open"
+    v-model:open="isOpen"
     :title="record === undefined ? '新增部门' : '编辑部门'"
-    :after-close="onClose"
-    destroy-on-close
+    :confirm-loading="loading"
     @ok="submit"
   >
     <AForm
@@ -61,44 +60,34 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
 import { getDeptDetail, createDept, updateDept, type DeptVO } from '@/api/system/dept'
-import { filterOption } from '@/utils/fusion'
+import { filterOption } from '@fusionx/utils'
+import useModalOpen from '@/hooks/use-modal'
 import useDict from '@/hooks/use-dict'
-import type { SimpleUserVO } from '@/api/system/user'
+import type { SimpleUserListVO } from '@/api/system/user'
 
 const loading = ref(false)
 
 const [commonStatus] = useDict('common_status')
 
 const rules = ref<FormProps['rules']>({
-  name: [{ required: true, message: '请输入部门名称' }]
+  name: [{ required: true, message: '请输入部门名称' }],
 })
 
-const props = defineProps({
-  treeData: {
-    type: Object as PropType<TreeSelectProps['treeData']>
-  },
-  userData: {
-    type: Array as PropType<SimpleUserVO>
-  },
-  record: {
-    type: Object as PropType<DeptVO>
-  }
-})
+const props = defineProps<{
+  treeData?: TreeSelectProps['treeData']
+  userData?: SimpleUserListVO
+  record?: DeptVO
+  open?: boolean
+}>()
 
-const emit = defineEmits(['success', 'close'])
-
-const formData = ref<DeptVO>({})
+const emit = defineEmits(['success', 'update:open'])
 const formRef = ref<FormInstance>()
 
-const open = ref(true)
+const isOpen = useModalOpen(props, emit, formRef)
 
-const onClose = () => {
-  formRef.value?.resetFields()
-  emit('close')
-}
+const formData = ref<DeptVO>({})
 
 const submit = async () => {
   try {
@@ -114,7 +103,7 @@ const submit = async () => {
       message.success('创建成功')
     }
 
-    open.value = false
+    isOpen.value = false
     emit('success')
   } catch (e) {
     // do nothing at the moment
@@ -124,15 +113,19 @@ const submit = async () => {
   }
 }
 
-// load detail
-if (props.record?.id) {
-  loading.value = true
-  getDeptDetail(props.record.id).then((data) => {
-    if (data.parentId === 0) {
-      data.parentId = undefined
+watch(
+  () => props.record?.id,
+  (val) => {
+    if (val) {
+      loading.value = true
+      getDeptDetail(val).then((data) => {
+        if (data.parentId === 0) {
+          data.parentId = undefined
+        }
+        formData.value = data
+        loading.value = false
+      })
     }
-    formData.value = data
-    loading.value = false
-  })
-}
+  },
+)
 </script>

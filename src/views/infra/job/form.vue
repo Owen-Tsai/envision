@@ -96,13 +96,13 @@ const rules: FormProps['rules'] = {
   handlerName: [{ required: true, message: '请填写处理器名称' }],
   cronExpression: [{ required: true, message: '请填写CRON表达式' }],
   retryCount: [{ required: true, message: '请填写重试次数' }],
-  retryInterval: [{ required: true, message: '请填写重试间隔' }]
+  retryInterval: [{ required: true, message: '请填写重试间隔' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<JobVO>
-  }
+    type: Object as PropType<JobVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -114,7 +114,7 @@ const formData = ref<JobVO>({})
 
 const cronEditorStates = reactive({
   open: false,
-  value: ''
+  value: '',
 })
 
 const isAdd = computed(() => props.record === undefined)

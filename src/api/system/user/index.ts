@@ -26,7 +26,7 @@ export type ListQueryParams = CommonQueryParams & {
   deptId?: string | number
 }
 
-export type SimpleUserVO = Array<{
+export type SimpleUserListVO = Array<{
   id: number
   nickname: string
 }>
@@ -36,33 +36,33 @@ const prefix = '/admin-api/system/user'
 export function getUsers(params?: ListQueryParams) {
   return request.get<PaginatedList<UserVO>>({
     url: `${prefix}/page`,
-    params
+    params,
   })
 }
 
 export function getUserDetail(id: number) {
   return request.get<UserVO>({
-    url: `${prefix}/get?id=${id}`
+    url: `${prefix}/get?id=${id}`,
   })
 }
 
 export const createUser = (data: UserVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updateUser = (data: UserVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 
 export const deleteUser = (id: number) => {
   return request.delete({
-    url: `${prefix}/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`,
   })
 }
 
@@ -80,7 +80,7 @@ export const deleteUser = (id: number) => {
 export const resetUserPwd = (id: number, password: string) => {
   return request.put({
     url: `${prefix}/update-password`,
-    data: { id, password }
+    data: { id, password },
   })
 }
 
@@ -88,11 +88,11 @@ export const resetUserPwd = (id: number, password: string) => {
 export const updateUserStatus = (id: number, status: number) => {
   return request.put({
     url: `${prefix}/update-status`,
-    data: { id, status }
+    data: { id, status },
   })
 }
 
 // 获取用户精简信息列表
 export const getSimpleUserList = () => {
-  return request.get<SimpleUserVO>({ url: `${prefix}/simple-list` })
+  return request.get<SimpleUserListVO>({ url: `${prefix}/simple-list` })
 }

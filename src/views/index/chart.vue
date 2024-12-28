@@ -16,7 +16,7 @@ import {
   GridComponent,
   TooltipComponent,
   type GridComponentOption,
-  type TooltipComponentOption
+  type TooltipComponentOption,
 } from 'echarts/components'
 import { LineChart } from 'echarts/charts'
 import { CanvasRenderer } from 'echarts/renderers'
@@ -41,22 +41,22 @@ const option = ref<EChartsOption>({
     left: 0,
     top: 10,
     bottom: 24,
-    containLabel: true
+    containLabel: true,
   },
   xAxis: {
     type: 'category',
     offset: 2,
     data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
     axisLabel: {
-      color: '#4E5969'
+      color: '#4E5969',
     },
     axisTick: {
       lineStyle: {
-        color: '#E5E8EF'
-      }
+        color: '#E5E8EF',
+      },
     },
     axisLine: {
-      show: false
+      show: false,
     },
     splitLine: {
       show: true,
@@ -66,30 +66,30 @@ const option = ref<EChartsOption>({
       },
       lineStyle: {
         color: '#E5E8EF',
-        type: 'dashed'
-      }
-    }
+        type: 'dashed',
+      },
+    },
   },
   yAxis: {
     type: 'value',
     splitLine: {
       lineStyle: {
-        type: 'dashed'
-      }
+        type: 'dashed',
+      },
     },
     axisLabel: {
       formatter: (val: number, idx: number) => {
         if (idx === 0) return `${val}`
         return `${val}k`
-      }
-    }
+      },
+    },
   },
   tooltip: {
     trigger: 'axis',
     className: 'echart-tooltip',
     textStyle: {
-      color: 'var(--colorTextSecondary)'
-    }
+      color: 'var(--color-text-secondary)',
+    },
   },
   series: [
     {
@@ -101,41 +101,41 @@ const option = ref<EChartsOption>({
       emphasis: {
         focus: 'series',
         itemStyle: {
-          borderWidth: 3
-        }
+          borderWidth: 3,
+        },
       },
       lineStyle: {
         width: 3,
         color: new graphic.LinearGradient(0, 0, 1, 0, [
           {
             offset: 0,
-            color: 'rgba(30, 231, 255, 1)'
+            color: 'rgba(30, 231, 255, 1)',
           },
           {
             offset: 0.5,
-            color: 'rgba(36, 154, 255, 1)'
+            color: 'rgba(36, 154, 255, 1)',
           },
           {
             offset: 1,
-            color: 'rgba(111, 66, 251, 1)'
-          }
-        ])
+            color: 'rgba(111, 66, 251, 1)',
+          },
+        ]),
       },
       areaStyle: {
         opacity: 0.8,
         color: new graphic.LinearGradient(0, 0, 0, 1, [
           {
             offset: 0,
-            color: 'rgba(17, 126, 255, 0.16)'
+            color: 'rgba(17, 126, 255, 0.16)',
           },
           {
             offset: 1,
-            color: 'rgba(17, 128, 255, 0)'
-          }
-        ])
-      }
-    }
-  ]
+            color: 'rgba(17, 128, 255, 0)',
+          },
+        ]),
+      },
+    },
+  ],
 })
 </script>
 
@@ -154,10 +154,10 @@ const option = ref<EChartsOption>({
 }
 
 .positive {
-  color: var(--colorSuccess);
+  color: var(--color-success);
 }
 .nagative {
-  color: var(--colorError);
+  color: var(--color-error);
 }
 
 .chart-container {
@@ -165,12 +165,12 @@ const option = ref<EChartsOption>({
 }
 
 .bg-1 {
-  background-color: var(--colorPrimaryBg);
+  background-color: var(--color-primary-bg);
 }
 .bg-2 {
-  background-color: var(--colorSuccessBg);
+  background-color: var(--color-success-bg);
 }
 .bg-3 {
-  background-color: var(--colorWarningBg);
+  background-color: var(--color-warning-bg);
 }
 </style>

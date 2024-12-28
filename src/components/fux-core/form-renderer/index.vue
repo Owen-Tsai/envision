@@ -16,7 +16,7 @@
         v-for="widget in schema.form.widgets"
         :key="widget.uid"
         :config="widget"
-        :fields="getFields"
+        :fields="fieldsToRender"
         :showAll="showAll"
       />
     </AForm>
@@ -25,23 +25,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import { tryParse } from '@fusionx/utils'
-import { useFormDataProvider, useRendererProvider } from '../_hooks'
+import { useRendererProvider } from '../_hooks'
 import useApi from './use-api'
 import useInstanceMethods from './use-instance'
 import WidgetRenderer from '../_widgets/index.vue'
 import useHighlighter from '@/hooks/use-highlighter'
 import type { AppSchema } from '@/types/fux-core'
+import type { NPropsFieldConfig } from '@/types/fux-core/flow'
+import type { FuxRendererMode } from '@/types/fux-core/form/context'
 import type { FormInstance } from 'ant-design-vue'
 
-const { schema, showData, state, taskDefKey, auditMode } = defineProps<{
+const {
+  schema,
+  showData,
+  state,
+  taskDefKey,
+  mode = 'prod',
+} = defineProps<{
   schema: AppSchema
   showData?: boolean
+  mode?: FuxRendererMode
   state?: Record<string, any>
   disabled?: boolean
   taskDefKey?: string
-  auditMode?: boolean
 }>()
 
 const form = ref<FormInstance>()
@@ -49,22 +56,18 @@ const form = ref<FormInstance>()
 const emit = defineEmits(['update:schema', 'update:state'])
 const computedSchema = computed({
   get: () => schema,
-  set: (val) => emit('update:schema', val)
+  set: (val) => emit('update:schema', val),
 })
 const computedState = computed({
   get: () => state || {},
-  set: (val) => emit('update:state', val)
-})
-const computedAuditMode = computed(() => {
-  return auditMode
+  set: (val) => emit('update:state', val),
 })
 
 const formData = ref<Record<string, any>>({})
-useFormDataProvider(formData)
 
 useApi(computedSchema, computedState)
 
-useRendererProvider(computedSchema, computedState, computedAuditMode)
+useRendererProvider(computedSchema, formData, computedState, mode)
 
 const methods = useInstanceMethods()
 
@@ -80,25 +83,22 @@ const wrapperCol = computed(() => {
 })
 
 const showAll = computed(() => taskDefKey === 'All')
-const getFields = computed(() => {
+const fieldsToRender = computed<NPropsFieldConfig[]>(() => {
   if (taskDefKey) {
-    if (taskDefKey == 'All') {
-      const fields = []
-      schema?.flow.nodes.forEach((node) => {
-        if (node.props.fields) {
+    if (taskDefKey === 'All') {
+      const fields: NPropsFieldConfig[] = []
+      schema.flow.nodes.forEach((node) => {
+        if (node.type === 'audit') {
           node.props.fields.forEach((field) => {
             fields.push(field)
           })
         }
       })
-      // console.log(fields)
       return fields
     }
-    // console.log(
-    //     'fields',
-    //     schema?.flow.nodes.find((node) => node.uid == taskDefKey)?.props.fields as any[]
-    // )
-    return schema?.flow.nodes.find((node) => node.uid == taskDefKey)?.props.fields as any[]
+    // when taskDefKey is not 'All':
+    const currTask = schema.flow.nodes.find((node) => node.uid == taskDefKey)
+    return currTask?.props.fields || []
   } else {
     return []
   }
@@ -110,13 +110,13 @@ const validate = (namePaths?: string[]) => {
 
 defineExpose({
   ...methods,
-  validate
+  validate,
 })
 </script>
 
 <style lang="scss" scoped>
 .data {
-  background-color: var(--colorBgContainer);
+  background-color: var(--color-bg-container);
   padding: 16px;
   flex-shrink: 0;
   width: 25%;

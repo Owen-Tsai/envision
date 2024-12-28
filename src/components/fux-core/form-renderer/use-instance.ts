@@ -1,11 +1,10 @@
-import { useFormDataInjection, useRendererInjection } from '../_hooks'
+import { useRendererInjection } from '../_hooks'
 import { kebabCase, merge, set } from 'lodash-es'
 import request from '@/utils/request'
-import emitter from '@/utils/emitter'
+import { emitter } from '@fusionx/utils'
 
 const useInstanceMethods = () => {
-  const { formData } = useFormDataInjection()
-  const { appSchema, $state } = useRendererInjection()!
+  const { appSchema, $state, formData } = useRendererInjection()!
 
   const getFormData = () => {
     return formData.value
@@ -34,17 +33,17 @@ const useInstanceMethods = () => {
   const setWidgetAttrs = (name: string, attrs: Record<string, any>) => {
     emitter.emit('widget:attrs', {
       name,
-      attrs
+      attrs,
     })
   }
 
   const getStepWidget = () => {
     const stepWidget = appSchema.value.form.widgets.find(
-      (widget) => widget.type === 'steps' || widget.type === 'tabs'
+      (widget) => widget.type === 'steps' || widget.type === 'tabs',
     )
     if (!stepWidget) {
       throw new Error(
-        '[FusionX/表单渲染器] 无法获取步骤组件: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+        '[FusionX/表单渲染器] 无法获取步骤组件: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）',
       )
     }
 
@@ -56,7 +55,7 @@ const useInstanceMethods = () => {
 
     if (!stepWidget) {
       throw new Error(
-        '[FusionX/表单渲染器] 无法获取当前步骤: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+        '[FusionX/表单渲染器] 无法获取当前步骤: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）',
       )
     }
 
@@ -83,11 +82,11 @@ const useInstanceMethods = () => {
 
   const toPrevStep = () => {
     const stepWidget = appSchema.value.form.widgets.find(
-      (widget) => widget.type === 'steps' || widget.type === 'tabs'
+      (widget) => widget.type === 'steps' || widget.type === 'tabs',
     )
     if (!stepWidget) {
       throw new Error(
-        '[FusionX/表单渲染器] 分页表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+        '[FusionX/表单渲染器] 分页表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）',
       )
     }
     stepWidget.props.state.current -= 1
@@ -95,12 +94,12 @@ const useInstanceMethods = () => {
 
   const toNextStep = () => {
     const stepWidget = appSchema.value.form.widgets.find(
-      (widget) => widget.type === 'steps' || widget.type === 'tabs'
+      (widget) => widget.type === 'steps' || widget.type === 'tabs',
     )
     console.log('是否步骤模式：', stepWidget)
     if (!stepWidget) {
       throw new Error(
-        '[FusionX/表单渲染器] 分页表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+        '[FusionX/表单渲染器] 分页表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）',
       )
     }
     stepWidget.props.state.current += 1
@@ -152,7 +151,7 @@ const useInstanceMethods = () => {
     toPrevStep,
     toNextStep,
     save,
-    submit
+    submit,
   }
 }
 

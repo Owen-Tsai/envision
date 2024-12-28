@@ -89,7 +89,7 @@ const tableColumns: TableProps['columns'] = [
   { title: '允许空', key: 'nullable', width: 80 },
   { title: '显示组件', key: 'htmlType', width: 160 },
   { title: '引用字典', key: 'dictType', width: 160 },
-  { title: '示例', key: 'example' }
+  { title: '示例', key: 'example' },
 ]
 
 const javaTypeOpts = [
@@ -99,7 +99,7 @@ const javaTypeOpts = [
   { value: 'Douoble' },
   { value: 'BigDecimal' },
   { value: 'LocalDateTime' },
-  { value: 'Boolean' }
+  { value: 'Boolean' },
 ]
 
 const listOperationConditionOpts = [
@@ -110,7 +110,7 @@ const listOperationConditionOpts = [
   { value: '<' },
   { value: '<=' },
   { value: 'LIKE' },
-  { value: 'BETWEEN' }
+  { value: 'BETWEEN' },
 ]
 
 const htmlTypeOpts = [
@@ -122,13 +122,13 @@ const htmlTypeOpts = [
   { label: '日期选择框', value: 'datetime' },
   { label: '图片上传', value: 'imageUpload' },
   { label: '文件上传', value: 'fileUpload' },
-  { label: '富文本编辑器', value: 'editor' }
+  { label: '富文本编辑器', value: 'editor' },
 ]
 
 const props = defineProps({
   model: {
-    type: Array as PropType<ConfigDetailVO['columns']>
-  }
+    type: Array as PropType<ConfigDetailVO['columns']>,
+  },
 })
 
 const emit = defineEmits(['update:model'])
@@ -148,7 +148,7 @@ const tableData = computed({
   },
   set: (val) => {
     emit('update:model', val)
-  }
+  },
 })
 
 getPlainDictTypeList()

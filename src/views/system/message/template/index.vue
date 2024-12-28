@@ -125,19 +125,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
 import useDict from '@/hooks/use-dict'
 import type { TemplateVO } from '@/api/system/message/template'
-import { useToggle } from '@vueuse/core'
 import { useTable, columns } from './use-table'
 import useActions from './use-actions'
 import FormModal from './form.vue'
@@ -146,9 +137,9 @@ const filterFormRef = ref()
 
 const [filterExpanded, toggle] = useToggle()
 
-const { commonStatus, systemNotifyTemplateType } = useDict(
+const [commonStatus, systemNotifyTemplateType] = useDict(
   'common_status',
-  'system_notify_template_type'
+  'system_notify_template_type',
 )
 
 const { data, execute, onChange, onFilter, onFilterReset, pagination, pending, queryParams } =

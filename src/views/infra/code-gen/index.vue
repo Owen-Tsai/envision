@@ -144,31 +144,15 @@
     </ACard>
 
     <!-- import form modal -->
-    <FormModal
-      v-if="visible.import"
-      :data-sources="dataSources"
-      @close="visible.import = false"
-      @success="execute"
-    />
+    <FormModal v-model:open="visible.import" :data-sources="dataSources" @success="execute" />
 
     <!-- preview modal -->
-    <PreviewModal v-if="visible.preview" :id="entry!.id!" @close="visible.preview = false" />
+    <PreviewModal v-model:open="visible.preview" :id="entry?.id" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import dayjs from 'dayjs'
-import { useToggle } from '@vueuse/core'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  ExportOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined
-} from '@ant-design/icons-vue'
 import { permission } from '@/hooks/use-permission'
 import { type ConfigVO } from '@/api/infra/code-gen'
 import { getDataSourceList, type DataSourceVO } from '@/api/infra/data-source'

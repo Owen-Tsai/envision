@@ -9,14 +9,14 @@ body {
 }
 
 html {
-  --colorBorderAlt: rgba(5, 5, 5, 0.06);
-  --colorBgAlt: rgba(255, 255, 255, 0.6);
-  --colorBgLayoutAlpha: rgba(245, 245, 245, 0.6);
+  --color-border-alt: rgba(5, 5, 5, 0.06);
+  --color-bg-alt: rgba(255, 255, 255, 0.6);
+  --color-bg-layout-alpha: rgba(245, 245, 245, 0.6);
 
   &.dark {
-    --colorBorderAlt: rgba(255, 255, 255, 0.2);
-    --colorBgAlt: rgba(31, 31, 31, 0.66);
-    --colorBgLayoutAlpha: rgba(0, 0, 0, 0.2);
+    --color-border-alt: rgba(255, 255, 255, 0.2);
+    --color-bg-alt: rgba(31, 31, 31, 0.66);
+    --color-bg-layout-alpha: rgba(0, 0, 0, 0.2);
   }
 }
 
@@ -25,26 +25,18 @@ html {
   height: 100%;
 }
 
-// Alibaba PuHuiTi
-@font-face {
-  font-family: 'TitleFont';
-  font-weight: bold;
-  src: url('./HARMONYOS_SANS_BOLD.woff2') format('woff2');
-  font-display: swap;
-}
-
 #nprogress .bar {
-  background: var(--colorPrimary);
+  background: var(--color-primary);
 }
 
 .scrollbar__thumb {
-  background-color: var(--colorFill);
+  background-color: var(--color-fill);
 }
 
 .echart-tooltip {
-  background-color: rgba(#{var(--colorBgContainer)}, 0.8) !important;
+  background-color: rgba(#{var(--color-bg-container)}, 0.8) !important;
   backdrop-filter: blur(8px);
-  border-color: var(--colorBorder) !important;
+  border-color: var(--color-border) !important;
 }
 
 .view {
@@ -85,7 +77,7 @@ html {
 
 .field-help {
   font-size: 16px;
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
 }
 
 // html.dark .shiki,
@@ -101,25 +93,25 @@ html {
 .audit-view {
   .ant-select-disabled .ant-select-selector {
     background-color: transparent !important;
-    color: var(--colorText) !important;
+    color: var(--color-text) !important;
     border: none !important;
-    border-bottom: 1px solid var(--colorBorder) !important;
+    border-bottom: 1px solid var(--color-border) !important;
     border-radius: 0 !important;
   }
   .ant-input-affix-wrapper-disabled {
     background-color: transparent !important;
     border: none !important;
-    border-bottom: 1px solid var(--colorBorder) !important;
+    border-bottom: 1px solid var(--color-border) !important;
     border-radius: 0 !important;
     input {
-      color: var(--colorText) !important;
+      color: var(--color-text) !important;
     }
   }
   .ant-picker-disabled {
     background-color: transparent !important;
     border: none !important;
-    border-bottom: 1px solid var(--colorBorder) !important;
+    border-bottom: 1px solid var(--color-border) !important;
     border-radius: 0 !important;
-    color: var(--colorText) !important;
+    color: var(--color-text) !important;
   }
 }

@@ -6,12 +6,12 @@ export const formatDateRange = (value?: any[]): any => {
   if (typeof start === 'string' && typeof end === 'string') {
     return {
       beginTime: start,
-      endTime: end
+      endTime: end,
     }
   } else {
     return {
       beginTime: (start as Dayjs).format('YYYY-MM-DD'),
-      endTime: (end as Dayjs).format('YYYY-MM-DD')
+      endTime: (end as Dayjs).format('YYYY-MM-DD'),
     }
   }
 }

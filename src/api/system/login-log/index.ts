@@ -22,6 +22,6 @@ export type ListQueryParams = CommonQueryParams & {
 export function getLoginLogPage(params?: ListQueryParams) {
   return request.get<PaginatedList<LoginLogVO>>({
     url: '/admin-api/system/login-log/page',
-    params
+    params,
   })
 }

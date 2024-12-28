@@ -37,8 +37,8 @@ import type { AccessLogVO } from '@/api/infra/api-log/access-log'
 defineProps({
   entry: {
     type: Object as PropType<AccessLogVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const [userType] = useDict('user_type')

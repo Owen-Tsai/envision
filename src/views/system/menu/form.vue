@@ -1,10 +1,9 @@
 <template>
   <AModal
-    v-model:open="open"
-    :title="isAdd ? '新增菜单' : '编辑菜单'"
-    :after-close="resetFields"
-    destroy-on-close
-    @cancel="open = false"
+    v-model:open="isOpen"
+    :title="mode === 'add' ? '新增菜单' : '编辑菜单'"
+    :confirm-loading="loading"
+    @cancel="isOpen = false"
     @ok="submit"
   >
     <AForm
@@ -120,11 +119,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, type PropType } from 'vue'
 import IconSelect from '@/components/icon-select/index.vue'
 import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
 import { getMenuDetail, createMenu, updateMenu, type MenuVO } from '@/api/system/menu'
 import useDict from '@/hooks/use-dict'
+import useModalOpen from '@/hooks/use-modal'
 import { menuTypes } from '@/utils/constants'
 import { QuestionCircleFilled } from '@ant-design/icons-vue'
 
@@ -134,45 +133,33 @@ const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写菜单名称' }],
   type: [{ required: true, message: '请选择菜单类型' }],
   path: [{ required: true, message: '请填写路由地址' }],
-  component: [{ required: true, message: '请填写组件文件路径' }]
+  component: [{ required: true, message: '请填写组件文件路径' }],
 }
 
 const loading = ref(false)
 
-const props = defineProps({
-  mode: {
-    type: String as PropType<'add' | 'edit'>,
-    default: 'add'
-  },
-  treeData: {
-    type: Object as PropType<TreeSelectProps['treeData']>
-  },
-  record: {
-    type: Object as PropType<MenuVO>
-  }
-})
+const props = defineProps<{
+  mode: 'add' | 'edit'
+  treeData?: TreeSelectProps['treeData']
+  record?: MenuVO
+  open?: boolean
+}>()
 
-const emit = defineEmits(['success', 'close'])
+const formRef = ref<FormInstance>()
+const emit = defineEmits(['success', 'update:open'])
 
-const isAdd = computed(() => props.mode === 'add')
+const isOpen = useModalOpen(props, emit, formRef)
 
 const isCustomLayout = ref(false)
 
-const formRef = ref<FormInstance>()
 const formData = ref<MenuVO>({
   alwaysShow: true,
   type: 1,
   status: 0,
   sort: 1,
   keepAlive: true,
-  visible: true
+  visible: true,
 })
-const open = ref(true)
-
-const resetFields = () => {
-  formRef.value?.resetFields()
-  emit('close')
-}
 
 const submit = async () => {
   try {
@@ -191,7 +178,7 @@ const submit = async () => {
       message.success('保存成功')
     }
 
-    open.value = false
+    isOpen.value = false
     emit('success')
   } catch (e) {
     // do nothing
@@ -200,21 +187,27 @@ const submit = async () => {
   }
 }
 
-if (props.mode === 'edit') {
-  loading.value = true
-  if (props.record?.id) {
-    getMenuDetail(props.record.id).then((data) => {
-      if (data.parentId === 0) {
-        data.parentId = undefined
-      }
-      formData.value = data
-      isCustomLayout.value = !!data.customLayout
-      loading.value = false
-    })
-  }
-} else {
-  if (props.record?.id) {
-    formData.value.parentId = props.record.id
+const loadData = async () => {
+  if (props.mode === 'add') {
+    formData.value.parentId = props.record!.id
+  } else {
+    loading.value = true
+    const data = await getMenuDetail(props.record!.id!)
+    if (data.parentId === 0) {
+      data.parentId = undefined
+    }
+    formData.value = data
+    isCustomLayout.value = !!data.customLayout
+    loading.value = false
   }
 }
+
+watch(
+  () => props.open,
+  (val) => {
+    if (val) {
+      loadData()
+    }
+  },
+)
 </script>

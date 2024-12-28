@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { DoubleLeftOutlined, DoubleRightOutlined } from '@ant-design/icons-vue'
 import { useCollapse } from '../../_hooks'
 import useSettings from './use-settings'
 import FormSettings from './form-settings.vue'
@@ -78,17 +76,17 @@ const { activeKey, tabs } = useSettings()
   width: 50%;
   height: 40px;
   cursor: pointer;
-  border-bottom: 1px solid var(--colorBorder);
+  border-bottom: 1px solid var(--color-border);
   overflow: hidden;
   @apply flex-center;
 
   &.active {
-    background-color: var(--colorPrimaryBg);
-    color: var(--colorPrimary);
+    background-color: var(--color-primary-bg);
+    color: var(--color-primary);
     font-weight: bold;
   }
   &:not(:last-child) {
-    border-right: 1px solid var(--colorBorderSecondary);
+    border-right: 1px solid var(--color-border-secondary);
   }
 }
 .settings {

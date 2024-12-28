@@ -41,7 +41,7 @@ const alignOpts = [
   { label: '顶部对齐', value: 'top' },
   { label: '中间对齐', value: 'middle' },
   { label: '底部对齐', value: 'bottom' },
-  { label: '拉伸填充', value: 'stretch' }
+  { label: '拉伸填充', value: 'stretch' },
 ]
 
 const justifyOpts = [
@@ -50,7 +50,7 @@ const justifyOpts = [
   { label: '中间对齐', value: 'center' },
   { label: '两端对齐', value: 'space-between' },
   { label: '中间填充', value: 'space-around' },
-  { label: '空间等分', value: 'space-evenly' }
+  { label: '空间等分', value: 'space-evenly' },
 ]
 
 const { attrs } = defineProps<{
@@ -63,7 +63,7 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 const addCol = () => {
@@ -71,7 +71,7 @@ const addCol = () => {
   const spanAvailable = clamp(24 - spanUsed, 0, 24)
   model.value.children.push({
     span: spanAvailable,
-    widgets: []
+    widgets: [],
   })
 }
 

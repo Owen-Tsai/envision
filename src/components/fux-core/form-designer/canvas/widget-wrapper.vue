@@ -3,7 +3,7 @@
     class="widget-wrapper"
     :class="{
       selected: selectedWidget?.uid === widget.uid,
-      'is-form-widget': widget.class === 'form'
+      'is-form-widget': widget.class === 'form',
     }"
     @click.stop="selectedWidget = widget"
   >
@@ -28,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useDesignerInjection } from '../../_hooks'
 import type { Widget, FormWidget } from '@/types/fux-core/form'
 
@@ -36,7 +35,7 @@ const { widget } = defineProps<{
   widget: Widget
 }>()
 
-const { deleteWidget, selectedWidget, copyWidget } = useDesignerInjection()
+const { deleteWidget, selectedWidget, copyWidget } = useDesignerInjection()!
 
 const caption = computed(() => {
   return (widget as FormWidget).props.field?.name || widget.uid
@@ -46,27 +45,27 @@ const caption = computed(() => {
 <style lang="scss" scoped>
 .widget-wrapper {
   position: relative;
-  outline: 2px dashed var(--colorBorder);
+  outline: 2px dashed var(--color-border);
   @apply p-4;
   padding-top: 20px;
   padding-bottom: 22px;
-  border-radius: var(--borderRadius);
+  border-radius: var(--border-radius);
   user-select: none;
 
   &.selected {
     outline-style: solid;
-    outline-color: var(--colorPrimary);
+    outline-color: var(--color-primary);
     & > .actions > .action,
     & > .action {
       display: inline-flex;
     }
     & > .caption {
-      color: var(--colorPrimary);
+      color: var(--color-primary);
     }
   }
 
   &:not(.selected):hover {
-    outline-color: var(--colorPrimaryBorder);
+    outline-color: var(--color-primary-border);
   }
 
   & + & {
@@ -85,20 +84,20 @@ const caption = computed(() => {
 }
 .action {
   display: none;
-  background-color: var(--colorPrimary);
+  background-color: var(--color-primary);
   color: #fff;
   align-items: center;
   justify-content: center;
   padding: 4px;
-  font-size: var(--fontSizeSM);
+  font-size: var(--font-size-sm);
   z-index: 2;
 }
 .caption {
   position: absolute;
   right: 4px;
   top: 0;
-  font-size: var(--fontSizeSM);
-  color: var(--colorTextTertiary);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
   @apply font-mono;
 }
 </style>

@@ -19,7 +19,7 @@ export const filterTree = (tree: Tree, searchText: string): Tree | null => {
 export const findNode = <T>(
   tree: T[],
   predicate: (e: T) => boolean,
-  childrenField = 'children'
+  childrenField = 'children',
 ): T | null => {
   for (const node of tree) {
     if ((node as any)[childrenField]) {

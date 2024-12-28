@@ -1,4 +1,3 @@
-import { ref, watch, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import { getDeptTree } from '@/api/system/dept'
 import type { ListQueryParams } from '@/api/system/user'
@@ -16,7 +15,7 @@ const useDeptTree = (queryParams: Ref<ListQueryParams>, requestData: () => void)
     immediate: true,
     onSuccess(data) {
       filteredTreeData.value = data
-    }
+    },
   })
 
   watch(searchText, () => {
@@ -50,7 +49,7 @@ const useDeptTree = (queryParams: Ref<ListQueryParams>, requestData: () => void)
     selectedKeys,
     currentDeptName,
     searchText,
-    onTreeNodeSelect
+    onTreeNodeSelect,
   }
 }
 

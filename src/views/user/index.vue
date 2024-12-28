@@ -87,7 +87,7 @@ import {
   CameraOutlined,
   MobileOutlined,
   ApartmentOutlined,
-  MailOutlined
+  MailOutlined,
 } from '@ant-design/icons-vue'
 import useUserStore from '@/stores/user'
 import { getProfile, updateAvatar, updateProfile } from '@/api/system/user/profile'
@@ -99,7 +99,7 @@ const uploadEl = ref<HTMLInputElement>()
 const { user } = storeToRefs(useUserStore())
 
 const { data, pending, execute } = useRequest(getProfile, {
-  immediate: true
+  immediate: true,
 })
 
 const chooseAvatar = () => {
@@ -113,7 +113,7 @@ const onFileChange = () => {
       message.success('保存成功')
       await updateProfile({
         ...data.value,
-        avatar: res
+        avatar: res,
       })
       user.value!.avatar = res
       execute()
@@ -126,7 +126,7 @@ defineOptions({ name: 'UserConfig' })
 
 <style lang="scss" scoped>
 .sub-info {
-  color: var(--colorTextSecondary);
+  color: var(--color-text-secondary);
   div {
     @apply flex items-center gap-2 py-1;
   }

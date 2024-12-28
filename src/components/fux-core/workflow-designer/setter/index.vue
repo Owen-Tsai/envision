@@ -1,20 +1,20 @@
 <template>
   <ADrawer
-    width="30%"
+    width="35%"
     :title="title"
     v-model:open="computedOpen"
     @after-open-change="onAnimationChange"
   >
     <AuditSetting v-if="selectedNode?.type === 'audit'" :attrs="selectedNode.props" />
     <div class="debug-container">
-      <pre>{{ selectedNode }}</pre>
+      <div v-html="highlighted" />
     </div>
   </ADrawer>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useWorkflowCtxInjection } from '../../_hooks'
+import useHighlighter from '@/hooks/use-highlighter'
 import AuditSetting from '../../_nodes/audit/settings.vue'
 
 const { open } = defineProps<{
@@ -29,7 +29,7 @@ const computedOpen = computed({
   get: () => open,
   set: (val) => {
     emit('update:open', val)
-  }
+  },
 })
 
 const title = computed(() => {
@@ -40,16 +40,13 @@ const title = computed(() => {
   return ''
 })
 
+const highlighted = computed(() =>
+  useHighlighter(JSON.stringify(selectedNode.value, null, 2), 'json'),
+)
+
 const onAnimationChange = (open: boolean) => {
   if (!open) {
     selectedNode.value = undefined
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.debug-container {
-  background-color: var(--colorBgLayout);
-  padding: 16px;
-}
-</style>

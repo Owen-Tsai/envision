@@ -31,7 +31,7 @@ type Record = {
 const columns: TableProps['columns'] = [
   { title: '名称', dataIndex: 'title', key: 'title' },
   { title: '当前状态', dataIndex: 'status', key: 'status' },
-  { title: '操作', key: 'actions' }
+  { title: '操作', key: 'actions' },
 ]
 
 const data: Record[] = [
@@ -40,25 +40,25 @@ const data: Record[] = [
     status: { desc: '等待市委组织部审核', time: '2023-12-31 12:00' },
     history: [
       { desc: '申请人提交', time: '2023-12-20 08:52' },
-      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' }
-    ]
+      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' },
+    ],
   },
   {
     title: '高层次人才分类认定',
     status: { desc: '等待市委组织部审核', time: '2023-12-31 12:00' },
     history: [
       { desc: '申请人提交', time: '2023-12-20 08:52' },
-      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' }
-    ]
+      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' },
+    ],
   },
   {
     title: '高层次人才分类认定',
     status: { desc: '等待市委组织部审核', time: '2023-12-31 12:00' },
     history: [
       { desc: '申请人提交', time: '2023-12-20 08:52' },
-      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' }
-    ]
-  }
+      { desc: '区委组织部审核通过', time: '2023-12-26 14:08' },
+    ],
+  },
 ]
 </script>
 

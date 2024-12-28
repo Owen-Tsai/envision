@@ -1,4 +1,3 @@
-import { ref, computed, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import type { TableProps, FormInstance, TablePaginationConfig } from 'ant-design-vue'
 import { getTemplateList, type ListQueryParams } from '@/api/system/sms/template'
@@ -11,14 +10,14 @@ export const columns: TableProps['columns'] = [
   { key: 'status', title: '状态', dataIndex: 'status' },
   { key: 'channelCode', title: '短信渠道', dataIndex: 'channelCode', width: 160 },
   { key: 'createTime', title: '创建时间', dataIndex: 'createTime' },
-  { key: 'actions', title: '操作', fixed: 'right', width: 140 }
+  { key: 'actions', title: '操作', fixed: 'right', width: 140 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance>) => {
   const queryParams = ref<ListQueryParams>({})
 
   const { data, pending, execute } = useRequest(() => getTemplateList(queryParams.value), {
-    immediate: true
+    immediate: true,
   })
 
   const onFilter = () => {
@@ -40,7 +39,7 @@ export const useTable = (formRef: Ref<FormInstance>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onChange = ({ current, pageSize }: TablePaginationConfig) => {
@@ -58,6 +57,6 @@ export const useTable = (formRef: Ref<FormInstance>) => {
     queryParams,
     onChange,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

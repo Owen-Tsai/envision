@@ -42,46 +42,46 @@ const url = '/admin-api/system/application'
 export const getApplicationList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<ApplicationVO>>({
     url: `${url}/page`,
-    params
+    params,
   })
 }
 
 export const getApplicationSimpleList = () => {
   return request.get<Pick<ApplicationVO, 'id' | 'name' | 'processIds'>[]>({
-    url: `${url}/get-list`
+    url: `${url}/get-list`,
   })
 }
 
 export const getApplicationDetail = (id: string) => {
   return request.get<ApplicationVO>({
-    url: `${url}/get?id=${id}`
+    url: `${url}/get?id=${id}`,
   })
 }
 
 export const addApplication = (data: ApplicationVO) => {
   return request.post({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const updateApplication = (data: ApplicationVO) => {
   return request.put({
     url: `${url}/update`,
-    data
+    data,
   })
 }
 
 export const deleteApplication = (id: string) => {
   return request.delete({
-    url: `${url}/delete?id=${id}`
+    url: `${url}/delete?id=${id}`,
   })
 }
 
 export const setPublished = (id: string, published: boolean) => {
   return request.put({
     url: `${url}/update-published`,
-    data: { id, published }
+    data: { id, published },
   })
 }
 
@@ -89,8 +89,8 @@ export const getTables = (dataSourceConfigId?: number) => {
   return request.get<TableVO[]>({
     url: `${url}/get-tables`,
     params: {
-      dataSourceConfigId: dataSourceConfigId || 0
-    }
+      dataSourceConfigId: dataSourceConfigId || 0,
+    },
   })
 }
 
@@ -99,7 +99,7 @@ export const getTableColumns = (tables: string[], dataSourceConfigId?: number) =
     url: `${url}/get-table-fields`,
     params: {
       tables,
-      dataSourceConfigId: dataSourceConfigId || 0
-    }
+      dataSourceConfigId: dataSourceConfigId || 0,
+    },
   })
 }

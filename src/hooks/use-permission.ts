@@ -14,7 +14,7 @@ export const permission = {
   },
   hasNone(...keys: string[]) {
     return !this.has(...keys)
-  }
+  },
 }
 
 export const role = {
@@ -30,5 +30,5 @@ export const role = {
   },
   hasNone(...keys: string[]) {
     return !this.has(...keys)
-  }
+  },
 }

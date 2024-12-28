@@ -19,7 +19,7 @@ export type SelectValue = {
   subTable?: boolean
 }
 
-export const useTableSelect = (appSchema: Ref<AppSchema>) => {
+export const useTableSelect = (state: Ref<AppSchema['info']>) => {
   const loading = computed(() => p1.value || p2.value)
   const selectedValues = ref<SelectValue[]>([])
   const tableSortList = ref<AppSchema['info']['tables']>([])
@@ -33,7 +33,7 @@ export const useTableSelect = (appSchema: Ref<AppSchema>) => {
         id: e.option.id,
         name: e.option.tableName,
         comment: e.option.tableComment,
-        subTable: e.subTable
+        subTable: e.subTable,
       }
     })
   }
@@ -44,11 +44,11 @@ export const useTableSelect = (appSchema: Ref<AppSchema>) => {
 
     // mutate selectedValues based on appSchema
     selectedValues.value =
-      appSchema.value.info.tables?.map((e) => ({
+      state.value.tables?.map((e) => ({
         label: e.name,
         value: e.id,
-        option: tables.value?.find((t) => t.id === e.id) as TableModel,
-        subTable: e.subTable
+        option: tables.value?.find((t) => t.id === e.id || t.tableName === e.name) as TableModel,
+        subTable: e.subTable,
       })) || []
 
     onTableSelectChange()
@@ -58,6 +58,9 @@ export const useTableSelect = (appSchema: Ref<AppSchema>) => {
     return option?.tableComment.includes(inputValue) || option?.tableName.includes(inputValue)
   }
 
+  // created
+  initTableSelection()
+
   return {
     tables,
     tableSortList,
@@ -66,6 +69,6 @@ export const useTableSelect = (appSchema: Ref<AppSchema>) => {
     selectedValues,
     onTableSelectChange,
     initTableSelection,
-    filterOption
+    filterOption,
   }
 }

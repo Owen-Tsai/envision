@@ -20,32 +20,32 @@ const prefix = '/admin-api/system/notice'
 export const getNotificationList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<NotificationVO>>({
     url: `${prefix}/page`,
-    params
+    params,
   })
 }
 
 export const getNotificationDetail = (id: number) => {
   return request.get<NotificationVO>({
-    url: `${prefix}/get?id=${id}`
+    url: `${prefix}/get?id=${id}`,
   })
 }
 
 export const addNotification = (data: NotificationVO) => {
   return request.post({
     url: `${prefix}/create`,
-    data
+    data,
   })
 }
 
 export const updateNotification = (data: NotificationVO) => {
   return request.put({
     url: `${prefix}/update`,
-    data
+    data,
   })
 }
 
 export const deleteNotification = (id: number) => {
   return request.delete({
-    url: `${prefix}/delete?id=${id}`
+    url: `${prefix}/delete?id=${id}`,
   })
 }

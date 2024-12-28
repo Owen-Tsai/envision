@@ -1,4 +1,3 @@
-import { ref, reactive } from 'vue'
 import { message } from 'ant-design-vue'
 import { deleteRole, type RoleVO } from '@/api/system/role'
 
@@ -9,7 +8,7 @@ const useActions = (execute: () => void) => {
   const permissionType = ref<PermissionType>('data')
   const visible = reactive({
     edit: false,
-    permissionConfig: false
+    permissionConfig: false,
   })
 
   const onEdit = (record?: RoleVO) => {
@@ -36,7 +35,7 @@ const useActions = (execute: () => void) => {
     permissionType,
     onDelete,
     onEdit,
-    onSetPermission
+    onSetPermission,
   }
 }
 

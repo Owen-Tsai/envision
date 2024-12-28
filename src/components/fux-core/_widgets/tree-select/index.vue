@@ -18,11 +18,14 @@
     :tree-node-filter-prop="fieldNames ? fieldNames['title'] : undefined"
     :tree-checkable="config.props.multiple"
     :load-data="config.props.lazyLoad ? loadData : undefined"
+    @blur="evt?.handler('blur')"
+    @change="evt?.handler('change')"
+    @focus="evt?.handler('focus')"
   />
 </template>
 
 <script lang="ts" setup>
-import { useModel, useTreeStructureOptions } from '../../_hooks'
+import { useModel, useTreeStructureOptions, useEvents } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
 import request from '@/utils/request'
 import type { TreeSelectProps } from 'ant-design-vue'
@@ -36,6 +39,7 @@ const { model } = useModel(config)
 const fieldNames = computed(() => tryParse(config.props.fieldNames))
 const defaultValue = computed(() => tryParse(config.props.defaultValue))
 const { options } = useTreeStructureOptions(config)
+const evt = useEvents(config.props.event)
 
 const loadData: TreeSelectProps['loadData'] = (node) => {
   return new Promise(async (resolve, reject) => {

@@ -1,4 +1,3 @@
-import { ref, watch } from 'vue'
 import useRequest from '@/hooks/use-request'
 import { getMajorTree } from '@/api/system/major'
 import { filterTree, type Tree } from '@/utils/tree'
@@ -6,17 +5,15 @@ import { filterTree, type Tree } from '@/utils/tree'
 const useMajorTree = () => {
   const filteredTreeData = ref<Tree[]>()
   const selectedKeys = ref<string[]>([])
-  const currentDeptName = ref('全部')
   const searchText = ref('')
 
   let oldSelectedKey: number | string | undefined = undefined
 
-  const { data, pending } = useRequest(getMajorTree, {
+  const { data, pending, execute } = useRequest(getMajorTree, {
     immediate: true,
     onSuccess(data) {
-      // console.log(data)
       filteredTreeData.value = data
-    }
+    },
   })
 
   watch(searchText, () => {
@@ -38,16 +35,16 @@ const useMajorTree = () => {
     } else {
       oldSelectedKey = undefined
     }
-    currentDeptName.value = hasSelected ? '全部' : node.name
   }
 
   return {
     majorTree: data,
-    Loading: pending,
+    loading: pending,
+    execute,
     filteredTreeData,
     selectedKeys,
     searchText,
-    onTreeNodeSelect
+    onTreeNodeSelect,
   }
 }
 

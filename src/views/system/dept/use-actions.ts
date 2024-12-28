@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { deleteDept, type DeptVO } from '@/api/system/dept'
 
@@ -22,7 +21,7 @@ const useActions = (requestData: () => void) => {
     entry,
     visible,
     onEdit,
-    onDelete
+    onDelete,
   }
 }
 

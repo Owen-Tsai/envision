@@ -1,13 +1,15 @@
 <template>
   <ATabs
-    :active-key="config.props.stepsMode && ctx ? config.props.state?.current : undefined"
+    :active-key="
+      config.props.stepsMode && ctx?.mode === 'prod' ? config.props.state?.current : undefined
+    "
     :type="config.props.type"
     :centered="config.props.centered"
     :size="config.props.size"
     :destroy-inactive-tab-pane="config.props.destroyInactivePanes"
   >
     <ATabPane v-for="(pane, i) in config.props.children" :key="i" :tab="pane.title">
-      <template v-if="ctx?.prod">
+      <template v-if="ctx && ctx.mode && ctx.mode !== 'dev'">
         <WidgetRenderer
           v-for="widget in pane.widgets"
           :key="widget.uid"
@@ -37,9 +39,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRendererInjection, useFormDataInjection } from '../../_hooks'
+import { useRendererInjection } from '../../_hooks'
 import request from '@/utils/request'
+import { emitter } from '@fusionx/utils'
 import Nested from '../../form-designer/canvas/nested.vue'
 import WidgetRenderer from '../index.vue'
 import { kebabCase } from 'lodash-es'
@@ -56,11 +58,10 @@ const model = computed({
   get: () => config,
   set: (val) => {
     emit('update:config', val)
-  }
+  },
 })
 
 const ctx = useRendererInjection()
-const formData = useFormDataInjection()
 
 const toPrevStep = () => {
   if (model.value.props.state.current <= 0) return
@@ -73,10 +74,14 @@ const saveStep = async () => {
   // 获取当前步骤的提交接口
   const api = `/application/${kebabCase(tables[step].name)}/create`
 
-  await request.post({ url: api, data: formData[step] })
+  await request.post({ url: api, data: ctx!.formData[step] })
 
   if (step < model.value.props.children.length - 1) {
     model.value.props.state.current++
   }
 }
+
+emitter.on('widget:attrs', (e) => {
+  console.log(e)
+})
 </script>

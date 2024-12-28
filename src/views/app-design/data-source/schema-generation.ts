@@ -2,7 +2,7 @@ import { cloneDeep } from 'lodash-es'
 import { generateId } from '@fusionx/utils'
 import {
   getCodeGenConfigDetail as getTableColumns,
-  type ConfigDetailVO
+  type ConfigDetailVO,
 } from '@/api/infra/code-gen'
 import widgetConfigMap from '@/components/fux-core/_utils/initial-widget-config'
 import type { AppInfo } from '@/types/fux-core'
@@ -22,11 +22,11 @@ const genDataTableSchema = (info: ConfigDetailVO, widgets: Widget[]): WidgetMap[
         dataIndex: column.javaField,
         formatter: {
           type: column.dictTypeStr ? 'dict' : null,
-          value: column.dictTypeStr || ''
-        }
+          value: column.dictTypeStr || '',
+        },
       })),
-      url: '/applications/' + info.table.tableName
-    }
+      url: '/applications/' + info.table.tableName,
+    },
   }
 
   ret.props.columns?.push({ key: 'actions', title: '操作', dataIndex: 'actions' })
@@ -52,13 +52,13 @@ const genGridSchema = (count: 2 | 3, widgets: Widget[]): WidgetMap['grid'] => {
     ...cloneDeep(widgetConfigMap.grid)!,
     uid: generateId(),
     props: {
-      ...cloneDeep(widgetConfigMap.grid!.props)
-    }
+      ...cloneDeep(widgetConfigMap.grid!.props),
+    },
   }
 
   ret.props.children = cols.map((col) => ({
     span: 24 / count,
-    widgets: col
+    widgets: col,
   }))
 
   return ret
@@ -83,7 +83,7 @@ const genTableWidgetsSchema = (info: ConfigDetailVO, step?: number): Widget[] =>
 const genWidgetSchema = (
   column: ConfigDetailVO['columns'][number],
   tableName: string,
-  step?: number
+  step?: number,
 ): Widget | undefined => {
   const type = (column.htmlType === 'datetime' ? 'datePicker' : column.htmlType) as keyof WidgetMap
   if (widgetConfigMap[type]) {
@@ -97,9 +97,10 @@ const genWidgetSchema = (
           name:
             step !== undefined
               ? `${step}.${tableName}:${column.javaField}`
-              : `${tableName}:${column.javaField}`
-        }
-      }
+              : `${tableName}:${column.javaField}`,
+        },
+        hide: `${column.javaField}` == 'id',
+      },
     }
 
     if (
@@ -133,8 +134,8 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
         uid: generateId(),
         props: {
           ...cloneDeep(widgetConfigMap[paginated]!.props),
-          children: []
-        }
+          children: [],
+        },
       } as Widget)
     : []
 
@@ -145,8 +146,8 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
           uid: generateId(),
           props: {
             ...cloneDeep(widgetConfigMap.grid!.props),
-            children: []
-          }
+            children: [],
+          },
         }
       : null
 
@@ -173,7 +174,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
         }
         ;(schemaWrapper as WidgetMap['tabs' | 'steps']).props.children.push({
           title: info.table.tableComment || info.table.tableName || '',
-          widgets: [genDataTableSchema(info, tableSchema)]
+          widgets: [genDataTableSchema(info, tableSchema)],
         })
       } else {
         ;(schemaWrapper as Widget[]).push({
@@ -183,17 +184,17 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
             ...cloneDeep(widgetConfigMap.subForm!.props),
             field: {
               label: info.table.tableComment || info.table.tableName || '',
-              name: info.table
+              name: info.table,
             },
-            children: [...tableSchema]
-          }
+            children: [...tableSchema],
+          },
         } as WidgetMap['subForm'])
       }
     } else {
       if (paginated) {
         ;(schemaWrapper as WidgetMap['tabs' | 'steps']).props.children.push({
           title: info.table.tableComment || info.table.tableName || '',
-          widgets: tableSchema
+          widgets: tableSchema,
         })
 
         delete (schemaWrapper as WidgetMap['tabs' | 'steps']).icon
@@ -208,7 +209,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
     layout: info.gridColumns === 3 ? 'vertical' : 'horizontal',
     labelWidth: info.gridColumns === 3 ? undefined : '100px',
     colon: info.gridColumns !== 3,
-    labelAlign: info.gridColumns === 3 ? undefined : 'right'
+    labelAlign: info.gridColumns === 3 ? undefined : 'right',
   }
 }
 

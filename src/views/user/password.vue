@@ -42,15 +42,15 @@ const rules: FormProps['rules'] = {
   newPassword: [{ required: true, message: '请设置新密码' }],
   newPasswordConfirm: [
     { required: true, message: '请再次输入新密码' },
-    { validator: passValidator, trigger: 'change' }
-  ]
+    { validator: passValidator, trigger: 'change' },
+  ],
 }
 
 const loading = ref(false)
 const formData = ref({
   oldPassword: '',
   newPassword: '',
-  newPasswordConfirm: ''
+  newPasswordConfirm: '',
 })
 
 const submit = async () => {

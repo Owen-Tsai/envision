@@ -22,7 +22,7 @@ export const useMenuRenderer = () => {
       }
       const item: any = {
         label: route.name,
-        key: ''
+        key: '',
       }
       // if the route has custom layout,
       // a new browser tab should be opened
@@ -32,7 +32,7 @@ export const useMenuRenderer = () => {
       if (route.children) {
         const children = generateMenu(
           route.children,
-          parentPath === '' ? `${parentPath}${route.path}` : `${parentPath}/${route.path}`
+          parentPath === '' ? `${parentPath}${route.path}` : `${parentPath}/${route.path}`,
         )
         item.children = children
       }
@@ -59,6 +59,6 @@ export const useMenuRenderer = () => {
 
   return {
     menuItems,
-    generateMenu
+    generateMenu,
   }
 }

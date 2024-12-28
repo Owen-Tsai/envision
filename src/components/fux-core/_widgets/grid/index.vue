@@ -7,7 +7,7 @@
   >
     <ACol v-for="(col, i) in config.props.children" :key="i" :span="col.span">
       <!-- widget renderer loop rendering -->
-      <template v-if="ctx?.prod">
+      <template v-if="ctx && ctx.mode && ctx.mode !== 'dev'">
         <WidgetRenderer
           v-for="widget in col.widgets"
           :key="widget.uid"

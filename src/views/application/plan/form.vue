@@ -72,13 +72,13 @@ const rules: FormProps['rules'] = {
   appId: [{ required: true, message: '请选择应用' }],
   fjfl: [{ required: true, message: '请选择需求附件' }],
   startTime: [{ required: true, message: '请选择计划开始时间' }],
-  endTime: [{ required: true, message: '请选择计划截止时间' }]
+  endTime: [{ required: true, message: '请选择计划截止时间' }],
 }
 
 const props = defineProps({
   record: {
-    type: Object as PropType<PlanVO>
-  }
+    type: Object as PropType<PlanVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
@@ -87,11 +87,11 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
 const formData = ref<Partial<PlanVO>>({
-  daily: false
+  daily: false,
 })
 const { data: appOpts } = useRequest(getApplicationSimpleList, { immediate: true })
 const { data: fjflOpts, pending: fjflPending } = useRequest(getAttachTypeSimpleList, {
-  immediate: true
+  immediate: true,
 })
 const isAdd = computed(() => props.record === undefined)
 const submit = async () => {

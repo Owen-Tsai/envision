@@ -35,7 +35,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import { getPostDetail, createPost, updatePost, type PostVO } from '@/api/system/post'
 import useDict from '@/hooks/use-dict'
@@ -45,13 +44,13 @@ const loading = ref(false)
 const [commonStatus] = useDict('common_status')
 
 const rules = ref<FormProps['rules']>({
-  name: [{ required: true, message: '请输入部门名称' }]
+  name: [{ required: true, message: '请输入部门名称' }],
 })
 
 const props = defineProps({
   record: {
-    type: Object as PropType<PostVO>
-  }
+    type: Object as PropType<PostVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])

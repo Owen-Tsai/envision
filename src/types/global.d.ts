@@ -6,6 +6,14 @@ declare module 'vue' {
     EDictTag: typeof import('@/components/dict-tag/index.vue').default
     EUpload: typeof import('@/components/upload/index.vue').default
     ECounter: typeof import('vue-countup-v3').default
+    Logo: typeof import('@/components/_internal/logo.vue').defualt
+
+    STable: (typeof import('@surely-vue/table'))['STable']
+    STableColumn: (typeof import('@surely-vue/table'))['STableColumn']
+    STableColumnGroup: (typeof import('@surely-vue/table'))['STableColumnGroup']
+    STableSummary: (typeof import('@surely-vue/table'))['STableSummary']
+    STableSummaryRow: (typeof import('@surely-vue/table'))['STableSummaryRow']
+    STableSummaryCell: (typeof import('@surely-vue/table'))['STableSummaryCell']
 
     AccountBookFilled: (typeof import('@ant-design/icons-vue'))['AccountBookFilled']
     AccountBookOutlined: (typeof import('@ant-design/icons-vue'))['AccountBookOutlined']

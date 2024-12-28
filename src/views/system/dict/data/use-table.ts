@@ -1,6 +1,4 @@
-import { ref, computed, type Ref } from 'vue'
 import dayjs from 'dayjs'
-import { useRoute } from 'vue-router'
 import useRequest from '@/hooks/use-request'
 import { getDictDataList, type ListQueryParams, type DictDataItemVO } from '@/api/system/dict/data'
 import type { FormInstance, TableProps } from 'ant-design-vue'
@@ -23,9 +21,9 @@ export const columns: TableProps['columns'] = [
     sortDirections: ['ascend', 'descend'],
     sorter: (a: DictDataItemVO, b: DictDataItemVO) => {
       return dayjs(a.createTime).isSameOrBefore(b.createTime) ? 1 : -1
-    }
+    },
   },
-  { title: '操作', width: 140 }
+  { title: '操作', width: 140 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
@@ -41,7 +39,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onFilter = () => {
@@ -77,6 +75,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     onChange,
     pagination,
     onFilter,
-    onFilterReset
+    onFilterReset,
   }
 }

@@ -24,33 +24,33 @@ const url = '/admin-api/infra/job'
 export const getJobList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<JobVO>>({
     url: `${url}/page`,
-    params
+    params,
   })
 }
 
 export const getJobDetail = (id: number) => {
   return request.get<JobVO>({
-    url: `${url}/get?id=${id}`
+    url: `${url}/get?id=${id}`,
   })
 }
 
 export const createJob = (data: JobVO) => {
   return request.post({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const updateJob = (data: JobVO) => {
   return request.put({
     url: `${url}/update`,
-    data
+    data,
   })
 }
 
 export const deleteJob = (id: number) => {
   return request.delete({
-    url: `${url}/delete?id=${id}`
+    url: `${url}/delete?id=${id}`,
   })
 }
 
@@ -58,7 +58,7 @@ export const exportJobList = (params: ListQueryParams) => {
   return request.download({
     url: `${url}/export-excel`,
     params,
-    filename: '定时任务.xlsx'
+    filename: '定时任务.xlsx',
   })
 }
 
@@ -67,19 +67,19 @@ export const updateJobStatus = (id: number, status: number) => {
     url: `${url}/update-status`,
     params: {
       id,
-      status
-    }
+      status,
+    },
   })
 }
 
 export const runJob = (id: number) => {
   return request.put({
-    url: `${url}/trigger?id=${id}`
+    url: `${url}/trigger?id=${id}`,
   })
 }
 
 export const getJobScheduledTimes = (id: number) => {
   return request.get<number[]>({
-    url: `${url}/get_next_times?id=${id}`
+    url: `${url}/get_next_times?id=${id}`,
   })
 }

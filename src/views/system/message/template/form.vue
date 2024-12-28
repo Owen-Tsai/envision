@@ -45,21 +45,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import {
   getTemplateDetail,
   addTemplate,
   updateTemplate,
-  type TemplateVO
+  type TemplateVO,
 } from '@/api/system/message/template'
 import useDict from '@/hooks/use-dict'
 
 const loading = ref(false)
 
-const { commonStatus, systemNotifyTemplateType } = useDict(
+const [commonStatus, systemNotifyTemplateType] = useDict(
   'common_status',
-  'system_notify_template_type'
+  'system_notify_template_type',
 )
 
 const rules = ref<FormProps['rules']>({
@@ -67,19 +66,19 @@ const rules = ref<FormProps['rules']>({
   name: [{ required: true, message: '请输入模板名称' }],
   code: [{ required: true, message: '请选择模板编码' }],
   nickname: [{ required: true, message: '请输入发送方名称' }],
-  content: [{ required: true, message: '请输入模板内容' }]
+  content: [{ required: true, message: '请输入模板内容' }],
 })
 
 const props = defineProps({
   record: {
-    type: Object as PropType<TemplateVO>
-  }
+    type: Object as PropType<TemplateVO>,
+  },
 })
 
 const emit = defineEmits(['success', 'close'])
 
 const formData = ref<TemplateVO>({
-  status: 0
+  status: 0,
 })
 const formRef = ref<FormInstance>()
 

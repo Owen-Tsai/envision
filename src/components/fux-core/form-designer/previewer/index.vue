@@ -6,7 +6,7 @@
     width="100%"
     destroy-on-close
   >
-    <FormRdenderer :schema="schema" show-data v-model:state="state" />
+    <FormRdenderer :schema="appSchema" show-data v-model:state="state" mode="preview" />
     <template #footer>
       <AButton type="primary" @click="isOpen = false">关闭</AButton>
     </template>
@@ -25,7 +25,7 @@ const emit = defineEmits<{
   (e: 'update:open', open: boolean): void
 }>()
 
-const { schema } = useDesignerInjection()
+const { appSchema } = useDesignerInjection()!
 const state = ref<Record<string, any>>({})
 
 const isOpen = computed({
@@ -34,6 +34,6 @@ const isOpen = computed({
   },
   set(val) {
     emit('update:open', val)
-  }
+  },
 })
 </script>

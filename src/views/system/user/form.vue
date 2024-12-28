@@ -1,9 +1,7 @@
 <template>
   <AModal
-    v-model:open="open"
+    v-model:open="isOpen"
     :title="!record ? '新增用户' : '编辑用户'"
-    destroy-on-close
-    :after-close="resetFields"
     :confirm-loading="loading"
     @ok="submit"
   >
@@ -16,12 +14,12 @@
     >
       <ASpin :spinning="loading">
         <ARow :gutter="16">
+          <ACol :lg="record ? 24 : 12" :span="24">
+            <AFormItem label="用户账号" name="username">
+              <AInput v-model:value="formData.username" :disabled="!!record" />
+            </AFormItem>
+          </ACol>
           <template v-if="!record">
-            <ACol :lg="12" :span="24">
-              <AFormItem label="用户账号" name="username">
-                <AInput v-model:value="formData.username" />
-              </AFormItem>
-            </ACol>
             <ACol :lg="12" :span="24">
               <AFormItem label="初始密码" name="password">
                 <AInputPassword v-model:value="formData.password" />
@@ -81,44 +79,36 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType } from 'vue'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
 import useRequest from '@/hooks/use-request'
+import useModalOpen from '@/hooks/use-modal'
 import { getUserDetail, updateUser, createUser, type UserVO } from '@/api/system/user'
 import { getDeptTree } from '@/api/system/dept'
-import { getRoleSimpleList } from '@/api/system/role'
 
-const formRef = ref<FormInstance>()
+const formRef = useTemplateRef<FormInstance>('formRef')
 
 const rules: FormProps['rules'] = {
   username: [{ required: true, message: '请填写用户账号' }],
   password: [{ required: true, message: '请填写初始密码' }],
-  nickname: [{ required: true, message: '请填写用户名称' }]
+  nickname: [{ required: true, message: '请填写用户名称' }],
 }
 
-const props = defineProps({
-  record: {
-    type: Object as PropType<UserVO>
-  }
-})
+const props = defineProps<{
+  record?: UserVO
+  open?: boolean
+}>()
 
-const emit = defineEmits(['success', 'close'])
+const emit = defineEmits(['success', 'update:open'])
+
+const isOpen = useModalOpen(props, emit, formRef)
 
 const loading = ref(false)
 const formData = ref<UserVO>({})
-const open = ref(true)
 
 const [systemUserSex, commonStatus] = useDict('system_user_sex', 'common_status')
-console.log(systemUserSex, commonStatus)
 
 const { data, pending } = useRequest(getDeptTree, { immediate: true })
-const { data: roles, pending: rolePending } = useRequest(getRoleSimpleList, { immediate: true })
-
-const resetFields = () => {
-  formRef.value?.resetFields()
-  emit('close')
-}
 
 const submit = async () => {
   try {
@@ -134,7 +124,7 @@ const submit = async () => {
       message.success('创建成功')
     }
 
-    open.value = false
+    isOpen.value = false
     emit('success')
   } catch (e) {
     console.log(e)
@@ -143,11 +133,16 @@ const submit = async () => {
   }
 }
 
-if (props.record?.id) {
-  loading.value = true
-  getUserDetail(props.record.id).then((data) => {
-    formData.value = data
-    loading.value = false
-  })
-}
+watch(
+  () => props.record?.id,
+  (val) => {
+    if (val) {
+      loading.value = true
+      getUserDetail(val).then((data) => {
+        formData.value = data
+        loading.value = false
+      })
+    }
+  },
+)
 </script>

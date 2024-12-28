@@ -1,7 +1,7 @@
 <template>
   <div class="container relative flex flex-col">
-    <div class="header flex items-center justify-between flex-shrink-0">
-      <span>{{ title }}</span>
+    <div class="header flex items-center justify-between flex-shrink-0 h-8">
+      <span class="title pl-8">{{ title }}</span>
       <span>
         <slot name="extra"></slot>
       </span>
@@ -20,7 +20,12 @@ const { title } = defineProps<{
 
 <style lang="scss" scoped>
 .header {
-  background: url('~vis/chart-header.svg') center no-repeat;
-  background-size: 100% 100%;
+  background: url('~img/vis/vis-chart-header.svg') center no-repeat;
+  background-size: 100%;
+
+  .title {
+    font-size: 16px;
+    font-weight: bold;
+  }
 }
 </style>

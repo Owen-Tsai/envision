@@ -30,8 +30,8 @@ import { getJobScheduledTimes, type JobVO } from '@/api/infra/job'
 
 const props = defineProps({
   record: {
-    type: Object as PropType<JobVO>
-  }
+    type: Object as PropType<JobVO>,
+  },
 })
 
 const emit = defineEmits(['close'])

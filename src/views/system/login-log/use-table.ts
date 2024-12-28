@@ -1,4 +1,3 @@
-import { ref, computed, type Ref } from 'vue'
 import useRequest from '@/hooks/use-request'
 import type { TableProps, FormInstance, TablePaginationConfig } from 'ant-design-vue'
 import { getLoginLogPage, type ListQueryParams } from '@/api/system/login-log'
@@ -10,7 +9,7 @@ export const columns: TableProps['columns'] = [
   { key: 'userIp', title: '登录地址', dataIndex: 'userIp' },
   { key: 'result', title: '登录结果', dataIndex: 'result', width: 120 },
   { key: 'startTime', title: '操作时间', dataIndex: 'createTime', width: 180 },
-  { key: 'actions', title: '操作', width: 120 }
+  { key: 'actions', title: '操作', width: 120 },
 ]
 
 export const useTable = (formRef: Ref<FormInstance | undefined>) => {
@@ -24,7 +23,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     showSizeChanger: true,
     showTotal(total, range) {
       return `第 ${range[0]}~${range[1]} 项 / 共 ${total} 项`
-    }
+    },
   }))
 
   const onChange = ({ current, pageSize }: TablePaginationConfig) => {
@@ -35,7 +34,7 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
   }
 
   const { data, pending, execute } = useRequest(() => getLoginLogPage(queryParams.value), {
-    immediate: true
+    immediate: true,
   })
 
   const onFilter = () => {
@@ -57,6 +56,6 @@ export const useTable = (formRef: Ref<FormInstance | undefined>) => {
     onFilter,
     onFilterReset,
     pagination,
-    onChange
+    onChange,
   }
 }

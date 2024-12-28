@@ -104,19 +104,16 @@
     </ARow>
 
     <FormModal
-      v-if="visible"
+      v-model:open="visible"
       :tree-data="data"
       :user-data="userList"
       :record="entry"
       @success="execute"
-      @close="visible = false"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { ReloadOutlined, PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import { useTable, columns } from './use-table'

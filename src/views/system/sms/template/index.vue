@@ -144,14 +144,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  PlusOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from '@ant-design/icons-vue'
 import dayjs from 'dayjs'
 import { permission } from '@/hooks/use-permission'
 import useDict from '@/hooks/use-dict'
@@ -169,7 +161,7 @@ const [filterExpanded, toggle] = useToggle()
 const [commonStatus, systemSmsChannelCode, systemSmsTemplateType] = useDict(
   'common_status',
   'system_sms_channel_code',
-  'system_sms_template_type'
+  'system_sms_template_type',
 )
 
 const channelList = ref<ChannelListLiteVO>([])

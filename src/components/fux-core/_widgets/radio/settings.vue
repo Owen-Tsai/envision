@@ -82,7 +82,7 @@ import type { WPropsRadio } from '@/types/fux-core/form'
 const appearance = [
   { label: '默认', value: 'default' },
   { label: '按钮', value: 'button' },
-  { label: '填充按钮', value: 'solid-button' }
+  { label: '填充按钮', value: 'solid-button' },
 ]
 
 const { attrs } = defineProps<{
@@ -97,7 +97,7 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 const { addOption, removeOption } = useOptionSettings(model)

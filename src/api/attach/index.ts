@@ -15,14 +15,14 @@ export const getUploadList = (planId: string, applyId: string, appId: string) =>
     params: {
       planId: planId,
       applyId: applyId,
-      appId: appId
-    }
+      appId: appId,
+    },
   })
 }
 
 export const getAttachView = (attachId: string, modeName: string) => {
   return request.getRaw({
     url: `/admin-api/common/attach/get?attachId=${attachId}&modeName=${modeName}&islib=0`,
-    responseType: 'blob'
+    responseType: 'blob',
   })
 }

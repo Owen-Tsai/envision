@@ -31,27 +31,27 @@ const url = '/admin-api/infra/file'
 export const getFileList = (params?: ListQueryParams) => {
   return request.get<PaginatedList<FileVO>>({
     url: `${url}/page`,
-    params
+    params,
   })
 }
 
 export const createFile = (data: FileVO) => {
   return request.post({
     url: `${url}/create`,
-    data
+    data,
   })
 }
 
 export const uploadFile = (data: any) => {
   return request.upload({
     url: `${url}/upload`,
-    data
+    data,
   })
 }
 
 export const deleteFile = (id?: number) => {
   return request.delete({
-    url: `${url}/delete?id=${id}`
+    url: `${url}/delete?id=${id}`,
   })
 }
 
@@ -60,7 +60,7 @@ export const getFilePresignedUrl = (path: string) => {
   return request.get<FilePresignedRespVO>({
     url: `${url}/presigned-url`,
     params: {
-      path
-    }
+      path,
+    },
   })
 }

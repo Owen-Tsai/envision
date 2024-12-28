@@ -21,13 +21,13 @@ const options = [
     children: [
       {
         key: '0-1',
-        children: [{ key: '0-1-1' }, { key: '0-1-2' }]
+        children: [{ key: '0-1-1' }, { key: '0-1-2' }],
       },
       {
         key: '0-2',
-        children: [{ key: '0-2-1' }, { key: '0-2-2' }]
-      }
-    ]
+        children: [{ key: '0-2-1' }, { key: '0-2-2' }],
+      },
+    ],
   },
   {
     key: '1',
@@ -35,10 +35,10 @@ const options = [
       { key: '1-1' },
       {
         key: '1-2',
-        children: [{ key: '1-2-1' }, { key: '1-2-2' }]
-      }
-    ]
-  }
+        children: [{ key: '1-2-1' }, { key: '1-2-2' }],
+      },
+    ],
+  },
 ]
 
 setTimeout(() => {

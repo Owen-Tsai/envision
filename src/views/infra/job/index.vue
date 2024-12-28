@@ -167,7 +167,7 @@ import {
   ExportOutlined,
   EditOutlined,
   DeleteOutlined,
-  PlusOutlined
+  PlusOutlined,
 } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
@@ -181,7 +181,7 @@ import type { JobVO } from '@/api/infra/job'
 const jobStatusEnums = {
   init: 0,
   normal: 1,
-  stop: 2
+  stop: 2,
 }
 
 const filterForm = ref<FormInstance>()

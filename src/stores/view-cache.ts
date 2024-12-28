@@ -5,6 +5,9 @@ export default defineStore('viewCache', () => {
   const cached = ref<Map<string, string>>(new Map())
   const keepsList = computed(() => [...cached.value.values()])
 
+  /**
+   * Add router to the cache, which will be used in keep-alive
+   */
   const addCache = (fullPath: string, componentName: string) => {
     cached.value.set(fullPath, componentName)
   }
@@ -17,6 +20,6 @@ export default defineStore('viewCache', () => {
     cached,
     keepsList,
     addCache,
-    removeCache
+    removeCache,
   }
 })

@@ -35,7 +35,6 @@
 </template>
 
 <script lang="ts" setup>
-import { type PropType } from 'vue'
 import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import type { LogVO } from '@/api/system/message/log'
@@ -43,13 +42,13 @@ import type { LogVO } from '@/api/system/message/log'
 defineProps({
   entry: {
     type: Object as PropType<LogVO>,
-    required: true
-  }
+    required: true,
+  },
 })
 
-const { infraBooleanString, systemUserType, systemNotifyTemplateType } = useDict(
+const [infraBooleanString, systemUserType, systemNotifyTemplateType] = useDict(
   'infra_boolean_string',
   'system_user_type',
-  'system_notify_template_type'
+  'system_notify_template_type',
 )
 </script>

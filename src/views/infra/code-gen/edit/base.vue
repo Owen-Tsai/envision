@@ -45,8 +45,8 @@ import type { ConfigDetailVO } from '@/api/infra/code-gen'
 
 const props = defineProps({
   model: {
-    type: Object as PropType<ConfigDetailVO['table']>
-  }
+    type: Object as PropType<ConfigDetailVO['table']>,
+  },
 })
 
 const emit = defineEmits(['update:model'])
@@ -57,7 +57,7 @@ const formData = computed({
   get: () => props.model || {},
   set: (val) => {
     emit('update:model', val)
-  }
+  },
 })
 
 const rules: FormProps['rules'] = {
@@ -65,10 +65,10 @@ const rules: FormProps['rules'] = {
   tableComment: [{ required: true, message: '请输入表描述' }],
   className: [{ required: true, message: '请输入实体类名称' }],
   author: [{ required: true, message: '请输入作者名称' }],
-  isBusiness: [{ required: true, message: '请选择是否业务表' }]
+  isBusiness: [{ required: true, message: '请选择是否业务表' }],
 }
 
 defineExpose({
-  formRef
+  formRef,
 })
 </script>

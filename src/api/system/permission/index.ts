@@ -14,33 +14,33 @@ export const setUserRole = (uid: number, rid: number[]) => {
     url: `${prefix}/assign-user-role`,
     data: {
       userId: uid,
-      roleIds: rid
-    }
+      roleIds: rid,
+    },
   })
 }
 
 export const getUserRoles = (id: number) => {
   return request.get<number[]>({
-    url: `${prefix}/list-user-roles?userId=${id}`
+    url: `${prefix}/list-user-roles?userId=${id}`,
   })
 }
 
 export const getRoleMenuList = (id: number) => {
   return request.get<number[]>({
-    url: `${prefix}/list-role-menus?roleId=${id}`
+    url: `${prefix}/list-role-menus?roleId=${id}`,
   })
 }
 
 export const setRoleMenuList = (data: RolePermissionVO) => {
   return request.post({
     url: `${prefix}/assign-role-menu`,
-    data
+    data,
   })
 }
 
 export const setRoleDataScope = (data: RolePermissionVO) => {
   return request.post({
     url: `${prefix}/assign-role-data-scope`,
-    data
+    data,
   })
 }

@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { deleteTemplate, type TemplateVO } from '@/api/system/message/template'
 
@@ -22,7 +21,7 @@ const useActions = (requestData: () => void) => {
     entry,
     visible,
     onEdit,
-    onDelete
+    onDelete,
   }
 }
 

@@ -38,7 +38,7 @@ const useActions = (requestData: () => void) => {
     onEdit,
     onDelete,
     onSetPublished,
-    toDesignPage
+    toDesignPage,
   }
 }
 

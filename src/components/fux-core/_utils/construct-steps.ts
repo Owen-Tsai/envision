@@ -4,7 +4,7 @@ import type { WPropsSteps } from '@/types/fux-core/form'
 const constructSteps = (steps: WPropsSteps['children']): StepsProps['items'] => {
   return steps.map((e) => ({
     title: e.title,
-    description: e.desc
+    description: e.desc,
   }))
 }
 

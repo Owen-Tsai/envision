@@ -122,7 +122,7 @@ import type { WPropsTreeSelect } from '@/types/fux-core/form'
 const displayStrategyOpts = [
   { label: '显示所有选中节点', value: TreeSelect.SHOW_ALL },
   { label: '仅显示子节点', value: TreeSelect.SHOW_CHILD },
-  { label: '显示父/子节点', value: TreeSelect.SHOW_PARENT }
+  { label: '显示父/子节点', value: TreeSelect.SHOW_PARENT },
 ]
 
 const { attrs } = defineProps<{
@@ -139,7 +139,7 @@ const model = computed({
   get: () => attrs,
   set: (val) => {
     emit('update:attrs', val)
-  }
+  },
 })
 
 watch(
@@ -152,6 +152,6 @@ watch(
     } else {
       model.value.options.value = undefined
     }
-  }
+  },
 )
 </script>

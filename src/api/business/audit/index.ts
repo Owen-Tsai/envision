@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import type { PlanVO } from '@/api/application/plan'
 
 export type ListQueryParams = CommonQueryParams & {
   taskDefKey?: string
@@ -7,7 +8,7 @@ export type ListQueryParams = CommonQueryParams & {
 export type EchoDataVO = {
   schema: string
   data: Record<string, any>
-  plan: object
+  plan: PlanVO
 }
 
 export type AuditProcessDetailsListType = Array<{
@@ -18,19 +19,18 @@ export type AuditProcessDetailsListType = Array<{
 }>
 
 export const getList = (taskDefKey: string, appId: string) => {
-  let url = ''
-  if (taskDefKey == 'All') {
-    url = `/admin-api/com-apply/get-apply-info-repertory?appId=${appId}`
-  } else {
-    url += `/admin-api/fux-bpm/get-my-task?actId=${taskDefKey}`
-  }
+  const url =
+    taskDefKey === 'All'
+      ? `/admin-api/com-apply/get-apply-info-repertory?appId=${appId}`
+      : `/admin-api/fux-bpm/get-my-task?actId=${taskDefKey}`
+
   return request.get({
-    url: url
+    url,
   })
 }
 
-export const getProcessInstance = async (id: string) => {
-  return await request.get({ url: '/admin-api/fux-bpm/get-process-info?processId=' + id })
+export const getProcessInstance = (id: string) => {
+  return request.get({ url: '/admin-api/fux-bpm/get-process-info?processId=' + id })
 }
 
 export type TaskVO = {
@@ -40,39 +40,43 @@ export type TaskVO = {
   targetTaskDefinitionKey?: string
 }
 
-export const approveTask = async (data: TaskVO) => {
-  return await request.put({ url: '/admin-api/bpm/task/approve', data })
+export const approveTask = (data: TaskVO) => {
+  return request.put({ url: '/admin-api/bpm/task/approve', data })
 }
 
-export const rejectTask = async (data: TaskVO) => {
-  return await request.put({ url: '/admin-api/bpm/task/reject', data })
+export const rejectTask = (data: TaskVO) => {
+  return request.put({ url: '/admin-api/bpm/task/reject', data })
 }
 
-export const backStartUserTask = async (data: TaskVO) => {
-  return await request.put({
+export const returnTaskToStart = (data: TaskVO) => {
+  return request.put({
     url: '/admin-api/fusionx/framework/return-to-initiator',
-    data
+    data,
   })
 }
 
-export const backTask = async (data) => {
-  return await request.put({ url: '/admin-api/bpm/task/return', data })
+export const returnTask = (data) => {
+  return request.put({ url: '/admin-api/bpm/task/return', data })
 }
 
 export const getEchoData = (appId: string, applyId: string) => {
   return request.get<EchoDataVO>({
-    url: `/admin-api/fusionx/framework/data-echo?appId=${appId}&targetId=${applyId}`
+    url: '/admin-api/fusionx/framework/data-echo',
+    params: {
+      appId,
+      targetId: applyId,
+    },
   })
 }
 
-export const getBackOptions = (parentProcessInstanceId?: string) => {
+export const getTaskReturnOptions = (parentProcessInstanceId?: string) => {
   return request.get({
-    url: `/admin-api/bpm/task/list-by-return?id=${parentProcessInstanceId}`
+    url: `/admin-api/bpm/task/list-by-return?id=${parentProcessInstanceId}`,
   })
 }
 
 export const getAuditProcessDetail = (processInstanceId: string) => {
   return request.get({
-    url: `/admin-api/fux-bpm/get-process-log?processInstanceId=${processInstanceId}`
+    url: `/admin-api/fux-bpm/get-process-log?processInstanceId=${processInstanceId}`,
   })
 }
