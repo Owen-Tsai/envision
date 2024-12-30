@@ -53,7 +53,15 @@ const findNodePaths = (
   const dfs = (option: CascaderOptionType, path: (string | number)[]) => {
     const currentPath = [...path, option[props.fieldNames?.value || 'value']]
 
-    if (targetSet.has(option[props.fieldNames?.value || 'value'] as number | string)) {
+    // 允许数字和字符串相互转换
+    // @todo: 后期最好移除并在建表时统一字段类型
+    const optionType = typeof option[props.fieldNames?.value || 'value']
+    const has =
+      optionType === 'string'
+        ? targetSet.has(parseInt(option[props.fieldNames?.value || 'value']))
+        : targetSet.has(option[props.fieldNames?.value || 'value'] + '')
+
+    if (has) {
       result.push(currentPath as (number | string)[])
     }
 
@@ -90,5 +98,6 @@ watch(
 
     model.value = path
   },
+  { immediate: true },
 )
 </script>
