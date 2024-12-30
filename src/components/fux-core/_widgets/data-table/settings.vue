@@ -100,7 +100,7 @@
     </AForm>
   </AModal>
 
-  <AModal v-model:open="formatterConfig.visible" title="格式化配置" @ok="saveColumnsConfig">
+  <AModal v-model:open="formatterConfig.visible" title="格式化配置" @ok="saveColumnFormatter">
     <AForm :model="columnConfigModal">
       <AFormItem label="格式化类型" :name="['formatter', 'type']">
         <ARadioGroup
@@ -210,6 +210,11 @@ const formatterConfig = reactive<{
 
 const saveColumnsConfig = () => {
   model.value.columns = columnConfigModal.columns
+  columnConfigModal.visible = false
+}
+
+const saveColumnFormatter = () => {
+  model.value.columns = columnConfigModal.columns
   formatterConfig.visible = false
 }
 
@@ -224,8 +229,6 @@ const addColumn = () => {
 
 const configFormatter = (index: number) => {
   formatterConfig.index = index
-
-  console.log(columnConfigModal.columns[formatterConfig.index])
 
   if (!columnConfigModal.columns[index].formatter) {
     columnConfigModal.columns[index].formatter = {
