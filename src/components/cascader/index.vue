@@ -55,11 +55,24 @@ const findNodePaths = (
 
     // 允许数字和字符串相互转换
     // @todo: 后期最好移除并在建表时统一字段类型
-    const optionType = typeof option[props.fieldNames?.value || 'value']
-    const has =
-      optionType === 'string'
-        ? targetSet.has(parseInt(option[props.fieldNames?.value || 'value']))
-        : targetSet.has(option[props.fieldNames?.value || 'value'] + '')
+    let has: boolean = false
+    const optionVal = option[props.fieldNames?.value || 'value']
+    const optionType = typeof optionVal
+    const valType = Array.isArray(values) ? typeof values[0] : typeof values
+
+    if (optionType === 'string') {
+      if (valType === 'string') {
+        has = targetSet.has(optionVal)
+      } else {
+        has = targetSet.has(parseInt(optionVal))
+      }
+    } else {
+      if (valType === 'number') {
+        has = targetSet.has(optionVal)
+      } else {
+        has = targetSet.has(optionVal + '')
+      }
+    }
 
     if (has) {
       result.push(currentPath as (number | string)[])
@@ -89,6 +102,11 @@ watch(
     }
     if (value === undefined) {
       model.value = undefined
+    }
+
+    console.log(options, value)
+    if (options == undefined || value == undefined) {
+      return
     }
 
     const path = findNodePaths(

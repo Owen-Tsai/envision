@@ -26,7 +26,17 @@
       </template>
     </ATable>
     <AModal v-model:open="visible" :title="modalTitle" :width="config.props.formWidth">
-      <AForm :model="modalFormData">
+      <AForm
+        :model="modalFormData"
+        :disabled="disabledForm"
+        class="mt-8"
+        :colon="config.props.form.colon"
+        :label-align="config.props.form.labelAlign"
+        :label-col="labelCol"
+        label-wrap
+        :layout="config.props.form.layout"
+        :wrapper-col="wrapperCol"
+      >
         <WidgetRenderer
           v-for="child in config.props.widgets"
           :key="child.uid"
@@ -47,6 +57,7 @@
 <script setup lang="ts">
 import request from '@/utils/request'
 import { useNestedModelProvider, useRendererInjection } from '../../_hooks'
+import { tryParse } from '@fusionx/utils'
 import useDict from '@/hooks/use-dict'
 import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
@@ -166,6 +177,15 @@ const get = async (id: string) => {
   const api = `${urlPrefix}/get-table-name?id=${id}`
   return await request.get({ url: api })
 }
+
+const labelCol = computed(() => {
+  const width = config.props.form.labelWidth
+  return width ? { style: { width } } : tryParse(config.props.form.labelCol)
+})
+
+const wrapperCol = computed(() => {
+  return tryParse(config.props.form.wrapperCol)
+})
 
 onMounted(() => {
   loadData()
