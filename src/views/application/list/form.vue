@@ -89,11 +89,21 @@ import {
   type ApplicationVO,
 } from '@/api/application'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
+import type { Rule } from 'ant-design-vue/es/form'
+
+const validateComOpen = async (_rule: Rule, value: string) => {
+  if (formData.value.userType == '3' && (value === '' || value == undefined)) {
+    return Promise.reject('请选择是否单位开通权限！')
+  } else {
+    return Promise.resolve()
+  }
+}
 
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写应用名称' }],
   type: [{ required: true, message: '请选择应用类型' }],
   userType: [{ required: true, message: '请选择用户类型' }],
+  comopen: [{ required: true, trigger: 'change', validator: validateComOpen }],
 }
 
 const props = defineProps({
