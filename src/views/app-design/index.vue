@@ -33,16 +33,34 @@
       </template>
     </div>
 
-    <AModal v-model:open="schemaVisible" title="应用 Schema" :width="480">
-      <div class="relative">
-        <div v-html="highlighted" />
-        <ATooltip :title="copied ? '已复制' : '复制 Schema'">
-          <AButton shape="circle" :icon="h(CopyOutlined)" ghost @click="copy()" />
-        </ATooltip>
-      </div>
+    <!--    <AModal v-model:open="schemaVisible" title="应用 Schema" :width="480">-->
+    <!--      <div class="relative">-->
+    <!--        <div v-html="highlighted" />-->
+    <!--        <ATooltip :title="copied ? '已复制' : '复制 Schema'">-->
+    <!--          <AButton shape="circle" :icon="h(CopyOutlined)" ghost @click="copy()" />-->
+    <!--        </ATooltip>-->
+    <!--      </div>-->
 
+    <!--      <template #footer>-->
+    <!--        <div class="text-right">-->
+    <!--          <AButton type="primary" @click="schemaVisible = false">关闭</AButton>-->
+    <!--        </div>-->
+    <!--      </template>-->
+    <!--    </AModal>-->
+
+    <AModal v-model:open="schemaVisible" title="应用 Schema" :width="1000">
+      <div class="relative" style="height: 600px; overflow: auto">
+        <div v-html="highlighted" />
+      </div>
       <template #footer>
         <div class="text-right">
+          <AButton
+            @click="
+              copy()
+              schemaVisible = false
+            "
+            >复制并关闭</AButton
+          >
           <AButton type="primary" @click="schemaVisible = false">关闭</AButton>
         </div>
       </template>
@@ -97,6 +115,23 @@ header {
     border-radius: 6px;
     user-select: none;
     -webkit-user-drag: none;
+  }
+}
+.schemaSearch {
+  margin: 10px 0;
+  .schemaSearchInput {
+    width: 700px;
+    margin-right: 10px;
+  }
+  .schemaSearchNum {
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  .schemaSearchPrev {
+    margin-right: 10px;
+  }
+  .schemaSearchNext {
+    margin-right: 10px;
   }
 }
 </style>

@@ -121,6 +121,7 @@ export const useAppDesigner = () => {
             return {
               uid: node.uid,
               name: node.name,
+              role: node.props.actor?.value[0],
             }
           }
         })
