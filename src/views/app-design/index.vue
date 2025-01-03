@@ -117,21 +117,4 @@ header {
     -webkit-user-drag: none;
   }
 }
-.schemaSearch {
-  margin: 10px 0;
-  .schemaSearchInput {
-    width: 700px;
-    margin-right: 10px;
-  }
-  .schemaSearchNum {
-    font-size: 16px;
-    margin-right: 10px;
-  }
-  .schemaSearchPrev {
-    margin-right: 10px;
-  }
-  .schemaSearchNext {
-    margin-right: 10px;
-  }
-}
 </style>
