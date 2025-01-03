@@ -54,13 +54,7 @@
       </div>
       <template #footer>
         <div class="text-right">
-          <AButton
-            @click="
-              copy()
-              schemaVisible = false
-            "
-            >复制并关闭</AButton
-          >
+          <AButton @click="copyAndDisable">复制并关闭</AButton>
           <AButton type="primary" @click="schemaVisible = false">关闭</AButton>
         </div>
       </template>
@@ -84,6 +78,10 @@ const { copy, copied } = useClipboard({ source: JSON.stringify(appSchema.value, 
 
 const schemaVisible = ref(false)
 const highlighted = computed(() => useHighlighter(JSON.stringify(appSchema.value, null, 2), 'json'))
+const copyAndDisable = () => {
+  copy()
+  schemaVisible.value = false
+}
 </script>
 
 <style lang="scss" scoped>
