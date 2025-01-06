@@ -117,15 +117,18 @@ const submit = async () => {
 }
 
 watch(
-  () => props.record?.id,
+  () => props.open,
   (val) => {
-    formData.value.dictType = params.type as string
     if (val) {
-      loading.value = true
-      getDictDataDetail(val).then((res) => {
-        formData.value = res
-        loading.value = false
-      })
+      formData.value.dictType = params.type as string
+
+      if (props.record?.id) {
+        loading.value = true
+        getDictDataDetail(props.record.id).then((res) => {
+          formData.value = res
+          loading.value = false
+        })
+      }
     }
   },
 )
