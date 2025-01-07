@@ -12,17 +12,8 @@
           disabled
           :schema="appSchema"
           :taskDefKey="taskDefKey"
-          audit-mode
+          mode="audit"
         />
-        <div>
-          <MultiButton
-            v-if="multiMode"
-            :currentStep="multiFormCurrentStep"
-            :isEnd="multiFormTabIsEnd"
-            :prevStep="multiPrevStep"
-            :nextStep="multiNextStep"
-          ></MultiButton>
-        </div>
       </div>
     </ACard>
     <AttachClass
