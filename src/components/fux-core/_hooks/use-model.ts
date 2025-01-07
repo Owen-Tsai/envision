@@ -56,13 +56,24 @@ export const useModel = (widget: Widget) => {
 
 export const useDefaultValue = (config: FormWidget) => {
   const rendererCtx = useRendererInjection()
-
   if (rendererCtx !== null) {
     const { $state, formData, mode } = rendererCtx
     if (mode === 'prod') {
       if ((config.props as any).defaultValue) {
-        const value = evalExpression((config.props as any).defaultValue, $state)
-        formData.value[config.props.field?.name || config.uid] = value
+        const value = evalExpression((config.props as any).defaultValue, $state.value)
+        const multiRole = /^(0|[1-9]\d*)\./
+        if (multiRole.test(config.props.field?.name as string)) {
+          const tabIndex = config.props.field?.name?.substring(
+            0,
+            config.props.field?.name?.indexOf('.'),
+          )
+          const name = config.props.field?.name?.substring(
+            config.props.field?.name?.indexOf('.') + 1,
+          )
+          set(formData.value, `${tabIndex}.${name}`, value)
+        } else {
+          formData.value[config.props.field?.name || config.uid] = value
+        }
       }
     }
   }

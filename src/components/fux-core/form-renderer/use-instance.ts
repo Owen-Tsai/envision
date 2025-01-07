@@ -7,7 +7,7 @@ const useInstanceMethods = () => {
   const { appSchema, $state, formData } = useRendererInjection()!
 
   const getFormData = () => {
-    return formData.value
+    return formData
   }
 
   const setFormData = (data: Record<string, any>) => {
@@ -15,7 +15,15 @@ const useInstanceMethods = () => {
   }
 
   const mergeFormData = (key: string, value: any) => {
-    set(formData.value, key, value)
+    const stepWidget = appSchema.value.form.widgets.find(
+      (widget) => widget.type === 'steps' || widget.type === 'tabs',
+    )
+    const currentStep = getCurrentStep()
+    if (stepWidget) {
+      set(formData.value[currentStep], key, value)
+    } else {
+      set(formData.value, key, value)
+    }
   }
 
   const getSchema = () => {
@@ -42,9 +50,10 @@ const useInstanceMethods = () => {
       (widget) => widget.type === 'steps' || widget.type === 'tabs',
     )
     if (!stepWidget) {
-      throw new Error(
-        '[FusionX/表单渲染器] 无法获取步骤组件: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）',
-      )
+      // throw new Error(
+      //   '[FusionX/表单渲染器] 无法获取步骤组件: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+      // )
+      return null
     }
 
     return stepWidget
@@ -54,9 +63,10 @@ const useInstanceMethods = () => {
     const stepWidget = getStepWidget()
 
     if (!stepWidget) {
-      throw new Error(
-        '[FusionX/表单渲染器] 无法获取当前步骤: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）',
-      )
+      // throw new Error(
+      //   '[FusionX/表单渲染器] 无法获取当前步骤: 多步表单必须在组件树顶层中包含表示步骤的组件（tabs/steps）'
+      // )
+      return 0
     }
 
     const currentStep = stepWidget.props.state.current
@@ -77,7 +87,9 @@ const useInstanceMethods = () => {
     await request.post({ url: api, data: formData.value[currentStep] })
 
     // 前进到下一页
-    stepWidget.props.state.current += 1
+    if (stepWidget) {
+      stepWidget.props.state.current += 1
+    }
   }
 
   const toPrevStep = () => {
@@ -114,16 +126,35 @@ const useInstanceMethods = () => {
   /**
    * 提交整个表单，进行校验
    */
-  const submit = async () => {
-    if (appSchema.value.info.paginated) {
-      // 提交分页表单最后一页
-      await saveStep()
-      // todo: 其他处理？
-    } else {
-      // 提交单步表单
+  const submit = async (type: 'create' | 'update') => {
+    // 判断是否步骤模式
+    const stepWidget = appSchema.value.form.widgets.find(
+      (widget) => widget.type === 'steps' || widget.type === 'tabs',
+    )
+    // 如果不是步骤模式
+    if (!stepWidget) {
+      // 获取当前表
       const target = appSchema.value.info.tables[0]
-      const api = `/applications/${kebabCase(target.name)}/create`
-      await request.post({ url: api, data: formData.value })
+      const apiPrefix = target.name == 'com_apply' ? 'admin-api' : 'applications'
+      const api = `/${apiPrefix}/${kebabCase(target.name)}/${type}`
+      // 直接将formData.value传往后台
+      if (type === 'create') {
+        return await request.post({ url: api, data: formData.value })
+      } else {
+        return await request.put({ url: api, data: formData.value })
+      }
+    } else {
+      // 获取当前步骤
+      const currentStep = getCurrentStep()
+      // 获取当前表
+      const target = appSchema.value.info.tables[currentStep]
+      const apiPrefix = target.name == 'com_apply' ? 'admin-api' : 'applications'
+      const api = `/${apiPrefix}/${kebabCase(target.name)}/${type}`
+      if (type === 'create') {
+        return await request.post({ url: api, data: formData.value[currentStep] })
+      } else {
+        return await request.put({ url: api, data: formData.value[currentStep] })
+      }
     }
   }
 

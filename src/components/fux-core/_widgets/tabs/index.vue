@@ -74,14 +74,16 @@ const saveStep = async () => {
   // 获取当前步骤的提交接口
   const api = `/application/${kebabCase(tables[step].name)}/create`
 
-  await request.post({ url: api, data: ctx!.formData[step] })
+  await request.post({ url: api, data: formData[step] })
 
   if (step < model.value.props.children.length - 1) {
     model.value.props.state.current++
   }
 }
 
-emitter.on('widget:attrs', (e) => {
-  console.log(e)
+emitter.on('widget:attrs', (e: any) => {
+  if (e.name === config.props.field.name || e.name === config.uid) {
+    merge(config, e.attrs)
+  }
 })
 </script>
