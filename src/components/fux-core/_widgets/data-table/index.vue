@@ -1,5 +1,8 @@
 <template>
   <div v-if="isProd || config.props.state.mode === 'table'">
+    <AFlex justify="end" class="mb-4" v-if="rendererCtx?.mode == 'prod'">
+      <AButton :icon="h(PlusOutlined)" @click="toAdd" :disabled="!isProd">新增</AButton>
+    </AFlex>
     <ATable
       :columns="config.props.columns"
       :data-source="tableData.list"
@@ -15,12 +18,29 @@
         </template>
         <template v-if="scope?.column.key === 'actions'">
           <AFlex :gap="16">
-            <ATypographyLink>
+            <ATypographyLink v-if="rendererCtx?.mode == 'prod'">
+              <div @click="toEdit(scope.record)">
+                <EditOutlined />
+                编辑
+              </div>
+            </ATypographyLink>
+            <ATypographyLink v-if="rendererCtx?.mode == 'audit'">
               <div @click="toView(scope.record)">
                 <EyeOutlined />
                 查看
               </div>
             </ATypographyLink>
+            <APopconfirm
+              title="此操作不可撤销，确定要删除吗？"
+              :overlay-style="{ width: '260px' }"
+              @confirm="toDelete(scope.record)"
+              v-if="rendererCtx?.mode == 'prod'"
+            >
+              <ATypographyLink type="danger">
+                <DeleteOutlined />
+                删除
+              </ATypographyLink>
+            </APopconfirm>
           </AFlex>
         </template>
       </template>
@@ -44,7 +64,15 @@
           :fields="fields"
         />
       </AForm>
-      <template #footer />
+      <template #footer>
+        <div v-if="rendererCtx?.mode == 'prod'">
+          <a-button key="back" @click="cancel">取消</a-button>
+          <a-button key="submit" type="primary" @click="onSave">确定</a-button>
+        </div>
+        <div v-if="rendererCtx?.mode == 'audit'">
+          <a-button key="back" @click="cancel">关闭</a-button>
+        </div>
+      </template>
     </AModal>
   </div>
   <div v-if="!isProd && config.props.state.mode === 'form'">
@@ -55,6 +83,8 @@
 </template>
 
 <script setup lang="ts">
+import { h } from 'vue'
+import { PlusOutlined } from '@ant-design/icons-vue'
 import request from '@/utils/request'
 import { useNestedModelProvider, useRendererInjection } from '../../_hooks'
 import { tryParse } from '@fusionx/utils'
@@ -62,7 +92,9 @@ import useDict from '@/hooks/use-dict'
 import WidgetRenderer from '../index.vue'
 import Nested from '../../form-designer/canvas/nested.vue'
 import type { TableProps } from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 import type { WidgetMap } from '@/types/fux-core/form'
+import { set } from 'lodash-es'
 import dayjs from 'dayjs'
 import { safeEval } from '@/utils/eval'
 
@@ -195,12 +227,65 @@ const onPageChange = () => {
   loadData()
 }
 
+const onSave = async () => {
+  const api = `${urlPrefix}/${modalEditMode.value}`
+  loading.value = true
+  // console.log(index)
+  const urlPrefixArr = urlPrefix?.split('/')
+  if (urlPrefixArr === undefined) {
+    throw new Error('无法获取 urlPrefixArr')
+  }
+  const tableName = urlPrefixArr[urlPrefixArr.length - 1]
+  // console.log(tableName)
+  set(modalFormData.value, tableName + ':declare_id', appParams.value.applyId)
+  // return
+  let res
+  if (modalEditMode.value === 'update') {
+    res = await request.put({ url: api, data: modalFormData.value })
+  } else {
+    res = await request.post({ url: api, data: modalFormData.value })
+  }
+  if (res.executeResult == 1) {
+    message.success(res.message)
+  } else {
+    message.error(res.message)
+  }
+  modalFormData.value = {}
+  visible.value = false
+  await loadData()
+}
+
+const cancel = () => {
+  visible.value = false
+}
+
+const toAdd = () => {
+  disabledForm.value = false
+  modalEditMode.value = 'create'
+  modalFormData.value = {}
+  visible.value = true
+}
+
+const toEdit = async (record: any) => {
+  disabledForm.value = false
+  modalEditMode.value = 'update'
+  modalFormData.value = await get(record.id)
+  console.log(modalFormData.value)
+  visible.value = true
+}
+
+const toDelete = async (record: any) => {
+  const api = `${urlPrefix}/delete?id=${record.id}`
+  await request.delete({ url: api })
+  message.success('删除成功！')
+  await loadData()
+}
+
 const toView = async (record: any) => {
   disabledForm.value = true
   modalEditMode.value = 'view'
   modalFormData.value = await get(record.id)
   visible.value = true
 }
-
 useNestedModelProvider(modalFormData)
 </script>
