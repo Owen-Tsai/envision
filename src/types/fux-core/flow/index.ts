@@ -10,13 +10,26 @@ export interface NPropsAudit {
     text?: string
   }
   fields: Array<NPropsFieldConfig>
+  joint?: boolean // 是否为会签
 }
 
 export type NPropsStart = any
 
+export type NPropsConditionalGroup = {
+  children: Array<Node[]>
+}
+
+export type NPropsCondition = {
+  // for now we use string (UEL, unified expression language)
+  // this should be replaced by a UEL (de)serializer for better UX
+  condition?: string
+}
+
 export type NodePropsMap = {
   audit: NPropsAudit
   start: NPropsStart
+  condition: NPropsCondition
+  group: NPropsConditionalGroup
 }
 
 export type ConfigOf<T extends keyof NodePropsMap> = {

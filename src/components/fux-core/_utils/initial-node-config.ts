@@ -17,6 +17,22 @@ const initialNodeConfig: NodeConfigMap = {
     type: 'start',
     uid: generateId(),
   },
+  condition: {
+    name: '条件分支',
+    props: {
+      condition: '',
+    },
+    type: 'condition',
+    uid: '',
+  },
+  group: {
+    name: '',
+    props: {
+      children: [],
+    },
+    type: 'group',
+    uid: '',
+  },
 }
 
 export default initialNodeConfig

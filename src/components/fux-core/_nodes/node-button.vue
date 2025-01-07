@@ -16,7 +16,7 @@
             </span>
             <span class="title">抄送人</span>
           </div>
-          <div class="item disabled !cursor-not-allowed">
+          <div class="item" @click="onClick('group')">
             <span class="icon icon-condition">
               <BranchesOutlined :rotate="180" />
             </span>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref } from 'vue'
+import { h } from 'vue'
 import { PlusOutlined } from '@ant-design/icons-vue'
 
 const emit = defineEmits(['click'])

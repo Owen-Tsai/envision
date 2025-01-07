@@ -33,6 +33,9 @@
             @change="onSelectChange"
           />
         </AFormItem>
+        <AFormItem label="会签" name="joint" extra="会签时，所有审核人员均审批通过才可进行下一环节">
+          <ASwitch v-model:checked="model.joint" />
+        </AFormItem>
       </AForm>
     </div>
     <div v-show="active === 2">
