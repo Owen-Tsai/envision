@@ -6,6 +6,7 @@
     @after-open-change="onAnimationChange"
   >
     <AuditSetting v-if="selectedNode?.type === 'audit'" :attrs="selectedNode.props" />
+    <ConditionSetting v-if="selectedNode?.type === 'condition'" :attrs="selectedNode.props" />
     <div class="debug-container">
       <div v-html="highlighted" />
     </div>
@@ -16,6 +17,7 @@
 import { useWorkflowCtxInjection } from '../../_hooks'
 import useHighlighter from '@/hooks/use-highlighter'
 import AuditSetting from '../../_nodes/audit/settings.vue'
+import ConditionSetting from '../../_nodes/condition/settings.vue'
 
 const { open } = defineProps<{
   open: boolean
