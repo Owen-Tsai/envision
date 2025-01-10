@@ -34,14 +34,20 @@
             </template>
             <template v-if="scope?.column.key === 'auditProcess'">
               <a-tag color="processing" v-if="scope.record.auditProcess === '0'">
-                {{ taskDefKey == 'All' ? scope?.record.currentStepName : '' }}审核中
+                {{
+                  taskDefKey == 'All'
+                    ? scope?.record.taskName
+                      ? scope?.record.taskName + ' '
+                      : ''
+                    : ''
+                }}审核中
               </a-tag>
               <a-tag color="success" v-else-if="scope.record.auditProcess === '1'">审核通过</a-tag>
               <a-tag color="error" v-else-if="scope.record.auditProcess === '2'">审核未通过</a-tag>
               <a-tag color="warning" v-else-if="scope.record.auditProcess === '3'">打回修改</a-tag>
             </template>
-            <template v-if="scope?.column.key === 'startTime'">
-              {{ dayjs(scope.record.startTime).format('YYYY-MM-DD') }}
+            <template v-if="scope?.column.key === 'submitTime'">
+              {{ dayjs(scope.record.submitTime).format('YYYY-MM-DD HH:mm:ss') }}
             </template>
             <template v-if="scope?.column.title === '操作'">
               <AFlex :gap="16" v-if="taskDefKey != 'All'">

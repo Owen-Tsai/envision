@@ -10,9 +10,9 @@ export const columns: TableProps['columns'] = [
   { key: 'comApplyName', title: '申报名称', dataIndex: 'comApplyName' },
   { key: 'startUser', title: '申请人姓名', dataIndex: 'startUser' },
   // { key: 'membertype', title: '申请人类型', dataIndex: 'membertype' },
-  { key: 'taskName', title: '当前流程', dataIndex: 'taskName' },
+  // { key: 'taskName', title: '当前流程', dataIndex: 'taskName' },
   { key: 'auditProcess', title: '审核状态', dataIndex: 'auditProcess' },
-  { key: 'startTime', title: '提交时间', dataIndex: 'startTime' },
+  { key: 'submitTime', title: '提交时间', dataIndex: 'submitTime' },
   { key: 'actions', title: '操作', dataIndex: 'actions', width: 240 },
 ]
 
