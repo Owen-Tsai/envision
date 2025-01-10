@@ -118,7 +118,7 @@ const submit = async () => {
     visible.value = false
     emit('success')
   } catch (e) {
-    logger.error('[system/user/form.vue] 表单提交失败。', e)
+    logger.warn(import.meta.url, '表单提交失败', e)
   } finally {
     loading.value = false
   }

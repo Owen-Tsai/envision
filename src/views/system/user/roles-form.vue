@@ -53,7 +53,7 @@ const submit = async () => {
     message.success('保存成功')
     visible.value = false
   } catch (e) {
-    logger.error('[system/user/roles-form.vue] 表单提交失败。', e)
+    logger.error(import.meta.url, '表单提交失败', e)
   } finally {
     loading.value = false
   }

@@ -40,7 +40,7 @@ const submit = async () => {
     message.success('密码重置成功')
     visible.value = false
   } catch (e) {
-    logger.error('[system/user/password-form.vue] 表单提交失败。', e)
+    logger.error(import.meta.url, '表单提交失败', e)
   } finally {
     loading.value = false
   }
