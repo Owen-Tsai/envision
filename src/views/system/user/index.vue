@@ -97,7 +97,7 @@
                   v-if="permission.has('system:user:create')"
                   type="primary"
                   :loading="pending"
-                  @click="onEdit()"
+                  @click="userModal?.open()"
                 >
                   <template #icon>
                     <PlusOutlined />
@@ -146,7 +146,7 @@
                   <AFlex :gap="16">
                     <ATypographyLink
                       v-if="permission.has('system:user:update')"
-                      @click="onEdit(scope.record)"
+                      @click="userModal?.open(scope.record.id)"
                     >
                       <EditOutlined />
                       编辑
@@ -169,13 +169,13 @@
                         <AMenu>
                           <AMenuItem
                             :disabled="!permission.has('system:user:update-password')"
-                            @click="onSetPassword(scope.record)"
+                            @click="passwordModal?.open(scope.record)"
                           >
                             重置密码
                           </AMenuItem>
                           <AMenuItem
                             :disabled="!permission.has('system:permission:assign-user-role')"
-                            @click="onSetRole(scope.record)"
+                            @click="roleModal?.open(scope.record)"
                           >
                             设置角色
                           </AMenuItem>
@@ -200,11 +200,11 @@
     </ARow>
 
     <!-- add/edit user -->
-    <FormModal v-model:open="visible.edit" :record="entry" @success="execute" />
+    <FormModal ref="userModal" @success="execute" />
     <!-- change password -->
-    <PasswordFormModal v-model:open="visible.passwordReset" :record="entry!" @success="execute" />
+    <PasswordFormModal ref="passwordModal" @success="execute" />
     <!-- assign roles -->
-    <RoleFormModal v-model:open="visible.roleConfig" :record="entry!" @success="execute" />
+    <RoleFormModal ref="roleModal" @success="execute" />
   </div>
 </template>
 
@@ -233,6 +233,10 @@ if (layout === 'split') {
   style.value.top = '52px'
 }
 
+const userModal = useTemplateRef('userModal')
+const roleModal = useTemplateRef('roleModal')
+const passwordModal = useTemplateRef('passwordModal')
+
 const filterForm = useTemplateRef<FormInstance>('filterForm')
 
 const [filterExpanded, toggle] = useToggle(false)
@@ -251,8 +255,7 @@ const {
   onTreeNodeSelect,
 } = useDeptTree(queryParams, execute)
 
-const { entry, visible, onDelete, onEdit, onSetPassword, onSetRole, onSetStatus } =
-  useActions(execute)
+const { onDelete, onSetStatus } = useActions(execute)
 
 defineOptions({ name: 'SystemUser' })
 </script>

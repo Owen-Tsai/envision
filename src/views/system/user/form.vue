@@ -1,7 +1,7 @@
 <template>
   <AModal
-    v-model:open="isOpen"
-    :title="!record ? '新增用户' : '编辑用户'"
+    v-model:open="visible"
+    :title="mode === 'create' ? '新增用户' : '编辑用户'"
     :confirm-loading="loading"
     @ok="submit"
   >
@@ -14,12 +14,12 @@
     >
       <ASpin :spinning="loading">
         <ARow :gutter="16">
-          <ACol :lg="record ? 24 : 12" :span="24">
+          <ACol :lg="mode === 'update' ? 24 : 12" :span="24">
             <AFormItem label="用户账号" name="username">
-              <AInput v-model:value="formData.username" :disabled="!!record" />
+              <AInput v-model:value="formData.username" :disabled="mode === 'update'" />
             </AFormItem>
           </ACol>
-          <template v-if="!record">
+          <template v-if="mode === 'create'">
             <ACol :lg="12" :span="24">
               <AFormItem label="初始密码" name="password">
                 <AInputPassword v-model:value="formData.password" />
@@ -57,11 +57,11 @@
               <ASelect v-model:value="formData.sex" :options="systemUserSex" />
             </AFormItem>
           </ACol>
-          <ACol :lg="12" :span="24">
+          <!-- <ACol :lg="12" :span="24">
             <AFormItem label="岗位" name="postIds">
               <ASelect v-model:value="formData.postIds" />
             </AFormItem>
-          </ACol>
+          </ACol> -->
           <ACol :lg="12" :span="24">
             <AFormItem label="状态" name="status">
               <ASelect v-model:value="formData.status" :options="commonStatus" />
@@ -82,7 +82,7 @@
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
 import useRequest from '@/hooks/use-request'
-import useModalOpen from '@/hooks/use-modal'
+import logger from '@/utils/logger'
 import { getUserDetail, updateUser, createUser, type UserVO } from '@/api/system/user'
 import { getDeptTree } from '@/api/system/dept'
 
@@ -94,15 +94,10 @@ const rules: FormProps['rules'] = {
   nickname: [{ required: true, message: '请填写用户名称' }],
 }
 
-const props = defineProps<{
-  record?: UserVO
-  open?: boolean
-}>()
+const emit = defineEmits(['success'])
 
-const emit = defineEmits(['success', 'update:open'])
-
-const isOpen = useModalOpen(props, emit, formRef)
-
+const mode = ref<'create' | 'update'>('create')
+const visible = ref(false)
 const loading = ref(false)
 const formData = ref<UserVO>({})
 
@@ -114,35 +109,40 @@ const submit = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
-    if (props.record !== undefined) {
-      // update
-      await updateUser(formData.value)
-      message.success('保存成功')
-    } else {
-      // add
+    if (mode.value === 'create') {
       await createUser(formData.value)
-      message.success('创建成功')
+    } else {
+      await updateUser(formData.value)
     }
-
-    isOpen.value = false
+    message.success('保存成功')
+    visible.value = false
     emit('success')
   } catch (e) {
-    console.log(e)
+    logger.error('[system/user/form.vue] 表单提交失败。', e)
   } finally {
     loading.value = false
   }
 }
 
-watch(
-  () => props.record?.id,
-  (val) => {
-    if (val) {
-      loading.value = true
-      getUserDetail(val).then((data) => {
-        formData.value = data
-        loading.value = false
-      })
-    }
-  },
-)
+const loadData = async (id: number) => {
+  loading.value = true
+  const data = await getUserDetail(id)
+  formData.value = data
+  loading.value = false
+}
+
+const open = (id?: number) => {
+  formRef.value?.resetFields()
+
+  if (id) {
+    loadData(id)
+    mode.value = 'update'
+  } else {
+    mode.value = 'create'
+  }
+
+  visible.value = true
+}
+
+defineExpose({ open })
 </script>

@@ -2,28 +2,6 @@ import { Modal, message } from 'ant-design-vue'
 import { deleteUser, updateUserStatus, type UserVO } from '@/api/system/user'
 
 const useActions = (requestData: () => void) => {
-  const entry = ref<UserVO>()
-  const visible = reactive({
-    edit: false,
-    passwordReset: false,
-    roleConfig: false,
-  })
-
-  const onEdit = (record?: UserVO) => {
-    entry.value = record
-    visible.edit = true
-  }
-
-  const onSetPassword = (record: UserVO) => {
-    entry.value = record
-    visible.passwordReset = true
-  }
-
-  const onSetRole = (record: UserVO) => {
-    visible.roleConfig = true
-    entry.value = record
-  }
-
   const onDelete = (record: UserVO) => {
     Modal.confirm({
       title: '删除用户',
@@ -46,12 +24,7 @@ const useActions = (requestData: () => void) => {
   }
 
   return {
-    entry,
-    visible,
     onDelete,
-    onEdit,
-    onSetPassword,
-    onSetRole,
     onSetStatus,
   }
 }
