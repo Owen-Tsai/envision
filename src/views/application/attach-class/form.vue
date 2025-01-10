@@ -47,9 +47,14 @@
         <AFormItem label="是否必传" name="ismust">
           <ASwitch v-model:checked="formData.ismust" :checked-value="1" :un-checked-value="0" />
         </AFormItem>
-        <AFormItem label="是否从附件库选择" name="isLib">
-          <ASwitch v-model:checked="formData.isLib" checked-value="1" un-checked-value="0" />
-        </AFormItem>
+        <a-space style="display: flex; margin-bottom: 8px" align="baseline">
+          <AFormItem label="是否附件库附件" name="isLib">
+            <ASwitch v-model:checked="formData.isLib" checked-value="1" un-checked-value="0" />
+          </AFormItem>
+          <AFormItem label="附件库类型" name="libType" v-if="libTypeShow">
+            <ASelect v-model:value="formData.libType" :options="libTypeOpts" style="width: 180px" />
+          </AFormItem>
+        </a-space>
       </AForm>
     </ASpin>
   </AModal>
@@ -65,14 +70,24 @@ import {
 } from '@/api/application/attach-class'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 import useDict from '@/hooks/use-dict'
+import type { Rule } from 'ant-design-vue/es/form'
 
-const [fileTypeOpts] = useDict('file_type')
+const [fileTypeOpts, libTypeOpts] = useDict('file_type', 'attach_lib_type')
+
+const validateLibType = async (_rule: Rule, value: string) => {
+  if (formData.value.isLib == '1' && (value === '' || value == undefined)) {
+    return Promise.reject('请选择附件库类型！')
+  } else {
+    return Promise.resolve()
+  }
+}
 
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写附件分类名称' }],
   modeName: [{ required: true, message: '请填写附件分类代码' }],
   allowFileType: [{ required: true, message: '请选择允许上传类型' }],
   maxFileSize: [{ required: true, message: '请填写最大文件大小' }],
+  libType: [{ required: true, trigger: 'change', validator: validateLibType }],
 }
 
 const props = defineProps({
@@ -87,8 +102,8 @@ const formRef = ref<FormInstance>()
 const loading = ref(false)
 const open = ref(true)
 const formData = ref<Partial<AttachClassVO>>({
-  isone: '1',
-  ismust: '0',
+  isone: 1,
+  ismust: 0,
   isLib: '0',
 })
 const isAdd = computed(() => props.record === undefined)
@@ -126,4 +141,18 @@ if (props.record?.id) {
     loading.value = false
   })
 }
+
+const libTypeShow = ref<boolean>(false)
+
+watch(
+  () => formData.value.isLib,
+  (val) => {
+    if (val == 1) {
+      libTypeShow.value = true
+    } else {
+      formData.value.libType = ''
+      libTypeShow.value = false
+    }
+  },
+)
 </script>

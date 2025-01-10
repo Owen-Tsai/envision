@@ -3,12 +3,14 @@ import request from '@/utils/request'
 export type AttachClassVO = {
   id?: string
   name?: string
+  isone?: number
   allowFileType?: string
-  maxFileSize: number
+  maxFileSize?: number
   modeName?: string
   ismust?: number
-  isLib?: number
+  isLib?: string
   createTime?: string
+  libType?: string
 }
 
 export type ListQueryParams = {
@@ -27,7 +29,9 @@ export const getAttachClassList = (params?: ListQueryParams) => {
 
 export const createAttachClass = (data: AttachClassVO) => {
   const data2 = data
-  data2.maxFileSize = data2.maxFileSize * 1024 * 1024
+  if (data2.maxFileSize) {
+    data2.maxFileSize = data2.maxFileSize * 1024 * 1024
+  }
   return request.post({
     url: `${url}/create`,
     data: data2,
@@ -36,7 +40,9 @@ export const createAttachClass = (data: AttachClassVO) => {
 
 export const updateAttachClass = (data: AttachClassVO) => {
   const data2 = data
-  data2.maxFileSize = data2.maxFileSize * 1024 * 1024
+  if (data2.maxFileSize) {
+    data2.maxFileSize = data2.maxFileSize * 1024 * 1024
+  }
   return request.put({
     url: `${url}/update`,
     data: data2,
@@ -53,7 +59,9 @@ export const getAttachClassDetail = async (id: string) => {
   const data = await request.get<AttachClassVO>({
     url: `${url}/get?id=${id}`,
   })
-  console.log(data)
-  data.maxFileSize = data.maxFileSize / 1024 / 1024
+  // console.log(data)
+  if (data.maxFileSize) {
+    data.maxFileSize = data.maxFileSize / 1024 / 1024
+  }
   return data
 }
