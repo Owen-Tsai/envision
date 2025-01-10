@@ -83,20 +83,20 @@
       >
         <template #bodyCell="scope: TableScope<LogVO>">
           <template v-if="scope?.column.key === 'templateType'">
-            <EDictTag :dict-object="systemSmsTemplateType" :value="scope.text" />
+            <DictTag :dict-object="systemSmsTemplateType" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'sendStatus'">
-            <EDictTag :dict-object="systemSmsSendStatus" :value="scope.text" />
+            <DictTag :dict-object="systemSmsSendStatus" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'receiveStatus'">
-            <EDictTag :dict-object="systemSmsReceiveStatus" :value="scope.text" />
+            <DictTag :dict-object="systemSmsReceiveStatus" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'channelCode'">
             <div>
               {{ channelList.find((e) => e.id === scope.record.channelId)?.signature }}
             </div>
             <div>
-              <EDictTag :dict-object="systemSmsChannelCode" :value="scope.text" />
+              <DictTag :dict-object="systemSmsChannelCode" :value="scope.text" />
             </div>
           </template>
           <template v-if="scope?.column.key === 'sendTime'">

@@ -69,7 +69,7 @@
                 {{ userList?.find((e) => e.id === scope.record.leaderUserId)?.nickname }}
               </template>
               <template v-if="scope?.column.key === 'status'">
-                <EDictTag :value="scope.text" :dict-object="commonStatus" />
+                <DictTag :value="scope.text" :dict-object="commonStatus" />
               </template>
               <template v-if="scope?.column.key === 'createTime'">
                 {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}

@@ -90,17 +90,17 @@
       >
         <template #bodyCell="scope: TableScope<TemplateVO>">
           <template v-if="scope?.column.key === 'type'">
-            <EDictTag :dict-object="systemSmsTemplateType" :value="scope.text" />
+            <DictTag :dict-object="systemSmsTemplateType" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'status'">
-            <EDictTag :dict-object="commonStatus" :value="scope.text" />
+            <DictTag :dict-object="commonStatus" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'channelCode'">
             <div>
               {{ channelList.find((e) => e.id === scope.record.channelId)?.signature }}
             </div>
             <div>
-              <EDictTag :dict-object="systemSmsChannelCode" :value="scope.text" />
+              <DictTag :dict-object="systemSmsChannelCode" :value="scope.text" />
             </div>
           </template>
           <template v-if="scope?.column.key === 'createTime'">

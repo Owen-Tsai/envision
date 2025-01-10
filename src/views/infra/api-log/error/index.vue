@@ -100,10 +100,10 @@
         >
           <template #bodyCell="scope: TableScope<ErrorLogVO>">
             <template v-if="scope?.column.key === 'userType'">
-              <EDictTag :dict-object="userType" :value="scope?.text" />
+              <DictTag :dict-object="userType" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'processStatus'">
-              <EDictTag :dict-object="infraApiErrorLogProcessStatus" :value="scope?.text" />
+              <DictTag :dict-object="infraApiErrorLogProcessStatus" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'requestUrl'">
               {{ `${scope.record.requestMethod} ${scope.record.requestUrl}` }}

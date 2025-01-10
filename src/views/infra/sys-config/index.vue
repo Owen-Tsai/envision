@@ -88,7 +88,7 @@
         >
           <template #bodyCell="scope: TableScope<SysConfigVO>">
             <template v-if="scope?.column.key === 'visible'">
-              <EDictTag :dict-object="infraBooleanString" :value="scope.text" />
+              <DictTag :dict-object="infraBooleanString" :value="scope.text" />
             </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm:ss') }}

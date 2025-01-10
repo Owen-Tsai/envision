@@ -89,7 +89,7 @@
         >
           <template #bodyCell="scope">
             <template v-if="scope!.column.dataIndex === 'type'">
-              <EDictTag :dict-object="systemOperateType" :value="scope?.text" />
+              <DictTag :dict-object="systemOperateType" :value="scope?.text" />
             </template>
             <template v-if="scope!.column.dataIndex === 'resultCode'">
               <ATag v-if="scope?.text === 0" color="success">成功</ATag>

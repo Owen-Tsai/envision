@@ -11,7 +11,7 @@
     >
       <template #bodyCell="scope: TableScope<any>">
         <template v-if="getFormatter((scope?.column as any).idx)?.type === 'dict'">
-          <EDictTag :dict-object="getDictData((scope?.column as any).idx)" :value="scope?.text" />
+          <DictTag :dict-object="getDictData((scope?.column as any).idx)" :value="scope?.text" />
         </template>
         <template v-if="getFormatter((scope?.column as any).idx)?.type === 'custom'">
           {{ renderColumn(getFormatter((scope?.column as any).idx)?.value!, scope?.record) }}

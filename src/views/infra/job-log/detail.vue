@@ -18,7 +18,7 @@
         {{ dayjs(entry.endTime).format('YYYY-MM-DD HH:mm:ss') }}
       </ADescriptionsItem>
       <ADescriptionsItem label="执行状态">
-        <EDictTag :dict-object="infraJobLogStatus" :value="entry.status!" />
+        <DictTag :dict-object="infraJobLogStatus" :value="entry.status!" />
       </ADescriptionsItem>
       <ADescriptionsItem label="执行结果">{{ entry.result }}</ADescriptionsItem>
     </ADescriptions>

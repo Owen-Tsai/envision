@@ -77,7 +77,7 @@
         >
           <template #bodyCell="scope: TableScope<ReportVO>">
             <template v-if="scope?.column.key === 'status'">
-              <EDictTag :dict-object="commonStatus" :value="scope?.text" />
+              <DictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.text).format('YYYY-MM-DD') }}

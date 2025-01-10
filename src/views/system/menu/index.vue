@@ -78,7 +78,7 @@
                 </ATag>
               </template>
               <template v-if="scope?.column.key === 'status'">
-                <EDictTag :dict-object="commonStatus" :value="scope.text" />
+                <DictTag :dict-object="commonStatus" :value="scope.text" />
               </template>
               <template v-if="scope?.column.key === 'actions'">
                 <AFlex :gap="16">

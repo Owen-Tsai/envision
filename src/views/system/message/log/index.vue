@@ -86,13 +86,13 @@
       >
         <template #bodyCell="scope: TableScope<LogVO>">
           <template v-if="scope?.column.key === 'templateType'">
-            <EDictTag :dict-object="systemNotifyTemplateType" :value="scope.text" />
+            <DictTag :dict-object="systemNotifyTemplateType" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'readStatus'">
-            <EDictTag :dict-object="infraBooleanString" :value="scope.text" />
+            <DictTag :dict-object="infraBooleanString" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'userType'">
-            <EDictTag :dict-object="systemUserType" :value="scope.text" />
+            <DictTag :dict-object="systemUserType" :value="scope.text" />
           </template>
           <template v-if="scope?.column.key === 'createTime'">
             {{ formatDate(scope.text) }}

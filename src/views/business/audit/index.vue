@@ -30,7 +30,7 @@
         >
           <template #bodyCell="scope: TableScope<any>">
             <template v-if="scope!.column.key === 'status'">
-              <EDictTag :dict-object="commonStatus" :value="scope?.text" />
+              <DictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'auditProcess'">
               <a-tag color="processing" v-if="scope.record.auditProcess === '0'">

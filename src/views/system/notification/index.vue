@@ -85,10 +85,10 @@
         >
           <template #bodyCell="scope: TableScope<NotificationVO>">
             <template v-if="scope!.column.key === 'status'">
-              <EDictTag :dict-object="commonStatus" :value="scope?.text" />
+              <DictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
             <template v-if="scope!.column.key === 'type'">
-              <EDictTag :dict-object="systemNoticeType" :value="scope?.text" />
+              <DictTag :dict-object="systemNoticeType" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.record.createTime).format('YYYY-MM-DD HH:mm:ss') }}

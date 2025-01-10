@@ -135,21 +135,23 @@ const loadDeptData = async () => {
   loading.value = false
 }
 
-const loadData = async () => {
+const loadData = async (record: RoleVO) => {
   loading.value = true
+  state.name = record.name
+  state.code = record.code
+  formData.value.roleId = record.id
   if (mode.value === 'menu') {
     await loadMenuData()
   } else {
     await loadDeptData()
+    formData.value.dataScopeDeptIds = record.dataScopeDeptIds
+    formData.value.dataScope = record.dataScope
   }
 }
 
-const open = (record: RoleVO, modalMode: 'menu' | 'data') => () => {
+const open = (record: RoleVO, modalMode: 'menu' | 'data') => {
   mode.value = modalMode
-  formData.value.roleId = record.id
-  state.name = record.name
-  state.code = record.code
-  loadData()
+  loadData(record)
   visible.value = true
 }
 

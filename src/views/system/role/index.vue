@@ -88,7 +88,7 @@
         >
           <template #bodyCell="scope: TableScope<RoleVO>">
             <template v-if="scope!.column.key === 'status'">
-              <EDictTag :dict-object="commonStatus" :value="scope?.text" />
+              <DictTag :dict-object="commonStatus" :value="scope?.text" />
             </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.record.createTime).format('YYYY-MM-DD') }}
@@ -118,7 +118,7 @@
                     <AMenu>
                       <AMenuItem
                         :disabled="!permission.has('system:permission:assign-role-menu')"
-                        @click="permissionModal?.open(scope.record, 'menu')"
+                        @click="permissionModal!.open(scope.record, 'menu')"
                       >
                         菜单权限
                       </AMenuItem>

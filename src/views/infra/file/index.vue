@@ -71,7 +71,7 @@
         >
           <template #bodyCell="scope: TableScope<FileVO>">
             <template v-if="scope?.column.key === 'storage'">
-              <EDictTag :dict-object="infraFileStorage" :value="scope.text" />
+              <DictTag :dict-object="infraFileStorage" :value="scope.text" />
             </template>
             <template v-if="scope?.column.key === 'preview'">
               <AImage

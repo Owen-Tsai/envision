@@ -5,7 +5,7 @@
       <ADescriptionsItem label="发送方名称">{{ entry.templateNickname }}</ADescriptionsItem>
       <ADescriptionsItem label="接收方ID">{{ entry.userId }}</ADescriptionsItem>
       <ADescriptionsItem label="用户类型">
-        <EDictTag :dict-object="systemUserType" :value="entry.userType!" />
+        <DictTag :dict-object="systemUserType" :value="entry.userType!" />
       </ADescriptionsItem>
       <ADescriptionsItem label="站内信模板">
         {{ entry.templateId }}
@@ -13,7 +13,7 @@
         {{ entry.templateCode }}
       </ADescriptionsItem>
       <ADescriptionsItem label="模板类型">
-        <EDictTag :dict-object="systemNotifyTemplateType" :value="entry.templateType!" />
+        <DictTag :dict-object="systemNotifyTemplateType" :value="entry.templateType!" />
       </ADescriptionsItem>
       <ADescriptionsItem label="站内信内容" :span="2">
         {{ entry.templateContent }}
@@ -25,7 +25,7 @@
         {{ dayjs(entry.createTime).format('YYYY-MM-DD HH:mm:ss') }}
       </ADescriptionsItem>
       <ADescriptionsItem label="阅读状态">
-        <EDictTag :dict-object="infraBooleanString" :value="entry.readStatus!.toString()" />
+        <DictTag :dict-object="infraBooleanString" :value="entry.readStatus!.toString()" />
       </ADescriptionsItem>
       <ADescriptionsItem label="阅读时间">
         {{ dayjs(entry.createTime).format('YYYY-MM-DD HH:mm:ss') }}

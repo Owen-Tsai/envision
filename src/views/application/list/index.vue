@@ -87,7 +87,7 @@
         >
           <template #bodyCell="scope: TableScope<ApplicationVO>">
             <template v-if="scope?.column.key === 'type'">
-              <EDictTag :dict-object="typeOpts" :value="scope.record.type!" />
+              <DictTag :dict-object="typeOpts" :value="scope.record.type!" />
             </template>
             <template v-if="scope?.column.key === 'published'">
               <ASwitch

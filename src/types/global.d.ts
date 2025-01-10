@@ -3,7 +3,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Scrollbar: typeof import('custom-vue-scrollbar').default
-    EDictTag: typeof import('@/components/dict-tag/index.vue').default
+    DictTag: typeof import('@/components/dict-tag/index.vue').default
     EUpload: typeof import('@/components/upload/index.vue').default
     Counter: typeof import('vue-countup-v3').default
     Logo: typeof import('@/components/_internal/logo.vue').defualt

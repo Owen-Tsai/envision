@@ -87,7 +87,7 @@
               <ATag v-if="scope.record.master" color="processing">主配置</ATag>
             </template>
             <template v-if="scope?.column.key === 'storage'">
-              <EDictTag :dict-object="infraFileStorage" :value="scope.text" />
+              <DictTag :dict-object="infraFileStorage" :value="scope.text" />
             </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm:ss') }}

@@ -88,7 +88,7 @@
         >
           <template #bodyCell="scope: TableScope<JobVO>">
             <template v-if="scope?.column.key === 'status'">
-              <EDictTag :dict-object="infraJobStatus" :value="scope.text" />
+              <DictTag :dict-object="infraJobStatus" :value="scope.text" />
             </template>
             <template v-if="scope?.column.key === 'createTime'">
               {{ dayjs(scope.text).format('YYYY-MM-DD HH:mm:ss') }}

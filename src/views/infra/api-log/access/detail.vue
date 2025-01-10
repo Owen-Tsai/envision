@@ -6,7 +6,7 @@
       <ADescriptionsItem label="用户信息">
         ID: {{ entry.userId }}
         <ADivider type="vertical" />
-        <EDictTag :dict-object="userType" :value="entry.userType!" />
+        <DictTag :dict-object="userType" :value="entry.userType!" />
       </ADescriptionsItem>
       <ADescriptionsItem label="用户IP">{{ entry.userIp }}</ADescriptionsItem>
       <ADescriptionsItem label="用户设备" :span="2">{{ entry.userAgent }}</ADescriptionsItem>

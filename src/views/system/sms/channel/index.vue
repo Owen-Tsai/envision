@@ -63,7 +63,7 @@
             {{ systemSmsChannelCode.find((e) => e.value === scope.text)?.label }}
           </template>
           <template v-if="scope?.column.key === 'status'">
-            <EDictTag :dict-object="commonStatus" :value="scope.record.status!" />
+            <DictTag :dict-object="commonStatus" :value="scope.record.status!" />
           </template>
           <template v-if="scope?.column.key === 'createTime'">
             {{ dayjs(scope.record.createTime!).format('YYYY-MM-DD') }}

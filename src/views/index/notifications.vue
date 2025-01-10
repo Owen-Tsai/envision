@@ -12,7 +12,7 @@
             :to="`/system/notice/${item.id}`"
             class="item"
           >
-            <EDictTag :dict-object="systemNoticeType" :value="item.type!" />
+            <DictTag :dict-object="systemNoticeType" :value="item.type!" />
             <div class="truncate flex-grow-1">{{ item.title }}</div>
           </RouterLink>
         </div>
