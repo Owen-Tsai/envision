@@ -38,7 +38,7 @@
                 v-if="permission.has('system:menu:create')"
                 type="primary"
                 :loading="pending"
-                @click="onEdit('add')"
+                @click="modal?.open('create')"
               >
                 <template #icon>
                   <PlusOutlined />
@@ -84,14 +84,14 @@
                 <AFlex :gap="16">
                   <ATypographyLink
                     v-if="permission.has('system:menu:update')"
-                    @click="onEdit('edit', scope.record)"
+                    @click="modal?.open('update', scope.record.id)"
                   >
                     <EditOutlined />
                     修改
                   </ATypographyLink>
                   <ATypographyLink
                     v-if="permission.has('system:menu:create')"
-                    @click="onEdit('add', scope.record)"
+                    @click="modal?.open('create', scope.record.id)"
                   >
                     <PlusOutlined />
                     新增
@@ -115,13 +115,7 @@
       </ACol>
     </ARow>
 
-    <FormModal
-      v-model:open="visible"
-      :mode="mode"
-      :record="entry"
-      :tree-data="data"
-      @success="execute"
-    />
+    <FormModal ref="modal" :tree-data="data" @success="execute" />
   </div>
 </template>
 
@@ -135,12 +129,13 @@ import useActions from './use-actions'
 import FormModal from './form.vue'
 
 const filterFormRef = ref()
+const modal = useTemplateRef('modal')
 
 const [commonStatus] = useDict('common_status')
 
 const { data, execute, pending, queryParams, onFilter, onFilterReset } = useTable(filterFormRef)
 
-const { entry, mode, visible, onClearCache, onDelete, onEdit } = useActions(execute)
+const { onClearCache, onDelete } = useActions(execute)
 
 defineOptions({ name: 'SystemMenu' })
 </script>

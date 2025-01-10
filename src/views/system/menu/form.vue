@@ -1,9 +1,8 @@
 <template>
   <AModal
-    v-model:open="isOpen"
-    :title="mode === 'add' ? '新增菜单' : '编辑菜单'"
+    v-model:open="visible"
+    :title="mode === 'create' ? '新增菜单' : '编辑菜单'"
     :confirm-loading="loading"
-    @cancel="isOpen = false"
     @ok="submit"
   >
     <AForm
@@ -123,7 +122,7 @@ import IconSelect from '@/components/icon-select/index.vue'
 import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
 import { getMenuDetail, createMenu, updateMenu, type MenuVO } from '@/api/system/menu'
 import useDict from '@/hooks/use-dict'
-import useModalOpen from '@/hooks/use-modal'
+import logger from '@/utils/logger'
 import { menuTypes } from '@/utils/constants'
 import { QuestionCircleFilled } from '@ant-design/icons-vue'
 
@@ -136,19 +135,16 @@ const rules: FormProps['rules'] = {
   component: [{ required: true, message: '请填写组件文件路径' }],
 }
 
-const loading = ref(false)
-
-const props = defineProps<{
-  mode: 'add' | 'edit'
-  treeData?: TreeSelectProps['treeData']
-  record?: MenuVO
-  open?: boolean
+const { treeData } = defineProps<{
+  treeData: TreeSelectProps['treeData']
 }>()
 
-const formRef = ref<FormInstance>()
-const emit = defineEmits(['success', 'update:open'])
+const visible = ref(false)
+const loading = ref(false)
 
-const isOpen = useModalOpen(props, emit, formRef)
+const mode = ref<'create' | 'update'>('create')
+const formRef = ref<FormInstance>()
+const emit = defineEmits(['success'])
 
 const isCustomLayout = ref(false)
 
@@ -162,52 +158,56 @@ const formData = ref<MenuVO>({
 })
 
 const submit = async () => {
+  loading.value = true
   try {
-    loading.value = true
     await formRef.value?.validate()
     if (formData.value.parentId === undefined) {
       formData.value.parentId = 0
     }
-    if (props.mode === 'add') {
+    if (mode.value === 'create') {
       // add
       await createMenu(formData.value)
-      message.success('创建成功')
     } else {
       // edit
       await updateMenu(formData.value)
-      message.success('保存成功')
     }
 
-    isOpen.value = false
+    message.success('保存成功')
+    visible.value = false
     emit('success')
   } catch (e) {
-    // do nothing
+    logger.error(import.meta.url, '表单提交失败。', e)
   } finally {
     loading.value = false
   }
 }
 
-const loadData = async () => {
-  if (props.mode === 'add') {
-    formData.value.parentId = props.record!.id
-  } else {
-    loading.value = true
-    const data = await getMenuDetail(props.record!.id!)
-    if (data.parentId === 0) {
-      data.parentId = undefined
-    }
-    formData.value = data
-    isCustomLayout.value = !!data.customLayout
-    loading.value = false
+const loadData = async (id: number) => {
+  loading.value = true
+  const data = await getMenuDetail(id)
+  if (data.parentId === 0) {
+    data.parentId = undefined
   }
+  formData.value = data
+  isCustomLayout.value = !!data.customLayout
+  loading.value = false
 }
 
-watch(
-  () => props.open,
-  (val) => {
-    if (val) {
-      loadData()
-    }
-  },
-)
+const open = (type: 'create' | 'update', id?: number) => {
+  formRef.value?.resetFields()
+  mode.value = type
+
+  if (type === 'create' && id) {
+    // add sub menu
+    formData.value.parentId = id
+  }
+
+  if (type === 'update') {
+    loadData(id!)
+  }
+
+  visible.value = true
+}
+
+defineExpose({ open })
 </script>
