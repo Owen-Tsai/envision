@@ -103,28 +103,12 @@ const planId = ref<string>('')
 const appParamsCtx = ref<Record<string, any>>({})
 appParamsCtx.value.applyId = applyId
 
-const multiMode = ref(false)
-const multiFormCurrentStep = computed(() => {
-  return formRenderer.value?.getCurrentStep()
-})
-const multiFormTabIsEnd = computed(() => {
-  return formRenderer.value?.getCurrentStep() >= appSchema.value.info.tables.length - 1
-})
-// 多表返回上一步的方法
-const multiPrevStep = () => {
-  formRenderer.value.toPrevStep()
-}
-// 多表进入下一步的方法
-const multiNextStep = () => {
-  formRenderer.value.toNextStep()
-}
-
 onMounted(() => {
   // get(<string>appId)
   getEchoDataMethod(appId, applyId)
   getAuditProcessDetailMethod(processInstanceId)
   if (taskDefKey != 'All') {
-    getProcessInstanceMethod(processInstanceId)
+    getProcessInstanceMethod(processInstanceId, taskId)
     getTaskReturnOptionsMethod(taskId)
   }
 })
@@ -133,8 +117,8 @@ const basicInfo = ref({
   name: '',
 })
 const idea = ref('')
-const getProcessInstanceMethod = async (parentProcessInstanceId: string) => {
-  const data = await getProcessInstance(parentProcessInstanceId)
+const getProcessInstanceMethod = async (parentProcessInstanceId: string, taskId: string) => {
+  const data = await getProcessInstance(parentProcessInstanceId, taskId)
   basicInfo.value.title = data.name
   basicInfo.value.name = data.starter
 }
@@ -151,7 +135,6 @@ const getEchoDataMethod = async (appId: string, applyId: string) => {
     if (data[key] && !Array.isArray(data[key])) {
       const fields = Object.keys(data[key])
       if (appSchema.value.info.paginated) {
-        multiMode.value = true
         const findIndex = appSchema.value.info.tables.findIndex((table) => table.name == key)
         fields.forEach((field) => {
           set(ret, `${findIndex}.${key}:${field}`, data[key][field])

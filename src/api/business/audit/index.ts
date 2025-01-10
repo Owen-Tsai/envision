@@ -29,8 +29,14 @@ export const getList = (taskDefKey: string, appId: string) => {
   })
 }
 
-export const getProcessInstance = (id: string) => {
-  return request.get({ url: '/admin-api/fux-bpm/get-process-info?processId=' + id })
+export const getProcessInstance = (parentProcessInstanceId: string, taskId: string) => {
+  return request.get({
+    url:
+      '/admin-api/fux-bpm/get-process-info?processId=' +
+      parentProcessInstanceId +
+      '&taskId=' +
+      taskId,
+  })
 }
 
 export type TaskVO = {
