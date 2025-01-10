@@ -7,7 +7,7 @@ import Scrollbar from 'custom-vue-scrollbar'
 import STable from '@surely-vue/table'
 
 import '@wangeditor/editor/dist/css/style.css'
-import '@surely-vue/table/dist/style.css'
+import '@surely-vue/table/dist/index.css'
 import 'nprogress/nprogress.css'
 import 'custom-vue-scrollbar/dist/style.css'
 
