@@ -1,7 +1,7 @@
 <template>
   <AModal
-    v-model:open="isOpen"
-    :title="isAdd ? '新增角色类型' : '编辑角色类型'"
+    v-model:open="visible"
+    :title="mode === 'create' ? '新增角色类型' : '编辑角色类型'"
     :confirm-loading="loading"
     @ok="submit"
   >
@@ -44,22 +44,18 @@
 import useDict from '@/hooks/use-dict'
 import { addRole, updateRole, getRoleDetail, type RoleVO } from '@/api/system/role'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
-import useModalOpen from '@/hooks/use-modal'
+import logger from '@/utils/logger'
 
 const rules: FormProps['rules'] = {
   name: [{ required: true, message: '请填写角色名称' }],
   code: [{ required: true, message: '请填写角色标识' }],
 }
 
-const props = defineProps<{
-  record?: RoleVO
-  open?: boolean
-}>()
+const mode = ref<'create' | 'update'>('create')
+const visible = ref(false)
 
-const emit = defineEmits(['success', 'update:open'])
+const emit = defineEmits(['success'])
 const formRef = ref<FormInstance>()
-
-const isOpen = useModalOpen(props, emit, formRef)
 
 const loading = ref(false)
 
@@ -70,40 +66,46 @@ const formData = ref<RoleVO>({
 
 const [commonStatus] = useDict('common_status')
 
-const isAdd = computed(() => props.record === undefined)
-
 const submit = async () => {
+  loading.value = true
   try {
-    loading.value = true
     await formRef.value?.validate()
 
-    if (isAdd.value) {
+    if (mode.value === 'create') {
       await addRole(formData.value)
-      message.success('创建成功')
     } else {
       await updateRole(formData.value)
-      message.success('保存成功')
     }
 
+    message.success('保存成功')
     emit('success')
-    isOpen.value = false
+    visible.value = false
   } catch (e) {
-    //
+    logger.error(import.meta.url, '表单提交失败。', e)
   } finally {
     loading.value = false
   }
 }
 
-watch(
-  () => props.record?.id,
-  (val) => {
-    if (val) {
-      loading.value = true
-      getRoleDetail(val).then((res) => {
-        formData.value = res
-        loading.value = false
-      })
-    }
-  },
-)
+const loadData = async (id: number) => {
+  loading.value = true
+  const res = await getRoleDetail(id)
+  formData.value = res
+  loading.value = false
+}
+
+const open = (id?: number) => {
+  formRef.value?.resetFields()
+
+  if (id) {
+    loadData(id)
+    mode.value = 'update'
+  } else {
+    mode.value = 'create'
+  }
+
+  visible.value = true
+}
+
+defineExpose({ open })
 </script>

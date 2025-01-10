@@ -54,7 +54,7 @@
             v-if="permission.has('system:role:create')"
             type="primary"
             :loading="pending"
-            @click="onEdit()"
+            @click="roleModel?.open()"
           >
             <template #icon>
               <PlusOutlined />
@@ -97,7 +97,7 @@
               <AFlex :gap="16">
                 <ATypographyLink
                   v-if="permission.has('system:role:update')"
-                  @click="onEdit(scope.record)"
+                  @click="roleModel?.open(scope.record.id)"
                 >
                   <EditOutlined />
                   编辑
@@ -118,13 +118,13 @@
                     <AMenu>
                       <AMenuItem
                         :disabled="!permission.has('system:permission:assign-role-menu')"
-                        @click="onSetPermission(scope.record, 'menu')"
+                        @click="permissionModal?.open(scope.record, 'menu')"
                       >
                         菜单权限
                       </AMenuItem>
                       <AMenuItem
                         :disabled="!permission.has('system:permission:assign-role-data-scope')"
-                        @click="onSetPermission(scope.record, 'data')"
+                        @click="permissionModal?.open(scope.record, 'data')"
                       >
                         数据权限
                       </AMenuItem>
@@ -150,14 +150,9 @@
     </ACard>
 
     <!-- 编辑角色 -->
-    <FormModal v-model:open="visible.edit" :record="entry" @success="execute" />
+    <FormModal ref="roleModal" @success="execute" />
     <!-- 编辑角色的菜单权限 -->
-    <PermissionFormModal
-      v-model:open="visible.permissionConfig"
-      :record="entry!"
-      :mode="permissionType"
-      @success="execute"
-    />
+    <PermissionFormModal ref="permissionModal" @success="execute" />
   </div>
 </template>
 
@@ -174,6 +169,9 @@ import type { RoleVO } from '@/api/system/role'
 
 const filterForm = ref<FormInstance>()
 
+const roleModel = useTemplateRef('roleModal')
+const permissionModal = useTemplateRef('permissionModal')
+
 const [filterExpanded, toggle] = useToggle(false)
 
 const [commonStatus] = useDict('common_status')
@@ -181,7 +179,7 @@ const [commonStatus] = useDict('common_status')
 const { data, pending, execute, queryParams, onFilter, onFilterReset, onChange, pagination } =
   useTable(filterForm)
 
-const { entry, visible, permissionType, onDelete, onEdit, onSetPermission } = useActions(execute)
+const { onDelete } = useActions(execute)
 
 defineOptions({ name: 'SystemRole' })
 </script>
