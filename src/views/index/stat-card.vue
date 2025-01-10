@@ -5,11 +5,11 @@
       <div class="fux-card-body">
         <div class="grid grid-cols-2 gap-4">
           <div v-for="(item, i) in data" :key="i" class="entry">
-            <ECounter :end-val="item.value" class="count">
+            <Counter :end-val="item.value" class="count">
               <template #suffix>
                 <span class="suffix">{{ item.suffix }}</span>
               </template>
-            </ECounter>
+            </Counter>
             <div class="title">{{ item.title }}</div>
           </div>
         </div>

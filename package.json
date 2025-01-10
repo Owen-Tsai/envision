@@ -20,7 +20,7 @@
     "cmd:gen-icon-dts": "npx ts-node --esm --project tsconfig.node.json ./scripts/gen-icon-dts.ts"
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx,vue}": [
+    "./src/**/*.{js,ts,jsx,tsx,vue}": [
       "eslint --fix",
       "prettier --write"
     ]

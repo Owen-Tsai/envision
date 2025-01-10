@@ -34,7 +34,7 @@
             :value="entry.value"
           >
             <template #formatter>
-              <ECounter :end-val="entry.value" :decimal-places="entry.decimal || 0" />
+              <Counter :end-val="entry.value" :decimal-places="entry.decimal || 0" />
             </template>
           </AStatistic>
         </div>
