@@ -4,10 +4,10 @@ import { getOperateLogPage, type ListQueryParams } from '@/api/system/operate-lo
 
 export const columns: TableProps['columns'] = [
   { key: 'id', title: '日志编号', dataIndex: 'id', width: 90 },
-  { key: 'module', title: '操作模块', dataIndex: 'module' },
+  { key: 'module', title: '操作模块', dataIndex: 'module', ellipsis: true },
   { key: 'name', title: '操作名', dataIndex: 'name', minWidth: 140 },
   { key: 'type', title: '操作类型', dataIndex: 'type', width: 90 },
-  { key: 'userNickname', title: '操作人', dataIndex: 'userNickname', width: 90 },
+  { key: 'userNickname', title: '操作人', dataIndex: 'userNickname', ellipsis: true, width: 90 },
   { key: 'resultCode', title: '操作结果', dataIndex: 'resultCode', width: 90 },
   { key: 'startTime', title: '操作时间', dataIndex: 'startTime', width: 120 },
   { key: 'duration', title: '执行时长', dataIndex: 'duration', width: 90 },
