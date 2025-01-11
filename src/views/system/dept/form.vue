@@ -1,7 +1,7 @@
 <template>
   <AModal
-    v-model:open="isOpen"
-    :title="record === undefined ? '新增部门' : '编辑部门'"
+    v-model:open="visible"
+    :title="mode === 'create' ? '新增部门' : '编辑部门'"
     :confirm-loading="loading"
     @ok="submit"
   >
@@ -13,7 +13,11 @@
       class="mt-4"
     >
       <ASpin :spinning="loading">
-        <AFormItem label="上级部门" name="parentId">
+        <AFormItem
+          v-show="formData.parentId !== 0 || mode === 'create'"
+          label="上级部门"
+          name="parentId"
+        >
           <ATreeSelect
             v-model:value="formData.parentId"
             show-search
@@ -63,7 +67,7 @@
 import { message, type FormInstance, type TreeSelectProps, type FormProps } from 'ant-design-vue'
 import { getDeptDetail, createDept, updateDept, type DeptVO } from '@/api/system/dept'
 import { filterOption } from '@fusionx/utils'
-import useModalOpen from '@/hooks/use-modal'
+import logger from '@/utils/logger'
 import useDict from '@/hooks/use-dict'
 import type { SimpleUserListVO } from '@/api/system/user'
 
@@ -75,57 +79,57 @@ const rules = ref<FormProps['rules']>({
   name: [{ required: true, message: '请输入部门名称' }],
 })
 
-const props = defineProps<{
+const { treeData, userData } = defineProps<{
   treeData?: TreeSelectProps['treeData']
   userData?: SimpleUserListVO
-  record?: DeptVO
-  open?: boolean
 }>()
 
+const visible = ref(false)
+const mode = ref<'create' | 'update'>('create')
 const emit = defineEmits(['success', 'update:open'])
 const formRef = ref<FormInstance>()
-
-const isOpen = useModalOpen(props, emit, formRef)
 
 const formData = ref<DeptVO>({})
 
 const submit = async () => {
+  loading.value = true
   try {
-    loading.value = true
     await formRef.value?.validate()
-    if (props.record !== undefined) {
+    if (mode.value === 'update') {
       // edit
       await updateDept(formData.value)
-      message.success('保存成功')
     } else {
       // add
       await createDept(formData.value)
-      message.success('创建成功')
     }
 
-    isOpen.value = false
+    message.success('保存成功')
+    visible.value = false
     emit('success')
   } catch (e) {
-    // do nothing at the moment
-    // until we have a unified error handling precedure
+    logger.error(import.meta.url, '表单提交失败。', e)
   } finally {
     loading.value = false
   }
 }
 
-watch(
-  () => props.record?.id,
-  (val) => {
-    if (val) {
-      loading.value = true
-      getDeptDetail(val).then((data) => {
-        if (data.parentId === 0) {
-          data.parentId = undefined
-        }
-        formData.value = data
-        loading.value = false
-      })
-    }
-  },
-)
+const loadData = async (id: number) => {
+  loading.value = true
+  const data = await getDeptDetail(id)
+  formData.value = data
+  loading.value = false
+}
+
+const open = (id?: number) => {
+  formRef.value?.resetFields()
+  mode.value = 'create'
+  if (id) {
+    loadData(id)
+    mode.value = 'update'
+  }
+
+  visible.value = true
+}
+
+defineExpose({ open })
 </script>

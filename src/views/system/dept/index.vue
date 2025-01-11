@@ -38,7 +38,7 @@
                 v-if="permission.has('system:dept:create')"
                 type="primary"
                 :loading="pending"
-                @click="onEdit()"
+                @click="modal?.open()"
               >
                 <template #icon>
                   <PlusOutlined />
@@ -78,7 +78,7 @@
                 <AFlex :gap="16">
                   <ATypographyLink
                     v-if="permission.has('system:dept:update')"
-                    @click="onEdit(scope.record)"
+                    @click="modal?.open(scope.record.id)"
                   >
                     <EditOutlined />
                     修改
@@ -103,13 +103,7 @@
       </ACol>
     </ARow>
 
-    <FormModal
-      v-model:open="visible"
-      :tree-data="data"
-      :user-data="userList"
-      :record="entry"
-      @success="execute"
-    />
+    <FormModal ref="modal" :tree-data="data" :user-data="userList" @success="execute" />
   </div>
 </template>
 
@@ -123,13 +117,14 @@ import { type DeptVO } from '@/api/system/dept'
 import { permission } from '@/hooks/use-permission'
 
 const filterFormRef = ref()
+const modal = useTemplateRef('modal')
 
 const [commonStatus] = useDict('common_status')
 
 const { data, execute, pending, queryParams, userList, onFilter, onFilterReset } =
   useTable(filterFormRef)
 
-const { entry, visible, onDelete, onEdit } = useActions(execute)
+const { onDelete } = useActions(execute)
 
 defineOptions({ name: 'SystemDept' })
 </script>
