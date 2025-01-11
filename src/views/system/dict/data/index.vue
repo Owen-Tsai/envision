@@ -54,7 +54,7 @@
     <ACard title="字典类型" class="mt-4">
       <template #extra>
         <AFlex :gap="8">
-          <AButton type="primary" :loading="pending" @click="onEdit()">
+          <AButton type="primary" :loading="pending" @click="modal?.open()">
             <template #icon>
               <PlusOutlined />
             </template>
@@ -94,7 +94,7 @@
             </template>
             <template v-if="scope!.column.title === '操作'">
               <AFlex :gap="16">
-                <ATypographyLink @click="onEdit(scope!.record)">
+                <ATypographyLink @click="modal?.open(scope.record.id)">
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
@@ -111,7 +111,7 @@
       </div>
     </ACard>
 
-    <FormModal v-model:open="visible" :record="entry" @success="execute" />
+    <FormModal ref="modal" @success="execute" />
   </div>
 </template>
 
@@ -125,6 +125,7 @@ import type { FormInstance } from 'ant-design-vue'
 import type { DictDataItemVO } from '@/api/system/dict/data'
 
 const filterForm = ref<FormInstance>()
+const modal = useTemplateRef('modal')
 
 const [filterExpanded, toggle] = useToggle(false)
 
@@ -133,5 +134,5 @@ const [commonStatus] = useDict('common_status')
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const { onDelete, onEdit, entry, visible } = useActions(execute)
+const { onDelete } = useActions(execute)
 </script>

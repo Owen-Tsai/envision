@@ -54,7 +54,7 @@
             v-if="permission.has('system:dict:create')"
             type="primary"
             :loading="pending"
-            @click="onEdit()"
+            @click="modal?.open()"
           >
             <template #icon>
               <PlusOutlined />
@@ -97,7 +97,7 @@
               <AFlex :gap="16">
                 <ATypographyLink
                   v-if="permission.has('system:dict:update')"
-                  @click="onEdit(scope!.record)"
+                  @click="modal?.open(scope.record.id)"
                 >
                   <EditOutlined />
                   编辑
@@ -124,7 +124,7 @@
       </div>
     </ACard>
 
-    <FormModal v-model:open="visible" :record="entry" @success="execute" />
+    <FormModal ref="modal" @success="execute" />
   </div>
 </template>
 
@@ -139,6 +139,7 @@ import type { FormInstance } from 'ant-design-vue'
 import type { DictTypeVO } from '@/api/system/dict/type'
 
 const filterForm = ref<FormInstance>()
+const modal = useTemplateRef('modal')
 
 const [filterExpanded, toggle] = useToggle(false)
 
@@ -147,7 +148,7 @@ const [commonStatus] = useDict('common_status')
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const { entry, visible, onDelete, onEdit, onShowData } = useActions(execute)
+const { onDelete, onShowData } = useActions(execute)
 
 defineOptions({ name: 'SystemDictType' })
 </script>

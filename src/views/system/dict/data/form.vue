@@ -1,7 +1,7 @@
 <template>
   <AModal
-    v-model:open="isOpen"
-    :title="isAdd ? '新增字典数据' : '编辑字典数据'"
+    v-model:open="visible"
+    :title="mode === 'create' ? '新增字典数据' : '编辑字典数据'"
     :confirm-loading="loading"
     @ok="submit"
   >
@@ -72,17 +72,13 @@ const rules: FormProps['rules'] = {
   value: [{ required: true, message: '请填写字典键值' }],
 }
 
-const props = defineProps<{
-  record?: DictDataItemVO
-  open?: boolean
-}>()
-
 const emit = defineEmits(['success', 'update:open'])
+
 const formRef = ref<FormInstance>()
-
-const isOpen = useModalOpen(props, emit, formRef)
-
+const visible = ref(false)
+const mode = ref<'create' | 'update'>('create')
 const loading = ref(false)
+
 const formData = ref<Partial<DictDataItemVO>>({
   status: 0,
   sort: 0,
@@ -92,22 +88,19 @@ const formData = ref<Partial<DictDataItemVO>>({
 const { params } = useRoute()
 const [commonStatus] = useDict('common_status')
 
-const isAdd = computed(() => props.record?.id === undefined)
-
 const submit = async () => {
+  loading.value = true
   try {
-    loading.value = true
     await formRef.value?.validate()
 
-    if (isAdd.value) {
+    if (mode.value === 'create') {
       await addDictData(formData.value)
-      message.success('创建成功')
     } else {
       await updateDictData(formData.value)
-      message.success('保存成功')
     }
 
-    isOpen.value = false
+    message.success('保存成功')
+    visible.value = false
     emit('success')
   } catch (e) {
     //
@@ -116,20 +109,23 @@ const submit = async () => {
   }
 }
 
-watch(
-  () => props.open,
-  (val) => {
-    if (val) {
-      formData.value.dictType = params.type as string
+const loadData = async (id: number) => {
+  loading.value = true
+  formData.value.dictType = params.type as string
+  const res = await getDictDataDetail(id)
+  formData.value = res
+  loading.value = false
+}
 
-      if (props.record?.id) {
-        loading.value = true
-        getDictDataDetail(props.record.id).then((res) => {
-          formData.value = res
-          loading.value = false
-        })
-      }
-    }
-  },
-)
+const open = (id?: number) => {
+  formRef.value?.resetFields()
+  mode.value = 'create'
+  if (id) {
+    loadData(id)
+    mode.value = 'update'
+  }
+  visible.value = true
+}
+
+defineExpose({ open })
 </script>

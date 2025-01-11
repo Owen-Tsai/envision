@@ -1,7 +1,7 @@
 <template>
   <AModal
-    v-model:open="isOpen"
-    :title="isAdd ? '新增字典类型' : '编辑字典类型'"
+    v-model:open="visible"
+    :title="mode === 'create' ? '新增字典类型' : '编辑字典类型'"
     :confirm-loading="loading"
     @ok="submit"
   >
@@ -41,7 +41,7 @@ import {
   getDictTypeDetail,
   type DictTypeVO,
 } from '@/api/system/dict/type'
-import useModalOpen from '@/hooks/use-modal'
+import logger from '@/utils/logger'
 import { message, type FormInstance, type FormProps } from 'ant-design-vue'
 
 const rules: FormProps['rules'] = {
@@ -49,17 +49,13 @@ const rules: FormProps['rules'] = {
   type: [{ required: true, message: '请填写字典类型' }],
 }
 
-const props = defineProps<{
-  record?: DictTypeVO
-  open?: boolean
-}>()
+const emit = defineEmits(['success'])
 
-const emit = defineEmits(['success', 'update:open'])
+const visible = ref(false)
+const mode = ref<'create' | 'update'>('create')
 const formRef = ref<FormInstance>()
-
-const isOpen = useModalOpen(props, emit, formRef)
-
 const loading = ref(false)
+
 const formData = ref<Partial<DictTypeVO>>({
   name: '',
   type: '',
@@ -68,40 +64,45 @@ const formData = ref<Partial<DictTypeVO>>({
 
 const [commonStatus] = useDict('common_status')
 
-const isAdd = computed(() => props.record === undefined)
-
 const submit = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
 
-    if (isAdd.value) {
+    if (mode.value === 'create') {
       await addDictType(formData.value)
-      message.success('创建成功')
     } else {
       await updateDictType(formData.value)
-      message.success('保存成功')
     }
 
+    message.success('保存成功')
     emit('success')
-    isOpen.value = false
+    visible.value = false
   } catch (e) {
-    //
+    logger.error(import.meta.url, '表单提交失败。', e)
   } finally {
     loading.value = false
   }
 }
 
-watch(
-  () => props.record?.id,
-  (val) => {
-    if (val) {
-      loading.value = true
-      getDictTypeDetail(val).then((res) => {
-        formData.value = res
-        loading.value = false
-      })
-    }
-  },
-)
+const loadData = async (id: number) => {
+  loading.value = true
+  const res = await getDictTypeDetail(id)
+  formData.value = res
+  loading.value = false
+}
+
+const open = (id?: number) => {
+  formRef.value?.resetFields()
+  mode.value = 'create'
+
+  if (id) {
+    mode.value = 'create'
+    loadData(id)
+  }
+
+  visible.value = true
+}
+
+defineExpose({ open })
 </script>
