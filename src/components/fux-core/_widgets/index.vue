@@ -1,7 +1,7 @@
 <template>
   <template v-if="config.class === 'layout' && shouldShow">
     <!-- layout widgets -->
-    <component :is="widgetToRenderer" :config="widgetConfig" :fields="fields" />
+    <component :is="widgetToRenderer" :config="widgetConfig" :fields="fieldsConfig" />
   </template>
   <template v-else-if="config.class === 'special' && shouldShow">
     <!-- special widgets -->
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { camelCase } from 'lodash-es'
+import { camelCase, last } from 'lodash-es'
 import { useRendererInjection } from '../_hooks'
 import useSignals from './use-widget-signals'
 import { tryParse } from '@fusionx/utils'
@@ -32,9 +32,9 @@ import type { NPropsFieldConfig } from '@/types/fux-core/flow'
 const ctx = useRendererInjection()
 const emit = defineEmits(['update:config'])
 
-const { config, fields, showAll } = defineProps<{
+const { config, fieldsConfig, showAll } = defineProps<{
   config: Widget
-  fields?: NPropsFieldConfig[]
+  fieldsConfig?: NPropsFieldConfig[]
   showAll?: boolean
 }>()
 
@@ -77,30 +77,27 @@ const fieldName = computed(() => {
   return config.props.field?.name?.split('.')
 })
 
-const fieldConfig = computed<NPropsFieldConfig['config'] | null>(() => {
+const interactivity = computed<NPropsFieldConfig['config'] | null>(() => {
   if (!ctx || ctx.mode === 'dev') {
     return null
   }
-  let config: NPropsFieldConfig['config']
+
   if (fieldName.value !== undefined) {
-    const res = fields?.find((fcfg) => fcfg.name == fieldName.value![fieldName.value!.length - 1])
+    const res = fieldsConfig?.find((config) => config.name === last(fieldName.value))
     if (res && res.config) {
-      config = res.config
+      return res.config
     }
   }
-  return config
+
+  return null
 })
 
 const shouldShow = computed(() => {
-  if (showAll) return true
+  if (showAll || !ctx || ctx.mode === 'dev') return true
 
-  if (ctx && ctx.mode !== 'dev' && fields) {
+  if (interactivity.value) {
     // preview, prod, audit
-    return fieldConfig.value === 'hide' ? false : visible.value
-  }
-
-  if (!ctx || ctx.mode === 'dev') {
-    return true
+    if (interactivity.value === 'hide') return false
   }
 
   return !config.props.hide && visible.value
@@ -117,7 +114,7 @@ const rules = computed(() => {
 })
 
 watch(
-  () => fieldConfig.value,
+  () => interactivity.value,
   (val) => {
     if (val === 'readonly') {
       setPropWhenApplicable('readonly', true)
