@@ -1,13 +1,13 @@
 <template>
-  <template v-if="config.class === 'layout' && visible">
+  <template v-if="config.class === 'layout' && shouldShow">
     <!-- layout widgets -->
     <component :is="widgetToRenderer" :config="widgetConfig" :fields="fields" />
   </template>
-  <template v-else-if="config.class === 'special' && visible">
+  <template v-else-if="config.class === 'special' && shouldShow">
     <!-- special widgets -->
   </template>
   <AFormItem
-    v-else-if="config.class === 'form' && show"
+    v-else-if="config.class === 'form' && shouldShow"
     :extra="config.props.field?.extra"
     :label="config.props.field?.label"
     :name="fieldName || config.uid"
@@ -24,11 +24,13 @@
 <script setup lang="ts">
 import { camelCase } from 'lodash-es'
 import { useRendererInjection } from '../_hooks'
+import useSignals from './use-widget-signals'
 import { tryParse } from '@fusionx/utils'
 import type { FormWidget, Widget } from '@/types/fux-core/form'
 import type { NPropsFieldConfig } from '@/types/fux-core/flow'
 
 const ctx = useRendererInjection()
+const emit = defineEmits(['update:config'])
 
 const { config, fields, showAll } = defineProps<{
   config: Widget
@@ -36,11 +38,19 @@ const { config, fields, showAll } = defineProps<{
   showAll?: boolean
 }>()
 
-const widgetConfig = ref(config)
+const widgetConfig = computed({
+  get() {
+    return config
+  },
+  set(val) {
+    emit('update:config', val)
+  },
+})
 
 const components = import.meta.glob('./**/index.vue', { eager: true, import: 'default' })
 
-const visible = computed(() => (!ctx || ctx.mode === 'dev' ? true : !config.props.hide))
+// might be modified later by emitted events
+const { visible } = useSignals(widgetConfig)
 
 const widgetToRenderer = computed(() => {
   const type = config.type
@@ -81,26 +91,19 @@ const fieldConfig = computed<NPropsFieldConfig['config'] | null>(() => {
   return config
 })
 
-const show = computed(() => {
-  // console.log(fieldName.value)
-  if (!visible.value && showAll) {
-    return true
-  } else {
-    if (fields) {
-      // console.log('config', config)
-      // console.log('fieldName', fieldName.value)
-      // console.log('fieldConfig', fieldConfig.value)
-      if (fieldConfig.value == 'show') {
-        return true
-      } else if (fieldConfig.value == 'hide') {
-        return false
-      } else {
-        return fieldConfig.value == 'edit' || fieldConfig.value == 'readonly' ? true : visible.value
-      }
-    } else {
-      return visible.value
-    }
+const shouldShow = computed(() => {
+  if (showAll) return true
+
+  if (ctx && ctx.mode !== 'dev' && fields) {
+    // preview, prod, audit
+    return fieldConfig.value === 'hide' ? false : visible.value
   }
+
+  if (!ctx || ctx.mode === 'dev') {
+    return true
+  }
+
+  return !config.props.hide && visible.value
 })
 
 const setPropWhenApplicable = (prop: string, value: any) => {

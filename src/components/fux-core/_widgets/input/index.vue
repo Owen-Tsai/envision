@@ -1,5 +1,6 @@
 <template>
   <AInput
+    v-if="visible"
     v-model:value="model"
     :default-value="config.props.defaultValue"
     :maxlength="config.props.maxlength"
@@ -25,6 +26,7 @@
 <script setup lang="ts">
 import { useModel, useDefaultValue, useEvents } from '../../_hooks'
 import AddonRenderer from '@/components/_internal/addon-renderer.vue'
+import { emitter } from '@fusionx/utils'
 import type { WidgetMap } from '@/types/fux-core/form'
 
 const { config } = defineProps<{
@@ -34,4 +36,6 @@ const { config } = defineProps<{
 const { model } = useModel(config)
 useDefaultValue(config)
 const evt = useEvents(config.props.event)
+
+const visible = ref(true)
 </script>
