@@ -322,14 +322,13 @@ const getFields = () => {
   const fields = {}
   if (fieldNameArr.length > 0) {
     console.log(formRenderer.value.getFormData())
-    const originFormData = formRenderer.value.getFormData()
+    const originFormData = formRenderer.value.getFormData().value
     const tablesLength = appSchema.value.info.tables.length
     const formData = {}
     if (tablesLength > 1) {
       const tabs = formRenderer.value.getStepWidget()
       for (let i = 0; i < tablesLength; i++) {
         if (!tabs.props.children[i].widgets.some((e) => e.type == 'dataTable')) {
-          // console.log(originFormData[i])
           const datakeys = Object.keys(originFormData[i])
           datakeys.forEach((keyName) => {
             set(formData, keyName, originFormData[i][keyName])
