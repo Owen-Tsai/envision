@@ -52,7 +52,7 @@
         <ARow>
           <ACol :span="12">
             <AFormItem label="前台图标" name="iconFe" extra="支持 png, svg, jpg 格式">
-              <EUpload
+              <Upload
                 :accept="['png', 'svg', 'jpg', 'jpeg', 'gif']"
                 v-model:value="formData.iconFe"
                 :limit="1"
@@ -63,7 +63,7 @@
           </ACol>
           <ACol :span="12">
             <AFormItem label="后台图标" name="iconBe" extra="支持 png, svg, jpg 格式">
-              <EUpload
+              <Upload
                 :accept="['png', 'svg', 'jpg', 'jpeg', 'gif']"
                 v-model:value="formData.iconBe"
                 :limit="1"
