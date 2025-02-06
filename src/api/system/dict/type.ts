@@ -46,7 +46,7 @@ export const addDictType = (data: DictTypeVO) => {
 
 export const updateDictType = (data: DictTypeVO) => {
   return request.put({
-    url: `${prefix}/create`,
+    url: `${prefix}/update`,
     data,
   })
 }

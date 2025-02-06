@@ -97,7 +97,7 @@ const open = (id?: number) => {
   mode.value = 'create'
 
   if (id) {
-    mode.value = 'create'
+    mode.value = 'update'
     loadData(id)
   }
 
