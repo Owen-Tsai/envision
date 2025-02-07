@@ -1,5 +1,6 @@
 import registerGlobalComponents from '@/plugins/global-components'
 import registerAntd from '@/plugins/ant-design'
+import '@/plugins/dayjs'
 
 import 'virtual:uno.css'
 
