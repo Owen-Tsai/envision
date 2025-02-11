@@ -30,7 +30,7 @@ const footer = import.meta.env.VITE_APP_FOOTER
 <style lang="scss" scoped>
 @use '@/styles/mixins.scss' as *;
 .page {
-  background: url('~img/login-bg-alt-l.png') top center no-repeat;
+  background: url('~img/login-bg.png') top center no-repeat;
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;

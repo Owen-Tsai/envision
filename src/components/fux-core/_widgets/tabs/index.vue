@@ -1,12 +1,9 @@
 <template>
   <ATabs
-    :active-key="
-      config.props.stepsMode && ctx?.mode === 'prod' ? config.props.state?.current : undefined
-    "
+    v-model:active-key="model.props.state.current"
     :type="config.props.type"
     :centered="config.props.centered"
     :size="config.props.size"
-    :destroy-inactive-tab-pane="config.props.destroyInactivePanes"
   >
     <ATabPane v-for="(pane, i) in config.props.children" :key="i" :tab="pane.title">
       <template v-if="ctx && ctx.mode && ctx.mode !== 'dev'">

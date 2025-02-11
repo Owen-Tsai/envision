@@ -23,9 +23,6 @@
   <AFormItem label="标签页居中" name="centered" class="boolean-field">
     <ASwitch v-model:checked="model.centered" />
   </AFormItem>
-  <AFormItem label="切换时销毁DOM" name="destroyInactivePanes" class="boolean-field">
-    <ASwitch v-model:checked="model.destroyInactivePanes" />
-  </AFormItem>
   <AFormItem label="步骤模式" name="stepsMode" class="boolean-field">
     <ASwitch v-model:checked="model.stepsMode" />
   </AFormItem>
