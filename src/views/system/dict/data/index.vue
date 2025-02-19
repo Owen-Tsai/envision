@@ -51,7 +51,7 @@
       </AForm>
     </ACard>
 
-    <ACard title="字典类型" class="mt-4">
+    <ACard title="字典数据" class="mt-4">
       <template #extra>
         <AFlex :gap="8">
           <AButton type="primary" :loading="pending" @click="modal?.open()">

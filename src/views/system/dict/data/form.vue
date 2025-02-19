@@ -14,7 +14,7 @@
         class="mt-4"
       >
         <AFormItem label="字典类型" name="dictType">
-          <AInput v-model:value="formData.dictType" disabled />
+          <AInput v-model:value="formData.dictType" readonly />
         </AFormItem>
         <AFormItem label="字典标签" name="label">
           <AInput v-model:value="formData.label" placeholder="请输入字典标签" />
@@ -58,7 +58,6 @@
 
 <script lang="ts" setup>
 import useDict from '@/hooks/use-dict'
-import useModalOpen from '@/hooks/use-modal'
 import {
   addDictData,
   updateDictData,
@@ -111,7 +110,6 @@ const submit = async () => {
 
 const loadData = async (id: number) => {
   loading.value = true
-  formData.value.dictType = params.type as string
   const res = await getDictDataDetail(id)
   formData.value = res
   loading.value = false
@@ -119,6 +117,7 @@ const loadData = async (id: number) => {
 
 const open = (id?: number) => {
   formRef.value?.resetFields()
+  formData.value.dictType = params.type as string
   mode.value = 'create'
   if (id) {
     loadData(id)
