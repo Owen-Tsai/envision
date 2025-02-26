@@ -5,7 +5,7 @@
     :centered="config.props.centered"
     :size="config.props.size"
   >
-    <ATabPane v-for="(pane, i) in config.props.children" :key="i" :tab="pane.title">
+    <ATabPane v-for="(pane, i) in config.props.children" :key="i" :tab="pane.title" force-render>
       <template v-if="ctx && ctx.mode && ctx.mode !== 'dev'">
         <WidgetRenderer
           v-for="widget in pane.widgets"
