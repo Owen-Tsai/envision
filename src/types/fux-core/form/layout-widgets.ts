@@ -92,6 +92,8 @@ export interface WPropsDataTable extends WPropsCommon {
     mode: 'table' | 'form'
   }
   url?: string
+  minSize?: number
+  maxSize?: number
 }
 
 export interface LayoutWidgetPropsMap {
