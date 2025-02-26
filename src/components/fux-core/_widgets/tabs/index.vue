@@ -12,6 +12,7 @@
           :key="widget.uid"
           :config="widget"
           :fields="fields"
+          :mode="mode"
         />
       </template>
       <template v-if="!ctx">
@@ -42,10 +43,12 @@ import Nested from '../../form-designer/canvas/nested.vue'
 import WidgetRenderer from '../index.vue'
 import { kebabCase } from 'lodash-es'
 import type { WidgetMap } from '@/types/fux-core/form'
+import type { FuxRendererMode } from '@/types/fux-core/form/context'
 
-const { config, fields } = defineProps<{
+const { config, fields, mode } = defineProps<{
   config: WidgetMap['tabs']
   fields?: any[]
+  mode?: FuxRendererMode
 }>()
 
 const emit = defineEmits(['update:config'])

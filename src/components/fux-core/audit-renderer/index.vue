@@ -11,17 +11,7 @@
       :layout="schema?.form.layout"
       :wrapper-col="wrapperCol"
       class="flex-grow"
-    >
-      <WidgetRenderer
-        v-for="widget in schema.form.widgets"
-        :key="widget.uid"
-        :config="widget"
-        :fields="fieldsToRender"
-        :showAll="showAll"
-        :mode="mode"
-      />
-    </AForm>
-    <div v-if="showData" class="data" v-html="highlighted" />
+    ></AForm>
   </div>
 </template>
 

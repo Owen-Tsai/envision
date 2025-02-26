@@ -8,7 +8,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, type PropType, type CSSProperties } from 'vue'
-import { CodeJar } from 'codejar'
 import useHighlighter from '@/hooks/use-highlighter'
 import type { BundledLanguage } from 'shiki'
 

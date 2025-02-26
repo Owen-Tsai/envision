@@ -1,9 +1,8 @@
-import { ref, type Ref } from 'vue'
 import useDictStore from '@/stores/dict'
 import { getDictData, type DictDataEntry } from '@/api/system/dict/data'
+import type { Ref } from 'vue'
 
-export function useDict(...args: string[]): Ref<DictDataEntry[]>[]
-export function useDict(arg: undefined | string): Ref<DictDataEntry[]>[]
+export function useDict(arg?: string | undefined, ...rest: string[]): Ref<DictDataEntry[]>[]
 
 export function useDict(arg: string | undefined, ...rest: string[]) {
   if (arg === undefined) {
@@ -18,8 +17,10 @@ export function useDict(arg: string | undefined, ...rest: string[]) {
     if (!dictType) {
       return ref([])
     }
+
     const dict = dictStore.getDict(dictType)
     const data = ref(dict || []) as Ref<DictDataEntry[]>
+
     if (!dict) {
       getDictData(dictType).then((res) => {
         const convertedData: DictDataEntry[] = []
@@ -40,6 +41,7 @@ export function useDict(arg: string | undefined, ...rest: string[]) {
           }
           convertedData.push({ ...entry })
         })
+
         data.value = convertedData
         dictStore.setDict(dictType, convertedData)
       })
