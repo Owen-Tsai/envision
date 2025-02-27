@@ -33,21 +33,6 @@
       </template>
     </div>
 
-    <!--    <AModal v-model:open="schemaVisible" title="应用 Schema" :width="480">-->
-    <!--      <div class="relative">-->
-    <!--        <div v-html="highlighted" />-->
-    <!--        <ATooltip :title="copied ? '已复制' : '复制 Schema'">-->
-    <!--          <AButton shape="circle" :icon="h(CopyOutlined)" ghost @click="copy()" />-->
-    <!--        </ATooltip>-->
-    <!--      </div>-->
-
-    <!--      <template #footer>-->
-    <!--        <div class="text-right">-->
-    <!--          <AButton type="primary" @click="schemaVisible = false">关闭</AButton>-->
-    <!--        </div>-->
-    <!--      </template>-->
-    <!--    </AModal>-->
-
     <AModal v-model:open="schemaVisible" title="应用 Schema" :width="1000">
       <div class="relative" style="height: 600px; overflow: auto">
         <div v-html="highlighted" />
@@ -65,7 +50,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
 import Loader from '@/components/loading/index.vue'
-import { RollbackOutlined, CodeOutlined, CopyOutlined } from '@ant-design/icons-vue'
+import { RollbackOutlined, CodeOutlined } from '@ant-design/icons-vue'
 import DataSourceConfig from './data-source/index.vue'
 import FormDesign from './form/index.vue'
 import WorkflowDesign from './workflow/index.vue'
@@ -74,7 +59,7 @@ import { useSteps, useAppDesigner } from './use-app-design'
 
 const { appSchema, saveAppDesign, schemaLoaded } = useAppDesigner()
 const { step, steps } = useSteps()
-const { copy, copied } = useClipboard({ source: JSON.stringify(appSchema.value, null, 2) })
+const { copy } = useClipboard({ source: JSON.stringify(appSchema.value, null, 2) })
 
 const schemaVisible = ref(false)
 const highlighted = computed(() => useHighlighter(JSON.stringify(appSchema.value, null, 2), 'json'))

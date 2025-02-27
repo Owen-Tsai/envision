@@ -27,6 +27,7 @@
 import { ref } from 'vue'
 import { EyeOutlined } from '@ant-design/icons-vue'
 import { getAttachView, getUploadList, type UploadListType } from '@/api/attach'
+import type { TableProps } from 'ant-design-vue'
 
 const props = defineProps({
   planId: {
@@ -62,20 +63,21 @@ const refreshList = async () => {
 }
 
 // 附件表格中的列
-const columns = [
+const columns: TableProps['columns'] = [
   {
     title: '附件名称',
     dataIndex: 'name',
     key: 'name',
-    width: 300,
+    width: 200,
+    ellipsis: true,
   },
   {
-    title: '限制文件类型',
+    title: '文件类型',
     dataIndex: 'allowFileType',
     key: 'allowFileType',
   },
   {
-    title: '限制文件大小',
+    title: '文件大小',
     dataIndex: 'maxFileSize',
     key: 'maxFileSize',
   },
@@ -92,7 +94,6 @@ const columns = [
   {
     title: '操作',
     key: 'action',
-    width: 400,
   },
 ]
 

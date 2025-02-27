@@ -1,5 +1,5 @@
 import { message, Modal } from 'ant-design-vue'
-import { merge, flattenDeep, drop, compact } from 'lodash-es'
+import { merge, flattenDeep, compact } from 'lodash-es'
 import dayjs from 'dayjs'
 import { getApplicationDetail, type ApplicationVO } from '@/api/application'
 import {
@@ -15,6 +15,7 @@ import nodes from '@/components/fux-core/_utils/initial-node-config'
 import type { StepsProps } from 'ant-design-vue'
 import type { AppSchema } from '@/types/fux-core'
 import type { AppDesignerCtx } from './interface'
+import type { Node } from '@/types/fux-core/flow'
 
 const APP_DESIGN_CTX = Symbol('app-designer-ctx')
 
@@ -113,21 +114,19 @@ export const useAppDesigner = () => {
   }
 
   const genAuditMenu = async () => {
-    const getSteps = () => {
-      const list = flattenDeep(appSchema.value?.flow.nodes)
-        .map((node) => {
-          // console.log(node)
-          if (node.props.actor?.value[0] != 'org') {
-            return {
-              uid: node.uid,
-              name: node.name,
-              role: node.props.actor?.value[0],
-            }
-          }
-        })
-        .filter(Boolean)
+    const getSteps = (nodes: Node[] = appSchema.value.flow.nodes) => {
+      const ret: Node[] = []
 
-      return drop(list)
+      nodes.forEach((node) => {
+        if (node.type === 'audit') {
+          ret.push(node)
+        } else if (node.type === 'group') {
+          const nodes = node.props.children.map((n) => getSteps(n))
+          ret.push(...flattenDeep(nodes))
+        }
+      })
+
+      return ret
     }
 
     const id = await createAppSchema(appSchemaVO.value)
@@ -145,7 +144,7 @@ export const useAppDesigner = () => {
     loading.value = true
     // validation
     const unsetNodes = flattenDeep(appSchema.value.flow.nodes).filter(
-      (node) => node.type !== 'start' && !node.props.actor.value,
+      (node) => node.type === 'audit' && !node.props.actor.value,
     )
 
     if (unsetNodes.length > 0) {

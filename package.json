@@ -88,5 +88,6 @@
     "vite": "^5.4.11",
     "vite-plugin-vue-devtools": "^7.6.8",
     "vue-tsc": "^2.1.10"
-  }
+  },
+  "packageManager": "pnpm@9.12.3+sha1.4fb96925d434c491285182acf29803bb9aa2e6e5"
 }

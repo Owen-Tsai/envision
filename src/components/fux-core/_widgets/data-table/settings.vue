@@ -25,6 +25,16 @@
         <AInputNumber v-model:value="model.pagination.pageSize" :min="1" :step="1" class="w-full" />
       </AFormItem>
     </div>
+    <AFormItem label="数量限制">
+      <AInputNumber v-model:value="model.minSize" class="mb-2" :min="0" :step="1" :precision="0">
+        <template #addonBefore> 最少 </template>
+        <template #addonAfter> 条 </template>
+      </AInputNumber>
+      <AInputNumber v-model:value="model.maxSize" :min="0" :step="1" :precision="0">
+        <template #addonBefore> 最多 </template>
+        <template #addonAfter> 条 </template>
+      </AInputNumber>
+    </AFormItem>
   </div>
   <div v-show="model.state.mode === 'form'">
     <AFormItem

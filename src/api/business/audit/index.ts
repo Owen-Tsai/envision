@@ -3,6 +3,8 @@ import type { PlanVO } from '@/api/application/plan'
 
 export type ListQueryParams = CommonQueryParams & {
   taskDefKey?: string
+  startUser?: string
+  submitTime?: [string, string]
 }
 
 export type EchoDataVO = {
@@ -11,12 +13,20 @@ export type EchoDataVO = {
   plan: PlanVO
 }
 
-export type AuditProcessDetailsListType = Array<{
+export type AuditStatusListVO = Array<{
   title: string
   subTitle: string
   description: string
-  status: string
+  status: 'finish' | 'error' | 'process'
 }>
+
+export type BasicInfoVO = {
+  starter: string
+  createTime: number
+  name: string
+  userType: string
+  taskId: string
+}
 
 export const getList = (taskDefKey: string, appId: string) => {
   const url =
@@ -30,7 +40,7 @@ export const getList = (taskDefKey: string, appId: string) => {
 }
 
 export const getProcessInstance = (parentProcessInstanceId: string, taskId: string) => {
-  return request.get({
+  return request.get<BasicInfoVO>({
     url:
       '/admin-api/fux-bpm/get-process-info?processId=' +
       parentProcessInstanceId +
@@ -75,14 +85,14 @@ export const getEchoData = (appId: string, applyId: string) => {
   })
 }
 
-export const getTaskReturnOptions = (parentProcessInstanceId?: string) => {
+export const getTaskReturnOptions = (taskId?: string) => {
   return request.get({
-    url: `/admin-api/bpm/task/list-by-return?id=${parentProcessInstanceId}`,
+    url: `/admin-api/bpm/task/list-by-return?id=${taskId}`,
   })
 }
 
-export const getAuditProcessDetail = (processInstanceId: string) => {
-  return request.get({
+export const getAuditStatusList = (processInstanceId: string) => {
+  return request.get<AuditStatusListVO>({
     url: `/admin-api/fux-bpm/get-process-log?processInstanceId=${processInstanceId}`,
   })
 }

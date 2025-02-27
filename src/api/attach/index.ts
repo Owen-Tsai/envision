@@ -6,7 +6,11 @@ export type UploadListType = Array<{
   ismust: number
   maxFileSize: number
   allowFileType: string
-  attachDO: object
+  attachDO: {
+    id: string
+    modeName: string
+    [x: string]: any
+  }
 }>
 
 export const getUploadList = (planId: string, applyId: string, appId: string) => {

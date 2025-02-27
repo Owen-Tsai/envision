@@ -82,6 +82,14 @@ export const fixedRoutes: RouteRecordRaw[] = [
       {
         path: '/business/:appId/audit',
         name: 'BusinessAuditList',
+        component: () => import('@/views/audit/list/index.vue'),
+        meta: {
+          title: '应用审核',
+        },
+      },
+      {
+        path: '/business2/:appId/audit',
+        name: 'BusinessAuditList2',
         component: () => import('@/views/business/audit/index.vue'),
         meta: {
           title: '应用审核',
@@ -90,6 +98,14 @@ export const fixedRoutes: RouteRecordRaw[] = [
       {
         path: '/business/:appId/audit/form',
         name: 'BusinessAuditForm',
+        component: () => import('@/views/audit/detail/index.vue'),
+        meta: {
+          title: '应用审核',
+        },
+      },
+      {
+        path: '/business2/:appId/audit/form',
+        name: 'BusinessAuditForm2',
         component: () => import('@/views/business/audit/form.vue'),
         meta: {
           title: '应用审核',
