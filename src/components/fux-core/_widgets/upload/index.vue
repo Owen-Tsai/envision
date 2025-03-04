@@ -5,6 +5,7 @@
     :accept="config.props.accept"
     :list-type="config.props.type"
     :limit="config.props.limit"
+    auto-upload
     :size-limit="config.props.sizeLimit"
     :disabled="config.props.disabled"
     @change="evt?.handler('change')"
