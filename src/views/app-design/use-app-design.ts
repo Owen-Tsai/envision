@@ -140,12 +140,22 @@ export const useAppDesigner = () => {
     }
   }
 
+  const resetTabsCurrent = () => {
+    appSchema.value.form.widgets.forEach((widget) => {
+      if (widget.type === 'tabs' && widget.props.stepsMode) {
+        widget.props.state.current = 0
+      }
+    })
+  }
+
   const saveAppDesign = () => {
     loading.value = true
     // validation
     const unsetNodes = flattenDeep(appSchema.value.flow.nodes).filter(
       (node) => node.type === 'audit' && !node.props.actor.value,
     )
+    // reset tabs current active model to 0
+    resetTabsCurrent()
 
     if (unsetNodes.length > 0) {
       message.error('流程中包含未指派审核人的节点')
