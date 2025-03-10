@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, kebabCase } from 'lodash-es'
 import { generateId } from '@fusionx/utils'
 import {
   getCodeGenConfigDetail as getTableColumns,
@@ -25,7 +25,7 @@ const genDataTableSchema = (info: ConfigDetailVO, widgets: Widget[]): WidgetMap[
           value: column.dictTypeStr || '',
         },
       })),
-      url: '/applications/' + info.table.tableName,
+      url: '/applications/' + kebabCase(info.table.tableName),
     },
   }
 
@@ -64,14 +64,14 @@ const genGridSchema = (count: 2 | 3, widgets: Widget[]): WidgetMap['grid'] => {
   return ret
 }
 
-const genTableWidgetsSchema = (info: ConfigDetailVO, step?: number): Widget[] => {
-  const { columns, table } = info
+const genTableWidgetsSchema = (info: ConfigDetailVO): Widget[] => {
+  const { columns } = info
   // widgets of table
   const tableSchema: Widget[] = []
   columns.forEach((column) => {
     if (!column.createOperation || !column.htmlType) return
 
-    const widget = genWidgetSchema(column, table.tableName || '', step)
+    const widget = genWidgetSchema(column)
     if (widget) {
       tableSchema.push(widget)
     }
@@ -82,8 +82,7 @@ const genTableWidgetsSchema = (info: ConfigDetailVO, step?: number): Widget[] =>
 
 const genWidgetSchema = (
   column: ConfigDetailVO['columns'][number],
-  tableName: string,
-  step?: number,
+  tableName?: string,
 ): Widget | undefined => {
   const type = (column.htmlType === 'datetime' ? 'datePicker' : column.htmlType) as keyof WidgetMap
   if (widgetConfigMap[type]) {
@@ -136,7 +135,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
       } as Widget)
     : []
 
-  tableColumnsInfo.forEach((info, idx) => {
+  tableColumnsInfo.forEach((info) => {
     const gridSchema: WidgetMap['grid'] | null = gridColumns
       ? {
           ...cloneDeep(widgetConfigMap.grid)!,
@@ -150,9 +149,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
 
     delete gridSchema?.icon
 
-    let tableSchema: Widget[] = paginated
-      ? genTableWidgetsSchema(info, idx)
-      : genTableWidgetsSchema(info)
+    let tableSchema: Widget[] = genTableWidgetsSchema(info)
     if (gridColumns) {
       // const colWidgets = genGridSchema(tableSchema, column)
       const gridSchema = genGridSchema(gridColumns, tableSchema)
