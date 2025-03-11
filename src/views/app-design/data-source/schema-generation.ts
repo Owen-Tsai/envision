@@ -93,7 +93,7 @@ const genWidgetSchema = (
         ...cloneDeep(widgetConfigMap[type]!.props),
         field: {
           label: column.columnComment || column.columnName,
-          name: `${tableName}:${column.javaField}`,
+          name: tableName ? `${tableName}:${column.javaField}` : column.javaField,
         },
         hide: `${column.javaField}` == 'id',
       },
