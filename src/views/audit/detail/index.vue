@@ -43,6 +43,7 @@
           :plan-id="planInfo.id!"
           :current-audit-process="'0'"
           class="mb-4"
+          v-if="planInfo.fjfl?.length && planInfo.fjfl?.length > 0"
         />
         <!-- audit form -->
         <AuditForm
