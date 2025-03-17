@@ -26,6 +26,7 @@ export type BasicInfoVO = {
   name: string
   userType: string
   taskId: string
+  submitTime: string
 }
 
 export const getList = (taskDefKey: string, appId: string) => {

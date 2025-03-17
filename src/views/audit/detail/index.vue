@@ -14,7 +14,7 @@
           <div class="flex items-center gap-8 text-muted">
             <span>所属应用：{{ planInfo?.item }}</span>
             <span>申报人：{{ basicInfo?.starter }}</span>
-            <span>申报时间：{{ dayjs(basicInfo?.createTime).format('YYYY-MM-DD') }}</span>
+            <span>申报时间：{{ dayjs(basicInfo?.submitTime).format('YYYY-MM-DD HH:mm:ss') }}</span>
           </div>
         </div>
       </div>
