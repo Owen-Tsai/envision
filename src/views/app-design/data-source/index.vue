@@ -35,7 +35,7 @@
           <ARadioGroup v-model:value="dataSrcState.paginated">
             <ARadioButton :value="false">不分页</ARadioButton>
             <ARadioButton value="tabs">使用 tabs 分页</ARadioButton>
-            <ARadioButton value="steps">使用 steps 分页</ARadioButton>
+            <!--            <ARadioButton value="steps">使用 steps 分页</ARadioButton>-->
           </ARadioGroup>
         </AFormItem>
         <AFormItem label="表单分栏">
