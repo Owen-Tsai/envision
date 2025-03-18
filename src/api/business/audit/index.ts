@@ -13,11 +13,14 @@ export type EchoDataVO = {
   plan: PlanVO
 }
 
-export type AuditStatusListVO = Array<{
-  title: string
-  subTitle: string
-  description: string
-  status: 'finish' | 'error' | 'process'
+export type AuditTimeLineData = Array<{
+  nodeColor: string
+  operator: string
+  operationResult: string
+  operationResultCode: number
+  operationRemark: string
+  inProcess: boolean
+  operationTime: string
 }>
 
 export type BasicInfoVO = {
@@ -92,8 +95,8 @@ export const getTaskReturnOptions = (taskId?: string) => {
   })
 }
 
-export const getAuditStatusList = (processInstanceId: string) => {
-  return request.get<AuditStatusListVO>({
+export const getAuditTimeLineData = (processInstanceId: string) => {
+  return request.get<AuditTimeLineData>({
     url: `/admin-api/fux-bpm/get-process-log?processInstanceId=${processInstanceId}`,
   })
 }

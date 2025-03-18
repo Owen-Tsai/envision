@@ -52,6 +52,7 @@ import iGroup from '~img/icon-ugroup.svg'
 import iDept from '~img/icon-dept.svg'
 import iProfile from '~img/icon-id-card.svg'
 import iAccount from '~img/icon-account.svg'
+import { getIndexData } from '@/api/index'
 
 const links = [
   { name: '用户管理', icon: iGroup, path: '/system/user' },
@@ -60,16 +61,20 @@ const links = [
   { name: '个人设置', icon: iProfile, path: '/me' },
 ]
 
-const stats = [
-  { name: '应用总数', value: 6 },
-  { name: '上架应用数', value: 2 },
-  { name: '计划启用数', value: 7 },
-  { name: '业务办理量', value: 8, suffix: '人次' },
-  { name: '办理通过率', value: 90.65, suffix: '%', decimal: 2 },
-]
+// let stats = [
+//   { name: '应用总数', value: 6 },
+//   { name: '上架应用数', value: 2 },
+//   { name: '计划启用数', value: 7 },
+//   { name: '业务办理量', value: 8, suffix: '人次' },
+//   { name: '办理通过率', value: '90.65', suffix: '%', decimal: 2 },
+// ]
 
 const { user } = storeToRefs(useUserStore())
 const { data: depts } = useRequest(getDeptSimpleList, {
+  immediate: true,
+})
+
+const { data: stats, pending } = useRequest(getIndexData, {
   immediate: true,
 })
 

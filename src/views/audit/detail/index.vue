@@ -21,7 +21,7 @@
     </div>
 
     <ARow :gutter="16">
-      <ACol :span="24" :lg="20">
+      <ACol :span="24" :lg="18">
         <!-- audit view renderer -->
         <ACard class="mb-4" :body-style="{ paddingTop: 8 }">
           <div class="audit-view">
@@ -53,7 +53,7 @@
           :fields="fields"
         />
       </ACol>
-      <ACol :span="24" :lg="4">
+      <ACol :span="24" :lg="6">
         <!-- timeline -->
         <Scrollbar :style="{ height: 'calc(100vh - 180px)' }" class="fixed top-30">
           <h3>审核历史</h3>
