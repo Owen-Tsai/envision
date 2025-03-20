@@ -74,8 +74,10 @@
       </ACol>
     </ARow>
 
-    <ADrawer title="AI 预审报告" v-model:open="open">
-      <AIReporter :system="system" :prompt="prompt" />
+    <ADrawer title="AI 预审报告" v-model:open="open" width="33%">
+      <AAlert type="warning" message="评估报告由 AI 生成，结果仅供参考" show-icon class="mb-6" />
+      <AIReporter v-if="showSuccess" :system="system" :prompt="prompt" />
+      <AIReporter v-else :system="system" :prompt="prompt1" />
     </ADrawer>
   </div>
 </template>
@@ -87,7 +89,6 @@ import useActions from './use-actions'
 import dayjs from 'dayjs'
 import Timeline from './timeline.vue'
 import AuditForm from './form.vue'
-import AuditView from '@/components/fux-core/audit-view-renderer/index.vue'
 import AttachClass from '@/components/attach/attach-class/index.vue'
 import FormRenderer from '@/components/fux-core/form-renderer/index.vue'
 import useFields from './use-fields'
@@ -103,7 +104,12 @@ const attachClass = useTemplateRef<InstanceType<typeof AttachClass>>('attachClas
 const { appSchema, planInfo, basicInfo, appId, applyId } = useData(formRenderer, attachClass)
 const { getFields } = useFields(appSchema, formRenderer)
 
-const { open, prompt, system } = useAIAudit()
+const { open, prompt, prompt1, system } = useAIAudit()
 
 const fields = getFields()
+
+const showSuccess = computed(() => {
+  // todo: detect based on router
+  return true
+})
 </script>
