@@ -18,7 +18,7 @@
       <ACol :span="24" :lg="{ span: 8 }">
         <QuickActions />
         <NoticeCard class="mt-4" />
-        <HelperSection class="mt-4" />
+        <!--        <HelperSection class="mt-4" />-->
       </ACol>
     </ARow>
   </div>
