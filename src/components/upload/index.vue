@@ -13,17 +13,12 @@
     @remove="onRemove"
   >
     <slot>
-      <AButton
-        v-if="listType === 'text' || listType === 'picture'"
-        :icon="h(UploadOutlined)"
-        :loading="loading"
-      >
+      <AButton v-if="listType === 'text' || listType === 'picture'" :loading="loading">
+        <UploadOutlined />
         选择文件
       </AButton>
 
-      <template
-        v-else-if="listType === 'picture-card' && limit && limit !== 0 && fileList.length < limit"
-      >
+      <template v-else-if="listType === 'picture-card' && (!limit || fileList.length < limit)">
         <div class="upload-trigger">
           <LoadingOutlined v-if="loading" />
           <PlusOutlined v-else />
@@ -35,9 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, watch, type PropType } from 'vue'
 import { generateId } from '@fusionx/utils'
-import { UploadOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { Upload, message, type UploadProps, type UploadFile } from 'ant-design-vue'
 import useUpload from '@/hooks/use-upload'
 
@@ -47,7 +40,7 @@ const props = defineProps({
   action: String,
   accept: {
     type: Array as PropType<string[]>,
-    default: () => ['pdf, png, svg, jpg, doc, docx'],
+    default: () => ['pdf', 'png', 'svg', 'jpg', 'doc', 'docx'],
   },
   value: {
     type: [String, Array] as PropType<string | string[]>,

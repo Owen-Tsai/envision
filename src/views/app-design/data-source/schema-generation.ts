@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, kebabCase } from 'lodash-es'
 import { generateId } from '@fusionx/utils'
 import {
   getCodeGenConfigDetail as getTableColumns,
@@ -8,8 +8,51 @@ import widgetConfigMap from '@/components/fux-core/_utils/initial-widget-config'
 import type { AppInfo } from '@/types/fux-core'
 import type { FormSchema, WidgetMap, Widget } from '@/types/fux-core/form'
 
+/**
+ * 生成单个字段的 schema
+ * @param config 字段的配置
+ * @param tableName 表名，不传入时生成的字段 name 将不含表名和冒号构成的前缀
+ */
+const genWidgetSchema = (column: ConfigDetailVO['columns'][number], tableName?: string) => {
+  const type = (column.htmlType === 'datetime' ? 'datePicker' : column.htmlType) as keyof WidgetMap
+  if (widgetConfigMap[type]) {
+    const ret = {
+      ...cloneDeep(widgetConfigMap[type]!),
+      uid: generateId(),
+      props: {
+        ...cloneDeep(widgetConfigMap[type]!.props),
+        field: {
+          label: column.columnComment || column.columnName,
+          name: tableName ? `${tableName}:${column.javaField}` : column.javaField,
+        },
+        hide: `${column.javaField}` == 'id',
+      },
+    }
+
+    if (
+      column.htmlType &&
+      ['select', 'checkbox', 'radio'].includes(column.htmlType) &&
+      column.dictTypeStr
+    ) {
+      ;(ret as WidgetMap['select' | 'radio' | 'checkbox']).props.options.type = 'dict'
+      ;(ret as WidgetMap['select' | 'radio' | 'checkbox']).props.options.value = column.dictTypeStr
+    }
+
+    delete ret.icon
+
+    return ret as Widget
+  }
+}
+
+/**
+ * 生成 DataTable 组件的 schema
+ * @param info DataTable 对应的子表的配置信息
+ * @param widgets 子表表单中包含的字段的 schema
+ */
 const genDataTableSchema = (info: ConfigDetailVO, widgets: Widget[]): WidgetMap['dataTable'] => {
+  // columns that should be listed in table mode
   const columns = info.columns.filter((column) => column.listOperation)
+
   const ret: WidgetMap['dataTable'] = {
     ...cloneDeep(widgetConfigMap.dataTable)!,
     uid: generateId(),
@@ -25,7 +68,7 @@ const genDataTableSchema = (info: ConfigDetailVO, widgets: Widget[]): WidgetMap[
           value: column.dictTypeStr || '',
         },
       })),
-      url: '/applications/' + info.table.tableName,
+      url: '/applications/' + kebabCase(info.table.tableName),
     },
   }
 
@@ -36,6 +79,11 @@ const genDataTableSchema = (info: ConfigDetailVO, widgets: Widget[]): WidgetMap[
   return ret
 }
 
+/**
+ * 生成栅格布局组件 Grid 的 schema
+ * @param count 栅格布局组件的默认分列数量，取值 2 或 3
+ * @param widgets 栅格布局组件中包含的字段的 schema
+ */
 const genGridSchema = (count: 2 | 3, widgets: Widget[]): WidgetMap['grid'] => {
   const cols: Array<Widget[]> = []
 
@@ -64,55 +112,30 @@ const genGridSchema = (count: 2 | 3, widgets: Widget[]): WidgetMap['grid'] => {
   return ret
 }
 
-const genTableWidgetsSchema = (info: ConfigDetailVO, step?: number): Widget[] => {
-  const { columns, table } = info
-  // widgets of table
-  const tableSchema: Widget[] = []
+/**
+ * 生成一个数据表中包含的字段的 schema
+ * @param info 表的配置信息
+ */
+const genWidgetsSchemaOfTable = (tableConfig: ConfigDetailVO, appInfo: AppInfo): Widget[] => {
+  const { columns } = tableConfig
+  const ret: Widget[] = []
+
   columns.forEach((column) => {
+    // if a field is not intended to be filled by user, ignore
     if (!column.createOperation || !column.htmlType) return
 
-    const widget = genWidgetSchema(column, table.tableName || '', step)
+    const isSubTable = !!appInfo.tables.find((t) => t.name === tableConfig.table.tableName)
+      ?.subTable
+
+    const widget = isSubTable
+      ? genWidgetSchema(column)
+      : genWidgetSchema(column, tableConfig.table.tableName)
     if (widget) {
-      tableSchema.push(widget)
+      ret.push(widget)
     }
   })
 
-  return tableSchema
-}
-
-const genWidgetSchema = (
-  column: ConfigDetailVO['columns'][number],
-  tableName: string,
-  step?: number,
-): Widget | undefined => {
-  const type = (column.htmlType === 'datetime' ? 'datePicker' : column.htmlType) as keyof WidgetMap
-  if (widgetConfigMap[type]) {
-    const ret = {
-      ...cloneDeep(widgetConfigMap[type]!),
-      uid: generateId(),
-      props: {
-        ...cloneDeep(widgetConfigMap[type]!.props),
-        field: {
-          label: column.columnComment || column.columnName,
-          name: `${tableName}:${column.javaField}`,
-        },
-        hide: `${column.javaField}` == 'id',
-      },
-    }
-
-    if (
-      column.htmlType &&
-      ['select', 'checkbox', 'radio'].includes(column.htmlType) &&
-      column.dictTypeStr
-    ) {
-      ;(ret as WidgetMap['select' | 'radio' | 'checkbox']).props.options.type = 'dict'
-      ;(ret as WidgetMap['select' | 'radio' | 'checkbox']).props.options.value = column.dictTypeStr
-    }
-
-    delete ret.icon
-
-    return ret as Widget
-  }
+  return ret
 }
 
 const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
@@ -136,7 +159,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
       } as Widget)
     : []
 
-  tableColumnsInfo.forEach((info, idx) => {
+  tableColumnsInfo.forEach((tableConfig) => {
     const gridSchema: WidgetMap['grid'] | null = gridColumns
       ? {
           ...cloneDeep(widgetConfigMap.grid)!,
@@ -150,9 +173,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
 
     delete gridSchema?.icon
 
-    let tableSchema: Widget[] = paginated
-      ? genTableWidgetsSchema(info, idx)
-      : genTableWidgetsSchema(info)
+    let tableSchema: Widget[] = genWidgetsSchemaOfTable(tableConfig, info)
     if (gridColumns) {
       // const colWidgets = genGridSchema(tableSchema, column)
       const gridSchema = genGridSchema(gridColumns, tableSchema)
@@ -160,9 +181,9 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
       tableSchema = [gridSchema]
     }
 
-    if (tables.find((table) => table.id === info.table.id)?.subTable) {
+    if (tables.find((table) => table.id === tableConfig.table.id)?.subTable) {
       if (paginated) {
-        tableSchema = genTableWidgetsSchema(info)
+        tableSchema = genWidgetsSchemaOfTable(tableConfig, info)
         if (gridColumns) {
           // const colWidgets = genGridSchema(tableSchema, column)
           const gridSchema = genGridSchema(gridColumns, tableSchema)
@@ -170,8 +191,8 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
           tableSchema = [gridSchema]
         }
         ;(schemaWrapper as WidgetMap['tabs' | 'steps']).props.children.push({
-          title: info.table.tableComment || info.table.tableName || '',
-          widgets: [genDataTableSchema(info, tableSchema)],
+          title: tableConfig.table.tableComment || tableConfig.table.tableName || '',
+          widgets: [genDataTableSchema(tableConfig, tableSchema)],
         })
       } else {
         ;(schemaWrapper as Widget[]).push({
@@ -180,8 +201,8 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
           props: {
             ...cloneDeep(widgetConfigMap.subForm!.props),
             field: {
-              label: info.table.tableComment || info.table.tableName || '',
-              name: info.table,
+              label: tableConfig.table.tableComment || tableConfig.table.tableName || '',
+              name: tableConfig.table,
             },
             children: [...tableSchema],
           },
@@ -190,7 +211,7 @@ const genFormSchemaByAppInfo = async (info: AppInfo): Promise<FormSchema> => {
     } else {
       if (paginated) {
         ;(schemaWrapper as WidgetMap['tabs' | 'steps']).props.children.push({
-          title: info.table.tableComment || info.table.tableName || '',
+          title: tableConfig.table.tableComment || tableConfig.table.tableName || '',
           widgets: tableSchema,
         })
 

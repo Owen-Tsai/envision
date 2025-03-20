@@ -66,10 +66,10 @@ import { createVNode, nextTick, onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   approveTask,
-  type AuditStatusListVO,
+  type AuditTimeLineData,
   returnTaskToStart,
   returnTask,
-  getAuditStatusList,
+  getAuditTimeLineData,
   getTaskReturnOptions,
   getEchoData,
   getProcessInstance,
@@ -161,10 +161,10 @@ const getTaskReturnOptionsMethod = async (taskId: string) => {
   console.log(backModal.value)
 }
 const getAuditProcessDetailMethod = async (parentProcessInstanceId: string) => {
-  auditProcessDetailsList.value = await getAuditStatusList(parentProcessInstanceId)
+  auditProcessDetailsList.value = await getAuditTimeLineData(parentProcessInstanceId)
 }
 
-const auditProcessDetailsList = ref<AuditStatusListVO>([])
+const auditProcessDetailsList = ref<AuditTimeLineData>([])
 
 // 退回到发起人方法
 const backStartUser = async () => {

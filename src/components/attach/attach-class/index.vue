@@ -10,7 +10,7 @@
           <a-tag v-if="record.ismust === 0">非必传</a-tag>
         </template>
         <template v-if="column.key === 'uploadedFile'">
-          {{ record.attachDO ? record.attachDO.uploadname : '' }}
+          {{ record.attachDO ? record.attachDO.uploadname : '用户未上传' }}
         </template>
         <template v-if="column.key === 'action'">
           <a-button class="selectButton" @click="view(record.attachDO)" v-if="record.attachDO">
