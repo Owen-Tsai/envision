@@ -9,8 +9,12 @@
           <div>
             <h1>{{ appInfo?.name }}</h1>
             <div class="flex items-center text-muted gap-10">
-              <div>审核环节：这里是审核环节的名称</div>
-              <div>截止时间：123毫秒后</div>
+              <div>审核环节：{{ appInfo?.linkName }}</div>
+              <div>
+                截止时间：{{
+                  appInfo?.daily ? '常态化' : dayjs(appInfo?.endTime).format('YYYY-MM-DD')
+                }}
+              </div>
             </div>
           </div>
         </div>
@@ -125,9 +129,10 @@ const { data, pagination, onChange, pending, queryParams, onFilter, onFilterRese
 
 const onAudit = (record: any) => {
   push(
-    '/business/life/audit/form?appId=' +
-      appInfo.value?.id +
-      '&applyId=' +
+    '/business/' +
+      appInfo.value?.appId +
+      '/audit/form?' +
+      'applyId=' +
       record.comApplyId +
       '&taskId=' +
       record.taskId +

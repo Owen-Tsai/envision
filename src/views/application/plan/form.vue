@@ -70,7 +70,7 @@ import { message, type FormInstance, type FormProps, type SelectProps } from 'an
 const rules: FormProps['rules'] = {
   item: [{ required: true, message: '请填写申报计划名称' }],
   appId: [{ required: true, message: '请选择应用' }],
-  fjfl: [{ required: true, message: '请选择需求附件' }],
+  // fjfl: [{ required: true, message: '请选择需求附件' }],
   startTime: [{ required: true, message: '请选择计划开始时间' }],
   endTime: [{ required: true, message: '请选择计划截止时间' }],
 }

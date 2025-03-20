@@ -2,7 +2,7 @@
   <AFormItem label="自定义上传地址" name="action" extra="留空将使用默认地址，通常无需设置">
     <AInput v-model:value="model.action" />
   </AFormItem>
-  <AFormItem label="文件类型限制" name="accept">
+  <AFormItem label="文件类型限制" name="accept" extra="输入一个类型后按下回车确认并添加下一个">
     <InputTag v-model:value="model.accept" />
   </AFormItem>
   <AFormItem label="文件大小限制" name="sizeLimit">

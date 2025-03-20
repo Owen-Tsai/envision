@@ -5,6 +5,7 @@ import type { PlanVO } from '@/api/application/plan'
 import type { AppSchema } from '@/types/fux-core'
 import type FormRenderer from '@/components/fux-core/form-renderer/index.vue'
 import type AttachClass from '@/components/attach/attach-class/index.vue'
+import useTabsStore from '@/stores/tabs'
 
 /**
  * 负责数据的载入和转换
@@ -27,9 +28,16 @@ const useData = (
   // 用户填写的申报数据
   const formData = ref<Record<string, any>>({})
 
+  const { setTabTitle } = useTabsStore()
+
   const loadData = async () => {
     const res = await getEchoData(appId, applyId)
     const { plan, data, schema } = res
+
+    const tabTitle = plan.appName || plan.item
+    if (tabTitle) {
+      setTabTitle(tabTitle)
+    }
 
     planInfo.value = plan
     appSchema.value = JSON.parse(schema)
@@ -52,9 +60,8 @@ const useData = (
       if (raw[key] && !Array.isArray(raw[key])) {
         const fields = Object.keys(raw[key])
         if (appSchema.value?.info.paginated) {
-          const findIndex = appSchema.value?.info.tables.findIndex((table) => table.name == key)
           fields.forEach((field) => {
-            set(ret, `${findIndex}.${key}:${field}`, raw[key][field])
+            set(ret, `${key}:${field}`, raw[key][field])
           })
         } else {
           fields.forEach((field) => {

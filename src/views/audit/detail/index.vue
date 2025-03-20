@@ -14,14 +14,14 @@
           <div class="flex items-center gap-8 text-muted">
             <span>所属应用：{{ planInfo?.item }}</span>
             <span>申报人：{{ basicInfo?.starter }}</span>
-            <span>申报时间：{{ dayjs(basicInfo?.createTime).format('YYYY-MM-DD') }}</span>
+            <span>申报时间：{{ dayjs(basicInfo?.submitTime).format('YYYY-MM-DD HH:mm:ss') }}</span>
           </div>
         </div>
       </div>
     </div>
 
     <ARow :gutter="16">
-      <ACol :span="24" :lg="20">
+      <ACol :span="24" :lg="18">
         <!-- audit view renderer -->
         <ACard class="mb-4" :body-style="{ paddingTop: 8 }">
           <div class="audit-view">
@@ -43,6 +43,7 @@
           :plan-id="planInfo.id!"
           :current-audit-process="'0'"
           class="mb-4"
+          v-if="planInfo.fjfl?.length && planInfo.fjfl?.length > 0"
         />
         <!-- audit form -->
         <AuditForm
