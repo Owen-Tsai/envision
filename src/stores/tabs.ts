@@ -101,6 +101,14 @@ export default defineStore('tabs', () => {
     removeTab(pathToRemove || fullPath.value, pathToOpen)
   }
 
+  /**
+   * Refresh the current active route
+   * @param pathToRefresh the fullpath of the route that will be refreshed
+   */
+  const refreshTab = () => {
+    router.go(0)
+  }
+
   onMounted(() => {
     addTab('/index', '首页')
     if (fullPath.value !== '/index') {
@@ -116,5 +124,6 @@ export default defineStore('tabs', () => {
     removeAndOpenTab,
     removeTabsAfter,
     removeOtherTabs,
+    refreshTab,
   }
 })
