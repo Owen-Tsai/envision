@@ -95,13 +95,13 @@ html {
     background-color: transparent !important;
     color: var(--color-text) !important;
     border: none !important;
-    border-bottom: 1px solid var(--color-border) !important;
+    border-bottom: 1px solid var(--color-border-secondary) !important;
     border-radius: 0 !important;
   }
   .ant-input-affix-wrapper-disabled {
     background-color: transparent !important;
     border: none !important;
-    border-bottom: 1px solid var(--color-border) !important;
+    border-bottom: 1px solid var(--color-border-secondary) !important;
     border-radius: 0 !important;
     input {
       color: var(--color-text) !important;
@@ -110,7 +110,34 @@ html {
   .ant-picker-disabled {
     background-color: transparent !important;
     border: none !important;
-    border-bottom: 1px solid var(--color-border) !important;
+    border-bottom: 1px solid var(--color-border-secondary) !important;
+    border-radius: 0 !important;
+    color: var(--color-text) !important;
+    input {
+      color: var(--color-text) !important;
+    }
+  }
+  .ant-input-number-affix-wrapper {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--color-border-secondary) !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+  }
+  .ant-input-number-disabled {
+    background-color: transparent !important;
+    .ant-input-number-input-wrap {
+      background-color: transparent !important;
+      color: var(--color-text) !important;
+    }
+    input {
+      color: var(--color-text) !important;
+    }
+  }
+  textarea[disabled] {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--color-border-secondary) !important;
     border-radius: 0 !important;
     color: var(--color-text) !important;
   }
