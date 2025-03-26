@@ -1,6 +1,5 @@
 <template>
   <ACard title="审核结论">
-    <pre>{{ auditFormData }}</pre>
     <AForm
       ref="auditForm"
       :label-col="{ style: 'width: 100px' }"
