@@ -108,6 +108,8 @@ const appParams = injectLocal<Record<string, any>>('appParamsCtx')
 const disabledForm = ref(false)
 const loading = ref(false)
 
+const { query } = useRoute()
+
 const tableData = reactive<{
   total: number
   list: any[]
@@ -196,7 +198,7 @@ const loadData = async () => {
   const res = await request.get({
     url: api,
     params: {
-      declareId: appParams?.value.applyId || '',
+      declareId: appParams?.value.applyId || query.applyId,
       current: tableData.current,
     },
   })
@@ -206,7 +208,7 @@ const loadData = async () => {
 }
 
 const get = async (id: string) => {
-  const api = `${urlPrefix}/get-table-name?id=${id}`
+  const api = `${urlPrefix}/get?id=${id}`
   return await request.get({ url: api })
 }
 
