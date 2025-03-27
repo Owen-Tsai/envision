@@ -119,7 +119,7 @@ import type { FormInstance } from 'ant-design-vue'
 
 const filterForm = useTemplateRef<FormInstance>('filterForm')
 
-const { query } = useRoute()
+const { query, params } = useRoute()
 const { push } = useRouter()
 const taskKey = query.taskDefKey
 
@@ -130,7 +130,7 @@ const { data, pagination, onChange, pending, queryParams, onFilter, onFilterRese
 const onAudit = (record: any) => {
   push(
     '/business/' +
-      appInfo.value?.appId +
+      params.appId +
       '/audit/form?' +
       'applyId=' +
       record.comApplyId +
