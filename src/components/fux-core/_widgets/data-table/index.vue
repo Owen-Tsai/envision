@@ -239,7 +239,7 @@ const onSave = async () => {
   }
   const tableName = urlPrefixArr[urlPrefixArr.length - 1]
   // console.log(tableName)
-  set(modalFormData.value, tableName + ':declare_id', appParams.value.applyId)
+  set(modalFormData.value, tableName + ':declare_id', appParams?.value.applyId || query.applyId)
   // return
   let res
   if (modalEditMode.value === 'update') {
