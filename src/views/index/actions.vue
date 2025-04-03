@@ -1,15 +1,15 @@
 <template>
   <ACard title="常用应用">
     <template #extra>
-      <ATypographyLink>创建应用</ATypographyLink>
+      <ATypographyLink @click="createApplication">创建应用</ATypographyLink>
     </template>
     <div class="grid grid-cols-2 gap-2">
-      <div v-for="(action, i) in actions" :key="i" class="action-item">
+      <div v-for="(action, i) in actions" :key="i" class="action-item" @click="go(action.path)">
         <div class="icon">
           <img class="icon-img" v-if="action.icon" :src="action.icon" />
-          <div class="icon-div" v-else>{{ getShortName(action.label) }}</div>
+          <img class="icon-img" v-else :src="icon" />
         </div>
-        <div class="label">{{ action.label }}</div>
+        <div class="label">{{ action.appName }}</div>
       </div>
     </div>
   </ACard>
@@ -17,20 +17,28 @@
 
 <script lang="ts" setup>
 import { ref, getCurrentInstance } from 'vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
 import icon from '~img/icon-package.svg'
+import { getApplications } from '@/api/index'
+const { push } = useRouter()
 
-const icons = getCurrentInstance()?.proxy?.$icons!
-
-const actions = ref([
-  { label: '生活补贴审核', icon },
-  { label: '测试应用10001审核', icon },
-  { label: '测试应用10002审核', icon },
-  { label: '测试应用10003审核', icon },
-])
+const actions = ref([])
 
 const getShortName = (name: string) => {
   return name.substring(0, 2)
+}
+
+onMounted(async () => {
+  const res = await getApplications()
+  for (let i = 0; i < 4; i++) {
+    actions.value.push(res[i])
+  }
+})
+
+const go = (path: string) => {
+  push(path)
+}
+const createApplication = () => {
+  push('/app/list')
 }
 </script>
 

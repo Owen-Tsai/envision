@@ -5,3 +5,9 @@ export const getIndexData = () => {
     url: '/admin-api/system/application/get-index-data',
   })
 }
+
+export const getApplications = () => {
+  return request.get({
+    url: '/admin-api/system/application/get-index-app-Data',
+  })
+}
