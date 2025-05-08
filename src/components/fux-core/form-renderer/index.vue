@@ -16,9 +16,8 @@
         v-for="widget in schema.form.widgets"
         :key="widget.uid"
         :config="widget"
-        :fields="fieldsToRender"
+        :fields-config="fieldsToRender"
         :showAll="showAll"
-        :mode="mode"
       />
     </AForm>
     <div v-if="showData" class="data" v-html="highlighted" />

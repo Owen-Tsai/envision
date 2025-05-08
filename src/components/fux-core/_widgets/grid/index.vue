@@ -12,8 +12,7 @@
           v-for="widget in col.widgets"
           :key="widget.uid"
           :config="widget"
-          :fields="fields"
-          :mode="mode"
+          :fields-config="fields"
         />
       </template>
       <template v-if="!ctx">

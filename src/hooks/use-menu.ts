@@ -1,4 +1,3 @@
-import { ref, h, getCurrentInstance } from 'vue'
 import type { ItemType, MenuProps } from 'ant-design-vue'
 import type { MenuVO } from '@/api/system/menu'
 
@@ -47,7 +46,7 @@ export const useMenuRenderer = () => {
         }
       }
 
-      if (route.icon) {
+      if (route.icon && icons[route.icon]) {
         item.icon = h(icons[route.icon])
       }
 

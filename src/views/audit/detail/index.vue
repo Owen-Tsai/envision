@@ -49,7 +49,7 @@
         <AuditForm
           v-if="taskDefKey !== 'All'"
           :starter="basicInfo?.starter"
-          :create-time="basicInfo?.createTime"
+          :create-time="parseInt(basicInfo?.createTime || '')"
           :fields="fields"
         />
       </ACol>

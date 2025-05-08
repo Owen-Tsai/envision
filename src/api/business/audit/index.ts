@@ -25,7 +25,8 @@ export type AuditTimeLineData = Array<{
 
 export type BasicInfoVO = {
   starter: string
-  createTime: number
+  /* TODO: change this to number */
+  createTime: string
   name: string
   userType: string
   taskId: string

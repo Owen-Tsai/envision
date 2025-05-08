@@ -109,21 +109,30 @@
                   <EditOutlined />
                   编辑
                 </ATypographyLink>
-                <ATypographyLink @click="toDesignPage(scope!.record)">
-                  <CodeOutlined />
-                  设计
-                </ATypographyLink>
-                <APopconfirm
-                  v-if="permission.has('system:application:delete')"
-                  title="该操作无法撤销，确定要删除吗？"
-                  :overlay-style="{ width: '240px' }"
-                  @confirm="onDelete(scope!.record)"
-                >
-                  <ATypographyLink type="danger">
-                    <DeleteOutlined />
-                    删除
+                <ADropdown>
+                  <ATypographyLink>
+                    <DownOutlined />
+                    更多
                   </ATypographyLink>
-                </APopconfirm>
+                  <template #overlay>
+                    <AMenu>
+                      <AMenuItem @click="toDesignPage(scope.record)">设计</AMenuItem>
+                      <AMenuItem
+                        @click="onAIAuditConfig"
+                        :disabled="scope.record.id !== 'cB9QkrWFd99pLyu6'"
+                        >AI 预审设置</AMenuItem
+                      >
+                      <AMenuDivider v-if="permission.has('system:application:delete')" />
+                      <AMenuItem
+                        danger
+                        :disabled="!permission.has('system:application:delete')"
+                        @click="onDelete(scope.record)"
+                      >
+                        删除
+                      </AMenuItem>
+                    </AMenu>
+                  </template>
+                </ADropdown>
               </AFlex>
             </template>
           </template>
@@ -131,7 +140,13 @@
       </div>
     </ACard>
 
-    <FormModal v-if="visible" :record="entry" @success="execute" @close="visible = false" />
+    <FormModal
+      v-if="visible.editForm"
+      :record="entry"
+      @success="execute"
+      @close="visible.editForm = false"
+    />
+    <AuditConfigModal v-model:open="visible.auditConfigForm" />
   </div>
 </template>
 
@@ -139,19 +154,13 @@
 import { ref } from 'vue'
 import dayjs from 'dayjs'
 import { useToggle } from '@vueuse/core'
-import {
-  DownOutlined,
-  ReloadOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  PlusOutlined,
-  CodeOutlined,
-} from '@ant-design/icons-vue'
+import { DownOutlined, ReloadOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import useDict from '@/hooks/use-dict'
 import { permission } from '@/hooks/use-permission'
 import { useTable, columns } from './use-table'
 import useActions from './use-action'
 import FormModal from './form.vue'
+import AuditConfigModal from '../ai-audit/config.vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { ApplicationVO } from '@/api/application'
 
@@ -165,7 +174,8 @@ console.log(typeOpts, statusOpts)
 const { data, pending, execute, queryParams, onFilter, onChange, onFilterReset, pagination } =
   useTable(filterForm)
 
-const { entry, visible, onDelete, onEdit, onSetPublished, toDesignPage } = useActions(execute)
+const { entry, visible, onDelete, onEdit, onSetPublished, toDesignPage, onAIAuditConfig } =
+  useActions(execute)
 
 defineOptions({ name: 'SystemService' })
 </script>

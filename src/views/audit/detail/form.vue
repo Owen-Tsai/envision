@@ -6,12 +6,6 @@
       :model="auditFormData"
       :rules="rules"
     >
-      <!-- <AFormItem label="申报人">
-        {{ starter }}
-      </AFormItem>
-      <AFormItem label="提交时间">
-        {{ dayjs(createTime).format('YYYY-MM-DD') }}
-      </AFormItem> -->
       <ARow>
         <ACol :span="12">
           <AFormItem label="审核结论" name="result">
@@ -39,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import dayjs from 'dayjs'
 import useDict from '@/hooks/use-dict'
 import { getTaskReturnOptions } from '@/api/business/audit'
 import useActions, { KEY_RETURN_TO_STARTER } from './use-actions'
